@@ -25,4 +25,6 @@
     <string name="something_wrong">Something went wrong!</string>
     <string name="wrong_credentials">Wrong credentials!</string>
     <string name="welcome_back">Welcome back!</string>
+    <string name="fingerprint_required">Fingerprint Required!</string>
+    <string name="touch_sensor">Touch Fingerprint sensor!</string>
 </resources>
