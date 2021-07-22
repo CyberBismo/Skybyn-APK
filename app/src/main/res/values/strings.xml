@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">We Social</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="request_reset">Request reset</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="email">Email address</string>
+    <string name="email_verification">We need to verify you.</string>
+    <string name="verify_email">Send email</string>
+    <string name="username_required">Username is required</string>
+    <string name="password_required">Password is required</string>
+    <string name="email_required">Email is required</string>
+    <string name="confirmation_password_required">Confirmation Password is required</string>
+    <string name="biometric_auth_error">Biometric Auth Error!</string>
+    <string name="biometric_auth_failed">Biometric Auth Failed!</string>
+    <string name="password_unmatch">Password do not match.</string>
+</resources>
