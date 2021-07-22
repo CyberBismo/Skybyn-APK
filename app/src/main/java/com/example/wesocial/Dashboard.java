@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FrontPage extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity {
     SharedPreferences sharedpreferences;
        @Override
     protected void onCreate(Bundle savedInstanceState) {

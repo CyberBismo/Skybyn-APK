@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeSocial">
-        <activity android:name=".FrontPage">
+        <activity android:name=".Dashboard">
         </activity>
         <activity android:name=".LoginRegisterForgot">
             <intent-filter>
