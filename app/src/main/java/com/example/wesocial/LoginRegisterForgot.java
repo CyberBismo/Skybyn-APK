@@ -277,7 +277,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 saveUsernameAndPassword(regUsername, regPassword);
 
                 txtVerify.setText(getString(R.string.verified));
-                Intent intent = new Intent(this, Dashboard.class);
+                Intent intent = new Intent(this, Frontpage.class);
                 startActivity(intent);
             } else {
                 txtVerify.setText(getString(R.string.awaiting_verification));
@@ -305,7 +305,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 saveUsernameAndPassword(username, password);
 
                 Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, Dashboard.class);
+                Intent intent = new Intent(this, Frontpage.class);
                 startActivity(intent);
             }
         }, error -> Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show());
@@ -395,7 +395,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             String password;
             username = sharedpreferences.getString("username", "");
             password = sharedpreferences.getString("password", "");
-            Intent intent = new Intent(this, Dashboard.class);
+            Intent intent = new Intent(this, Frontpage.class);
             intent.putExtra("username", username);
             intent.putExtra("password", password);
             startActivity(intent);
