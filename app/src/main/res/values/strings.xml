@@ -18,4 +18,7 @@
     <string name="biometric_auth_failed">Biometric Auth Failed!</string>
     <string name="password_unmatch">Password do not match.</string>
     <string name="downloading_latest">Downloading latest version...</string>
+    <string name="verified">Account Verified!</string>
+    <string name="awaiting_verification">Awaiting verification!</string>
+    <string name="something_wrong">Something went wrong!</string>
 </resources>

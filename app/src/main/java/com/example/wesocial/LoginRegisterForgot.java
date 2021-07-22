@@ -276,17 +276,17 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 //Save username and Password to sharedPref after registration.
                 saveUsernameAndPassword(regUsername, regPassword);
 
-                txtVerify.setText("Verified!");
+                txtVerify.setText(getString(R.string.verified));
                 Intent intent = new Intent(this, FrontPage.class);
                 startActivity(intent);
             } else {
-                txtVerify.setText("Awaiting verification");
+                txtVerify.setText(getString(R.string.awaiting_verification));
                 Handler timeout = new Handler();
                 timeout.postDelayed(this::verifyAccount, 3000);
             }
         }, error -> {
             cancelEmail();
-            Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
         });
         queue.add(check);
     }
