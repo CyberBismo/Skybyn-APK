@@ -5,7 +5,9 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="request_reset">Request reset</string>
     <string name="username">Username</string>
+    <string name="wrong_username">Wrong Username</string>
     <string name="password">Password</string>
+    <string name="wrong_password">Wrong Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="email">Email address</string>
     <string name="email_verification">We need to verify you.</string>
@@ -21,4 +23,6 @@
     <string name="verified">Account Verified!</string>
     <string name="awaiting_verification">Awaiting verification!</string>
     <string name="something_wrong">Something went wrong!</string>
+    <string name="wrong_credentials">Wrong credentials!</string>
+    <string name="welcome_back">Welcome back!</string>
 </resources>

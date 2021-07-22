@@ -299,16 +299,16 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.GET, url, response -> {
             if (response.equals("Wrong username") || response.equals("Wrong password")) {
-                Toast.makeText(getApplicationContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show();
             } else {
                 //Save Username and password
                 saveUsernameAndPassword(username, password);
 
-                Toast.makeText(getApplicationContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, FrontPage.class);
                 startActivity(intent);
             }
-        }, error -> Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show());
+        }, error -> Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show());
         queue.add(check);
     }
 
@@ -391,7 +391,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
              * User has been logged in before, then set Username and password to intent...
              *
              */
-                        String username;
+            String username;
             String password;
             username = sharedpreferences.getString("username", "");
             password = sharedpreferences.getString("password", "");
