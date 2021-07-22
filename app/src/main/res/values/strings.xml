@@ -17,4 +17,5 @@
     <string name="biometric_auth_error">Biometric Auth Error!</string>
     <string name="biometric_auth_failed">Biometric Auth Failed!</string>
     <string name="password_unmatch">Password do not match.</string>
+    <string name="downloading_latest">Downloading latest version...</string>
 </resources>

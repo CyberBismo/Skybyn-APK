@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class FrontPage extends AppCompatActivity {
     SharedPreferences sharedpreferences;
-
-    @Override
+       @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
@@ -27,7 +26,6 @@ public class FrontPage extends AppCompatActivity {
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.clear();
         sharedPrefEditor.apply();
-
         Intent intent = new Intent(this, LoginRegisterForgot.class);
         startActivity(intent);
     }

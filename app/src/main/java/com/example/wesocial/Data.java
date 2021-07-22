@@ -13,4 +13,9 @@ public class Data {
     public String verifyAccountUrl(String mail){
         return "https://wesocial.space/mob_api?verify="+mail;
     }
+
+    public String getApkName(){
+        return "WeSocial.apk";
+
+    }
 }

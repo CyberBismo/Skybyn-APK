@@ -1,13 +1,3 @@
-/**
- * CHANGE LOG - First Update
- * -------I ADDED A CUSTOM MESSAGE VARIABLE TO REDUCE BOILERPLATE INSIDE THE sign_in.OnClickListener
- * ------ADDED A METHOD TO CHECK BIOMETRIC
- * -----ADDED A METHOD THAT SAVES Username and password to sharedPref, so user can autoLogin
- * ----CREATED NEW DATA CLass to Hold all URL
- * ---CREATED A METHOD THAT ACCEPTS ALL PARAMETERS AND RETURNS REGISTRATION LINK
- * --FIXed a Bug in forgot OnClick that causes Crash..
- */
-
 package com.example.wesocial;
 
 import android.annotation.SuppressLint;
@@ -59,14 +49,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private Button signin_su;
     private Button signin_f;
     private Button signup_f;
-    private EditText user;
-    private EditText pass;
-    private EditText un;
-    private EditText pw;
-    private EditText cpw;
-    private EditText email;
-    private TextView verify;
-    private Button verify_email;
+    private EditText txtUser;
+    private EditText txtPass;
+    private EditText txtUsername;
+    private EditText txtPassword;
+    private EditText txtConfirmPassword;
+    private EditText txtEmail;
+    private TextView txtVerify;
+    private Button BtnVerify_email;
     public EditText forgot_email;
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
@@ -76,9 +66,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //INITIALIZE THE SHAREDPREF FILE and Check
+        //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-
+        //Init Executor and BioPrompt
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -103,6 +93,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
+        //Checking if SharedPref contains a Username key
         if (sharedpreferences.contains("username")) {
             biometricPrompt();
         }
@@ -122,81 +113,79 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_su.setOnClickListener(v -> toggleForgot());
 
         findViewById(R.id.forgot);
-        Button forgot;
+        Button BtnForgotPassword;
 
-        verify = findViewById(R.id.verify_email_check);
+        txtVerify = findViewById(R.id.verify_email_check);
 
         queue = Volley.newRequestQueue(this);
 
-        user = findViewById(R.id.user);
-        pass = findViewById(R.id.pass);
-        Button sign_in = findViewById(R.id.sign_in);
+        txtUser = findViewById(R.id.user);
+        txtPass = findViewById(R.id.pass);
+        Button btnSignIn = findViewById(R.id.sign_in);
 
 
-        sign_in.setOnClickListener(v -> {
-
-
-            if (TextUtils.isEmpty(user.getText())) {
+        btnSignIn.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(txtUser.getText())) {
                ErrorMessage = getString(R.string.username_required);
-                user.setError(ErrorMessage);
+                txtUser.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(pass.getText())) {
+            } else if (TextUtils.isEmpty(txtPass.getText())) {
                 ErrorMessage = getString(R.string.password_required);
-                pass.setError(ErrorMessage);
+                txtPass.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
             } else {
                 signIn();
             }
         });
 
-        un = findViewById(R.id.Username);
-        pw = findViewById(R.id.Password);
-        cpw = findViewById(R.id.cPassword);
-        Button sign_up = findViewById(R.id.sign_up);
-        sign_up.setOnClickListener(v -> {
+        txtUsername = findViewById(R.id.Username);
+        txtPassword = findViewById(R.id.Password);
+        txtConfirmPassword = findViewById(R.id.cPassword);
+        Button btnSign_up = findViewById(R.id.sign_up);
+        btnSign_up.setOnClickListener(v -> {
 
-            if (TextUtils.isEmpty(un.getText())) {
+            if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
-                un.setError(ErrorMessage);
+                txtUsername.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(pw.getText())) {
+            } else if (TextUtils.isEmpty(txtPassword.getText())) {
                 ErrorMessage = getString(R.string.password_required);
-                pw.setError(ErrorMessage);
+                txtPassword.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
-            } else if (TextUtils.isEmpty(cpw.getText())) {
+            } else if (TextUtils.isEmpty(txtConfirmPassword.getText())) {
                 ErrorMessage = getString(R.string.confirmation_password_required);
-                cpw.setError(ErrorMessage);
+                txtConfirmPassword.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
             } else {
-                String password = pw.getText().toString();
-                String cpassword = cpw.getText().toString();
+                String password = txtPassword.getText().toString();
+                String cpassword = txtConfirmPassword.getText().toString();
                 if (password.equals(cpassword)) {
                     signUp();
                 } else {
                     ErrorMessage = getString(R.string.password_unmatch);
-                    pw.setError(ErrorMessage);
-                    cpw.setError(ErrorMessage);
+                    txtPassword.setError(ErrorMessage);
+                    txtConfirmPassword.setError(ErrorMessage);
                     Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        email = findViewById(R.id.Email);
-        verify_email = findViewById(R.id.verify_email);
-        verify_email.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(email.getText())) {
+        txtEmail = findViewById(R.id.Email);
+        BtnVerify_email = findViewById(R.id.verify_email);
+        BtnVerify_email.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(txtEmail.getText())) {
                 ErrorMessage = getString(R.string.email_required);
-                email.setError(ErrorMessage);
+                txtEmail.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
             } else {
-                verify_email.setVisibility(View.INVISIBLE);
+                BtnVerify_email.setVisibility(View.INVISIBLE);
                 securityStep();
             }
         });
-        Button cancel_email = findViewById(R.id.cancel_email);
-        cancel_email.setOnClickListener(v -> cancelEmail());
+        Button BtnCancel_email = findViewById(R.id.cancel_email);
+        BtnCancel_email.setOnClickListener(v -> cancelEmail());
 
-        forgot = findViewById(R.id.forgot);
-        forgot.setOnClickListener(v -> forgotPassword());
+        BtnForgotPassword = findViewById(R.id.forgot);
+        BtnForgotPassword.setOnClickListener(v -> forgotPassword());
 
 
         String version = data.version_url;
@@ -213,9 +202,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         String current = pkgInfo.versionName;
         StringRequest checkUpdate = new StringRequest(Request.Method.GET, version, response -> {
             if (!response.equals(current)) {
-                Toast.makeText(getApplicationContext(), "Downloading latest version..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
                 String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
-                String fileName = "WeSocial.apk";
+                String fileName = data.getApkName().toString();
                 destination += fileName;
                 final Uri uri = Uri.parse("file://" + destination);
                 File file = new File(fileName);
@@ -269,29 +258,29 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void securityStep() {
-        String username = un.getText().toString();
-        String password = pw.getText().toString();
+        String username = txtUsername.getText().toString();
+        String password = txtPassword.getText().toString();
         regUsername = username;
         regPassword = password;
-        String mail = email.getText().toString();
+        String mail = txtEmail.getText().toString();
         String url = data.register_url(mail,regUsername,regPassword);
         StringRequest register = new StringRequest(Request.Method.GET, url, response -> verifyAccount(), error -> Toast.makeText(getApplicationContext(), "Registration failed! Please try again", Toast.LENGTH_SHORT).show());
         queue.add(register);
     }
 
     public void verifyAccount() {
-        String mail = email.getText().toString();
+        String mail = txtEmail.getText().toString();
         String url = data.verifyAccountUrl(mail);
         @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.GET, url, response -> {
             if (response.equals("true")) {
                 //Save username and Password to sharedPref after registration.
                 saveUsernameAndPassword(regUsername, regPassword);
 
-                verify.setText("Verified!");
+                txtVerify.setText("Verified!");
                 Intent intent = new Intent(this, FrontPage.class);
                 startActivity(intent);
             } else {
-                verify.setText("Awaiting verification");
+                txtVerify.setText("Awaiting verification");
                 Handler timeout = new Handler();
                 timeout.postDelayed(this::verifyAccount, 3000);
             }
@@ -303,8 +292,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void signIn() {
-        String username = user.getText().toString();
-        String password = pass.getText().toString();
+        String username = txtUser.getText().toString();
+        String password = txtPass.getText().toString();
 
         String url = "https://wesocial.space/mob_api?login=" + username + "&key=" + password;
 
@@ -361,8 +350,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         Handler timeout = new Handler();
         timeout.removeCallbacks(this::verifyAccount);
-        verify_email.setVisibility(View.VISIBLE);
-        verify.setText(null);
+        BtnVerify_email.setVisibility(View.VISIBLE);
+        txtVerify.setText(null);
     }
 
     public void toggleForgot() {
