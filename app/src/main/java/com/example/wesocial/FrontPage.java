@@ -25,7 +25,7 @@ public class FrontPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
-        SharedPreferences sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(v -> logOut());
 
