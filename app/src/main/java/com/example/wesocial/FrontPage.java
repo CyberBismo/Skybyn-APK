@@ -32,14 +32,12 @@ public class FrontPage extends AppCompatActivity {
 
     }
 
-
     private void logOut() {
-        /**
-         * DELETE ALL keys
-         */
-         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
-         sharedPrefEditor.clear();
-         sharedPrefEditor.commit();
+        //DELETE ALL keys
+        SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
+        sharedPrefEditor.clear();
+        sharedPrefEditor.commit();
+
         Intent intent = new Intent(this, LoginRegisterForgot.class);
         startActivity(intent);
     }
