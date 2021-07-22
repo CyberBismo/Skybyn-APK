@@ -253,8 +253,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void forgotPassword() {
-        if(forgot_email.getText().toString() == ""){
-            Toast.makeText(getApplicationContext(),getString(R.string.email_required),Toast.LENGTH_SHORT);
+        if(forgot_email.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(),getString(R.string.email_required),Toast.LENGTH_SHORT).show();
             return;
         }
         String mail = forgot_email.getText().toString();
@@ -419,7 +419,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.putString("username", username);
         sharedPrefEditor.putString("password", password);
-        sharedPrefEditor.commit();
+        sharedPrefEditor.apply();
 
     }
 
