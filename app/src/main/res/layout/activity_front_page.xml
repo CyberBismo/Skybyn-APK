@@ -9,27 +9,32 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="178dp"
-        android:layout_height="53dp"
+        android:layout_width="195dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="6dp"
         android:background="@color/blue"
         android:fontFamily="@font/nexabold"
-        android:gravity="center_vertical"
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_imgProfilePicture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintBottom_toTopOf="@+id/contentsFrame"
+        app:layout_constraintEnd_toStartOf="@+id/nav_imgProfilePicture"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <FrameLayout
         android:id="@+id/contentsFrame"
         android:layout_width="match_parent"
-        android:layout_height="590dp"
+        android:layout_height="681dp"
+        android:background="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
@@ -39,28 +44,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </FrameLayout>
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/nav_imgProfilePicture"
-        android:layout_width="54dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="28dp"
         android:background="@android:color/transparent"
-        app:civ_border_width="5dp"
+        app:civ_border_width="2dp"
         app:civ_shadow_color="@color/white"
         app:civ_shadow_radius="15dp"
         app:layout_constraintBottom_toTopOf="@+id/contentsFrame"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.037"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.347"
         app:srcCompat="@drawable/pp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
+        android:layout_height="66dp"
         android:background="@color/blue"
         app:itemBackground="@color/blue"
         app:itemIconTint="@color/white"
