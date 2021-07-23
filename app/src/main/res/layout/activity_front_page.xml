@@ -8,7 +8,7 @@
     tools:context=".Frontpage">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtAppName"
         android:layout_width="195dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -26,6 +26,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/nav_imgProfilePicture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginBottom="28dp"
+        android:background="@android:color/transparent"
+        app:civ_border_width="2dp"
+        app:civ_shadow_color="@color/white"
+        app:civ_shadow_radius="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/contentsFrame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.347"
+        app:srcCompat="@drawable/pp" />
 
     <FrameLayout
         android:id="@+id/contentsFrame"
@@ -46,23 +63,6 @@
             android:background="@android:color/darker_gray"
             android:visibility="gone" />
     </FrameLayout>
-
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/nav_imgProfilePicture"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
-        android:layout_marginBottom="28dp"
-        android:background="@android:color/transparent"
-        app:civ_border_width="2dp"
-        app:civ_shadow_color="@color/white"
-        app:civ_shadow_radius="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/contentsFrame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.347"
-        app:srcCompat="@drawable/pp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
