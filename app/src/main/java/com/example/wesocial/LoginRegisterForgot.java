@@ -414,10 +414,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public void biometricPrompt() {
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle(getString(R.string.fingerprint_required))
+                .setTitle(getString(R.string.biometrics_required))
                 .setDescription(getString(R.string.touch_sensor))
-                .setNegativeButtonText("Exit")
-                //.setConfirmationRequired(true)
+                .setNegativeButtonText("Cancel")
+                .setConfirmationRequired(false)
                 .build();
         biometricPrompt.authenticate(promptInfo);
     }
