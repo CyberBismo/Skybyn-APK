@@ -7,6 +7,22 @@
     android:background="@color/black"
     tools:context=".Frontpage">
 
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/nav_imgProfilePicture"
+        android:layout_width="106dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        app:civ_border_color="@color/blue"
+        app:civ_border_width="5dp"
+        app:civ_shadow_color="@color/white"
+        app:civ_shadow_radius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="475dp"
@@ -19,4 +35,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
