@@ -399,6 +399,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             intent.putExtra("username", username);
             intent.putExtra("password", password);
             startActivity(intent);
+            finish();
     }
 
     public void saveUsernameAndPassword(String username, String password) {
