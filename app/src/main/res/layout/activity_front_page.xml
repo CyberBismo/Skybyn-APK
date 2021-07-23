@@ -7,20 +7,55 @@
     android:background="@color/black"
     tools:context=".Frontpage">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="217dp"
+        android:layout_height="65dp"
+        android:background="@color/blue"
+        android:fontFamily="@font/NexaBold"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/nav_imgProfilePicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <FrameLayout
+        android:id="@+id/contentsFrame"
+        android:layout_width="488dp"
+        android:layout_height="590dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            android:visibility="visible" />
+    </FrameLayout>
+
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/nav_imgProfilePicture"
-        android:layout_width="106dp"
-        android:layout_height="88dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="69dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="24dp"
         android:background="@color/black"
         app:civ_border_color="whi"
         app:civ_border_width="5dp"
         app:civ_shadow_color="@color/white"
         app:civ_shadow_radius="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/contentsFrame"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.039"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
