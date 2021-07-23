@@ -18,11 +18,11 @@ public class Frontpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        Button logout = findViewById(R.id.logout);
-        logout.setOnClickListener(v -> logOut());
+        //Button logout = findViewById(R.id.logout);
+        //logout.setOnClickListener(v -> logOut());
 
-        TextView myUsername = findViewById(R.id.userName);
-        ImageView myAvatar = findViewById(R.id.userAvatar);
+        //TextView myUsername = findViewById(R.id.userName);
+        //ImageView myAvatar = findViewById(R.id.userAvatar);
         // Set myUsername text to logged in username
         // Get and set user avatar to myAvatar
     }
