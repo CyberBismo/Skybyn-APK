@@ -27,4 +27,10 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="biometrics_required">We Social</string>
     <string name="touch_sensor">Sign in with biometrics</string>
+    <string name="Friends">Friends</string>
+    <string name="pages">Pages</string>
+    <string name="groups">Groups</string>
+    <string name="notifications">Notification</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
 </resources>
