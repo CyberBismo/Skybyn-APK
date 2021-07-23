@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".Frontpage">
-
+    
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -19,20 +19,20 @@
 
 
         <ImageView
-            android:id="@+id/userAvatar"
+            android:id="@+id/imageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/userName"
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            android:paddingVertical="8dp"
             android:layout_weight="1"
-            android:textSize="18sp"
+            android:lineHeight="40dp"
+            android:text="TextView"
             android:textColor="@color/white"/>
 
     </LinearLayout>
