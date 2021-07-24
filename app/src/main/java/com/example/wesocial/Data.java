@@ -6,8 +6,8 @@ public class Data {
     public String forgotpassword_url = "https://wesocial.space/mob_api?forgot=";
     //public String verifyAccount_url = "https://wesocial.space/mob_api?forgot=";
 
-    public String register_url (String email,String username,String password){
-        return "https://wesocial.space/mob_api?register&email=" + email + "&username=" + username + "&password=" + password;
+    public String register_url (){
+        return "https://wesocial.space/mob_api?register&email";
     }
 
     public String verifyAccountUrl(String mail){

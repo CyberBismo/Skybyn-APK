@@ -1,17 +1,12 @@
 package com.example.wesocial;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,15 +23,16 @@ import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.io.File;
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 
 
 public class LoginRegisterForgot extends AppCompatActivity {
-    Data data  = new Data();
+    Data data = new Data();
     Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
@@ -61,11 +57,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // PRDownloader.initialize(getApplicationContext());
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         //Init Executor and BioPrompt
@@ -75,8 +74,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 //BIOMETRCIC
-                   checkLoginStatus();
+                checkLoginStatus();
             }
+
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
@@ -89,7 +89,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 String errorMsg = getString(R.string.biometric_auth_failed);
-                Toast.makeText(LoginRegisterForgot.this,errorMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginRegisterForgot.this, errorMsg, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -126,7 +126,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         btnSignIn.setOnClickListener(v -> {
             if (TextUtils.isEmpty(txtUser.getText())) {
-               ErrorMessage = getString(R.string.username_required);
+                ErrorMessage = getString(R.string.username_required);
                 txtUser.setError(ErrorMessage);
                 Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
             } else if (TextUtils.isEmpty(txtPass.getText())) {
@@ -188,8 +188,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         BtnForgotPassword.setOnClickListener(v -> forgotPassword());
 
 
-        String version = data.version_url;
-        String url = data.apk_url;
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
         PackageInfo pkgInfo = null;
@@ -200,38 +198,22 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }
         assert pkgInfo != null;
         String current = pkgInfo.versionName;
-        StringRequest checkUpdate = new StringRequest(Request.Method.GET, version, response -> {
-            if (!response.equals(current)) {
-                Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
-                String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
-                String fileName = data.getApkName().toString();
-                destination += fileName;
-                final Uri uri = Uri.parse("file://" + destination);
-                File file = new File(fileName);
-                if (file.exists()) {
-                    deleteFile(destination);
-                }
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setDestinationUri(uri);
-                final DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                final long downloadId = manager.enqueue(request);
-                BroadcastReceiver onComplete = new BroadcastReceiver() {
-                    public void onReceive(Context ctxt, Intent intent) {
-                        Intent install = new Intent(Intent.ACTION_VIEW);
-                        install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        install.setDataAndType(uri,
-                                manager.getMimeTypeForDownloadedFile(downloadId));
-                        startActivity(install);
+        NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                if (!response.equals(current)) {
+                    ShowToast(getString(R.string.downloading_latest));
+                    //DOWNLOAD AND INSTALL
 
-                        unregisterReceiver(this);
-                        finish();
-                    }
-                };
-                registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                }
             }
-        }, error -> {
+
+            @Override
+            public void notifyError(VolleyError error) {
+                ShowToast(getString(R.string.network_something_wrong));
+            }
         });
-        queue.add(checkUpdate);
+        networkController.GetMethod(data.version_url);
     }
 
     public void signUp() {
@@ -242,14 +224,16 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void forgotPassword() {
-        if(forgot_email.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),getString(R.string.email_required),Toast.LENGTH_SHORT).show();
+        if (forgot_email.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), getString(R.string.email_required), Toast.LENGTH_SHORT).show();
             return;
         }
+
         String mail = forgot_email.getText().toString();
         String url = data.forgotpassword_url + mail;
         StringRequest forgot = new StringRequest(Request.Method.GET, url, response -> Toast.makeText(getApplicationContext(), "If the email you provided match with anyone registered, we have now sent a new password to your .", Toast.LENGTH_SHORT).show(), error -> {
         });
+
         queue.add(forgot);
         FrameLayout signin_form = findViewById(R.id.signin_form);
         FrameLayout forgot_form = findViewById(R.id.email_form);
@@ -262,16 +246,35 @@ public class LoginRegisterForgot extends AppCompatActivity {
         String password = txtPassword.getText().toString();
         regUsername = username;
         regPassword = password;
-        String mail = txtEmail.getText().toString();
-        String url = data.register_url(mail,regUsername,regPassword);
-        StringRequest register = new StringRequest(Request.Method.GET, url, response -> verifyAccount(), error -> Toast.makeText(getApplicationContext(), "Registration failed! Please try again", Toast.LENGTH_SHORT).show());
-        queue.add(register);
+        String email = txtEmail.getText().toString();
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("username", regUsername);
+        postData.put("password", password);
+        postData.put("email", email);
+
+        //SIMPLIFIED THE NETWORK CALL - POST PARAMETER
+        NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                verifyAccount();
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                ShowToast(getString(R.string.network_something_wrong));
+            }
+        });
+
+        networkController.PostMethod(data.register_url(),postData);
+
+
     }
 
     public void verifyAccount() {
         String mail = txtEmail.getText().toString();
         String url = data.verifyAccountUrl(mail);
-        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.GET, url, response -> {
+        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.POST, url, response -> {
             if (response.equals("true")) {
                 //Save username and Password to sharedPref after registration.
                 saveUsernameAndPassword(regUsername, regPassword);
@@ -297,7 +300,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         String url = "https://wesocial.space/mob_api?login=" + username + "&key=" + password;
 
-        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.GET, url, response -> {
+        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.POST, url, response -> {
             if (response.equals("Wrong username") || response.equals("Wrong password")) {
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show();
             } else {
@@ -311,7 +314,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }, error -> Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show());
         queue.add(check);
     }
-
 
 
     // Switch forms and buttons
@@ -387,19 +389,19 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void checkLoginStatus() {
-            /**
-             * User has been logged in before, then set Username and password to intent...
-             *
-             */
-            String username;
-            String password;
-            username = sharedpreferences.getString("username", "");
-            password = sharedpreferences.getString("password", "");
-            Intent intent = new Intent(this, Frontpage.class);
-            intent.putExtra("username", username);
-            intent.putExtra("password", password);
-            startActivity(intent);
-            finish();
+        /**
+         * User has been logged in before, then set Username and password to intent...
+         *
+         */
+        String username;
+        String password;
+        username = sharedpreferences.getString("username", "");
+        password = sharedpreferences.getString("password", "");
+        Intent intent = new Intent(this, Frontpage.class);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        startActivity(intent);
+        finish();
     }
 
     public void saveUsernameAndPassword(String username, String password) {
@@ -422,5 +424,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 .build();
         biometricPrompt.authenticate(promptInfo);
     }
+
+    //Show Toast Method
+    public void ShowToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
 
 }
