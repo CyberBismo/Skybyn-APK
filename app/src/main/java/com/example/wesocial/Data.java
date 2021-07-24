@@ -11,7 +11,7 @@ public class Data {
     }
 
     public String verifyAccountUrl(){
-        return "https://wesocial.space/mob_api?verify=";
+        return "https://wesocial.space/mob_api?verify";
     }
 
     public String getApkName(){

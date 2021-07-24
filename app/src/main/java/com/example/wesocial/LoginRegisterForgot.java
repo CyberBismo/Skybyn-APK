@@ -1,6 +1,7 @@
 package com.example.wesocial;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -120,12 +121,16 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
 
-        txtUser = findViewById(R.id.user);
-        txtPass = findViewById(R.id.pass);
-        Button btnSignIn = findViewById(R.id.sign_in);
+        txtUser = findViewById(R.id.txtUsername);
+        txtPass = findViewById(R.id.txtPassword);
+        Button btnSignIn = findViewById(R.id.BtnSignIn);
 
 
         btnSignIn.setOnClickListener(v -> {
+            //Remove this
+            Intent iintent = new Intent(this, Frontpage.class);
+            startActivity(iintent);
+            //
             if (TextUtils.isEmpty(txtUser.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUser.setError(ErrorMessage);
@@ -205,6 +210,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 if (!response.equals(current)) {
                     ShowToast(getString(R.string.downloading_latest));
                     //DOWNLOAD AND INSTALL
+                    DownloadManager downloadManager;
+
+
 
                 }
             }
@@ -308,6 +316,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void signIn() {
+
         String username = txtUser.getText().toString();
         String password = txtPass.getText().toString();
 

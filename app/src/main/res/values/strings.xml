@@ -34,4 +34,7 @@
     <string name="notifications">Notification</string>
     <string name="profile">Profile</string>
     <string name="settings">Settings</string>
+    <string name="nav_open">open</string>
+    <string name="nav_close">close</string>
+    <string name="Exit">Exit</string>
 </resources>
