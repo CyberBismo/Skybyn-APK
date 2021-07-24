@@ -10,8 +10,8 @@ public class Data {
         return "https://wesocial.space/mob_api?register&email";
     }
 
-    public String verifyAccountUrl(String mail){
-        return "https://wesocial.space/mob_api?verify="+mail;
+    public String verifyAccountUrl(){
+        return "https://wesocial.space/mob_api?verify=";
     }
 
     public String getApkName(){

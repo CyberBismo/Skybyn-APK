@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
+import java.util.Timer;
 import java.util.concurrent.Executor;
 
 
@@ -271,27 +272,39 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     }
 
-    public void verifyAccount() {
-        String mail = txtEmail.getText().toString();
-        String url = data.verifyAccountUrl(mail);
-        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.POST, url, response -> {
-            if (response.equals("true")) {
-                //Save username and Password to sharedPref after registration.
-                saveUsernameAndPassword(regUsername, regPassword);
+    public Runnable verifyAccount() {
+        String email = txtEmail.getText().toString();
 
-                txtVerify.setText(getString(R.string.verified));
-                Intent intent = new Intent(this, Frontpage.class);
-                startActivity(intent);
-            } else {
-                txtVerify.setText(getString(R.string.awaiting_verification));
-                Handler timeout = new Handler();
-                timeout.postDelayed(this::verifyAccount, 3000);
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                if (response.equals("true")) {
+                    //Save username and Password to sharedPref after registration.
+                    saveUsernameAndPassword(regUsername, regPassword);
+                    txtVerify.setText(getString(R.string.verified));
+                    Intent intent = new Intent(getApplicationContext(), Frontpage.class);
+                    startActivity(intent);
+                } else {
+                    Timer timer = new Timer();
+                    txtVerify.setText(getString(R.string.awaiting_verification));
+                    Handler timeout = new Handler();
+                    timeout.postDelayed(verifyAccount(), 3000);
+
+                }
             }
-        }, error -> {
-            cancelEmail();
-            Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+
+            @Override
+            public void notifyError(VolleyError error) {
+                cancelEmail();
+                Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+            }
         });
-        queue.add(check);
+                //Make sure post variable in PHP Script is email
+                HashMap<String,String> postData = new HashMap<>();
+                postData.put("email",email);
+                networkController.PostMethod(data.verifyAccountUrl(),postData);
+
+        return null;
     }
 
     public void signIn() {
