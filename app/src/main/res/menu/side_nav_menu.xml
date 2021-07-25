@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/Category">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/friends"
+                    android:icon="@drawable/friends"
+                    android:title="@string/Friends"/>
+
+                <item android:id="@+id/pages"
+                    android:title="@string/pages"
+                    android:icon="@drawable/pages"/>
+
+            </group>
+        </menu>
+
+    </item>
+
+
+
+
+    <item android:title="@string/CategoryTwo">
+        <menu>
+            <group android:checkableBehavior="single">
+            <item android:id="@+id/notifications"
+        android:title="@string/notifications"
+        android:icon="@drawable/notifications"/>
+
+    <item android:id="@+id/groups"
+        android:title="@string/groups"
+        android:icon="@drawable/groups"/>
+
+    <item android:id="@+id/settings"
+        android:title="@string/settings"
+        android:icon="@drawable/settings"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
