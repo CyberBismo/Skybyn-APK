@@ -1,4 +1,4 @@
-package com.example.wesocial;
+package social.app.wesocial;
 
 import android.content.Context;
 import android.util.Log;
@@ -52,7 +52,7 @@ public class NetworkController {
 
     public void GetMethod(String URL) {
 
-        StringRequest GetMethod = new StringRequest(Request.Method.GET, URL,
+        StringRequest Getrequest = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -65,8 +65,7 @@ public class NetworkController {
                 result.notifyError(error);
             }
         });
-
-        requestQueue.add(GetMethod);
+        requestQueue.add(Getrequest);
 
 
     }

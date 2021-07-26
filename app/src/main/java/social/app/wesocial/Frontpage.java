@@ -1,4 +1,4 @@
-package com.example.wesocial;
+package social.app.wesocial;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +26,11 @@ import com.android.volley.VolleyError;
 
 import org.jetbrains.annotations.Nullable;
 
-import static com.example.wesocial.R.*;
+import java.util.InputMismatchException;
+
+import kotlin.jvm.Throws;
+
+import static social.app.wesocial.R.*;
 
 
 public class Frontpage extends AppCompatActivity {
@@ -115,17 +119,22 @@ public class Frontpage extends AppCompatActivity {
             e.printStackTrace();
         }
         assert pkgInfo != null;
-        String current = pkgInfo.versionName;
+        //Using version code, Instead of Version name
+        Integer currentVersion = pkgInfo.versionCode;
+        Toast.makeText(getApplicationContext(), "CURRENT VERSIONCODE:"+currentVersion.toString(), Toast.LENGTH_LONG).show();
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
-                if (!response.equals(current)) {
-                    Toast.makeText(getApplicationContext(),getString(R.string.downloading_latest),Toast.LENGTH_SHORT).show();
+                try{
+                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                Integer serverVersion = Integer.valueOf(response);
+
+                if (serverVersion > currentVersion) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
                     //DOWNLOAD AND INSTALL
                     String downloadLink = data.apk_url;
                     String downloadPath = data.apk_download_path;
-                    DownloadManager dlManager = new DownloadManager(downloadLink,downloadPath, new OnDownloadProgressListener(){
+                    DownloadManager dlManager = new DownloadManager(downloadLink, downloadPath, new OnDownloadProgressListener() {
                         @Override
                         public void percent(int i) {
 
@@ -153,7 +162,10 @@ public class Frontpage extends AppCompatActivity {
                     }
                     );
                 }
+                }catch(Exception e){
 
+
+                }
             }
 
             @Override

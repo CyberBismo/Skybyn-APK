@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId 'com.wesocial.space'
+        applicationId 'social.app.wesocial'
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 1

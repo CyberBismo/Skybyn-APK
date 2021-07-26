@@ -1,4 +1,4 @@
-package com.example.wesocial;
+package social.app.wesocial;
 
 import org.junit.Test;
 

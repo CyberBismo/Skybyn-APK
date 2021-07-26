@@ -1,4 +1,4 @@
-package com.example.wesocial;
+package social.app.wesocial;
 
 public class Data {
     public String version_url = "https://wesocial.space/apk/version.php";

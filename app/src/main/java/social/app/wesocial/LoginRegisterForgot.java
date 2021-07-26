@@ -1,12 +1,9 @@
-package com.example.wesocial;
+package social.app.wesocial;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -23,14 +20,12 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.aghamiri.fastdl.DownloadManager;
-import com.aghamiri.fastdl.OnDownloadProgressListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.jetbrains.annotations.Nullable;
+import social.app.wesocial.R;
 
 import java.util.HashMap;
 import java.util.Timer;
