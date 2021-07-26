@@ -7,8 +7,8 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.wesocial"
-        minSdkVersion 16
+        applicationId 'com.wesocial.space'
+        minSdkVersion 18
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -45,5 +45,6 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
     implementation 'androidx.biometric:biometric:1.2.0-alpha03'
 
-    //implementation 'com.mindorks.android:prdownloader:0.6.0'
-}
+    implementation 'com.github.aghamiri98:FastDownloader:1.0.0'
+
+    }

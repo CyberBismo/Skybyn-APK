@@ -1,7 +1,7 @@
 package com.example.wesocial;
 
+
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,11 +22,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import com.aghamiri.fastdl.DownloadManager;
+import com.aghamiri.fastdl.OnDownloadProgressListener;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -35,6 +39,7 @@ import java.util.concurrent.Executor;
 
 public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
+    private DownloadManager dlManager;
     Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
@@ -114,23 +119,18 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_si.setOnClickListener(v -> toggleForgot());
         forgot_su.setOnClickListener(v -> toggleForgot());
 
-        findViewById(R.id.forgot);
         Button BtnForgotPassword;
+        findViewById(R.id.forgot);
 
         txtVerify = findViewById(R.id.verify_email_check);
-
         queue = Volley.newRequestQueue(this);
 
         txtUser = findViewById(R.id.txtUsername);
         txtPass = findViewById(R.id.txtPassword);
+
         Button btnSignIn = findViewById(R.id.BtnSignIn);
 
-
         btnSignIn.setOnClickListener(v -> {
-            //Remove this
-            Intent iintent = new Intent(this, Frontpage.class);
-            startActivity(iintent);
-            //
             if (TextUtils.isEmpty(txtUser.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUser.setError(ErrorMessage);
@@ -147,9 +147,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtUsername = findViewById(R.id.Username);
         txtPassword = findViewById(R.id.Password);
         txtConfirmPassword = findViewById(R.id.cPassword);
+
         Button btnSign_up = findViewById(R.id.sign_up);
         btnSign_up.setOnClickListener(v -> {
-
             if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUsername.setError(ErrorMessage);
@@ -165,6 +165,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             } else {
                 String password = txtPassword.getText().toString();
                 String cpassword = txtConfirmPassword.getText().toString();
+
                 if (password.equals(cpassword)) {
                     signUp();
                 } else {
@@ -175,6 +176,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 }
             }
         });
+
         txtEmail = findViewById(R.id.Email);
         BtnVerify_email = findViewById(R.id.verify_email);
         BtnVerify_email.setOnClickListener(v -> {
@@ -194,35 +196,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         BtnForgotPassword.setOnClickListener(v -> forgotPassword());
 
 
-        PackageManager pm = getApplicationContext().getPackageManager();
-        String pkgName = getApplicationContext().getPackageName();
-        PackageInfo pkgInfo = null;
-        try {
-            pkgInfo = pm.getPackageInfo(pkgName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert pkgInfo != null;
-        String current = pkgInfo.versionName;
-        NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
-            @Override
-            public void notifySuccess(String response) {
-                if (!response.equals(current)) {
-                    ShowToast(getString(R.string.downloading_latest));
-                    //DOWNLOAD AND INSTALL
-                    DownloadManager downloadManager;
-
-
-
-                }
-            }
-
-            @Override
-            public void notifyError(VolleyError error) {
-                ShowToast(getString(R.string.network_something_wrong));
-            }
-        });
-        networkController.GetMethod(data.version_url);
     }
 
     public void signUp() {
@@ -240,7 +213,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         String mail = forgot_email.getText().toString();
         String url = data.forgotpassword_url + mail;
-        StringRequest forgot = new StringRequest(Request.Method.GET, url, response -> Toast.makeText(getApplicationContext(), "If the email you provided match with anyone registered, we have now sent a new password to your .", Toast.LENGTH_SHORT).show(), error -> {
+        StringRequest forgot = new StringRequest(Request.Method.GET, url, response -> Toast.makeText(getApplicationContext(), getString(R.string.sent_password_msg), Toast.LENGTH_SHORT).show(), error -> {
         });
 
         queue.add(forgot);
@@ -320,21 +293,36 @@ public class LoginRegisterForgot extends AppCompatActivity {
         String username = txtUser.getText().toString();
         String password = txtPass.getText().toString();
 
+        HashMap<String,String> postData = new HashMap<>();
+        postData.put("username",username);
+        postData.put("password",password);
+
         String url = "https://wesocial.space/mob_api?login=" + username + "&key=" + password;
 
-        @SuppressLint("SetTextI18n") StringRequest check = new StringRequest(Request.Method.POST, url, response -> {
-            if (response.equals("Wrong username") || response.equals("Wrong password")) {
-                Toast.makeText(getApplicationContext(), getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show();
-            } else {
-                //Save Username and password
-                saveUsernameAndPassword(username, password);
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                if (response.equals("Wrong username") || response.equals("Wrong password")) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show();
+                } else {
+                    //Save Username and password
+                    saveUsernameAndPassword(username, password);
+                    Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), Frontpage.class);
+                    startActivity(intent);
+                }
 
-                Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, Frontpage.class);
-                startActivity(intent);
             }
-        }, error -> Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show());
-        queue.add(check);
+
+            @Override
+            public void notifyError(VolleyError error) {
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        networkController.PostMethod(url,postData);
+
+
     }
 
 

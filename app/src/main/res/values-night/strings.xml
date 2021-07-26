@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_password_msg">If the email you provided is in our database, we will send a new password to your email.</string>
+</resources>

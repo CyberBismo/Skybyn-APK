@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class NetworkController {
     Context context;
     RequestQueue requestQueue;
-
     IResult result;
 
 
@@ -27,7 +26,7 @@ public class NetworkController {
 
     public void PostMethod(String URL, HashMap<String, String> params) {
 
-        StringRequest objectRequest = new StringRequest(Request.Method.POST, URL,
+        StringRequest PostRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -42,20 +41,18 @@ public class NetworkController {
         }) {
             @Override
             protected HashMap<String, String> getParams() {
-
-
                 return params;
             }
 
         };
 
-        requestQueue.add(objectRequest);
+        requestQueue.add(PostRequest);
 
     }
 
     public void GetMethod(String URL) {
 
-        StringRequest objectRequest = new StringRequest(Request.Method.GET, URL,
+        StringRequest GetMethod = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -69,7 +66,7 @@ public class NetworkController {
             }
         });
 
-        requestQueue.add(objectRequest);
+        requestQueue.add(GetMethod);
 
 
     }
