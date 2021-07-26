@@ -10,6 +10,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+
 import java.util.HashMap;
 
 public class NetworkController {
@@ -30,7 +32,11 @@ public class NetworkController {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        result.notifySuccess(response);
+                        try {
+                            result.notifySuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -56,7 +62,11 @@ public class NetworkController {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        result.notifySuccess(response);
+                        try {
+                            result.notifySuccess(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -72,7 +82,7 @@ public class NetworkController {
 
 
     public interface IResult {
-        void notifySuccess(String response);
+        void notifySuccess(String response) throws JSONException;
 
         void notifyError(VolleyError error);
     }

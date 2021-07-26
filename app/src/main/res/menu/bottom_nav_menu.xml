@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/friends"
-    android:title="@string/Friends"
-    android:icon="@drawable/friends"/>
+    <item android:id="@+id/timeline"
+    android:title="@string/Timeline"
+    android:icon="@drawable/timeline"/>
 
-    <item android:id="@+id/pages"
-        android:title="@string/pages"
-        android:icon="@drawable/pages"/>
+    <item android:id="@+id/post"
+        android:title="@string/post"
+        android:icon="@drawable/post"/>
 
-    <item android:id="@+id/notifications"
-        android:title="@string/notifications"
-        android:icon="@drawable/notifications"/>
 
-    <item android:id="@+id/groups"
-        android:title="@string/groups"
-        android:icon="@drawable/groups"/>
-
-    <item android:id="@+id/settings"
-        android:title="@string/settings"
-        android:icon="@drawable/settings"/>
+    <item android:id="@+id/messages"
+        android:title="@string/messages"
+        android:icon="@drawable/message"/>
 </menu>

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import social.app.wesocial.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -34,6 +37,7 @@ import java.util.concurrent.Executor;
 
 public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
+
     private DownloadManager dlManager;
     Executor executor;
     BiometricPrompt biometricPrompt;
@@ -58,12 +62,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
     public EditText forgot_email;
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
+    public Functions functions = new Functions();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Functions functions = new Functions();
 
 
         // PRDownloader.initialize(getApplicationContext());
@@ -83,7 +89,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 errString = getString(R.string.biometric_auth_error);
-                Toast.makeText(LoginRegisterForgot.this, errString, Toast.LENGTH_LONG).show();
+                ShowToast(errString.toString());
                 //LoginRegisterForgot.this.finish();
             }
 
@@ -91,7 +97,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 String errorMsg = getString(R.string.biometric_auth_failed);
-                Toast.makeText(LoginRegisterForgot.this, errorMsg, Toast.LENGTH_LONG).show();
+                ShowToast(errorMsg.toString());
             }
         });
 
@@ -129,11 +135,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
             if (TextUtils.isEmpty(txtUser.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUser.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtPass.getText())) {
                 ErrorMessage = getString(R.string.password_required);
                 txtPass.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
             } else {
                 signIn();
             }
@@ -148,15 +154,15 @@ public class LoginRegisterForgot extends AppCompatActivity {
             if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUsername.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtPassword.getText())) {
                 ErrorMessage = getString(R.string.password_required);
                 txtPassword.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtConfirmPassword.getText())) {
                 ErrorMessage = getString(R.string.confirmation_password_required);
-                txtConfirmPassword.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
+
             } else {
                 String password = txtPassword.getText().toString();
                 String cpassword = txtConfirmPassword.getText().toString();
@@ -167,7 +173,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     ErrorMessage = getString(R.string.password_unmatch);
                     txtPassword.setError(ErrorMessage);
                     txtConfirmPassword.setError(ErrorMessage);
-                    Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                    ShowToast(ErrorMessage);
                 }
             }
         });
@@ -175,10 +181,15 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtEmail = findViewById(R.id.Email);
         BtnVerify_email = findViewById(R.id.verify_email);
         BtnVerify_email.setOnClickListener(v -> {
+
+            if (!functions.validateEmail(txtEmail.getText().toString())) {
+                ShowToast(getString(R.string.invalid_email));
+            }
+
             if (TextUtils.isEmpty(txtEmail.getText())) {
                 ErrorMessage = getString(R.string.email_required);
                 txtEmail.setError(ErrorMessage);
-                Toast.makeText(getApplicationContext(), ErrorMessage, Toast.LENGTH_SHORT).show();
+                ShowToast(ErrorMessage);
             } else {
                 BtnVerify_email.setVisibility(View.INVISIBLE);
                 securityStep();
@@ -202,7 +213,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public void forgotPassword() {
         if (forgot_email.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), getString(R.string.email_required), Toast.LENGTH_SHORT).show();
+            ShowToast(getString(R.string.email_required));
             return;
         }
 
@@ -242,69 +253,96 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
-
-        networkController.PostMethod(data.register_url(),postData);
-
-
+        networkController.PostMethod(data.register_url(), postData);
     }
 
     public Runnable verifyAccount() {
         String email = txtEmail.getText().toString();
-
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                if (response.equals("true")) {
-                    //Save username and Password to sharedPref after registration.
-                    saveUsernameAndPassword(regUsername, regPassword);
-                    txtVerify.setText(getString(R.string.verified));
-                    Intent intent = new Intent(getApplicationContext(), Frontpage.class);
-                    startActivity(intent);
-                } else {
-                    Timer timer = new Timer();
-                    txtVerify.setText(getString(R.string.awaiting_verification));
-                    Handler timeout = new Handler();
-                    timeout.postDelayed(verifyAccount(), 3000);
-
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    String response_code = jsonResponse.get("responseCode").toString();
+                } catch (JSONException e) {
                 }
-            }
 
-            @Override
-            public void notifyError(VolleyError error) {
-                cancelEmail();
-                Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+
+                    if (functions.isJsonObject(response)) {
+                        if (response.equals("true")) {
+                            //Save username and Password to sharedPref after registration.
+                            txtVerify.setText(getString(R.string.verified));
+                            ShowToast(getString(R.string.please_login));
+                            Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
+                            startActivity(intent);
+                        }
+                    }else{
+                Timer timer = new Timer();
+                txtVerify.setText(getString(R.string.awaiting_verification));
+                Handler timeout = new Handler();
+                timeout.postDelayed(verifyAccount(), 3000);
             }
-        });
-                //Make sure post variable in PHP Script is email
-                HashMap<String,String> postData = new HashMap<>();
-                postData.put("email",email);
-                networkController.PostMethod(data.verifyAccountUrl(),postData);
+        }
+
+        @Override
+        public void notifyError (VolleyError error){
+            cancelEmail();
+            Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+        }
+    });
+    //Make sure post variable in PHP Script is email
+    HashMap<String, String> postData = new HashMap<>();
+        postData.put("email",email);
+        networkController.PostMethod(data.verifyAccountUrl(),postData);
 
         return null;
-    }
+}
 
     public void signIn() {
-
         String username = txtUser.getText().toString();
         String password = txtPass.getText().toString();
 
-        HashMap<String,String> postData = new HashMap<>();
-        postData.put("username",username);
-        postData.put("password",password);
-
-        String url = "https://wesocial.space/mob_api?login=" + username + "&key=" + password;
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("username", username);
+        postData.put("password", password);
+        String url = data.login_url;
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                if (response.equals("Wrong username") || response.equals("Wrong password")) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.wrong_credentials), Toast.LENGTH_SHORT).show();
-                } else {
-                    //Save Username and password
-                    saveUsernameAndPassword(username, password);
-                    Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), Frontpage.class);
-                    startActivity(intent);
+                ShowToast(response);
+
+                if (!functions.isJsonObject(response)) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                if (functions.isJsonObject(response)) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String response_code = jsonResponse.get("responseCode").toString();
+
+                        if (response_code.equals("1")) {
+                            //Get the UserID from the response...
+                            String userID = jsonResponse.getString("userID");
+                            //Save Username and password
+                            saveUsernameAndPassword(username, password, userID);
+                            Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), Frontpage.class);
+                            startActivity(intent);
+                        }
+
+                        if (response_code.equals("0")) {
+                            String errorMsg = jsonResponse.get("message").toString();
+                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            ;
+                        }
+
+                    } catch (JSONException e) {
+                    }
+
+
                 }
 
             }
@@ -314,10 +352,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
-        networkController.PostMethod(url,postData);
-
-
+        networkController.PostMethod(url, postData);
     }
 
 
@@ -409,13 +444,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
         finish();
     }
 
-    public void saveUsernameAndPassword(String username, String password) {
+    public void saveUsernameAndPassword(String userID, String username, String password) {
         /**
          * Save username and password to sharedPREF
          */
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.putString("username", username);
         sharedPrefEditor.putString("password", password);
+        sharedPrefEditor.putString("userid", userID);
         sharedPrefEditor.apply();
 
     }

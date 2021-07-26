@@ -37,6 +37,7 @@ public class Frontpage extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     DrawerLayout drawerLayout;
     Data data = new Data();
+    Functions functions = new Functions();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -61,10 +62,6 @@ public class Frontpage extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
-                break;
-
-            case id.Logout:
-                logOut();
                 break;
 
 

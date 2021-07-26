@@ -6,6 +6,7 @@ public class Data {
     public String apk_url = "https://wesocial.space/apk/".concat(apk_name);
     public String apk_download_path = "/sdcard/";
     public String forgotpassword_url = "https://wesocial.space/mob_api";
+    public String login_url = "https://wesocial.space/mob_api";
     public String sign_ur = "https://wesocial.space/mob_api";
     //public String verifyAccount_url = "https://wesocial.space/mob_api?forgot=";
 

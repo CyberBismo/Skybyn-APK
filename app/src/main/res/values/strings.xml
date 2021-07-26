@@ -23,7 +23,7 @@
     <string name="verified">Account Verified!</string>
     <string name="awaiting_verification">Awaiting verification!</string>
     <string name="something_wrong">Something went wrong!</string>
-    <string name="network_something_wrong">Network,Something went wrong!</string>
+    <string name="network_something_wrong">Network error, Something went wrong!</string>
     <string name="wrong_credentials">Wrong credentials!</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="biometrics_required">We Social</string>
@@ -36,11 +36,17 @@
     <string name="settings">Settings</string>
     <string name="nav_open">open</string>
     <string name="nav_close">close</string>
-    <string name="Exit">Exit</string>
+    <string name="Exit">Close Application</string>
     <string name="Logout">Logout</string>
     <string name="Category">Category One</string>
     <string name="CategoryTwo">Category Two</string>
     <string name="app_updated">App has been downloaded in the background. Installation will commence now.</string>
     <string name="app_updating">An update is being downloaded in the background.</string>
     <string name="sent_password_msg">If the email you provided is in our database, we will send a new password to your email.</string>
+    <string name="Timeline">Timeline</string>
+    <string name="post">Post</string>
+    <string name="messages">Messages</string>
+    <string name="invalid_email">Email is not a valid email address</string>
+    <string name="invalid_login_details">Username or password is invalid.</string>
+    <string name="please_login">All set, Please login!</string>
 </resources>
