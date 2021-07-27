@@ -9,7 +9,11 @@ public class Data {
 
     public String apk_download_path = Environment.getDownloadCacheDirectory().getPath();
 
-    public String server_Api = "https://wesocial.space/api";
+    public String login_Api = "https://wesocial.space/api/login.php";
+    public String register_Api = "https://wesocial.space/api/register.php";
+    public String verifyEmail_Api = "https://wesocial.space/api/verify.php";
+    public String comments_Api = "https://wesocial.space/api/comments.php";
+    public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
 
 
     public String getApkName(){

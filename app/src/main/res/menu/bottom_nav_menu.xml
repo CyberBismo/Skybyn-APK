@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/timeline"
     android:title="@string/Timeline"
-    android:icon="@drawable/timeline"/>
-
-    <item android:id="@+id/post"
-        android:title="@string/post"
-        android:icon="@drawable/post"/>
-
+    android:icon="@drawable/timeline" />
 
     <item android:id="@+id/messages"
         android:title="@string/messages"
-        android:icon="@drawable/message"/>
+        android:icon="@drawable/message"
+        />
+
+
 </menu>

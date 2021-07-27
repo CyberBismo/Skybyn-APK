@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.Executor;
 
@@ -241,7 +242,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
-        networkController.PostMethod(data.server_Api, postData);
+        networkController.PostMethod(data.forgotPassword_Api, postData);
 
         FrameLayout signin_form = findViewById(R.id.signin_form);
         FrameLayout forgot_form = findViewById(R.id.email_form);
@@ -273,7 +274,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
-        networkController.PostMethod(data.server_Api, postData);
+        networkController.PostMethod(data.register_Api, postData);
     }
 
     public Runnable verifyAccount() {
@@ -312,7 +313,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     //Make sure post variable in PHP Script is email
     HashMap<String, String> postData = new HashMap<>();
         postData.put("email",email);
-        networkController.PostMethod(data.server_Api,postData);
+        networkController.PostMethod(data.verifyEmail_Api,postData);
 
         return null;
 }
@@ -321,16 +322,15 @@ public class LoginRegisterForgot extends AppCompatActivity {
         String username = txtUser.getText().toString();
         String password = txtPass.getText().toString();
 
-        HashMap<String, String> postData = new HashMap<>();
+        HashMap<String, String> postData =  new HashMap<String, String>();
+
         postData.put("username", username);
         postData.put("password", password);
-        postData.put("login", "login");
-        String url = data.server_Api;
+        postData.put("login", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                ShowToast(response);
                 if (!functions.isJsonObject(response)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                     return;
@@ -369,7 +369,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.server_Api, postData);
+        networkController.PostMethod(data.login_Api,postData);
     }
 
 
