@@ -40,11 +40,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:background="@color/blue"
+                    android:background="@android:color/transparent"
                     app:backgroundTint="@color/blue"
                     app:fabCradleMargin="10dp"
                     app:fabCradleRoundedCornerRadius="10dp"
-                    app:fabCradleVerticalOffset="10dp">
+                    app:fabCradleVerticalOffset="10dp"
+                    app:layout_anchor="@+id/bottomAppBar"
+                    app:layout_anchorGravity="bottom|center">
 
                     <com.google.android.material.bottomnavigation.BottomNavigationView
                         android:id="@+id/bottomNavigationView"
@@ -52,8 +54,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="16dp"
-                        android:background="@android:color/transparent"
+                        android:background="@color/blue"
                         android:visibility="visible"
+                        app:backgroundTint="@color/blue"
                         app:itemIconTint="@color/white"
                         app:itemTextColor="@color/white"
                         app:menu="@menu/bottom_nav_menu" />
@@ -62,7 +65,7 @@
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/blue"
                     android:contentDescription="@string/app_name"
