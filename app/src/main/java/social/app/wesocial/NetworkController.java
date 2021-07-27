@@ -58,7 +58,7 @@ public class NetworkController {
 
     public void GetMethod(String URL) {
 
-        StringRequest Getrequest = new StringRequest(Request.Method.GET, URL,
+        StringRequest GetRequest = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -75,7 +75,7 @@ public class NetworkController {
                 result.notifyError(error);
             }
         });
-        requestQueue.add(Getrequest);
+        requestQueue.add(GetRequest);
 
 
     }

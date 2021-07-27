@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -118,46 +119,21 @@ public class Frontpage extends AppCompatActivity {
         assert pkgInfo != null;
         //Using version code, Instead of Version name
         Integer currentVersion = pkgInfo.versionCode;
-        Toast.makeText(getApplicationContext(), "CURRENT VERSIONCODE:"+currentVersion.toString(), Toast.LENGTH_LONG).show();
+
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
                 try{
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                 Integer serverVersion = Integer.valueOf(response);
 
                 if (serverVersion > currentVersion) {
+
                     Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
                     //DOWNLOAD AND INSTALL
                     String downloadLink = data.apk_url;
                     String downloadPath = data.apk_download_path;
-                    DownloadManager dlManager = new DownloadManager(downloadLink, downloadPath, new OnDownloadProgressListener() {
-                        @Override
-                        public void percent(int i) {
 
-                        }
 
-                        @Override
-                        public void downloadStart() {
-                            Toast.makeText(getApplicationContext(), getString(R.string.app_updating), Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void downloadFail(@Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void downloadCancel() {
-
-                        }
-
-                        @Override
-                        public void downloadedSuccess() {
-                            Toast.makeText(getApplicationContext(), getString(R.string.app_updated), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    );
                 }
                 }catch(Exception e){
 

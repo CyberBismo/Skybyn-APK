@@ -217,12 +217,33 @@ public class LoginRegisterForgot extends AppCompatActivity {
             return;
         }
 
+        HashMap<String,String> postData= new HashMap<>();
         String mail = forgot_email.getText().toString();
-        String url = data.forgotpassword_url + mail;
-        StringRequest forgot = new StringRequest(Request.Method.GET, url, response -> Toast.makeText(getApplicationContext(), getString(R.string.sent_password_msg), Toast.LENGTH_SHORT).show(), error -> {
-        });
+        postData.put("email",mail);
+        NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.has("responseCode")){
+                        String response_code = jsonObject.get("responseCode").toString();
+                        ShowToast(jsonObject.get("message").toString());
+                    }
 
-        queue.add(forgot);
+                }catch(JSONException e){
+
+                }
+
+
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                ShowToast(getString(R.string.network_something_wrong));
+            }
+        });
+        networkController.PostMethod(data.server_Api, postData);
+
         FrameLayout signin_form = findViewById(R.id.signin_form);
         FrameLayout forgot_form = findViewById(R.id.email_form);
         signin_form.setVisibility(View.VISIBLE);
@@ -253,7 +274,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
-        networkController.PostMethod(data.register_url(), postData);
+        networkController.PostMethod(data.server_Api, postData);
     }
 
     public Runnable verifyAccount() {
@@ -266,7 +287,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     String response_code = jsonResponse.get("responseCode").toString();
                 } catch (JSONException e) {
                 }
-
 
                     if (functions.isJsonObject(response)) {
                         if (response.equals("true")) {
@@ -293,7 +313,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     //Make sure post variable in PHP Script is email
     HashMap<String, String> postData = new HashMap<>();
         postData.put("email",email);
-        networkController.PostMethod(data.verifyAccountUrl(),postData);
+        networkController.PostMethod(data.server_Api,postData);
 
         return null;
 }
@@ -305,18 +325,17 @@ public class LoginRegisterForgot extends AppCompatActivity {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("username", username);
         postData.put("password", password);
-        String url = data.login_url;
+        postData.put("login", "login");
+        String url = data.server_Api;
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
                 ShowToast(response);
-
                 if (!functions.isJsonObject(response)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
 
                 if (functions.isJsonObject(response)) {
                     try {
@@ -330,8 +349,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             saveUsernameAndPassword(username, password, userID);
                             Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), Frontpage.class);
-                            startActivity(intent);
-                        }
+                            startActivity(intent); }
 
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
@@ -352,7 +370,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(url, postData);
+        networkController.PostMethod(data.server_Api, postData);
     }
 
 
