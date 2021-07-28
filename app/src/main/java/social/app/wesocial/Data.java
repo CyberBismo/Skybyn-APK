@@ -10,13 +10,18 @@ public class Data {
     public String apk_download_path = Environment.getDownloadCacheDirectory().getPath();
 
     public String login_Api = "https://wesocial.space/api/login.php";
-    public String register_Api = "https://wesocial.space/api/register.php";
+    public String registration_Api = "https://wesocial.space/api/register.php";
     public String verifyEmail_Api = "https://wesocial.space/api/verify.php";
+    public String profile_Api = "https://wesocial.space/api/profile.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
 
+
+    public String profilePictureThumb(String userID,String thumb_name){
+        return  "https://wesocial.space/sources/users/avatars/"+userID+"/"+thumb_name;
+    }
 
     public String getApkName(){
         return "WeSocial.apk";

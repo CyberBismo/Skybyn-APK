@@ -258,11 +258,9 @@
                 android:layout_height="30dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="80dp"
-                android:drawableStart="@drawable/email"
-                android:drawablePadding="@dimen/drawable_padding"
                 android:lineHeight="24dp"
                 android:textColor="@color/blue"
-                android:textSize="24dp" />
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/verify_email"

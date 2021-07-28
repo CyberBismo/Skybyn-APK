@@ -56,13 +56,6 @@ public class NetworkController {
                 return params;
             }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                //headers.put("Content-Type", "application/x-www-form-urlencoded");
-                //headers.put("abc", "value");
-                return headers;
-            }
         };
         requestQueue.add(postRequest);
     }

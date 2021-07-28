@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -196,7 +194,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(ErrorMessage);
             } else {
                 BtnVerify_email.setVisibility(View.INVISIBLE);
-                securityStep();
+                performRegistration();
             }
         });
         Button BtnCancel_email = findViewById(R.id.cancel_email);
@@ -213,6 +211,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
         FrameLayout email_form = findViewById(R.id.email_form);
         signup_form.setVisibility(View.INVISIBLE);
         email_form.setVisibility(View.VISIBLE);
+        TextView txtverifyemail  = findViewById(R.id.verify_email_check);
+        txtverifyemail.setText(txtEmail.getText().toString());
     }
 
     public void forgotPassword() {
@@ -274,7 +274,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_form.setVisibility(View.INVISIBLE);
     }
 
-    public void securityStep() {
+    public void performRegistration() {
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
         regUsername = username;
@@ -282,38 +282,34 @@ public class LoginRegisterForgot extends AppCompatActivity {
         String email = txtEmail.getText().toString();
 
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("username", regUsername);
+        postData.put("username", username);
         postData.put("password", password);
         postData.put("email", email);
+        postData.put("registerData", "data");
 
         //SIMPLIFIED THE NETWORK CALL - POST PARAMETER
         NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                 functions.hideProgress(lottieview);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.has("responseCode")){
                         String responseCode = jsonObject.get("responseCode").toString();
-                        switch (responseCode){
-                            case "1":
-                                ShowToast(jsonObject.get("message").toString());
-                                verifyAccount();
-                                break;
+                        if (responseCode.equals("1")) {
+                            ShowToast(jsonObject.get("message").toString());
+                            verifyAccount();
+                        }else if(responseCode.equals("0")){
+                            ShowToast(jsonObject.get("message").toString());
 
-                            case "0":
-                                ShowToast(jsonObject.get("message").toString());
-                                break;
                         }
                     }
 
                     if (!jsonObject.has("responseCode")){
                         ShowToast(getString(R.string.something_wrong));
                         return;
-
-
                     }
-
                 }catch(JSONException e){
 
                 }
@@ -327,7 +323,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
         functions.showProgress(lottieview);
-        networkController.PostMethod(data.register_Api, postData);
+           networkController.PostMethod(data.registration_Api, postData);
     }
 
     public Runnable verifyAccount() {
@@ -337,13 +333,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
             @Override
             public void notifySuccess(String response) {
                 functions.hideProgress(lottieview);
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    String response_code = jsonResponse.get("responseCode").toString();
-                } catch (JSONException e) {
-                }
-
-                    if (functions.isJsonObject(response)) {
                         if (response.equals("true")) {
                             //Save username and Password to sharedPref after registration.
                             txtVerify.setText(getString(R.string.verified));
@@ -351,14 +340,12 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             functions.hideProgress(lottieview);
                             Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
                             startActivity(intent);
-                        }
-                    }else{
+             }else if (response.equals("false")){
                 Timer timer = new Timer();
                 txtVerify.setText(getString(R.string.awaiting_verification));
                 Handler timeout = new Handler();
                 timeout.postDelayed(verifyAccount(), 3000);
-            }
-        }
+            }}
 
         @Override
         public void notifyError (VolleyError error){
@@ -418,7 +405,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             functions.hideProgress(lottieview);
                             String errorMsg = jsonResponse.get("message").toString();
                             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            ;
                         }
 
                     } catch (JSONException e) {

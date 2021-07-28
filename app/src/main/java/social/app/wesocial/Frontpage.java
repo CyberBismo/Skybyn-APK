@@ -25,7 +25,9 @@ import com.aghamiri.fastdl.DownloadManager;
 import com.aghamiri.fastdl.OnDownloadProgressListener;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.google.android.material.navigation.NavigationView;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ import kotlin.jvm.Throws;
 import static social.app.wesocial.R.*;
 
 
-public class Frontpage extends AppCompatActivity {
+public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     SharedPreferences sharedpreferences;
     DrawerLayout drawerLayout;
     Data data = new Data();
@@ -54,13 +56,20 @@ public class Frontpage extends AppCompatActivity {
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
 
+
         configureToolbarAndDrawer();
         checkAppUpdate();
+
         Intent intent = getIntent();
-
         loginAction = intent.getStringExtra("loginAction");
-
         lottieview =findViewById(id.frontpageProgressView);
+
+        NavigationView navView = findViewById(id.sideNavView);
+        navView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+
+
+
+
 
         if (loginAction.equals(data.fingerprint_auth)) {
             //perform login
@@ -68,7 +77,57 @@ public class Frontpage extends AppCompatActivity {
         } else {
             //get UserID and load profile and content
             userID = sharedpreferences.getString("userID","");
+
+
+
+            HashMap<String,String> postData= new HashMap<>();
+            postData.put("userID",userID);
+            postData.put("profileData","");
+            NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
+                @Override
+                public void notifySuccess(String response) {
+                    functions.hideProgress(lottieview);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.has("responseCode")){
+                            String responseCode = jsonObject.get("responseCode").toString();
+                            switch (responseCode){
+                                case "1":
+
+                                    break;
+
+                                case "0":
+                                    Toast.makeText(getApplicationContext(),jsonObject.get("message").toString(),Toast.LENGTH_LONG).show();
+                                    break;
+                            }
+
+                        }
+
+                        if (!jsonObject.has("responseCode")){
+                            Toast.makeText(getApplicationContext(),getString(R.string.something_wrong),Toast.LENGTH_LONG).show();
+                            return;
+
+                        }
+
+                    }catch(JSONException e){
+
+                    }
+
+
+                }
+
+                @Override
+                public void notifyError(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),getString(string.network_something_wrong),Toast.LENGTH_LONG).show();
+                }
+            });
+
+            functions.showProgress(lottieview);
+            networkController.PostMethod(data.profile_Api, postData);
+
         }
+
+
 
 
     }
@@ -81,12 +140,14 @@ public class Frontpage extends AppCompatActivity {
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
+
 
 
             default:
@@ -151,7 +212,6 @@ public class Frontpage extends AppCompatActivity {
                     Integer serverVersion = Integer.valueOf(response);
 
                     if (serverVersion > currentVersion) {
-
                         Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
                         //DOWNLOAD AND INSTALL
                         String downloadLink = data.apk_url;
@@ -204,13 +264,13 @@ public class Frontpage extends AppCompatActivity {
                         if (response_code.equals("1")) {
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
-
+                            Toast.makeText(getApplicationContext(),getString(R.string.loginSuccessful),Toast.LENGTH_LONG).show();
                         }
 
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
                             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                            return;
+                            logOut();
                         }
 
                     } catch (JSONException e) {
@@ -231,4 +291,20 @@ public class Frontpage extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.logout:
+                logOut();
+                break;
+            case R.id.closeapp:
+                finishAffinity();
+                break;
+
+
+
+        }
+        return false;
+    }
 }
