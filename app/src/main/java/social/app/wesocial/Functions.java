@@ -26,7 +26,7 @@ public class Functions {
       public void  showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
-        lottieview.setAnimation(R.raw.wesocialprogress);
+        lottieview.setAnimation(R.raw.wesocialloading2);
         lottieview.setAlpha(0.8f);
         lottieview.loop(true);
         lottieview.playAnimation();
