@@ -23,10 +23,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.aghamiri.fastdl.DownloadManager;
 import com.aghamiri.fastdl.OnDownloadProgressListener;
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.InputMismatchException;
 
 import kotlin.jvm.Throws;
@@ -39,6 +43,9 @@ public class Frontpage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Data data = new Data();
     Functions functions = new Functions();
+    String loginAction;
+    String userID;
+    LottieAnimationView lottieview;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -49,6 +56,21 @@ public class Frontpage extends AppCompatActivity {
 
         configureToolbarAndDrawer();
         checkAppUpdate();
+        Intent intent = getIntent();
+
+        loginAction = intent.getStringExtra("loginAction");
+
+        lottieview =findViewById(id.frontpageProgressView);
+
+        if (loginAction.equals(data.fingerprint_auth)) {
+            //perform login
+            performLoginAuth();
+        } else {
+            //get UserID and load profile and content
+            userID = sharedpreferences.getString("userID","");
+        }
+
+
     }
 
     @Override
@@ -71,6 +93,7 @@ public class Frontpage extends AppCompatActivity {
                 break;
 
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -108,7 +131,7 @@ public class Frontpage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void checkAppUpdate(){
+    private void checkAppUpdate() {
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();
         PackageInfo pkgInfo = null;
@@ -124,19 +147,19 @@ public class Frontpage extends AppCompatActivity {
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                try{
-                Integer serverVersion = Integer.valueOf(response);
+                try {
+                    Integer serverVersion = Integer.valueOf(response);
 
-                if (serverVersion > currentVersion) {
+                    if (serverVersion > currentVersion) {
 
-                    Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
-                    //DOWNLOAD AND INSTALL
-                    String downloadLink = data.apk_url;
-                    String downloadPath = data.apk_download_path;
+                        Toast.makeText(getApplicationContext(), getString(R.string.downloading_latest), Toast.LENGTH_SHORT).show();
+                        //DOWNLOAD AND INSTALL
+                        String downloadLink = data.apk_url;
+                        String downloadPath = data.apk_download_path;
 
 
-                }
-                }catch(Exception e){
+                    }
+                } catch (Exception e) {
 
 
                 }
@@ -144,11 +167,68 @@ public class Frontpage extends AppCompatActivity {
 
             @Override
             public void notifyError(VolleyError error) {
-                Toast.makeText(getApplicationContext(),getString(R.string.network_something_wrong),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
         networkController.GetMethod(data.version_url);
 
     }
-}
 
+    public void performLoginAuth() {
+        functions.showProgress(lottieview);
+        String username;
+        String password;
+        username = sharedpreferences.getString("username", "");
+        password = sharedpreferences.getString("password", "");
+
+        HashMap<String, String> postData =  new HashMap<String, String>();
+        postData.put("username", username);
+        postData.put("password", password);
+        postData.put("login", "");
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+
+                functions.hideProgress(lottieview);
+                if (!functions.isJsonObject(response)) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (functions.isJsonObject(response)) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String response_code = jsonResponse.get("responseCode").toString();
+
+                        if (response_code.equals("1")) {
+                            userID = jsonResponse.getString("userID");
+                            //LOAD PROFILE
+
+                        }
+
+                        if (response_code.equals("0")) {
+                            String errorMsg = jsonResponse.get("message").toString();
+                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                    } catch (JSONException e) {
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+        networkController.PostMethod(data.login_Api,postData);
+
+    }
+
+}

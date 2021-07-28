@@ -14,6 +14,8 @@ public class Data {
     public String verifyEmail_Api = "https://wesocial.space/api/verify.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
+    public String login_auth = "login_auth";
+    public String fingerprint_auth = "fingerprint_auth";
 
 
     public String getApkName(){

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,17 +21,16 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.aghamiri.fastdl.DownloadManager;
-import com.android.volley.Request;
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.Executor;
 
@@ -63,7 +63,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
     public Functions functions = new Functions();
-
+    public  LottieAnimationView lottieview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Functions functions = new Functions();
 
-
+        lottieview  = findViewById(R.id.loginProgressView);
         // PRDownloader.initialize(getApplicationContext());
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
         //Init Executor and BioPrompt
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
@@ -82,12 +83,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 //BIOMETRCIC
+                functions.hideProgress(lottieview);
                 checkLoginStatus();
             }
 
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
+                functions.hideProgress(lottieview);
                 errString = getString(R.string.biometric_auth_error);
                 ShowToast(errString.toString());
                 //LoginRegisterForgot.this.finish();
@@ -95,6 +98,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
             @Override
             public void onAuthenticationFailed() {
+                functions.hideProgress(lottieview);
                 super.onAuthenticationFailed();
                 String errorMsg = getString(R.string.biometric_auth_failed);
                 ShowToast(errorMsg.toString());
@@ -223,6 +227,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+                functions.hideProgress(lottieview);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.has("responseCode")){
@@ -242,6 +247,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
+
+        functions.showProgress(lottieview);
         networkController.PostMethod(data.forgotPassword_Api, postData);
 
         FrameLayout signin_form = findViewById(R.id.signin_form);
@@ -266,22 +273,28 @@ public class LoginRegisterForgot extends AppCompatActivity {
         NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+                functions.hideProgress(lottieview);
                 verifyAccount();
+
             }
 
             @Override
             public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
                 ShowToast(getString(R.string.network_something_wrong));
             }
         });
+        functions.showProgress(lottieview);
         networkController.PostMethod(data.register_Api, postData);
     }
 
     public Runnable verifyAccount() {
+        functions.showProgress(lottieview);
         String email = txtEmail.getText().toString();
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+                functions.hideProgress(lottieview);
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     String response_code = jsonResponse.get("responseCode").toString();
@@ -293,6 +306,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             //Save username and Password to sharedPref after registration.
                             txtVerify.setText(getString(R.string.verified));
                             ShowToast(getString(R.string.please_login));
+                            functions.hideProgress(lottieview);
                             Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
                             startActivity(intent);
                         }
@@ -306,21 +320,25 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         @Override
         public void notifyError (VolleyError error){
+            functions.hideProgress(lottieview);
             cancelEmail();
             Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+
         }
     });
     //Make sure post variable in PHP Script is email
     HashMap<String, String> postData = new HashMap<>();
         postData.put("email",email);
+
         networkController.PostMethod(data.verifyEmail_Api,postData);
 
         return null;
 }
 
     public void signIn() {
-        String username = txtUser.getText().toString();
-        String password = txtPass.getText().toString();
+        functions.showProgress(lottieview);
+         String username = txtUser.getText().toString();
+         String password = txtPass.getText().toString();
 
         HashMap<String, String> postData =  new HashMap<String, String>();
 
@@ -331,7 +349,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+
                 if (!functions.isJsonObject(response)) {
+                    functions.hideProgress(lottieview);
                     Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -342,15 +362,19 @@ public class LoginRegisterForgot extends AppCompatActivity {
                         String response_code = jsonResponse.get("responseCode").toString();
 
                         if (response_code.equals("1")) {
+                            functions.hideProgress(lottieview);
                             //Get the UserID from the response...
                             String userID = jsonResponse.getString("userID");
                             //Save Username and password
-                            saveUsernameAndPassword(username, password, userID);
+
+                            saveUsernameAndPassword(userID, username, password);
                             Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), Frontpage.class);
+                            intent.putExtra("loginAction",data.login_auth);
                             startActivity(intent); }
 
                         if (response_code.equals("0")) {
+                            functions.hideProgress(lottieview);
                             String errorMsg = jsonResponse.get("message").toString();
                             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                             ;
@@ -366,6 +390,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
             @Override
             public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
@@ -450,13 +475,13 @@ public class LoginRegisterForgot extends AppCompatActivity {
          * User has been logged in before, then set Username and password to intent...
          *
          */
+
         String username;
         String password;
         username = sharedpreferences.getString("username", "");
         password = sharedpreferences.getString("password", "");
         Intent intent = new Intent(this, Frontpage.class);
-        intent.putExtra("username", username);
-        intent.putExtra("password", password);
+        intent.putExtra("loginAction", data.fingerprint_auth);
         startActivity(intent);
         finish();
     }
@@ -468,12 +493,13 @@ public class LoginRegisterForgot extends AppCompatActivity {
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.putString("username", username);
         sharedPrefEditor.putString("password", password);
-        sharedPrefEditor.putString("userid", userID);
+        sharedPrefEditor.putString("userID", userID);
         sharedPrefEditor.apply();
 
     }
 
     public void biometricPrompt() {
+        functions.showProgress(lottieview);
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.biometrics_required))
                 .setDescription(getString(R.string.touch_sensor))
