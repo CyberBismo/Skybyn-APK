@@ -50,5 +50,5 @@
     <string name="invalid_login_details">Username or password is invalid.</string>
     <string name="please_login">All set, Please login!</string>
     <string name="closeApplication">Close application</string>
-    <string name="loginSuccessful">Login successful...</string>
+    <string name="loginSuccessful">Login successful!</string>
 </resources>
