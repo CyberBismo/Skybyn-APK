@@ -231,8 +231,25 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.has("responseCode")){
-                        String response_code = jsonObject.get("responseCode").toString();
-                        ShowToast(jsonObject.get("message").toString());
+                        String responseCode = jsonObject.get("responseCode").toString();
+                        switch (responseCode){
+                            case "1":
+                                ShowToast(jsonObject.get("message").toString());
+                                toggleSignin();
+                                break;
+
+                                case "0":
+                                ShowToast(jsonObject.get("message").toString());
+                                break;
+                        }
+
+                     }
+
+                    if (!jsonObject.has("responseCode")){
+                        ShowToast(getString(R.string.something_wrong));
+                        return;
+
+
                     }
 
                 }catch(JSONException e){
@@ -274,7 +291,32 @@ public class LoginRegisterForgot extends AppCompatActivity {
             @Override
             public void notifySuccess(String response) {
                 functions.hideProgress(lottieview);
-                verifyAccount();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.has("responseCode")){
+                        String responseCode = jsonObject.get("responseCode").toString();
+                        switch (responseCode){
+                            case "1":
+                                ShowToast(jsonObject.get("message").toString());
+                                verifyAccount();
+                                break;
+
+                            case "0":
+                                ShowToast(jsonObject.get("message").toString());
+                                break;
+                        }
+                    }
+
+                    if (!jsonObject.has("responseCode")){
+                        ShowToast(getString(R.string.something_wrong));
+                        return;
+
+
+                    }
+
+                }catch(JSONException e){
+
+                }
 
             }
 
@@ -329,7 +371,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
     //Make sure post variable in PHP Script is email
     HashMap<String, String> postData = new HashMap<>();
         postData.put("email",email);
-
         networkController.PostMethod(data.verifyEmail_Api,postData);
 
         return null;
