@@ -50,8 +50,6 @@
     <string name="invalid_login_details">Username or password is invalid.</string>
     <string name="please_login">All set, Please login!</string>
     <string name="closeApplication">Close application</string>
-
-
     <string name="permission_required">Permission required to install App.</string>
     <string name="loginSuccessful">Login successful!</string>
 
