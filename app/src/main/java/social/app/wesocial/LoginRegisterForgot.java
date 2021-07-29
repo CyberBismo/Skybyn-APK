@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
-import com.aghamiri.fastdl.DownloadManager;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -36,7 +36,7 @@ import java.util.concurrent.Executor;
 public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
 
-    private DownloadManager dlManager;
+
     Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
@@ -99,7 +99,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 functions.hideProgress(lottieview);
                 super.onAuthenticationFailed();
                 String errorMsg = getString(R.string.biometric_auth_failed);
-                ShowToast(errorMsg.toString());
+                ShowToast(errorMsg);
             }
         });
 
@@ -247,13 +247,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
                     if (!jsonObject.has("responseCode")){
                         ShowToast(getString(R.string.something_wrong));
-                        return;
-
-
                     }
 
                 }catch(JSONException e){
-
+                    Log.i("E:", e.toString());
                 }
 
 
@@ -368,7 +365,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
          String username = txtUser.getText().toString();
          String password = txtPass.getText().toString();
 
-        HashMap<String, String> postData =  new HashMap<String, String>();
+        HashMap<String, String> postData = new HashMap<>();
 
         postData.put("username", username);
         postData.put("password", password);
@@ -503,10 +500,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
          *
          */
 
-        String username;
-        String password;
-        username = sharedpreferences.getString("username", "");
-        password = sharedpreferences.getString("password", "");
         Intent intent = new Intent(this, Frontpage.class);
         intent.putExtra("loginAction", data.fingerprint_auth);
         startActivity(intent);
@@ -514,9 +507,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void saveUsernameAndPassword(String userID, String username, String password) {
-        /**
-         * Save username and password to sharedPREF
-         */
+
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.putString("username", username);
         sharedPrefEditor.putString("password", password);

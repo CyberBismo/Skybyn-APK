@@ -44,8 +44,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
     implementation 'androidx.biometric:biometric:1.2.0-alpha03'
-    implementation 'com.github.aghamiri98:FastDownloader:1.0.0'
-    def lottieVersion = "3.7.1"
+        def lottieVersion = "3.7.1"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
 //    implementation 'com.mindorks.android:prdownloader:0.6.0'
     }
