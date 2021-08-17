@@ -52,5 +52,7 @@
     <string name="closeApplication">Close application</string>
     <string name="permission_required">Permission required to install App.</string>
     <string name="loginSuccessful">Login successful!</string>
+    <string name="update_Downloaded">Update downloaded, Installation in progress.</string>
+    <string name="please_login_again">Something went wrong, please log in again.</string>
 
 </resources>

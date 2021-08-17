@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -88,52 +89,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             //perform login
             performLoginAuth();
         } else {
-            //get UserID and load profile and content
             userID = sharedpreferences.getString("userID", "");
-            HashMap<String, String> postData = new HashMap<>();
-            postData.put("userID", userID);
-            postData.put("profileData", "");
-            NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
-                @Override
-                public void notifySuccess(String response) {
-                    functions.hideProgress(lottieview);
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        if (jsonObject.has("responseCode")) {
-                            String responseCode = jsonObject.get("responseCode").toString();
-                            switch (responseCode) {
-                                case "1":
-
-                                    break;
-
-                                case "0":
-                                    Toast.makeText(getApplicationContext(), jsonObject.get("message").toString(), Toast.LENGTH_LONG).show();
-                                    break;
-                            }
-
-                        }
-
-                        if (!jsonObject.has("responseCode")) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_LONG).show();
-
-                        }
-
-                    } catch (JSONException e) {
-                        Log.i("E:", e.getMessage());
-                    }
-
-
-                }
-
-                @Override
-                public void notifyError(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_LONG).show();
-                }
-            });
-
-            functions.showProgress(lottieview);
-            networkController.PostMethod(data.profile_Api, postData);
-
+            loadUserProfile(userID);
         }
 
     }
@@ -228,19 +185,17 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Integer serverVersion = Integer.valueOf(response);
                     if (serverVersion > currentVersion) {
                         //DOWNLOAD AND INSTALL
-                        initializeDownloadManager();
                         downloadApk();
 
                     }
                 } catch (Exception e) {
-
                     Log.i("e:", e.getMessage());
                 }
             }
 
             @Override
             public void notifyError(VolleyError error) {
-                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+             //  Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
         networkController.GetMethod(data.version_url);
@@ -248,11 +203,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    private void initializeDownloadManager() {
+       private void downloadApk() {
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-    }
-
-    private void downloadApk() {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(data.apk_url));
         request.setTitle(getString(string.app_name))
                 .setDescription("Update is downloading...")
@@ -291,15 +243,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
     private void installApk() {
+        Toast.makeText(getApplicationContext(),getString(R.string.update_Downloaded),Toast.LENGTH_LONG).show();
         try {
             Context mContext = null;
-
             File file = new File(Environment.DIRECTORY_DOWNLOADS + "/" + data.apk_name);
             Intent intent = new Intent(Intent.ACTION_VIEW);
             if (Build.VERSION.SDK_INT >= 24) {
                 Uri downloaded_apk = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file);
                 intent.setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
-                List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
                     mContext.grantUriPermission(mContext.getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
@@ -323,6 +275,37 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(onDownloadComplete);
+    }
+
+    public void loadUserProfile(String userID){
+        functions.showProgress(lottieview);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", userID);
+        postData.put("profile", "");
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                functions.hideProgress(lottieview);
+                if (functions.isJsonObject(response.toString())) {
+                    Log.i("Profile json response", response.toString());
+                }
+                if (!functions.isJsonObject(response.toString())) {
+                    Log.i("Profile Json error", response.toString());
+                }
+
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
+                Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                logOut();
+                Toast.makeText(getApplicationContext(), getString(R.string.please_login_again), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        networkController.PostMethod(data.profile_Api, postData);
     }
 
     public void performLoginAuth() {
@@ -356,6 +339,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
                             Toast.makeText(getApplicationContext(), getString(string.loginSuccessful), Toast.LENGTH_LONG).show();
+                            loadUserProfile(userID);
                         }
 
                         if (response_code.equals("0")) {
