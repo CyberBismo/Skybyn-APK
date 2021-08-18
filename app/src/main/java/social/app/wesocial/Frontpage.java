@@ -185,7 +185,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Integer serverVersion = Integer.valueOf(response);
                     if (serverVersion > currentVersion) {
                         //DOWNLOAD AND INSTALL
-                        downloadApk();
+    //                    downloadApk();
 
                     }
                 } catch (Exception e) {
@@ -201,6 +201,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.GetMethod(data.version_url);
 
     }
+
 
 
        private void downloadApk() {
@@ -270,7 +271,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -312,12 +312,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions.showProgress(lottieview);
         String username;
         String password;
+
         username = sharedpreferences.getString("username", "");
         password = sharedpreferences.getString("password", "");
 
         HashMap<String, String> postData = new HashMap<>();
+
         postData.put("username", username);
         postData.put("password", password);
+
         postData.put("login", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
@@ -342,9 +345,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             loadUserProfile(userID);
                         }
 
+
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
                             Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+
                             logOut();
                         }
 

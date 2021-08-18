@@ -23,7 +23,6 @@ public class NetworkController {
     RequestQueue requestQueue;
     IResult result;
 
-
     public NetworkController(Context context, IResult result) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
@@ -33,6 +32,7 @@ public class NetworkController {
 
     public void PostMethod(String URL,Map<String,String> postParams) {
         StringRequest postRequest = new StringRequest(Request.Method.POST,   URL, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
                 try {
@@ -82,9 +82,7 @@ public class NetworkController {
         });
         requestQueue.add(GetRequest);
 
-
     }
-
 
     public interface IResult {
         void notifySuccess(String response) throws JSONException;
