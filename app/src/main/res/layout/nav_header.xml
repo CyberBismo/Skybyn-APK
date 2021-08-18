@@ -6,6 +6,22 @@
     android:layout_height="200dp"
     android:background="@color/blue">
 
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/imgNavViewProfilePicture"
+        android:layout_width="62dp"
+        android:layout_height="73dp"
+        android:background="@color/transparent_full"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="4dp"
+        app:civ_shadow_color="@color/white"
+        app:civ_shadow_radius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtNavViewUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.545" />
+
     <TextView
         android:id="@+id/txtNavViewUsername"
         android:layout_width="195dp"
@@ -15,28 +31,9 @@
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/username"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/imgNavViewProfilePicture"
-        android:layout_width="92dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="2dp"
-        app:civ_shadow_color="@color/white"
-        app:civ_shadow_radius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtNavViewUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78"
-        tools:srcCompat="@drawable/user" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
