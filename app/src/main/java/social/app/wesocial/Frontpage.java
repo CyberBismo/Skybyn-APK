@@ -21,12 +21,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.telephony.mbms.StreamingServiceInfo;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +69,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     ImageView imgNavProfilePicture;
     View navHeaderView;
     NavigationView navView;
+    TextView txtNavViewUsername;
+    TextView txtNavViewEmail;
+
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -86,7 +92,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         navView = findViewById(id.sideNavView);
         navHeaderView = navView.getHeaderView(0);
         navView.setNavigationItemSelectedListener(this);
-        imgNavProfilePicture = navHeaderView.findViewById(id.imgNavViewProfilePicture);
+        imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
+        txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
+        txtNavViewEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -96,6 +104,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             performLoginAuth();
         } else {
             userID = sharedpreferences.getString("userID", "");
+
             loadUserProfile(userID);
         }
 
@@ -287,19 +296,35 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
-        postData.put("profile", "");
+        postData.put("profileData", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
-            public void notifySuccess(String response) {
+            public void notifySuccess(String response) throws JSONException {
                 //Load profile picture thumb after profile loads.
-                functions.loadProfilePictureThumb("2", "2", imgNavProfilePicture);
-
                 functions.hideProgress(lottieview);
-                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                 if (functions.isJsonObject(response.toString())) {
-                    Log.i("Profile json response", response.toString());
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String responseCode= jsonObject.get("responseCode").toString();
+                    Log.i("response_Inside",response.toString());
+
+                    if(responseCode.equals("1")){
+                        Log.i("response_Inside2",response.toString());
+                        String username = jsonObject.getString("username").toString();
+                        String email = jsonObject.getString("email").toString();
+                        String avatar = jsonObject.getString("avatar").toString();
+                        functions.loadProfilePictureThumb(avatar,imgNavProfilePicture);
+                        txtNavViewUsername.setText(username.toUpperCase(Locale.ROOT));
+                        txtNavViewEmail.setText(email.toUpperCase(Locale.ROOT));
+                   }
+
+                    if(responseCode.equals("0")){
+                    Toast.makeText(getApplicationContext(),getString(R.string.invalid_profile),Toast.LENGTH_LONG).show();
+                    logOut();
+                    }
+
                 }
+
                 if (!functions.isJsonObject(response.toString())) {
                     Log.i("Profile Json error", response.toString());
                 }

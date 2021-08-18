@@ -41,13 +41,12 @@ public class Functions  {
 
     }
 
-    public void  loadProfilePictureThumb(String userid,String thumbName, View imv){
+    public void  loadProfilePictureThumb(String thumbNailLink, View imv){
         Data data= new Data();
-        String profileThumbLink = data.generateProfilePictureThumb(userid,thumbName);
         Glide.with(imv)
-                .load(profileThumbLink)
-                .placeholder(R.drawable.profile)
-                .error(R.drawable.profile)
+                .load(thumbNailLink)
+                .placeholder(R.drawable.profile_gray)
+                .error(R.drawable.profile_gray)
                 .into((ImageView) imv);
 
 

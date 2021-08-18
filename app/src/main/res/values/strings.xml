@@ -54,5 +54,7 @@
     <string name="loginSuccessful">Login successful!</string>
     <string name="update_Downloaded">Update downloaded, Installation in progress.</string>
     <string name="please_login_again">Something went wrong, please log in again.</string>
+    <string name="myAccount">My Account</string>
+    <string name="invalid_profile">Invalid profile, unable to get user data.</string>
 
 </resources>

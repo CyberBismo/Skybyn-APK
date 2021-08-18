@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/drawable/account.xml" value="0.1" />
         <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/drawable/profile.xml" value="0.1" />
-        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/layout/activity_front_page.xml" value="0.1" />
+        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/drawable/profile_gray.xml" value="0.1" />
+        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/layout/activity_front_page.xml" value="0.1825726141078838" />
         <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/layout/nav_header.xml" value="0.22" />
+        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/layout/nav_header.xml" value="0.5" />
+        <entry key="..\:/Users/CYBERWIZARD/Desktop/WeSocial_apk/app/src/main/res/menu/side_nav_menu.xml" value="0.1" />
       </map>
     </option>
   </component>
