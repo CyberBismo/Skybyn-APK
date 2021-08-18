@@ -1,5 +1,12 @@
 package social.app.wesocial;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static social.app.wesocial.R.drawable;
+import static social.app.wesocial.R.id;
+import static social.app.wesocial.R.layout;
+import static social.app.wesocial.R.string;
+
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -18,6 +25,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,13 +52,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static social.app.wesocial.R.drawable;
-import static social.app.wesocial.R.id;
-import static social.app.wesocial.R.layout;
-import static social.app.wesocial.R.string;
-
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedpreferences;
@@ -61,6 +63,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     DownloadManager downloadManager;
     LottieAnimationView lottieview;
     long downLoadId;
+    ImageView imgNavProfilePicture;
+    View navHeaderView;
+    NavigationView navView;
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -78,9 +83,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         loginAction = intent.getStringExtra("loginAction");
         lottieview = findViewById(id.frontpageProgressView);
 
-        NavigationView navView = findViewById(id.sideNavView);
+        navView = findViewById(id.sideNavView);
+        navHeaderView = navView.getHeaderView(0);
         navView.setNavigationItemSelectedListener(this);
-
+        imgNavProfilePicture = navHeaderView.findViewById(id.imgNavViewProfilePicture);
 
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -94,6 +100,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         }
 
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -185,7 +192,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Integer serverVersion = Integer.valueOf(response);
                     if (serverVersion > currentVersion) {
                         //DOWNLOAD AND INSTALL
-    //                    downloadApk();
+                        //                    downloadApk();
 
                     }
                 } catch (Exception e) {
@@ -195,7 +202,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             @Override
             public void notifyError(VolleyError error) {
-             //  Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
         networkController.GetMethod(data.version_url);
@@ -203,8 +210,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-
-       private void downloadApk() {
+    private void downloadApk() {
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(data.apk_url));
         request.setTitle(getString(string.app_name))
@@ -244,7 +250,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
     private void installApk() {
-        Toast.makeText(getApplicationContext(),getString(R.string.update_Downloaded),Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.update_Downloaded), Toast.LENGTH_LONG).show();
         try {
             Context mContext = null;
             File file = new File(Environment.DIRECTORY_DOWNLOADS + "/" + data.apk_name);
@@ -277,7 +283,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         unregisterReceiver(onDownloadComplete);
     }
 
-    public void loadUserProfile(String userID){
+    public void loadUserProfile(String userID) {
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
@@ -286,7 +292,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
+                //Load profile picture thumb after profile loads.
+                functions.loadProfilePictureThumb("2", "2", imgNavProfilePicture);
+
                 functions.hideProgress(lottieview);
+                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                 if (functions.isJsonObject(response.toString())) {
                     Log.i("Profile json response", response.toString());
                 }

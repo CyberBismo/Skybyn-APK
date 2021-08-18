@@ -1,13 +1,16 @@
 package social.app.wesocial;
 
+import android.content.Context;
 import android.util.Patterns;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieDrawable;
+import com.bumptech.glide.Glide;
 
-import static android.util.Patterns.EMAIL_ADDRESS;
+import androidx.core.content.ContextCompat;
 
-public class Functions {
+public class Functions  {
 
     public Boolean isJsonObject(String json){
         return json.startsWith("{");
@@ -38,5 +41,17 @@ public class Functions {
 
     }
 
+    public void  loadProfilePictureThumb(String userid,String thumbName, View imv){
+        Data data= new Data();
+        String profileThumbLink = data.generateProfilePictureThumb(userid,thumbName);
+        Glide.with(imv)
+                .load(profileThumbLink)
+                .placeholder(R.drawable.profile)
+                .error(R.drawable.profile)
+                .into((ImageView) imv);
+
+
+
+    }
 
 }

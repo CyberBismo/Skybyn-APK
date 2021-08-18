@@ -22,7 +22,7 @@ public class NetworkController {
     Context context;
     RequestQueue requestQueue;
     IResult result;
-
+    
     public NetworkController(Context context, IResult result) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
