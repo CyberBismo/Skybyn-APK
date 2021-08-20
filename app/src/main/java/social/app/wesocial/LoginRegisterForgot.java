@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -29,20 +28,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.concurrent.Executor;
 
 
 public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
-
-
+    FrameLayout verify_form;
+    String oneTimetoken;
+    String regUserID;
     Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
-    private String regUsername;
-    private String regPassword;
     private RequestQueue queue;
+    public String regUserEmail;
     private Button forgot_si;
     private Button signup_si;
     private Button forgot_su;
@@ -55,13 +53,18 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private EditText txtPassword;
     private EditText txtConfirmPassword;
     private EditText txtEmail;
+    EditText txtOneTimeCode;
     private TextView txtVerify;
     private Button BtnVerify_email;
     public EditText forgot_email;
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
     public Functions functions = new Functions();
-    public  LottieAnimationView lottieview;
+    public LottieAnimationView lottieview;
+
+    FrameLayout signup_form;
+    FrameLayout forgot_form;
+    FrameLayout signin_form;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,40 @@ public class LoginRegisterForgot extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Functions functions = new Functions();
 
-        lottieview  = findViewById(R.id.loginProgressView);
-        // PRDownloader.initialize(getApplicationContext());
+        //FindView by ID, shoul have used DataBinding from the start
+        lottieview = findViewById(R.id.loginProgressView);
+        signin_su = findViewById(R.id.signin_su);
+        signin_f = findViewById(R.id.signin_f);
+        signup_si = findViewById(R.id.signup_si);
+        signup_f = findViewById(R.id.signup_f);
+        forgot_si = findViewById(R.id.forgot_si);
+        forgot_su = findViewById(R.id.forgot_su);
+        txtVerify = findViewById(R.id.verify_email_check);
+        txtUser = findViewById(R.id.txtUsername);
+         txtOneTimeCode = findViewById(R.id.txtOTC);
+        txtPass = findViewById(R.id.txtPassword);
+        txtUsername = findViewById(R.id.Username);
+        txtPassword = findViewById(R.id.Password);
+        txtConfirmPassword = findViewById(R.id.cPassword);
+        txtEmail = findViewById(R.id.Email);
+        verify_form = findViewById(R.id.verify_form);
+        TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
+        Button btnSign_up = findViewById(R.id.sign_up);
+         signin_form = findViewById(R.id.signin_form);
+         forgot_form = findViewById(R.id.forgot_form);
+         signup_form = findViewById(R.id.signup_form);
+
+        Button BtnForgotPassword = findViewById(R.id.forgot);
+        Button btnSignIn = findViewById(R.id.BtnSignIn);
+        Button btnVerifyOTC = findViewById(R.id.btnVerifyOTC);
+
+        lblCloseVerify.setOnClickListener(view -> {
+            verify_form.setVisibility(View.INVISIBLE);
+            txtOneTimeCode.setText("");
+            signup_form.setVisibility(View.VISIBLE);
+            signin_form.setVisibility(View.INVISIBLE);
+        });
+
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
 
@@ -108,12 +143,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
             biometricPrompt();
         }
 
-        signin_su = findViewById(R.id.signin_su);
-        signin_f = findViewById(R.id.signin_f);
-        signup_si = findViewById(R.id.signup_si);
-        signup_f = findViewById(R.id.signup_f);
-        forgot_si = findViewById(R.id.forgot_si);
-        forgot_su = findViewById(R.id.forgot_su);
 
         signin_su.setOnClickListener(v -> toggleSignin());
         signup_si.setOnClickListener(v -> toggleSignup());
@@ -122,16 +151,21 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_si.setOnClickListener(v -> toggleForgot());
         forgot_su.setOnClickListener(v -> toggleForgot());
 
-        Button BtnForgotPassword;
-        findViewById(R.id.forgot);
 
-        txtVerify = findViewById(R.id.verify_email_check);
         queue = Volley.newRequestQueue(this);
 
-        txtUser = findViewById(R.id.txtUsername);
-        txtPass = findViewById(R.id.txtPassword);
+        btnVerifyOTC.setOnClickListener(view -> {
 
-        Button btnSignIn = findViewById(R.id.BtnSignIn);
+            if (txtOneTimeCode.getText().toString().equals(oneTimetoken)) {
+                //Register User
+                performRegistration();
+            }
+
+            if (!txtOneTimeCode.getText().toString().equals(oneTimetoken)) {
+                Toast.makeText(getApplicationContext(), getString(R.string.invalidOTC), Toast.LENGTH_SHORT).show();
+            }
+
+        });
 
         btnSignIn.setOnClickListener(v -> {
             if (TextUtils.isEmpty(txtUser.getText())) {
@@ -147,11 +181,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
-        txtUsername = findViewById(R.id.Username);
-        txtPassword = findViewById(R.id.Password);
-        txtConfirmPassword = findViewById(R.id.cPassword);
 
-        Button btnSign_up = findViewById(R.id.sign_up);
+
         btnSign_up.setOnClickListener(v -> {
             if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
@@ -170,7 +201,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 String cpassword = txtConfirmPassword.getText().toString();
 
                 if (password.equals(cpassword)) {
-                    signUp();
+                    // signUp();
+                    verifyRegistrationEmail(txtEmail.getText().toString());
                 } else {
                     ErrorMessage = getString(R.string.password_unmatch);
                     txtPassword.setError(ErrorMessage);
@@ -180,7 +212,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
-        txtEmail = findViewById(R.id.Email);
+
         BtnVerify_email = findViewById(R.id.verify_email);
         BtnVerify_email.setOnClickListener(v -> {
 
@@ -194,7 +226,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(ErrorMessage);
             } else {
                 BtnVerify_email.setVisibility(View.INVISIBLE);
-                performRegistration();
+                verifyRegistrationEmail(txtEmail.getText().toString());
             }
         });
         Button BtnCancel_email = findViewById(R.id.cancel_email);
@@ -211,7 +243,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         FrameLayout email_form = findViewById(R.id.email_form);
         signup_form.setVisibility(View.INVISIBLE);
         email_form.setVisibility(View.VISIBLE);
-        TextView txtverifyemail  = findViewById(R.id.verify_email_check);
+        TextView txtverifyemail = findViewById(R.id.verify_email_check);
         txtverifyemail.setText(txtEmail.getText().toString());
     }
 
@@ -221,35 +253,35 @@ public class LoginRegisterForgot extends AppCompatActivity {
             return;
         }
 
-        HashMap<String,String> postData= new HashMap<>();
+        HashMap<String, String> postData = new HashMap<>();
         String mail = forgot_email.getText().toString();
-        postData.put("email",mail);
+        postData.put("email", mail);
         NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
                 functions.hideProgress(lottieview);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.has("responseCode")){
+                    if (jsonObject.has("responseCode")) {
                         String responseCode = jsonObject.get("responseCode").toString();
-                        switch (responseCode){
+                        switch (responseCode) {
                             case "1":
                                 ShowToast(jsonObject.get("message").toString());
                                 toggleSignin();
                                 break;
 
-                                case "0":
+                            case "0":
                                 ShowToast(jsonObject.get("message").toString());
                                 break;
                         }
 
-                     }
+                    }
 
-                    if (!jsonObject.has("responseCode")){
+                    if (!jsonObject.has("responseCode")) {
                         ShowToast(getString(R.string.something_wrong));
                     }
 
-                }catch(JSONException e){
+                } catch (JSONException e) {
                     Log.i("E:", e.toString());
                 }
 
@@ -271,43 +303,39 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_form.setVisibility(View.INVISIBLE);
     }
 
-    public void performRegistration() {
-        String username = txtUsername.getText().toString();
-        String password = txtPassword.getText().toString();
-        regUsername = username;
-        regPassword = password;
-        String email = txtEmail.getText().toString();
-
+    public void verifyRegistrationEmail(String email) {
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("username", username);
-        postData.put("password", password);
         postData.put("email", email);
-        postData.put("registerData", "data");
 
         //SIMPLIFIED THE NETWORK CALL - POST PARAMETER
-        NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                Log.i("Reg Response", response);
                 functions.hideProgress(lottieview);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.has("responseCode")){
+                    if (jsonObject.has("responseCode")) {
                         String responseCode = jsonObject.get("responseCode").toString();
                         if (responseCode.equals("1")) {
                             ShowToast(jsonObject.get("message").toString());
-                            verifyAccount();
-                        }else if(responseCode.equals("0")){
+                            oneTimetoken = jsonObject.get("token").toString();
+                            //HIDE SIGNU and SignIn
+                            signup_form.setVisibility(View.INVISIBLE);
+                            signin_f.setVisibility(View.INVISIBLE);
+                            verify_form.setVisibility(View.VISIBLE);
+                            verify_form.bringToFront();
+
+                        } else if (responseCode.equals("0")) {
                             ShowToast(jsonObject.get("message").toString());
 
                         }
                     }
-
-                    if (!jsonObject.has("responseCode")){
+                    if (!jsonObject.has("responseCode")) {
                         ShowToast(getString(R.string.something_wrong));
-                        return;
+
                     }
-                }catch(JSONException e){
+                } catch (JSONException e) {
 
                 }
 
@@ -320,50 +348,67 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
         functions.showProgress(lottieview);
-           networkController.PostMethod(data.registration_Api, postData);
+        networkController.PostMethod(data.verifyEmail_Api, postData);
     }
 
-    public Runnable verifyAccount() {
-        functions.showProgress(lottieview);
+
+    public void performRegistration() {
+        String username = txtUsername.getText().toString();
+        String password = txtPassword.getText().toString();
         String email = txtEmail.getText().toString();
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("username", username);
+        postData.put("password", password);
+        postData.put("email", email);
+
+        //SIMPLIFIED THE NETWORK CALL - POST PARAMETER
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+
             @Override
             public void notifySuccess(String response) {
+                Log.i("Reg Response", response);
                 functions.hideProgress(lottieview);
-                        if (response.equals("true")) {
-                            //Save username and Password to sharedPref after registration.
-                            txtVerify.setText(getString(R.string.verified));
-                            ShowToast(getString(R.string.please_login));
-                            functions.hideProgress(lottieview);
-                            Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
-                            startActivity(intent);
-             }else if (response.equals("false")){
-                Timer timer = new Timer();
-                txtVerify.setText(getString(R.string.awaiting_verification));
-                Handler timeout = new Handler();
-                timeout.postDelayed(verifyAccount(), 3000);
-            }}
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.has("responseCode")) {
+                        String responseCode = jsonObject.get("responseCode").toString();
+                        if (responseCode.equals("1")) {
+                            ShowToast(jsonObject.get("message").toString());
+                            signup_form.setVisibility(View.INVISIBLE);
+                            verify_form.setVisibility(View.INVISIBLE);
+                            txtOneTimeCode.setText("");
+                            signin_form.setVisibility(View.VISIBLE);
+                        } else if (responseCode.equals("0")) {
+                            ShowToast(jsonObject.get("message").toString());
 
-        @Override
-        public void notifyError (VolleyError error){
-            functions.hideProgress(lottieview);
-            cancelEmail();
-            Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    if (!jsonObject.has("responseCode")) {
+                        ShowToast(getString(R.string.something_wrong));
 
-        }
-    });
-    //Make sure post variable in PHP Script is email
-    HashMap<String, String> postData = new HashMap<>();
-        postData.put("email",email);
-        networkController.PostMethod(data.verifyEmail_Api,postData);
+                    }
+                } catch (JSONException e) {
 
-        return null;
-}
+                }
+
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
+                ShowToast(getString(R.string.network_something_wrong));
+            }
+        });
+        functions.showProgress(lottieview);
+        networkController.PostMethod(data.registration_Api, postData);
+    }
+
 
     public void signIn() {
         functions.showProgress(lottieview);
-         String username = txtUser.getText().toString();
-         String password = txtPass.getText().toString();
+        String username = txtUser.getText().toString();
+        String password = txtPass.getText().toString();
 
         HashMap<String, String> postData = new HashMap<>();
 
@@ -374,7 +419,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-
                 if (!functions.isJsonObject(response)) {
                     functions.hideProgress(lottieview);
                     Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
@@ -391,12 +435,12 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             //Get the UserID from the response...
                             String userID = jsonResponse.getString("userID");
                             //Save Username and password
-
                             saveUsernameAndPassword(userID, username, password);
                             Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), Frontpage.class);
-                            intent.putExtra("loginAction",data.login_auth);
-                            startActivity(intent); }
+                            intent.putExtra("loginAction", data.login_auth);
+                            startActivity(intent);
+                        }
 
                         if (response_code.equals("0")) {
                             functions.hideProgress(lottieview);
@@ -418,7 +462,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.login_Api,postData);
+        networkController.PostMethod(data.login_Api, postData);
     }
 
 
@@ -456,10 +500,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         signup_f.setVisibility(View.INVISIBLE);
         forgot_form.setVisibility(View.INVISIBLE);
 
-        Handler timeout = new Handler();
-        timeout.removeCallbacks(this::verifyAccount);
+
         BtnVerify_email.setVisibility(View.VISIBLE);
-        txtVerify.setText(null);
+        txtVerify.setText("");
     }
 
     public void toggleForgot() {
@@ -479,9 +522,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void toggleSignin() {
-        FrameLayout signin_form = findViewById(R.id.signin_form);
-        FrameLayout forgot_form = findViewById(R.id.forgot_form);
-        FrameLayout signup_form = findViewById(R.id.signup_form);
 
         signin_su.setVisibility(View.INVISIBLE);
         forgot_su.setVisibility(View.INVISIBLE);
@@ -495,10 +535,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void checkLoginStatus() {
-        /**
-         * User has been logged in before, then set Username and password to intent...
-         *
-         */
+        //user has been logged in before, then set Username and password to intent...
 
         Intent intent = new Intent(this, Frontpage.class);
         intent.putExtra("loginAction", data.fingerprint_auth);
@@ -507,7 +544,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void saveUsernameAndPassword(String userID, String username, String password) {
-
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.putString("username", username);
         sharedPrefEditor.putString("password", password);

@@ -56,5 +56,10 @@
     <string name="please_login_again">Something went wrong, please log in again.</string>
     <string name="myAccount">My Account</string>
     <string name="invalid_profile">Invalid profile, unable to get user data.</string>
+    <string name="verification">Please enter One time verification code</string>
+    <string name="One_Time_Code">Input One time code.</string>
+    <string name="verify">Verify</string>
+    <string name="invalidOTC">Invalid One time code entered.</string>
+    <string name="cancel_verification">Cancel</string>
 
 </resources>

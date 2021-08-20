@@ -177,6 +177,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         SharedPreferences.Editor sharedPrefEditor = sharedpreferences.edit();
         sharedPrefEditor.clear();
         sharedPrefEditor.apply();
+        finish();
         Intent intent = new Intent(this, LoginRegisterForgot.class);
         startActivity(intent);
     }
@@ -263,6 +264,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         try {
             Context mContext = null;
             File file = new File(Environment.DIRECTORY_DOWNLOADS + "/" + data.apk_name);
+
+
             Intent intent = new Intent(Intent.ACTION_VIEW);
             if (Build.VERSION.SDK_INT >= 24) {
                 Uri downloaded_apk = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file);
@@ -296,7 +299,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
-        postData.put("profileData", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
@@ -306,10 +308,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 if (functions.isJsonObject(response.toString())) {
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String responseCode= jsonObject.get("responseCode").toString();
-                    Log.i("response_Inside",response.toString());
 
                     if(responseCode.equals("1")){
-                        Log.i("response_Inside2",response.toString());
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
                         String avatar = jsonObject.getString("avatar").toString();
@@ -356,8 +356,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         postData.put("username", username);
         postData.put("password", password);
 
-        postData.put("login", "");
-
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
@@ -379,7 +377,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             Toast.makeText(getApplicationContext(), getString(string.loginSuccessful), Toast.LENGTH_LONG).show();
                             loadUserProfile(userID);
                         }
-
 
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
