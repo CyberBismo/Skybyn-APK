@@ -74,9 +74,9 @@
                         style="@style/ShapeAppearance.MaterialComponents.MediumComponent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/blue"
+                        android:background="@color/main_colour"
                         android:visibility="visible"
-                        app:backgroundTint="@color/blue"
+                        app:backgroundTint="@color/main_colour"
                         app:itemIconTint="@color/white"
                         app:itemTextColor="@color/white"
                         app:menu="@menu/bottom_nav_menu" />
@@ -87,12 +87,12 @@
                     android:id="@+id/fab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/blue"
+                    android:background="@color/main_colour"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/post"
                     android:theme="@style/Theme.WeSocial"
                     android:tint="@color/white"
-                    app:backgroundTint="@color/blue"
+                    app:backgroundTint="@color/main_colour"
                     app:fabSize="normal"
                     app:layout_anchor="@id/bottomAppBar" />
 

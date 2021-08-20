@@ -3,14 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="social.app.wesocial">
 
-
-    !--Network communication authority-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--SDCard write data permission,note:If the compiled version is larger thanAPI 23 (6.0the above), need to pay attention to the application of this dynamic permission -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--Android8.0One of the many new features is the very important feature: Unknown source application permissions -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!--VISIBILITY_HIDDENIndicates that no notifications for any notification bar prompts are displayed-->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- SDCard write data permission,note:If the compiled version is larger thanAPI 23 (6.0the above), need to pay attention to the application of this dynamic permission -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Android8.0One of the many new features is the very important feature: Unknown source application permissions -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- VISIBILITY_HIDDENIndicates that no notifications for any notification bar prompts are displayed -->
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,7 +15,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -29,21 +23,25 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon"
-        android:supportsRtl="true"
-        android:fullBackupContent="true">
+        android:supportsRtl="true">
         <activity
-            android:name="social.app.wesocial.Frontpage"
-            android:theme="@style/Theme.WeSocial"></activity>
+            android:name=".notifications"
+            android:exported="true" />
         <activity
-            android:name="social.app.wesocial.LoginRegisterForgot"
-            android:theme="@style/Theme.WeSocial"
-            android:exported="true">
+            android:name=".Frontpage"
+            android:theme="@style/Theme.WeSocial" />
+        <activity
+            android:name=".LoginRegisterForgot"
+            android:exported="true"
+            android:theme="@style/Theme.WeSocial">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,7 +55,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

@@ -33,7 +33,7 @@
         android:layout_marginTop="100dp"
         android:text="@string/app_name"
         android:textSize="24pt"
-        android:textColor="@color/blue"
+        android:textColor="@color/main_colour"
         android:layout_centerHorizontal="true"/>
 
     <FrameLayout
@@ -56,7 +56,7 @@
                 android:gravity="center_horizontal"
                 android:lineHeight="24dp"
                 android:text="@string/verification"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="20sp" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:gravity="center_horizontal"
                 android:lineHeight="24dp"
                 android:text="@string/cancel_verification"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="20sp" />
 
             <EditText
@@ -80,9 +80,9 @@
                 android:background="#11FFFFFF"
                 android:drawableLeft="@drawable/code"
                 android:drawablePadding="@dimen/drawable_padding"
-                android:gravity="center_horizontal|center_vertical"
+                android:gravity="center_vertical"
                 android:hint="@string/One_Time_Code"
-                android:inputType="textShortMessage|textPersonName|textPassword"
+                android:inputType="textPassword"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -93,7 +93,7 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="180dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/main_colour"
                 android:text="@string/verify"
                 android:textColor="@color/white" />
 
@@ -114,7 +114,7 @@
                 android:layout_marginTop="30dp"
                 android:lineHeight="24dp"
                 android:text="@string/sign_in"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="24sp" />
 
             <EditText
@@ -155,7 +155,7 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="210dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/main_colour"
                 android:text="@string/sign_in"
                 android:textColor="@color/white" />
 
@@ -167,7 +167,7 @@
                 android:layout_marginTop="270dp"
                 android:backgroundTint="@color/black"
                 android:text="@string/forgot_password"
-                android:textColor="@color/blue" />
+                android:textColor="@color/main_colour" />
 
             <Button
                 android:id="@+id/signup_si"
@@ -177,7 +177,7 @@
                 android:layout_marginTop="320dp"
                 android:backgroundTint="@color/black"
                 android:text="@string/sign_up"
-                android:textColor="@color/blue" />
+                android:textColor="@color/main_colour" />
 
         </FrameLayout>
 
@@ -196,7 +196,7 @@
                 android:layout_marginTop="30dp"
                 android:lineHeight="24dp"
                 android:text="@string/sign_up"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="24dp" />
 
             <EditText
@@ -267,7 +267,7 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="330dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/main_colour"
                 android:text="@string/sign_up"
                 android:textColor="@color/white" />
 
@@ -279,7 +279,7 @@
                 android:layout_marginTop="380dp"
                 android:backgroundTint="@color/black"
                 android:text="@string/forgot_password"
-                android:textColor="@color/blue" />
+                android:textColor="@color/main_colour" />
 
             <Button
                 android:id="@+id/signin_su"
@@ -289,7 +289,7 @@
                 android:layout_marginTop="430dp"
                 android:backgroundTint="@color/black"
                 android:text="@string/sign_in"
-                android:textColor="@color/blue" />
+                android:textColor="@color/main_colour" />
 
         </FrameLayout>
 
@@ -308,7 +308,7 @@
                 android:layout_marginTop="30dp"
                 android:lineHeight="24dp"
                 android:text="@string/email_verification"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="24dp" />
 
             <TextView
@@ -318,7 +318,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="80dp"
                 android:lineHeight="24dp"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="20sp" />
 
             <Button
@@ -327,7 +327,7 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="150dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/main_colour"
                 android:text="@string/verify_email"
                 android:textColor="@color/white" />
 
@@ -358,7 +358,7 @@
                 android:layout_marginTop="30dp"
                 android:lineHeight="24dp"
                 android:text="Forgot password?"
-                android:textColor="@color/blue"
+                android:textColor="@color/main_colour"
                 android:textSize="24dp" />
 
             <EditText
@@ -382,7 +382,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="150dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/main_colour"
                 android:drawableStart="@drawable/password"
                 android:drawableLeft="@drawable/password"
                 android:drawablePadding="5dp"
