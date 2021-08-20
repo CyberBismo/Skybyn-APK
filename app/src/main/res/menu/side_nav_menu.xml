@@ -4,7 +4,7 @@
     <item android:title="@string/myAccount">
         <menu>
             <group android:checkableBehavior="all">
-            <item android:id="@+id/notifications"
+            <item android:id="@+id/myNotifications"
         android:title="@string/notifications"
         android:icon="@drawable/notifications"/>
 

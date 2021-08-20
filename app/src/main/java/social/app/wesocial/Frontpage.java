@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.telephony.mbms.StreamingServiceInfo;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -403,6 +402,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
 
@@ -410,6 +411,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             case R.id.logout:
                 logOut();
                 break;
+
+            case id.myNotifications:
+                Intent  i = new Intent(getApplicationContext(),notifications.class);
+                i.putExtra("userID",userID);
+                startActivity(i);
+                break;
+
             case R.id.closeapp:
                 finishAffinity();
                 break;

@@ -27,17 +27,21 @@
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/icon"
+        android:theme="@style/Theme.WeSocial"
         android:supportsRtl="true">
         <activity
             android:name=".notifications"
-            android:exported="true" />
+            android:exported="true"
+            android:label="@string/notifications"
+            android:theme="@style/Theme.WeSocial.ActionBar"/>
         <activity
             android:name=".Frontpage"
-            android:theme="@style/Theme.WeSocial" />
+            />
+
         <activity
             android:name=".LoginRegisterForgot"
             android:exported="true"
-            android:theme="@style/Theme.WeSocial">
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

@@ -13,4 +13,18 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/main_colour</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.WeSocial.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/main_colour</item> <!-- Content background -->
+        <item name="colorPrimaryVariant">@color/black</item> <!-- Notification bar -->
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/main_colour</item>
+        <item name="colorSecondaryVariant">@color/main_colour</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/main_colour</item>
+        <!-- Customize your theme here. -->
+    </style>
 </resources>
