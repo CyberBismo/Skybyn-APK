@@ -69,12 +69,16 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     View navHeaderView;
     NavigationView navView;
     TextView txtNavViewUsername;
-    TextView txtNavViewEmail;
+    TextView txtNavViewUserEmail;
+    String firstName,lastName,middleName,nickName,avatarLink,userTitle,userRank;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_front_page);
@@ -93,7 +97,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         navView.setNavigationItemSelectedListener(this);
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
-        txtNavViewEmail = navHeaderView.findViewById(id.txtNavViewEmail);
+        txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -304,17 +308,26 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             public void notifySuccess(String response) throws JSONException {
                 //Load profile picture thumb after profile loads.
                 functions.hideProgress(lottieview);
+
                 if (functions.isJsonObject(response.toString())) {
+                    Log.i("Json",response);
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String responseCode= jsonObject.get("responseCode").toString();
 
                     if(responseCode.equals("1")){
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
-                        String avatar = jsonObject.getString("avatar").toString();
-                        functions.loadProfilePictureThumb(avatar,imgNavProfilePicture);
-                        txtNavViewUsername.setText(username.toUpperCase(Locale.ROOT));
-                        txtNavViewEmail.setText(email.toUpperCase(Locale.ROOT));
+                        avatarLink = jsonObject.getString("avatar").toString();
+                        firstName = jsonObject.get("fname").toString();
+                        lastName = jsonObject.get("lname").toString();
+                        nickName = jsonObject.get("nickname").toString();
+                        middleName= jsonObject.get("mname").toString();
+                        userRank = jsonObject.get("rank").toString();
+                        userTitle = jsonObject.get("title").toString();
+                        functions.loadProfilePictureThumb(avatarLink,imgNavProfilePicture);
+                        txtNavViewUsername.setText(username);
+                        txtNavViewUserEmail.setText(email);
+
                    }
 
                     if(responseCode.equals("0")){
@@ -326,6 +339,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                 if (!functions.isJsonObject(response.toString())) {
                     Log.i("Profile Json error", response.toString());
+                    Toast.makeText(getApplicationContext(), getString(R.string.please_login_again), Toast.LENGTH_SHORT).show();
+                    logOut();
+
                 }
 
             }
@@ -335,7 +351,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 functions.hideProgress(lottieview);
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
                 logOut();
-                Toast.makeText(getApplicationContext(), getString(R.string.please_login_again), Toast.LENGTH_SHORT).show();
+
             }
         });
 

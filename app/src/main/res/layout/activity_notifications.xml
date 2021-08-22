@@ -7,6 +7,25 @@
     android:background="@color/black"
     tools:context=".notifications">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/notificationsProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.7"
+        android:background="@color/black"
+        android:clickable="false"
+        android:elevation="1000dp"
+        android:filterTouchesWhenObscured="false"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationsRecyclerView"
         android:layout_width="403dp"
