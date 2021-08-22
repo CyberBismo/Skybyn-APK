@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">We Social</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
@@ -61,5 +61,8 @@
     <string name="verify">Verify</string>
     <string name="invalidOTC">Invalid code entered.</string>
     <string name="cancel_verification">Cancel</string>
+    <string name="test_notification_details">Test Notification Details. Notifications from users and activites will be shown here.</string>
+    <string name="test_notification_title">Test Notification Title</string>
+    <string name="loadingNotifications">Loading...</string>
 
 </resources>

@@ -9,6 +9,7 @@ public class Data {
     public String registration_Api = "https://wesocial.space/api/reg.php";
     public String verifyEmail_Api = "https://wesocial.space/api/verify.php";
     public String profile_Api = "https://wesocial.space/api/profile.php";
+    public String notification_Api = "https://wesocial.space/api/noti.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
     public String login_auth = "login_auth";
