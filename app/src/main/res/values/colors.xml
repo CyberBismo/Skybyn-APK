@@ -14,4 +14,6 @@
     <color name="dark">#FF000000</color>
     <color name="transparent">#99FFFFFF</color>
     <color name="transparent_full">#00000000</color>
+    <color name="dark_gray">#221E1E</color>
+    <color name="dark_gray_2">#151313</color>
 </resources>

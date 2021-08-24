@@ -6,9 +6,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.ContextCompat;
+
+import java.text.SimpleDateFormat;
 
 public class Functions  {
 
@@ -29,15 +33,28 @@ public class Functions  {
       public void  showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
-        lottieview.setAnimation(R.raw.wesocialloading2);
-        lottieview.setAlpha(0.8f);
-        lottieview.loop(true);
+        lottieview.setAnimation(R.raw.wesocialprogressballs);
+        lottieview.setAlpha(0.85f);
+        lottieview.setRepeatMode(LottieDrawable.REVERSE);
+        lottieview.setRepeatCount(9999999);
+        lottieview.playAnimation();
+
+    }
+
+    public void  showFingerPrintPrompt(LottieAnimationView lottieview) {
+        lottieview.setVisibility(LottieAnimationView.VISIBLE);
+        lottieview.bringToFront();
+        lottieview.setAnimation(R.raw.fingerprint2);
+        lottieview.setAlpha(0.9f);
+        lottieview.setRepeatMode(LottieDrawable.REVERSE);
+        lottieview.setRepeatCount(9999999);
         lottieview.playAnimation();
 
     }
 
     public void hideProgress(LottieAnimationView lottieview)
     { lottieview.setVisibility(LottieAnimationView.INVISIBLE);
+    lottieview.pauseAnimation();
 
     }
 
@@ -52,5 +69,38 @@ public class Functions  {
 
 
     }
+
+    public void  showSnackBar( String msg ,View view,Context context) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ContextCompat.getColor(context, R.color.light_main_colour))
+                .setTextColor(ContextCompat.getColor(context, R.color.white))
+                .show();
+    }
+
+    public void  showSnackBarError( String msg ,View view,Context context) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+                .setBackgroundTint(ContextCompat.getColor(context, R.color.red))
+                .setTextColor(ContextCompat.getColor(context, R.color.white))
+                .show();
+    }
+
+    public void  loadNotificationThumb(String thumbNailLink, View imv){
+        Data data= new Data();
+        Glide.with(imv)
+                .load(thumbNailLink)
+                .placeholder(R.mipmap.icon)
+                .error(R.mipmap.icon)
+                .into((ImageView) imv);
+
+    }
+
+
+    public String  convertUnixToDateAndTime(Long UnixDateLong) {
+        SimpleDateFormat SDF;
+        Long Date = UnixDateLong * 1000L;
+        SDF = new SimpleDateFormat("dd-MMM-yyyy HH:MM:SS");
+        return SDF.format(Date);
+    }
+
 
 }

@@ -20,9 +20,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,12 +33,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
     FrameLayout verify_form;
     String oneTimetoken;
-    String regUserID;
-    Executor executor;
+        Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
-    private RequestQueue queue;
-    public String regUserEmail;
+
     private Button forgot_si;
     private Button signup_si;
     private Button forgot_su;
@@ -93,9 +89,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
         Button btnSign_up = findViewById(R.id.sign_up);
          signin_form = findViewById(R.id.signin_form);
          forgot_form = findViewById(R.id.forgot_form);
+         forgot_email = findViewById(R.id.forgot_email);
          signup_form = findViewById(R.id.signup_form);
 
-        Button BtnForgotPassword = findViewById(R.id.forgot);
+        Button BtnForgotPassword;
         Button btnSignIn = findViewById(R.id.BtnSignIn);
         Button btnVerifyOTC = findViewById(R.id.btnVerifyOTC);
 
@@ -105,10 +102,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
             signup_form.setVisibility(View.VISIBLE);
             signin_form.setVisibility(View.INVISIBLE);
         });
-
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-
         //Init Executor and BioPrompt
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
@@ -138,11 +133,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
-        //Checking if SharedPref contains a Username key
-        if (sharedpreferences.contains("username")) {
-            biometricPrompt();
-        }
-
 
         signin_su.setOnClickListener(v -> toggleSignin());
         signup_si.setOnClickListener(v -> toggleSignup());
@@ -151,8 +141,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_si.setOnClickListener(v -> toggleForgot());
         forgot_su.setOnClickListener(v -> toggleForgot());
 
-
-        queue = Volley.newRequestQueue(this);
 
         btnVerifyOTC.setOnClickListener(view -> {
 
@@ -235,16 +223,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
         BtnForgotPassword = findViewById(R.id.forgot);
         BtnForgotPassword.setOnClickListener(v -> forgotPassword());
 
-
-    }
-
-    public void signUp() {
-        FrameLayout signup_form = findViewById(R.id.signup_form);
-        FrameLayout email_form = findViewById(R.id.email_form);
-        signup_form.setVisibility(View.INVISIBLE);
-        email_form.setVisibility(View.VISIBLE);
-        TextView txtverifyemail = findViewById(R.id.verify_email_check);
-        txtverifyemail.setText(txtEmail.getText().toString());
+        //Checking if SharedPref contains a Username key
+        if (sharedpreferences.contains("username")) {
+            functions.showFingerPrintPrompt(lottieview);
+            biometricPrompt();
+        }
     }
 
     public void forgotPassword() {
@@ -553,14 +536,13 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void biometricPrompt() {
-        functions.showProgress(lottieview);
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.biometrics_required))
                 .setDescription(getString(R.string.touch_sensor))
                 .setNegativeButtonText("Cancel")
                 .setConfirmationRequired(false)
                 .build();
-        biometricPrompt.authenticate(promptInfo);
+                biometricPrompt.authenticate(promptInfo);
     }
 
     //Show Toast Method

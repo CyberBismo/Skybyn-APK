@@ -64,5 +64,8 @@
     <string name="test_notification_details">Test Notification Details. Notifications from users and activites will be shown here.</string>
     <string name="test_notification_title">Test Notification Title</string>
     <string name="loadingNotifications">Loading...</string>
+    <string name="not_logged_in">Sorry, you need to be logged in.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

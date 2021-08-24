@@ -18,7 +18,7 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
- public object MyFunctions {
+ object KotlinFunctions {
 
     fun isJsonObject(json: String): Boolean {
         return json.startsWith("{") }

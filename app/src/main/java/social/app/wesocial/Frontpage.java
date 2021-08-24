@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +41,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +57,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,7 +65,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     Data data = new Data();
     Functions functions = new Functions();
     String loginAction;
-    String userID;
+    public static String userID;
     DownloadManager downloadManager;
     LottieAnimationView lottieview;
     long downLoadId;
@@ -70,7 +74,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     NavigationView navView;
     TextView txtNavViewUsername;
     TextView txtNavViewUserEmail;
-    String firstName,lastName,middleName,nickName,avatarLink,userTitle,userRank;
+    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank;
+    Boolean userLoggedIn = false;
+    BottomNavigationView bottomNavigationView;
+
 
     private static final int PERMISSION_REQUEST_CODE = 200;
 
@@ -83,7 +90,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-
 
         configureToolbarAndDrawer();
         checkAppUpdate();
@@ -99,6 +105,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
+        bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
 
@@ -107,11 +114,33 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             performLoginAuth();
         } else {
             userID = sharedpreferences.getString("userID", "");
-
             loadUserProfile(userID);
         }
 
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId())
+                {
+                    case id.timeline:
+                        Fragment timelineFragment = Timeline.newInstance(userID, "");
+                        LoadFragment(timelineFragment,getString(string.Timeline));
+                        return true;
+
+                    case id.messages:
+                        Fragment messagesFagment = Messages.newInstance(userID, "");
+                        LoadFragment(messagesFagment,getString(string.messages));
+                        return true;
+
+
+                }
+                return false;
+            }
+        });
+
     }
+
 
 
     @Override
@@ -134,10 +163,17 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         return super.onCreateOptionsMenu(menu);
     }
 
-
+    public void showNotifications(){
+        Fragment notificationFragment = notification.newInstance(userID, "");
+        LoadFragment(notificationFragment, "notification");
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+
+            case id.notifications:
+                    showNotifications();
+                    break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -310,29 +346,34 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 functions.hideProgress(lottieview);
 
                 if (functions.isJsonObject(response.toString())) {
-                    Log.i("Json",response);
+                    Log.i("Json", response);
                     JSONObject jsonObject = new JSONObject(response.toString());
-                    String responseCode= jsonObject.get("responseCode").toString();
+                    String responseCode = jsonObject.get("responseCode").toString();
 
-                    if(responseCode.equals("1")){
+                    if (responseCode.equals("1")) {
+                        userLoggedIn = true;
+
+                        Fragment postsFragment = Timeline.newInstance(userID, "");
+                        LoadFragment(postsFragment, "posts");
+
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
                         avatarLink = jsonObject.getString("avatar").toString();
                         firstName = jsonObject.get("fname").toString();
                         lastName = jsonObject.get("lname").toString();
                         nickName = jsonObject.get("nickname").toString();
-                        middleName= jsonObject.get("mname").toString();
+                        middleName = jsonObject.get("mname").toString();
                         userRank = jsonObject.get("rank").toString();
                         userTitle = jsonObject.get("title").toString();
-                        functions.loadProfilePictureThumb(avatarLink,imgNavProfilePicture);
+                        functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
 
-                   }
+                    }
 
-                    if(responseCode.equals("0")){
-                    Toast.makeText(getApplicationContext(),getString(R.string.invalid_profile),Toast.LENGTH_LONG).show();
-                    logOut();
+                    if (responseCode.equals("0")) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_profile), Toast.LENGTH_LONG).show();
+                        logOut();
                     }
 
                 }
@@ -402,8 +443,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                     } catch (JSONException e) {
                     }
-
-
                 }
 
             }
@@ -418,20 +457,32 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    public void LoadFragment(Fragment fragment, String fragString) {
+        FrameLayout frameLayout = findViewById(id.fragmentFrame);
+        frameLayout.setVisibility(View.VISIBLE);
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(id.fragmentFrame, fragment, fragString);
+        transaction.addToBackStack(null);
 
+        transaction.commit();
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.logout:
                 logOut();
                 break;
 
             case id.myNotifications:
-                Intent  i = new Intent(getApplicationContext(),notifications.class);
-                i.putExtra("userID",userID);
-                startActivity(i);
+                if (userLoggedIn) {
+                    //OpenFragment
+                    showNotifications();
+                } else {
+                    functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
+                }
                 break;
 
             case R.id.closeapp:
@@ -440,6 +491,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
         }
+        drawerLayout.closeDrawer(navView);
+
         return false;
     }
+
+
+
+
+
 }

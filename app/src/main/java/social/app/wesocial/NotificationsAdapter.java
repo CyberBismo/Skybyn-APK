@@ -9,14 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
-    private List <NotificationList> NotificationList;
+    private final List <NotificationList> NotificationList;
     Functions functions =new Functions();
 
     @NonNull
@@ -32,10 +29,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.ViewHolder holder, int position) {
         NotificationList notificationList =NotificationList.get(position);
+
         holder.Title.setText(notificationList.getTitle());
         holder.Content.setText(notificationList.getContent());
         holder.date.setText(notificationList.getDate());
-        functions.loadProfilePictureThumb(notificationList.getAvatarLink(),holder.imgNotificationSender);
+        holder.type.setText(notificationList.getType());
+        functions.loadNotificationThumb(notificationList.getAvatarLink(),holder.imgNotificationSender);
 
     }
     public NotificationsAdapter( List <NotificationList> NotificationList){
@@ -49,14 +48,16 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView Title,Content,date;
+        TextView Title,Content,date,type,ID;
         ImageView imgNotificationSender;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             Title = itemView.findViewById(R.id.lblNotificationTitle);
-            Content = itemView.findViewById(R.id.lblnotificationdetails);
-            date = itemView.findViewById(R.id.lblnotificationdate);
+            ID = itemView.findViewById(R.id.lblNotificationID);
+            Content = itemView.findViewById(R.id.lblNotificationContent);
+            date = itemView.findViewById(R.id.lblNotificationDate);
+            type = itemView.findViewById(R.id.lblNotificationType);
             imgNotificationSender = itemView.findViewById(R.id.imgNotificationSender);
 
         }

@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="140dp">
+    android:layout_height="160dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/notificationCardView"
         android:layout_width="396dp"
-        android:layout_height="118dp"
+        android:layout_height="122dp"
+        android:background="@color/dark_gray_2"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardCornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -20,32 +22,31 @@
         app:layout_constraintVertical_bias="0.027">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="401dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black">
+            android:background="@color/transparent_full">
 
 
             <TextView
-                android:id="@+id/lblnotificationdetails"
-                android:layout_width="304dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="12dp"
+                android:id="@+id/lblNotificationContent"
+                android:layout_width="303dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/nexalight"
                 android:foregroundGravity="center_horizontal"
-                android:gravity="center_vertical"
                 android:paddingStart="5dp"
                 android:text="@string/test_notification_details"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="12sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@+id/imgnotificationdata"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.876"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/imgNotificationSender" />
 
             <TextView
                 android:id="@+id/lblNotificationTitle"
                 android:layout_width="300dp"
-                android:layout_height="29dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/nexalight"
                 android:foregroundGravity="center_horizontal"
@@ -54,18 +55,18 @@
                 android:text="@string/test_notification_title"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toTopOf="@+id/lblnotificationdetails"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/lblNotificationContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.194" />
+                app:layout_constraintVertical_bias="0.636" />
 
             <TextView
-                android:id="@+id/lblnotificationdate"
+                android:id="@+id/lblNotificationDate"
                 android:layout_width="136dp"
                 android:layout_height="17dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"
@@ -79,11 +80,11 @@
                 android:layout_width="18dp"
                 android:layout_height="17dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/clock"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/lblnotificationdate"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintEnd_toStartOf="@+id/lblNotificationDate"
+                app:layout_constraintHorizontal_bias="0.961"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.mikhaellopez.circularimageview.CircularImageView
@@ -96,12 +97,35 @@
                 app:civ_border_width="4dp"
                 app:civ_shadow_color="@color/white"
                 app:civ_shadow_radius="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/lblNotificationID"
                 app:layout_constraintEnd_toStartOf="@+id/lblNotificationTitle"
-                app:layout_constraintHorizontal_bias="0.444"
+                app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.109" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lblNotificationType"
+                android:layout_width="59dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="52dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgnotificationdata"
+                app:layout_constraintHorizontal_bias="0.766"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/lblNotificationID"
+                android:layout_width="41dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                app:layout_constraintEnd_toStartOf="@+id/lblNotificationType"
+                app:layout_constraintHorizontal_bias="0.58"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblNotificationContent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
