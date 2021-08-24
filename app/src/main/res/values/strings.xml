@@ -65,7 +65,15 @@
     <string name="test_notification_title">Test Notification Title</string>
     <string name="loadingNotifications">Loading...</string>
     <string name="not_logged_in">Sorry, you need to be logged in.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="save">Save</string>
+    <string name="updateProfile">Update Profile</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="middlename">Middlename</string>
+    <string name="Nickname">Nickname</string>
+    <string name="oldPassword">Enter Old Password</string>
+    <string name="newPassword">Enter New Password</string>
+    <string name="confirmNewPassword">Confirm New Password</string>
+    <string name="updatePassword">Update Password</string>
 </resources>

@@ -41,13 +41,14 @@
                 android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@+id/imgnotificationdata"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.216"
                 app:layout_constraintStart_toEndOf="@+id/imgNotificationSender" />
 
             <TextView
                 android:id="@+id/lblNotificationTitle"
                 android:layout_width="300dp"
                 android:layout_height="25dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="40dp"
                 android:fontFamily="@font/nexalight"
                 android:foregroundGravity="center_horizontal"
                 android:gravity="center_vertical"
@@ -59,7 +60,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/lblNotificationContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.636" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/lblNotificationDate"
@@ -89,8 +90,8 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imgNotificationSender"
-                android:layout_width="57dp"
-                android:layout_height="54dp"
+                android:layout_width="40dp"
+                android:layout_height="41dp"
                 android:layout_marginStart="4dp"
                 android:background="@color/transparent_full"
                 app:civ_border_color="@color/white"
@@ -99,9 +100,10 @@
                 app:civ_shadow_radius="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/lblNotificationID"
                 app:layout_constraintEnd_toStartOf="@+id/lblNotificationTitle"
-                app:layout_constraintHorizontal_bias="0.545"
+                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.28" />
 
             <TextView
                 android:id="@+id/lblNotificationType"

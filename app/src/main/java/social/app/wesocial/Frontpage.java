@@ -167,6 +167,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         Fragment notificationFragment = notification.newInstance(userID, "");
         LoadFragment(notificationFragment, "notification");
     }
+
+    public void showProfilePage(){
+        Fragment profileFragment = profile.newInstance(userID, "");
+        LoadFragment(profileFragment, getString(string.profile));
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -464,7 +471,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(id.fragmentFrame, fragment, fragString);
         transaction.addToBackStack(null);
-
         transaction.commit();
 
     }
@@ -480,6 +486,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 if (userLoggedIn) {
                     //OpenFragment
                     showNotifications();
+                } else {
+                    functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
+                }
+                break;
+
+            case id.profile:
+                if (userLoggedIn) {
+                    //OpenFragment
+                    showProfilePage();
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
                 }

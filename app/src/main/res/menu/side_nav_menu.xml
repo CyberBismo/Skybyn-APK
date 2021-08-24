@@ -4,34 +4,37 @@
     <item android:title="@string/myAccount">
         <menu>
             <group android:checkableBehavior="all">
-            <item android:id="@+id/myNotifications"
-        android:title="@string/notifications"
-        android:icon="@drawable/notifications"/>
+                <item
+                    android:id="@+id/myNotifications"
+                    android:icon="@drawable/notifications"
+                    android:title="@string/notifications" />
                 <item
                     android:id="@+id/profile"
                     android:icon="@drawable/profile"
-                    android:title="@string/profile"/>
+                    android:title="@string/profile" />
 
 
                 <item
                     android:id="@+id/messages"
                     android:icon="@drawable/message"
-                    android:title="@string/messages"/>
+                    android:title="@string/messages" />
 
 
                 <item
                     android:id="@+id/friends"
                     android:icon="@drawable/friends"
-                    android:title="@string/Friends"/>
+                    android:title="@string/Friends" />
 
-                <item android:id="@+id/pages"
-                    android:title="@string/pages"
-                    android:icon="@drawable/pages"/>
+                <item
+                    android:id="@+id/pages"
+                    android:icon="@drawable/pages"
+                    android:title="@string/pages" />
 
 
-                <item android:id="@+id/groups"
-        android:title="@string/groups"
-        android:icon="@drawable/groups"/>
+                <item
+                    android:id="@+id/groups"
+                    android:icon="@drawable/groups"
+                    android:title="@string/groups" />
 
             </group>
         </menu>
@@ -46,8 +49,9 @@
         android:id="@+id/logout"
         android:icon="@drawable/logout"
         android:title="@string/Logout" />
-    <item android:id="@+id/closeapp"
-        android:title="@string/closeApplication"
-        android:icon="@drawable/close"/>
+    <item
+        android:id="@+id/closeapp"
+        android:icon="@drawable/close"
+        android:title="@string/closeApplication" />
 
 </menu>
