@@ -4,8 +4,7 @@
 
 <item android:title="@string/notifications"
     android:id="@+id/notifications"
-    android:icon="@drawable/white_notifications"
-     android:iconTint="@color/white"
+    android:icon="@drawable/notifications_coloured"
     app:showAsAction="always"></item>
 
 </menu>

@@ -4,11 +4,11 @@
 
     <item android:id="@+id/timeline"
     android:title="@string/Timeline"
-    android:icon="@drawable/timeline" />
+    android:icon="@drawable/timeline_coloured" />
 
     <item android:id="@+id/messages"
         android:title="@string/messages"
-        android:icon="@drawable/message"
+        android:icon="@drawable/messages_coloured"
         />
 
 
