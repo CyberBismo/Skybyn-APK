@@ -38,8 +38,6 @@
     <string name="nav_close">close</string>
     <string name="Exit">Close Application</string>
     <string name="Logout">Logout</string>
-    <string name="Category">Category One</string>
-    <string name="CategoryTwo">Category Two</string>
     <string name="app_updated">App has been downloaded in the background. Installation will commence now.</string>
     <string name="app_updating">An update is being downloaded in the background.</string>
     <string name="sent_password_msg">If the email you provided is in our database, we will send a new password to your email.</string>
@@ -76,4 +74,7 @@
     <string name="newPassword">Enter New Password</string>
     <string name="confirmNewPassword">Confirm New Password</string>
     <string name="updatePassword">Update Password</string>
+    <string name="shareYourThoughts">Share your thoughts...</string>
+
+
 </resources>

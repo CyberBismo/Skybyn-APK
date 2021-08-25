@@ -7,28 +7,32 @@
     android:background="@color/black"
     tools:context=".notification">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/lblNotificationsTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="@dimen/headerHeight"
+        android:background="@color/main_colour"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/notifications"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/notificationsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.006" />
 
-        <TextView
-            android:id="@+id/lblNotificationsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/nexalight"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="@string/notifications"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notificationsRecyclerView"
-            android:layout_width="409dp"
-            android:layout_height="613dp"
-            android:layout_margin="25dp" />
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notificationsRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="584dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

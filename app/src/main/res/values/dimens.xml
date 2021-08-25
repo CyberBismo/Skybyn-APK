@@ -2,4 +2,7 @@
 <resources>
 
     <dimen name="drawable_padding">5dp</dimen>
+    <dimen name="headerHeight">35dp</dimen>
+    <dimen name="profileUpdateViewsHeight">48dp</dimen>
+    <dimen name="profileUpdateViewsWidth">300dp</dimen>
 </resources>

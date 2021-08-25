@@ -42,12 +42,14 @@ import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -77,6 +79,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank;
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
+    FloatingActionButton fab;
 
 
     private static final int PERMISSION_REQUEST_CODE = 200;
@@ -91,6 +94,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
 
+
+
         configureToolbarAndDrawer();
         checkAppUpdate();
 
@@ -100,14 +105,24 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
+        bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
+        fab = (FloatingActionButton) findViewById(id.fab);
         sideNavView.setNavigationItemSelectedListener(this);
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
-        bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
-        registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
+        //Coloured sideNav icons
+        //sideNavView.setItemIconTintList(null);
+        bottomNavigationView.setItemIconTintList(null);
+
+        //Fab On CLick
+        fab.setOnClickListener(view -> {
+            Fragment sharePostFragment = SharePost.newInstance("","");
+            LoadFragment(sharePostFragment,"");
+        });
+        registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         if (loginAction.equals(data.fingerprint_auth)) {
             //perform login
@@ -139,9 +154,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        //Coloured sideNav icons
-        sideNavView.setItemIconTintList(null);
-        bottomNavigationView.setItemIconTintList(null);
 
     }
 
@@ -470,11 +482,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void LoadFragment(Fragment fragment, String fragString) {
-        FrameLayout frameLayout = findViewById(id.fragmentFrame);
-        frameLayout.setVisibility(View.VISIBLE);
+        //FrameLayout frameLayout = findViewById(id.fragmentFrame);
+        FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
+        //FragmentContainerView.setVisibility(View.VISIBLE);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(id.fragmentFrame, fragment, fragString);
+        transaction.replace(id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();
 
