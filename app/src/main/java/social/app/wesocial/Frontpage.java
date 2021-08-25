@@ -71,7 +71,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     long downLoadId;
     ImageView imgNavProfilePicture;
     View navHeaderView;
-    NavigationView navView;
+    NavigationView sideNavView;
     TextView txtNavViewUsername;
     TextView txtNavViewUserEmail;
     String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank;
@@ -98,9 +98,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         loginAction = intent.getStringExtra("loginAction");
         lottieview = findViewById(id.frontpageProgressView);
 
-        navView = findViewById(id.sideNavView);
-        navHeaderView = navView.getHeaderView(0);
-        navView.setNavigationItemSelectedListener(this);
+        sideNavView = findViewById(id.sideNavView);
+        navHeaderView = sideNavView.getHeaderView(0);
+        sideNavView.setNavigationItemSelectedListener(this);
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
@@ -138,6 +138,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 return false;
             }
         });
+
+        //Coloured sideNav icons
+        sideNavView.setItemIconTintList(null);
 
     }
 
@@ -215,6 +218,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(drawable.hamburger);
+
+
 
     }
 
@@ -425,7 +430,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                 functions.hideProgress(lottieview);
                 if (!functions.isJsonObject(response)) {
-                    Toast.makeText(getApplicationContext(), getString(string.something_wrong), Toast.LENGTH_SHORT).show();
+                    functions.showSnackBarError(getString(string.something_wrong),findViewById(android.R.id.content),getApplicationContext());
                     return;
                 }
 
@@ -437,14 +442,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         if (response_code.equals("1")) {
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
-                            Toast.makeText(getApplicationContext(), getString(string.loginSuccessful), Toast.LENGTH_LONG).show();
+                            functions.showSnackBar(getString(string.loginSuccessful),findViewById(android.R.id.content),getApplicationContext());
                             loadUserProfile(userID);
                         }
 
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
-                            Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-
+                            functions.showSnackBarError(errorMsg,findViewById(android.R.id.content),getApplicationContext());
                             logOut();
                         }
 
@@ -506,7 +510,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
         }
-        drawerLayout.closeDrawer(navView);
+        drawerLayout.closeDrawer(sideNavView);
 
         return false;
     }

@@ -14,7 +14,7 @@
 
         android:dividerPadding="10dp"
         android:orientation="vertical"
-        android:showDividers="middle|beginning|end"
+        android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,24 +23,25 @@
 
         <TextView
             android:id="@+id/lblNotificationsTitle2"
-            android:layout_width="match_parent"
-            android:layout_height="62dp"
-            android:layout_marginTop="28dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/nexalight"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/updateProfile"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/txtProfileFirstname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -50,14 +51,15 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/txtProfileLastname"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -67,14 +69,15 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/txtProfileMiddlename"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -84,14 +87,15 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/txtProfileMiddlename4"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -101,29 +105,31 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnSaveProfile"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
-            android:width="150dp"
+            android:layout_margin="10dp"
+            android:width="50dp"
             android:height="30dp"
             android:background="@drawable/button_selector"
             android:text="@string/save"
             android:textColor="@color/white"
+            android:textSize="10sp"
             app:layout_constraintBottom_toTopOf="@+id/txtProfileOldPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/txtProfileOldPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -133,14 +139,15 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/txtProfileNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -150,14 +157,15 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/txtProfileConfirmNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:width="200dp"
             android:background="@drawable/text_selector"
             android:enabled="true"
@@ -167,19 +175,21 @@
             android:paddingLeft="10dp"
             android:singleLine="true"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/white"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/btnUpdatePassword"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp"
-            android:width="150dp"
+            android:layout_margin="10dp"
+            android:width="50dp"
             android:height="30dp"
             android:background="@drawable/button_selector"
             android:text="@string/updatePassword"
             android:textColor="@color/white"
+            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

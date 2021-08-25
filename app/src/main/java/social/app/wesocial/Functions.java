@@ -53,7 +53,7 @@ public class Functions  {
     }
 
     public void hideProgress(LottieAnimationView lottieview)
-    { lottieview.setVisibility(LottieAnimationView.INVISIBLE);
+    { lottieview.setVisibility(LottieAnimationView.GONE);
     lottieview.pauseAnimation();
 
     }
