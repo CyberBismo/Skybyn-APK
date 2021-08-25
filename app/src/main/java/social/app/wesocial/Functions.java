@@ -88,8 +88,8 @@ public class Functions  {
         Data data= new Data();
         Glide.with(imv)
                 .load(thumbNailLink)
-                .placeholder(R.mipmap.icon)
-                .error(R.mipmap.icon)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round)
                 .into((ImageView) imv);
 
     }

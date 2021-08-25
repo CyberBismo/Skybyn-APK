@@ -15,28 +15,24 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.WeSocial"
         android:supportsRtl="true">
-        <activity
-            android:name=".notifications"
-            android:exported="true"
-            android:label="@string/notifications"
-            android:theme="@style/Theme.WeSocial.ActionBar"/>
-        <activity
-            android:name=".Frontpage"
-            />
+
+        <activity android:name=".Frontpage" />
 
         <activity
             android:name=".LoginRegisterForgot"
@@ -45,7 +41,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

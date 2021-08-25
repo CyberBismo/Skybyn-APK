@@ -487,6 +487,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         //FragmentContainerView.setVisibility(View.VISIBLE);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+        manager.popBackStack();
         transaction.replace(id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();

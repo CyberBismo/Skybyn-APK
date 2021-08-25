@@ -419,10 +419,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             String userID = jsonResponse.getString("userID");
                             //Save Username and password
                             saveUsernameAndPassword(userID, username, password);
-                            Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
+                            finish();
                             Intent intent = new Intent(getApplicationContext(), Frontpage.class);
                             intent.putExtra("loginAction", data.login_auth);
                             startActivity(intent);
+                            Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                         }
 
                         if (response_code.equals("0")) {
