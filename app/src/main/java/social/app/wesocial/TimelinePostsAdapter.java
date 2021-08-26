@@ -12,19 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 
-public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
+public class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
     private final List <NotificationDataClass> NotificationDataClass;
     Functions functions =new Functions();
     @NonNull
     @Override
-    public NotificationsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TimelinePostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.display_notifications, parent, false);
+                .inflate(R.layout.display_timeline, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
         NotificationDataClass notificationDataClass = NotificationDataClass.get(position);
         holder.Title.setText(notificationDataClass.getTitle());
         holder.Content.setText(notificationDataClass.getContent());
@@ -33,7 +33,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         functions.loadNotificationThumb(notificationDataClass.getAvatarLink(),holder.imgNotificationSender);
 
     }
-    public NotificationsAdapter( List <NotificationDataClass> NotificationDataClass){
+    public TimelinePostsAdapter(List <NotificationDataClass> NotificationDataClass){
         this.NotificationDataClass = NotificationDataClass;
     }
 

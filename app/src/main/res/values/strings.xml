@@ -75,6 +75,11 @@
     <string name="confirmNewPassword">Confirm New Password</string>
     <string name="updatePassword">Update Password</string>
     <string name="shareYourThoughts">Share your thoughts...</string>
+    <string name="sampleUsername">Sample Username...</string>
+    <string name="Continue">Continue..</string>
+    <string name="post_Long">Post Content too long.</string>
+    <string name="empty_post">Sorry, your post is empty.</string>
+    <string name="cancel">No, Cancel</string>
 
 
 </resources>

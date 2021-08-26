@@ -17,18 +17,13 @@ import java.text.SimpleDateFormat;
 public class Functions  {
 
     public Boolean isJsonObject(String json){
-        return json.startsWith("{");
-
-        }
+        return json.startsWith("{"); }
 
     public Boolean isJsonArray(String json){
-        return json.startsWith("[");
-
-    }
+        return json.startsWith("["); }
 
     public Boolean validateEmail(String email){
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches(); }
 
       public void  showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
@@ -101,6 +96,7 @@ public class Functions  {
         SDF = new SimpleDateFormat("dd-MMM-yyyy HH:MM:SS");
         return SDF.format(Date);
     }
+
 
 
 }

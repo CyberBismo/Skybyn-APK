@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,8 +75,11 @@ public class notification extends Fragment {
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         userID = Frontpage.userID;
         loadNotification();
-
     }
+
+
+
+
     private void loadNotification() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<String, String>();
@@ -107,7 +108,7 @@ public class notification extends Fragment {
 
                     JSONArray jsonArray = new JSONArray(response);
 
-                    ArrayList<NotificationList> notifications = new ArrayList();
+                    ArrayList<NotificationDataClass> notifications = new ArrayList();
                     JSONObject jsonObject = null;
 
 
@@ -137,7 +138,7 @@ public class notification extends Fragment {
                             notificationType = "Page";
                         }
 
-                        notifications.add(new NotificationList(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID));
+                        notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID));
                         Log.i("JSON OBJECT",jsonObject.toString());
                     }
 

@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/lblNotificationsTitle3"
+            android:id="@+id/lblPostHeaderTitle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/txtPostContent"
             android:layout_width="match_parent"
             android:layout_height="151dp"
             android:layout_marginTop="10dp"
@@ -47,12 +47,13 @@
             android:gravity="start|center_horizontal|top"
             android:hint="@string/shareYourThoughts"
             android:inputType="textMultiLine"
+            android:maxLength="@integer/max_post_size"
             android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white" />
 
         <Button
-            android:id="@+id/btnUpdatePassword2"
+            android:id="@+id/btnPost"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_gravity="center_horizontal"

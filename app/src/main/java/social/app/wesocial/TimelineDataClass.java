@@ -1,6 +1,6 @@
 package social.app.wesocial;
 
-public class NotificationList {
+public class TimelineDataClass {
     private String Content;
     private String avatarLink;
     private String date;
@@ -25,7 +25,7 @@ public class NotificationList {
         this.type = type;
     }
 
-    public NotificationList(String Content, String avatarLink, String date, String title,String type,String ID) {
+    public TimelineDataClass(String Content, String avatarLink, String date, String title, String type, String ID) {
         this.Content = Content;
         this.avatarLink = avatarLink;
         this.date = date;

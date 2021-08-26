@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -26,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -76,7 +77,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     NavigationView sideNavView;
     TextView txtNavViewUsername;
     TextView txtNavViewUserEmail;
-    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank;
+    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank,banned,banned_reason,visible,deactivated,deactivated_reason;
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -378,8 +379,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     if (responseCode.equals("1")) {
                         userLoggedIn = true;
 
-                        Fragment postsFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(postsFragment, "posts");
+                        Fragment timelineFragment = Timeline.newInstance(userID, "");
+                        LoadFragment(timelineFragment, "posts");
 
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
@@ -390,9 +391,22 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         middleName = jsonObject.get("mname").toString();
                         userRank = jsonObject.get("rank").toString();
                         userTitle = jsonObject.get("title").toString();
+                        deactivated = jsonObject.get("deactivated").toString();
+                        deactivated_reason = jsonObject.get("deactivated_reason").toString();
+                        banned = jsonObject.get("banned").toString();
+                        banned_reason = jsonObject.get("banned_reason").toString();
                         functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
+
+                        if (banned.equals("1")){
+                         showAlertDialog("",banned_reason,false,true);
+                        }
+
+                        if (deactivated.equals("1")){
+                            showAlertDialog("",deactivated,false,true);
+                        }
+
 
                     }
 
@@ -424,6 +438,22 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.PostMethod(data.profile_Api, postData);
     }
 
+    public void showAlertDialog(String title, String Message, Boolean Cancelable,Boolean logout){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setCancelable(Cancelable)
+                .setMessage(Message)
+                .setPositiveButton(getString(string.Continue), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(logout) {
+                            logOut();
+                        }
+                    }
+                })
+                 .show();
+    }
+    
     public void performLoginAuth() {
         functions.showProgress(lottieview);
         String username;
