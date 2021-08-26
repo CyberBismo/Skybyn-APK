@@ -43,7 +43,6 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="social.app.wesocial.Timeline"
             android:layout_width="409dp"
             android:layout_height="0dp"
             android:visibility="visible"

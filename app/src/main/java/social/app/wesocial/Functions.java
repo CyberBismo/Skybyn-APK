@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
 
+import kotlin.TypeCastException;
+
 public class Functions  {
 
     public Boolean isJsonObject(String json){
@@ -54,8 +56,7 @@ public class Functions  {
     }
 
     public void  loadProfilePictureThumb(String thumbNailLink, View imv){
-        Data data= new Data();
-        Glide.with(imv)
+                Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.drawable.profile_gray)
                 .error(R.drawable.profile_gray)
@@ -80,8 +81,7 @@ public class Functions  {
     }
 
     public void  loadNotificationThumb(String thumbNailLink, View imv){
-        Data data= new Data();
-        Glide.with(imv)
+                Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.mipmap.ic_launcher_round)
@@ -91,12 +91,18 @@ public class Functions  {
 
 
     public String  convertUnixToDateAndTime(Long UnixDateLong) {
-        SimpleDateFormat SDF;
-        Long Date = UnixDateLong * 1000L;
-        SDF = new SimpleDateFormat("dd-MMM-yyyy HH:MM:SS");
-        return SDF.format(Date);
+        try {
+            SimpleDateFormat SDF;
+            Long Date = UnixDateLong * 1000L;
+            SDF = new SimpleDateFormat("dd-MMM-yyyy HH:MM:SS");
+            return SDF.format(Date);
+        }catch (TypeCastException e) {
+            return  "Loading time...";
+
+        }
+        }
     }
 
 
 
-}
+

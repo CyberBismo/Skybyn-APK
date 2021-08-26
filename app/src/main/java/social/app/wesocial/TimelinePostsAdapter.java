@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 
-public class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
-    private final List <NotificationDataClass> NotificationDataClass;
+class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
+
+    private List <TimelineDataClass>  TimelineDataClass;
     Functions functions =new Functions();
+
     @NonNull
     @Override
     public TimelinePostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -23,38 +25,45 @@ public class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdap
         return new ViewHolder(itemView);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
-        NotificationDataClass notificationDataClass = NotificationDataClass.get(position);
-        holder.Title.setText(notificationDataClass.getTitle());
-        holder.Content.setText(notificationDataClass.getContent());
-        holder.date.setText(notificationDataClass.getDate());
-        holder.type.setText(notificationDataClass.getType());
-        functions.loadNotificationThumb(notificationDataClass.getAvatarLink(),holder.imgNotificationSender);
+        TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
+        holder.txtUsername.setText(timelineDataClass.getUsername());
+        holder.txtUsername.setTag(timelineDataClass.getUserID());
+        holder.txtTimelineContent.setText(timelineDataClass.getContent());
+        holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
+        holder.txtTimelineDate.setText(timelineDataClass.getDate());
+        holder.txtTimelineLikes.setText(timelineDataClass.getLikes());
+        holder.txtTimelineCommentsCount.setText(timelineDataClass.getComments_count());
+          functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(),holder.imgTimelinePostPicture);
 
     }
-    public TimelinePostsAdapter(List <NotificationDataClass> NotificationDataClass){
-        this.NotificationDataClass = NotificationDataClass;
+    public void TimelinePostsAdapter(List <TimelineDataClass> TimelineDataClass){
+        this.TimelineDataClass = TimelineDataClass ;
     }
 
     @Override
     public int getItemCount() {
-        return NotificationDataClass.size();
+        return TimelineDataClass.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView Title,Content,date,type,ID;
-        ImageView imgNotificationSender;
+        TextView txtUsername,txtTimelineContent, txtTimelineDate, txtTimelineLikes
+                , txtTimelineCommentsCount;
+        ImageView imgTimelinePostPicture;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            Title = itemView.findViewById(R.id.lblNotificationTitle);
-            ID = itemView.findViewById(R.id.lblNotificationID);
-            Content = itemView.findViewById(R.id.lblNotificationContent);
-            date = itemView.findViewById(R.id.lblNotificationDate);
-            type = itemView.findViewById(R.id.lblNotificationType);
-            imgNotificationSender = itemView.findViewById(R.id.imgNotificationSender);
+
+            txtTimelineContent = itemView.findViewById(R.id.txtTimelineContent);
+            txtUsername = itemView.findViewById(R.id.txtTimelinePostUsername);
+            txtTimelineDate = itemView.findViewById(R.id.txtTimelinePostDate);
+            txtTimelineLikes = itemView.findViewById(R.id.txtTimelinePostLikes);
+            txtTimelineCommentsCount = itemView.findViewById(R.id.txtTimelinePostComments);
+            imgTimelinePostPicture = itemView.findViewById(R.id.imgTimelinePostProfilePicture);
 
         }
     }
