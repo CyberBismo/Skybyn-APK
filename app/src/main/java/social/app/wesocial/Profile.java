@@ -12,13 +12,13 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link profile#newInstance} factory method to
+ * Use the {@link Profile#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class profile extends Fragment {
+public class Profile extends Fragment {
 
 
-    public profile() {
+    public Profile() {
         // Required empty public constructor
     }
 
@@ -31,8 +31,8 @@ public class profile extends Fragment {
      * @return A new instance of fragment profile.
      */
     // TODO: Rename and change types and number of parameters
-    public static profile newInstance(String param1, String param2) {
-        profile fragment = new profile();
+    public static Profile newInstance(String param1, String param2) {
+        Profile fragment = new Profile();
 
         return fragment;
     }

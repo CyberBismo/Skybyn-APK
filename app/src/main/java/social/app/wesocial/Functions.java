@@ -28,7 +28,7 @@ public class Functions  {
       public void  showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
-        lottieview.setAnimation(R.raw.wesocialprogressballs);
+        lottieview.setAnimation(R.raw.wesocialdot);
         lottieview.setAlpha(0.85f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
@@ -67,7 +67,7 @@ public class Functions  {
 
     public void  showSnackBar( String msg ,View view,Context context) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-                .setBackgroundTint(ContextCompat.getColor(context, R.color.light_main_colour))
+                .setBackgroundTint(ContextCompat.getColor(context, R.color.main_colour))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))
                 .show();
     }

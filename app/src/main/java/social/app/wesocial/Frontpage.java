@@ -186,7 +186,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showProfilePage(){
-        Fragment profileFragment = profile.newInstance(userID, "");
+        Fragment profileFragment = Profile.newInstance(userID, "");
         LoadFragment(profileFragment, getString(string.profile));
     }
 
