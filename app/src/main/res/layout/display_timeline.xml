@@ -6,8 +6,8 @@
     android:layout_height="180dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="385dp"
-        android:layout_height="174dp"
+        android:layout_width="409dp"
+        android:layout_height="171dp"
         app:cardBackgroundColor="@color/dark_gray"
         app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +63,7 @@
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imgPostComment"
                 app:layout_constraintTop_toTopOf="parent"
@@ -81,7 +81,7 @@
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="13sp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

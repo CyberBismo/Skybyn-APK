@@ -40,7 +40,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -78,7 +77,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     NavigationView sideNavView;
     TextView txtNavViewUsername;
     TextView txtNavViewUserEmail;
-    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank,banned,banned_reason,visible,deactivated,deactivated_reason;
+    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank, banned, banned_reason, visible, deactivated, deactivated_reason;
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -95,7 +94,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-
 
 
         configureToolbarAndDrawer();
@@ -121,8 +119,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         //Fab On CLick
         fab.setOnClickListener(view -> {
-            Fragment sharePostFragment = SharePost.newInstance("","");
-            LoadFragment(sharePostFragment,"",false);
+            Fragment sharePostFragment = SharePost.newInstance("", "");
+            LoadFragment(sharePostFragment, "", false);
         });
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -138,16 +136,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId())
-                {
+                switch (item.getItemId()) {
                     case id.timeline:
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment,getString(string.Timeline),true);
+                        LoadFragment(timelineFragment, getString(string.Timeline), true);
                         return true;
 
                     case id.messages:
                         Fragment messagesFagment = Messages.newInstance(userID, "");
-                        LoadFragment(messagesFagment,getString(string.messages),false);
+                        LoadFragment(messagesFagment, getString(string.messages), false);
                         return true;
 
 
@@ -158,7 +155,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
     }
-
 
 
     @Override
@@ -181,14 +177,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void showNotifications(){
+    public void showNotifications() {
         Fragment notificationFragment = notification.newInstance(userID, "");
-        LoadFragment(notificationFragment, "notification",false);
+        LoadFragment(notificationFragment, "notification", false);
     }
 
-    public void showProfilePage(){
+    public void showProfilePage() {
         Fragment profileFragment = Profile.newInstance(userID, "");
-        LoadFragment(profileFragment, getString(string.profile),false);
+        LoadFragment(profileFragment, getString(string.profile), false);
     }
 
 
@@ -197,8 +193,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         switch (item.getItemId()) {
 
             case id.notifications:
-                    showNotifications();
-                    break;
+                showNotifications();
+                break;
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -233,7 +229,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(drawable.hamburger);
-
 
 
     }
@@ -381,7 +376,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment, "posts",true);
+                        LoadFragment(timelineFragment, "posts", true);
 
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
@@ -399,13 +394,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
-                        functions.loadProfilePictureThumb(avatarLink,imgNavProfilePicture);
-                        if (banned.equals("1")){
-                         showAlertDialog("",banned_reason,false,true);
+                        functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
+                        if (banned.equals("1")) {
+                            showAlertDialog("", banned_reason, false, true);
                         }
 
-                        if (deactivated.equals("1")){
-                            showAlertDialog("",deactivated,false,true);
+                        if (deactivated.equals("1")) {
+                            showAlertDialog("", deactivated, false, true);
                         }
 
 
@@ -439,7 +434,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.PostMethod(data.profile_Api, postData);
     }
 
-    public void showAlertDialog(String title, String Message, Boolean Cancelable,Boolean logout){
+    public void showAlertDialog(String title, String Message, Boolean Cancelable, Boolean logout) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
                 .setCancelable(Cancelable)
@@ -447,14 +442,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 .setPositiveButton(getString(string.Continue), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(logout) {
+                        if (logout) {
                             logOut();
                         }
                     }
                 })
-                 .show();
+                .show();
     }
-    
+
     public void performLoginAuth() {
         functions.showProgress(lottieview);
         String username;
@@ -474,7 +469,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                 functions.hideProgress(lottieview);
                 if (!functions.isJsonObject(response)) {
-                    functions.showSnackBarError(getString(string.something_wrong),findViewById(android.R.id.content),getApplicationContext());
+                    functions.showSnackBarError(getString(string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
                     return;
                 }
 
@@ -486,13 +481,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         if (response_code.equals("1")) {
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
-                            functions.showSnackBar(getString(string.loginSuccessful),findViewById(android.R.id.content),getApplicationContext());
+                            functions.showSnackBar(getString(string.loginSuccessful), findViewById(android.R.id.content), getApplicationContext());
                             loadUserProfile(userID);
                         }
 
                         if (response_code.equals("0")) {
                             String errorMsg = jsonResponse.get("message").toString();
-                            functions.showSnackBarError(errorMsg,findViewById(android.R.id.content),getApplicationContext());
+                            functions.showSnackBarError(errorMsg, findViewById(android.R.id.content), getApplicationContext());
                             logOut();
                         }
 
@@ -512,18 +507,17 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    public void LoadFragment(Fragment fragment, String fragString,Boolean timeline) {
+    public void LoadFragment(Fragment fragment, String fragString, Boolean timeline) {
         //FrameLayout frameLayout = findViewById(id.fragmentFrame);
         FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
-        if (timeline){
-            fragmentContainerView.setBackgroundColor(R.color.white);
-        }
+
         //FragmentContainerView.setVisibility(View.VISIBLE);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.addToBackStack(null);
         manager.popBackStack();
         transaction.replace(id.fragmentContainerView, fragment, fragString);
-        transaction.addToBackStack(null);
         transaction.commit();
 
     }
@@ -563,9 +557,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         return false;
     }
-
-
-
 
 
 }
