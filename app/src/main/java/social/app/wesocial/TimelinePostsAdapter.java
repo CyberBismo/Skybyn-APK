@@ -14,14 +14,17 @@ import java.util.List;
 
 class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
 
-    private List <TimelineDataClass>  TimelineDataClass;
+    private final List <TimelineDataClass>  TimelineDataClass;
     Functions functions =new Functions();
+
+    public  TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
+        TimelineDataClass = timelineDataClass;
+    }
 
     @NonNull
     @Override
     public TimelinePostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.display_timeline, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_timeline, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -32,17 +35,15 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
         holder.txtUsername.setText(timelineDataClass.getUsername());
         holder.txtUsername.setTag(timelineDataClass.getUserID());
-        holder.txtTimelineContent.setText(timelineDataClass.getContent());
-        holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
         holder.txtTimelineLikes.setText(timelineDataClass.getLikes());
         holder.txtTimelineCommentsCount.setText(timelineDataClass.getComments_count());
+        holder.txtTimelineContent.setText(timelineDataClass.getContent());
+        holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
           functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(),holder.imgTimelinePostPicture);
 
     }
-    public void TimelinePostsAdapter(List <TimelineDataClass> TimelineDataClass){
-        this.TimelineDataClass = TimelineDataClass ;
-    }
+
 
     @Override
     public int getItemCount() {
@@ -58,7 +59,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtTimelineContent = itemView.findViewById(R.id.txtTimelineContent);
+            txtTimelineContent = itemView.findViewById(R.id.txtTimelinePostContent);
             txtUsername = itemView.findViewById(R.id.txtTimelinePostUsername);
             txtTimelineDate = itemView.findViewById(R.id.txtTimelinePostDate);
             txtTimelineLikes = itemView.findViewById(R.id.txtTimelinePostLikes);

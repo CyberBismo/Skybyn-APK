@@ -6,34 +6,34 @@
             <group android:checkableBehavior="all">
                 <item
                     android:id="@+id/myNotifications"
-                    android:icon="@drawable/notifications_coloured"
+                    android:icon="@drawable/notifications"
                     android:title="@string/notifications" />
                 <item
                     android:id="@+id/profile"
-                    android:icon="@drawable/profile_coloured"
+                    android:icon="@drawable/profile"
                     android:title="@string/profile" />
 
 
                 <item
                     android:id="@+id/messages"
-                    android:icon="@drawable/messages_coloured"
+                    android:icon="@drawable/message"
                     android:title="@string/messages" />
 
 
                 <item
                     android:id="@+id/friends"
-                    android:icon="@drawable/friends_coloured"
+                    android:icon="@drawable/friends"
                     android:title="@string/Friends" />
 
                 <item
                     android:id="@+id/pages"
-                    android:icon="@drawable/pages_coloured"
+                    android:icon="@drawable/pages"
                     android:title="@string/pages" />
 
 
                 <item
                     android:id="@+id/groups"
-                    android:icon="@drawable/groups_coloured"
+                    android:icon="@drawable/groups"
                     android:title="@string/groups" />
 
             </group>
@@ -43,15 +43,15 @@
 
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/settings_coloured"
+        android:icon="@drawable/settings"
         android:title="@string/settings" />
     <item
         android:id="@+id/logout"
-        android:icon="@drawable/logout_coloured"
+        android:icon="@drawable/logout"
         android:title="@string/Logout" />
     <item
         android:id="@+id/closeapp"
-        android:icon="@drawable/close_coloured"
+        android:icon="@drawable/close"
         android:title="@string/closeApplication" />
 
 </menu>

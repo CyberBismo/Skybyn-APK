@@ -56,12 +56,11 @@ RecyclerView recyclerView;
 
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<TimelineDataClass> timelinePost = new ArrayList();
-                    JSONObject jsonObject;
+                    JSONObject jsonObject = null;
 
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
-                        timelinePostContent = (String) jsonObject.get("content");
                         timelineAvatarLink = (String) jsonObject.get("avatar");
                         timelinePostDate = (String) jsonObject.get("date").toString();
                         timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
@@ -70,13 +69,15 @@ RecyclerView recyclerView;
                         timelinePostID = (String) jsonObject.get("postID");
                         timelinePostLikes = (String) jsonObject.get("likes").toString();
                         timelinePostCommentsCount = (String) jsonObject.get("comments_count").toString();
-
+                        timelinePostContent = (String) jsonObject.get("content");
                         timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink
                                 ,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes) );
-                        Log.i("JSON OBJECT",jsonObject.toString());
+
+                        Log.i("jjOBJECT",jsonObject.toString());
+
                     }
 
-                    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter();
+                    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(timelinepostsAdapter);
@@ -129,7 +130,7 @@ RecyclerView recyclerView;
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
-        //loadTimelinePosts();
+        loadTimelinePosts();
 
     }
 }

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="180dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="386dp"
-        android:layout_height="161dp"
+        android:layout_width="385dp"
+        android:layout_height="174dp"
         app:cardBackgroundColor="@color/dark_gray"
         app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imgTimelinePostProfilePicture"
@@ -27,7 +28,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/transparent_full"
                 app:civ_border_color="@color/white"
-                app:civ_border_width="4dp"
+                app:civ_border_width="1dp"
                 app:civ_shadow_color="@color/white"
                 app:civ_shadow_radius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,14 +38,15 @@
 
             <TextView
                 android:id="@+id/txtTimelinePostUsername"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_width="202dp"
+                android:layout_height="27dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/nexabold"
+                android:text="@string/app_name"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/txtTimelinePostDate"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.284"
+                app:layout_constraintHorizontal_bias="0.32"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
@@ -52,89 +54,95 @@
             <TextView
                 android:id="@+id/txtTimelinePostLikes"
                 android:layout_width="100dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="36dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="44dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
+                android:gravity="center_vertical"
                 android:singleLine="true"
+                android:text="0"
                 android:textColor="@color/white"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imgPostComment"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.972" />
+                app:layout_constraintVertical_bias="0.93" />
 
             <TextView
                 android:id="@+id/txtTimelinePostComments"
                 android:layout_width="100dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="52dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="48dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
+                android:gravity="center_vertical"
                 android:singleLine="true"
+                android:text="0"
                 android:textColor="@color/white"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.972" />
+                app:layout_constraintVertical_bias="0.93" />
 
             <TextView
                 android:id="@+id/txtTimelinePostDate"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/nexalight"
+                android:gravity="top"
+                android:text="@string/app_name"
                 android:textColor="@color/white"
                 android:textSize="11sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@+id/txtTimelinePostContent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.284"
+                app:layout_constraintHorizontal_bias="0.318"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/txtTimelinePostContent"
                 android:layout_width="350dp"
                 android:layout_height="48dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginBottom="60dp"
                 android:fontFamily="@font/nexabold"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.222"
+                app:layout_constraintHorizontal_bias="0.228"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imgPostLike"
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="28dp"
-                android:background="@drawable/like"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtTimelinePostLikes"
-                app:layout_constraintHorizontal_bias="0.681"
+                app:layout_constraintHorizontal_bias="0.454"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.97"
+                app:layout_constraintVertical_bias="0.93"
+                app:srcCompat="@drawable/like"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imgPostComment"
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/comment"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtTimelinePostComments"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.97"
+                app:layout_constraintVertical_bias="0.93"
+                app:srcCompat="@drawable/comment"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,6 +40,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -121,7 +122,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance("","");
-            LoadFragment(sharePostFragment,"");
+            LoadFragment(sharePostFragment,"",false);
         });
         registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
@@ -141,12 +142,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 {
                     case id.timeline:
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment,getString(string.Timeline));
+                        LoadFragment(timelineFragment,getString(string.Timeline),true);
                         return true;
 
                     case id.messages:
                         Fragment messagesFagment = Messages.newInstance(userID, "");
-                        LoadFragment(messagesFagment,getString(string.messages));
+                        LoadFragment(messagesFagment,getString(string.messages),false);
                         return true;
 
 
@@ -182,12 +183,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void showNotifications(){
         Fragment notificationFragment = notification.newInstance(userID, "");
-        LoadFragment(notificationFragment, "notification");
+        LoadFragment(notificationFragment, "notification",false);
     }
 
     public void showProfilePage(){
         Fragment profileFragment = Profile.newInstance(userID, "");
-        LoadFragment(profileFragment, getString(string.profile));
+        LoadFragment(profileFragment, getString(string.profile),false);
     }
 
 
@@ -380,7 +381,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment, "posts");
+                        LoadFragment(timelineFragment, "posts",true);
 
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
@@ -398,7 +399,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
-
+                        functions.loadProfilePictureThumb(avatarLink,imgNavProfilePicture);
                         if (banned.equals("1")){
                          showAlertDialog("",banned_reason,false,true);
                         }
@@ -511,9 +512,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    public void LoadFragment(Fragment fragment, String fragString) {
+    public void LoadFragment(Fragment fragment, String fragString,Boolean timeline) {
         //FrameLayout frameLayout = findViewById(id.fragmentFrame);
         FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
+        if (timeline){
+            fragmentContainerView.setBackgroundColor(R.color.white);
+        }
         //FragmentContainerView.setVisibility(View.VISIBLE);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
