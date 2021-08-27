@@ -41,6 +41,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.date.setText(notificationDataClass.getDate());
 
 
+
         if (notificationDataClass.getRead().equals("0")) {
             holder.imgNotificationSender.setImageDrawable(ContextCompat.getDrawable(holder.imgNotificationSender.getContext(), R.drawable.unread_notification));
             Typeface typeface  = ResourcesCompat.getFont(holder.Title.getContext(),R.font.nexabold);

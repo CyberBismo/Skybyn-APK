@@ -40,6 +40,12 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineCommentsCount.setText(timelineDataClass.getComments_count());
         holder.txtTimelineContent.setText(timelineDataClass.getContent());
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
+
+        String userID = Frontpage.userID;
+        //If the timeLine Post is by Me!
+        if (holder.txtUsername.getTag().toString().equals(userID)){
+            holder.ImgTimelinePostDelete.setVisibility(View.VISIBLE);
+        }
           functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(),holder.imgTimelinePostPicture);
 
     }
@@ -54,7 +60,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         TextView txtUsername,txtTimelineContent, txtTimelineDate, txtTimelineLikes
                 , txtTimelineCommentsCount;
-        ImageView imgTimelinePostPicture;
+        ImageView imgTimelinePostPicture,ImgTimelinePostDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +71,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             txtTimelineLikes = itemView.findViewById(R.id.txtTimelinePostLikes);
             txtTimelineCommentsCount = itemView.findViewById(R.id.txtTimelinePostComments);
             imgTimelinePostPicture = itemView.findViewById(R.id.imgTimelinePostProfilePicture);
+            ImgTimelinePostDelete = itemView.findViewById(R.id.imgTimelinePostDelete);
 
         }
     }

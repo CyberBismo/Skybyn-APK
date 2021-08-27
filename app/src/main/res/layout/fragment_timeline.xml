@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".Timeline">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/postsRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/timelineSwipeToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/dark_gray" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_gray" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </FrameLayout>

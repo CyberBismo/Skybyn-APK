@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ Functions functions = new Functions();
 Data data = new Data();
 LottieAnimationView lottie;
 RecyclerView recyclerView;
+SwipeRefreshLayout mSwipeRefreshLayout;
 
     private void loadTimelinePosts() {
         functions.showProgress(lottie);
@@ -131,7 +133,19 @@ RecyclerView recyclerView;
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
         loadTimelinePosts();
+         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_LONG).show();
+                loadTimelinePosts();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
 
     }
-}
+
+
 
