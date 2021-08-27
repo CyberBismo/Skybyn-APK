@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,8 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.net.IDN;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -28,9 +34,26 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         NotificationDataClass notificationDataClass = NotificationDataClass.get(position);
         holder.Title.setText(notificationDataClass.getTitle());
         holder.Content.setText(notificationDataClass.getContent());
+        HashMap<String,String>  notiData = new HashMap<>();
+        notiData.put("notiID",notificationDataClass.getID());
+        notiData.put("notiType",notificationDataClass.getType());
+        holder.Content.setTag(R.integer.integer_key, notiData);
         holder.date.setText(notificationDataClass.getDate());
-        holder.type.setText(notificationDataClass.getType());
-        functions.loadNotificationThumb(notificationDataClass.getAvatarLink(),holder.imgNotificationSender);
+
+
+        if (notificationDataClass.getRead().equals("0")) {
+            holder.imgNotificationSender.setImageDrawable(ContextCompat.getDrawable(holder.imgNotificationSender.getContext(), R.drawable.unread_notification));
+            Typeface typeface  = ResourcesCompat.getFont(holder.Title.getContext(),R.font.nexabold);
+            holder.Content.setTypeface(typeface);
+            holder.notificationCardView.setCardBackgroundColor(ContextCompat.getColor(holder.notificationCardView.getContext(),R.color.main_colour));
+            holder.Title.setTypeface(typeface);
+
+        }else{
+            holder.imgNotificationSender.setImageDrawable(ContextCompat.getDrawable(holder.imgNotificationSender.getContext(), R.drawable.read_notification));
+            holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(),R.color.light_gray));
+            holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(),R.color.light_gray));
+
+        }
 
     }
     public NotificationsAdapter( List <NotificationDataClass> NotificationDataClass){
@@ -46,15 +69,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
         TextView Title,Content,date,type,ID;
         ImageView imgNotificationSender;
+        CardView notificationCardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             Title = itemView.findViewById(R.id.lblNotificationTitle);
-            ID = itemView.findViewById(R.id.lblNotificationID);
             Content = itemView.findViewById(R.id.lblNotificationContent);
             date = itemView.findViewById(R.id.lblNotificationDate);
-            type = itemView.findViewById(R.id.lblNotificationType);
             imgNotificationSender = itemView.findViewById(R.id.imgNotificationSender);
+            notificationCardView = itemView.findViewById(R.id.notificationCardView);
 
         }
     }

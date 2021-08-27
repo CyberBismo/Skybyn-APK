@@ -95,6 +95,7 @@ public class notification extends Fragment {
                 }
 
                 if (functions.isJsonArray(response)) {
+                    Log.i("response",response);
                     String notificationContent;
                     String notificationTitle;
                     String notificationDate;
@@ -105,6 +106,7 @@ public class notification extends Fragment {
                     String notificationPage = "";
                     String notificationGroup = "";
                     String notificationType = "";
+                    String notificationRead="";
 
                     JSONArray jsonArray = new JSONArray(response);
 
@@ -116,29 +118,20 @@ public class notification extends Fragment {
                         jsonObject = jsonArray.getJSONObject(i);
                         notificationContent = (String) jsonObject.get("content");
                         notificationAvatarLink = "";//(String) jsonObject.get("avatar");
-                        notificationDate = (String) jsonObject.get("created").toString();
+                        notificationDate = (String) jsonObject.get("date").toString();
                         notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
                         notificationTitle = (String) jsonObject.get("title");
-                        notificationID = (String) jsonObject.get("id");
+                        notificationID = (String) jsonObject.get("notiID");
+                        notificationRead = (String) jsonObject.get("read");
 
-                        notificationPost = (String) jsonObject.get("post").toString();
+                        /***notificationPost = (String) jsonObject.get("post").toString();
                         notificationPage = (String) jsonObject.get("page").toString();
                         notificationGroup = (String) jsonObject.get("group").toString();
-
-
+ **/
                         //notificationType = getString(R.string.notifications);
 
-                        if (!notificationPost.equals("null")) {
-                            notificationType = "Post";
-                        }
-                        if (!notificationGroup.equals("null")) {
-                            notificationType = "Group";
-                        }
-                        if (!notificationPage.equals("null")){
-                            notificationType = "Page";
-                        }
 
-                        notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID));
+                        notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
                         Log.i("JSON OBJECT",jsonObject.toString());
                     }
 

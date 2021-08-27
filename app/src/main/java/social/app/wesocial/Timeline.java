@@ -38,19 +38,17 @@ RecyclerView recyclerView;
         NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response",response);
+                Log.i("response",response.toString());
                 functions.hideProgress(lottie);
+                Toast.makeText(getActivity().getApplicationContext(),response,Toast.LENGTH_LONG);
 
-                if (response.equals("You've got no new notifications.")){
-                    functions.showSnackBarError(response,getView().findViewById(android.R.id.content),getActivity().getApplicationContext());
-                    return;
-                }
 
                 if (functions.isJsonArray(response)) {
                     String timelinePostContent;
                     String timelinePostUsername;
                     String timelinePostDate;
                     String timelineUserID;
+                    String timelinePostID;
                     Long unixTimelinePostDate;
                     String timelineAvatarLink;
                     String timelinePostLikes = "";
@@ -64,15 +62,17 @@ RecyclerView recyclerView;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         timelinePostContent = (String) jsonObject.get("content");
-                        timelineAvatarLink = "";//(String) jsonObject.get("avatar");
+                        timelineAvatarLink = (String) jsonObject.get("avatar");
                         timelinePostDate = (String) jsonObject.get("date").toString();
                         timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
                         timelinePostUsername = (String) jsonObject.get("username");
-                        timelineUserID = (String) jsonObject.get("postID");
+                        timelineUserID = (String) jsonObject.get("userID");
+                        timelinePostID = (String) jsonObject.get("postID");
                         timelinePostLikes = (String) jsonObject.get("likes").toString();
-                        timelinePostCommentsCount = (String) jsonObject.get("comment_count").toString();
+                        timelinePostCommentsCount = (String) jsonObject.get("comments_count").toString();
 
-                        //timelinePost.add(new NotificationDataClass(timelinePostContent, timelineAvatarLink, timelinePostDate, timelinePostUsername,notificationType,timelineUserID));
+                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink
+                                ,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes) );
                         Log.i("JSON OBJECT",jsonObject.toString());
                     }
 
@@ -120,8 +120,7 @@ RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+                             Bundle savedInstanceState) {// Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false);
     }
 
@@ -130,7 +129,7 @@ RecyclerView recyclerView;
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
-        loadTimelinePosts();
+        //loadTimelinePosts();
 
     }
 }

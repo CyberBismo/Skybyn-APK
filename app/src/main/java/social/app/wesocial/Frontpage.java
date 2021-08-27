@@ -116,7 +116,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         //Coloured sideNav icons
         //sideNavView.setItemIconTintList(null);
-        bottomNavigationView.setItemIconTintList(null);
+        //bottomNavigationView.setItemIconTintList(null);
 
         //Fab On CLick
         fab.setOnClickListener(view -> {
