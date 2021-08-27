@@ -66,15 +66,15 @@
 
     <string name="save">Save</string>
     <string name="updateProfile">Update Profile</string>
-    <string name="firstname">Firstname</string>
-    <string name="lastname">Lastname</string>
-    <string name="middlename">Middlename</string>
+    <string name="firstname">First name</string>
+    <string name="lastname">Last name</string>
+    <string name="middlename">Middle name</string>
     <string name="Nickname">Nickname</string>
     <string name="oldPassword">Enter Old Password</string>
     <string name="newPassword">Enter New Password</string>
     <string name="confirmNewPassword">Confirm New Password</string>
     <string name="updatePassword">Update Password</string>
-    <string name="shareYourThoughts">Share your thoughts...</string>
+    <string name="shareYourThoughts">What\'s on your mind?</string>
     <string name="sampleUsername">Sample Username...</string>
     <string name="Continue">Continue..</string>
     <string name="post_Long">Post Content too long.</string>
