@@ -1,55 +1,42 @@
 package social.app.wesocial;
 
 public class TimelineDataClass {
-    private String Content;
+    private String postID;
+    private String userID;
+    private String username;
     private String avatarLink;
     private String date;
-    private String title;
-    private String type;
+    private String content;
+    private String likes;
+    private String comments_count;
 
-    public String getID() {
-        return ID;
+
+    public String getPostID() {
+        return postID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
 
-    private String ID;
-
-    public String getType() {
-        return type;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public TimelineDataClass(String Content, String avatarLink, String date, String title, String type, String ID) {
-        this.Content = Content;
-        this.avatarLink = avatarLink;
-        this.date = date;
-        this.title = title;
-        this.type = type;
-        this.ID = ID;
+    public String getUsername() {
+        return username;
     }
-    public String getContent() {
-        return Content;
-    }
-    public void setContent(String Content) {
-        this.Content = Content;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAvatarLink() {
         return avatarLink;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setAvatarLink(String avatarLink) {
@@ -62,5 +49,42 @@ public class TimelineDataClass {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getComments_count() {
+        return comments_count;
+    }
+
+    public void setComments_count(String comments_count) {
+        this.comments_count = comments_count;
+    }
+
+    public String getLikes() {
+        return likes;
+    }
+
+    public void setLikes(String likes) {
+        this.likes = likes;
+    }
+
+    public TimelineDataClass(String postID  , String userID, String username,
+                             String avatarLink, String date, String content, String comments_count, String likes) {
+        this.postID = postID;
+        this.avatarLink = avatarLink;
+        this.date = date;
+        this.username = username;
+        this.content = content;
+        this.userID = userID;
+        this.likes = likes;
+        this.comments_count = comments_count;
+
     }
 }

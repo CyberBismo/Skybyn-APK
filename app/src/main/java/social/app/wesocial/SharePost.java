@@ -77,6 +77,7 @@ Data data = new Data();
                 })
                 .show();
     }
+
     public void LoadFragment(Fragment fragment, String fragString) {
         //FrameLayout frameLayout = findViewById(id.fragmentFrame);
         FragmentContainerView fragmentContainerView = getActivity().findViewById(R.id.fragmentContainerView);
@@ -92,7 +93,7 @@ Data data = new Data();
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        txtPostContent = getView().findViewById(R.id.txtPostContent);
+        txtPostContent = getView().findViewById(R.id.txtTimelineContent);
         btnPost = getView().findViewById(R.id.btnPost);
         LottieAnimationView lottie = getActivity().findViewById(R.id.frontpageProgressView);
 
@@ -105,9 +106,6 @@ Data data = new Data();
                     functions.showSnackBarError(getString(R.string.empty_post),getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
                     return;
             }
-
-
-
                 functions.showProgress(lottie);
                 HashMap<String,String> postData = new HashMap<>();
                 postData.put("userID",Frontpage.userID);
