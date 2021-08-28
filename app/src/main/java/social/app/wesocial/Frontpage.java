@@ -508,14 +508,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void LoadFragment(Fragment fragment, String fragString, Boolean timeline) {
-        //FrameLayout frameLayout = findViewById(id.fragmentFrame);
         FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
-
-        //FragmentContainerView.setVisibility(View.VISIBLE);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         manager.popBackStack();
         transaction.replace(id.fragmentContainerView, fragment, fragString);
         transaction.commit();
@@ -527,6 +523,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         switch (item.getItemId()) {
             case R.id.logout:
                 logOut();
+                break;
+
+            case id.settings:
+                Settings settings= new Settings();
+                LoadFragment(settings,"",false);
                 break;
 
             case id.myNotifications:

@@ -54,9 +54,9 @@
 
             <TextView
                 android:id="@+id/txtTimelinePostLikes"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="60dp"
+                android:layout_marginEnd="192dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
@@ -72,9 +72,9 @@
 
             <TextView
                 android:id="@+id/txtTimelinePostComments"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
@@ -86,7 +86,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.93" />
+                app:layout_constraintVertical_bias="0.929" />
 
             <TextView
                 android:id="@+id/txtTimelinePostDate"
@@ -113,7 +113,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.228"
+                app:layout_constraintHorizontal_bias="0.271"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
@@ -136,13 +136,13 @@
                 android:id="@+id/imgPostComment"
                 android:layout_width="25dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="12dp"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtTimelinePostComments"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.93"
+                app:layout_constraintVertical_bias="0.929"
                 app:srcCompat="@drawable/comment"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 

@@ -33,7 +33,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     Data data = new Data();
     FrameLayout verify_form;
     String oneTimetoken;
-        Executor executor;
+    Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
@@ -43,8 +43,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private Button signin_su;
     private Button signin_f;
     private Button signup_f;
-    private EditText txtUser;
-    private EditText txtPass;
+    private EditText txtLoginUserName;
+    private EditText txtLoginPassWord;
     private EditText txtUsername;
     private EditText txtPassword;
     private EditText txtConfirmPassword;
@@ -77,9 +77,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_si = findViewById(R.id.forgot_si);
         forgot_su = findViewById(R.id.forgot_su);
         txtVerify = findViewById(R.id.verify_email_check);
-        txtUser = findViewById(R.id.txtUsername);
-         txtOneTimeCode = findViewById(R.id.txtOTC);
-        txtPass = findViewById(R.id.txtPassword);
+        txtLoginUserName = findViewById(R.id.txtUsername);
+        txtOneTimeCode = findViewById(R.id.txtOTC);
+        txtLoginPassWord = findViewById(R.id.txtPassword);
         txtUsername = findViewById(R.id.Username);
         txtPassword = findViewById(R.id.Password);
         txtConfirmPassword = findViewById(R.id.cPassword);
@@ -87,10 +87,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
         verify_form = findViewById(R.id.verify_form);
         TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
         Button btnSign_up = findViewById(R.id.sign_up);
-         signin_form = findViewById(R.id.signin_form);
-         forgot_form = findViewById(R.id.forgot_form);
-         forgot_email = findViewById(R.id.forgot_email);
-         signup_form = findViewById(R.id.signup_form);
+        signin_form = findViewById(R.id.signin_form);
+        forgot_form = findViewById(R.id.forgot_form);
+        forgot_email = findViewById(R.id.forgot_email);
+        signup_form = findViewById(R.id.signup_form);
 
         Button BtnForgotPassword;
         Button btnSignIn = findViewById(R.id.BtnSignIn);
@@ -102,6 +102,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             signup_form.setVisibility(View.VISIBLE);
             signin_form.setVisibility(View.INVISIBLE);
         });
+
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         //Init Executor and BioPrompt
@@ -156,19 +157,19 @@ public class LoginRegisterForgot extends AppCompatActivity {
         });
 
         btnSignIn.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(txtUser.getText())) {
+
+            if (TextUtils.isEmpty(txtLoginUserName.getText())) {
                 ErrorMessage = getString(R.string.username_required);
-                txtUser.setError(ErrorMessage);
+                txtLoginUserName.setError(ErrorMessage);
                 ShowToast(ErrorMessage);
-            } else if (TextUtils.isEmpty(txtPass.getText())) {
+            } else if (TextUtils.isEmpty(txtLoginPassWord.getText())) {
                 ErrorMessage = getString(R.string.password_required);
-                txtPass.setError(ErrorMessage);
+                txtLoginPassWord.setError(ErrorMessage);
                 ShowToast(ErrorMessage);
             } else {
                 signIn();
             }
         });
-
 
 
         btnSign_up.setOnClickListener(v -> {
@@ -225,8 +226,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         //Checking if SharedPref contains a Username key
         if (sharedpreferences.contains("username")) {
-            functions.showFingerPrintPrompt(lottieview);
-            biometricPrompt();
+            Boolean showFingerPrintPrompt;
+            showFingerPrintPrompt = sharedpreferences.getBoolean(getString(R.string.biometric_prompt_key), false);
+            if (showFingerPrintPrompt) {
+                functions.showFingerPrintPrompt(lottieview);
+                biometricPrompt();
+            }else{
+                checkLoginStatus();
+            }
         }
     }
 
@@ -390,8 +397,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public void signIn() {
         functions.showProgress(lottieview);
-        String username = txtUser.getText().toString();
-        String password = txtPass.getText().toString();
+        String username = txtLoginUserName.getText().toString();
+        String password = txtLoginPassWord.getText().toString();
 
         HashMap<String, String> postData = new HashMap<>();
 
@@ -520,7 +527,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public void checkLoginStatus() {
         //user has been logged in before, then set Username and password to intent...
-
         Intent intent = new Intent(this, Frontpage.class);
         intent.putExtra("loginAction", data.fingerprint_auth);
         startActivity(intent);
@@ -533,17 +539,16 @@ public class LoginRegisterForgot extends AppCompatActivity {
         sharedPrefEditor.putString("password", password);
         sharedPrefEditor.putString("userID", userID);
         sharedPrefEditor.apply();
-
     }
 
     public void biometricPrompt() {
-                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.biometrics_required))
                 .setDescription(getString(R.string.touch_sensor))
                 .setNegativeButtonText("Cancel")
                 .setConfirmationRequired(false)
                 .build();
-                biometricPrompt.authenticate(promptInfo);
+        biometricPrompt.authenticate(promptInfo);
     }
 
     //Show Toast Method

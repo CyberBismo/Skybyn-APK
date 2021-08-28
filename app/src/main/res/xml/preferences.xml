@@ -1,0 +1,12 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:id="@+id/biometricBiometricSwitch"
+        android:defaultValue="false"
+        android:icon="@drawable/fingerprint"
+        android:key="@string/biometric_prompt_key"
+        android:summary="@string/biometric_prompt_message"
+        android:title="@string/biometric_prompt_key"
+
+        />
+</PreferenceScreen>
