@@ -80,7 +80,7 @@
     <string name="post_Long">Post Content too long.</string>
     <string name="empty_post">Sorry, your post is empty.</string>
     <string name="cancel">No, Cancel</string>
-    <string name="refreshing">Refreshing Contents...</string>
+    <string name="refreshing">Updating timeline...</string>
 
     <string name="biometric_prompt_key">Biometric Prompt</string>
     <string name="biometric_prompt_message">Biometric Prompt on startup </string>
