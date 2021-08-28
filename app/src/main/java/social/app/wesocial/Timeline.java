@@ -138,7 +138,7 @@ SwipeRefreshLayout mSwipeRefreshLayout;
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
                 loadTimelinePosts();
                 mSwipeRefreshLayout.setRefreshing(false);
             }
