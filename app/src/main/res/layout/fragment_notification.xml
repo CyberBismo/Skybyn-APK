@@ -22,7 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="625dp"
+        android:layout_height="700dp"
         android:layout_marginStart="3dp"
         android:layout_marginBottom="16dp" />
 </LinearLayout>

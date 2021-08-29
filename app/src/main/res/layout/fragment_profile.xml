@@ -36,7 +36,7 @@
 
         <EditText
             android:id="@+id/txtProfileFirstname"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -55,7 +55,7 @@
 
         <EditText
             android:id="@+id/txtProfileLastname"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -74,7 +74,7 @@
 
         <EditText
             android:id="@+id/txtProfileMiddlename"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -93,7 +93,7 @@
 
         <EditText
             android:id="@+id/txtProfileMiddlename4"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -112,7 +112,7 @@
 
         <Button
             android:id="@+id/btnSaveProfile"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -128,7 +128,7 @@
 
         <EditText
             android:id="@+id/txtProfileOldPassword"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -147,7 +147,7 @@
 
         <EditText
             android:id="@+id/txtProfileNewPassword"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -166,7 +166,7 @@
 
         <EditText
             android:id="@+id/txtProfileConfirmNewPassword"
-            android:layout_width="@dimen/profileUpdateViewsWidth"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/profileUpdateViewsHeight"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
@@ -185,7 +185,7 @@
 
         <Button
             android:id="@+id/btnUpdatePassword"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
