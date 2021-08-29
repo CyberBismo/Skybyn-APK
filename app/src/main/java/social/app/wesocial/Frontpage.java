@@ -178,8 +178,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showNotifications() {
-        Fragment notificationFragment = notification.newInstance(userID, "");
-        LoadFragment(notificationFragment, "notification", false);
+        Fragment notificationFragment = Notification.newInstance(userID, "");
+        LoadFragment(notificationFragment, "Notification", false);
     }
 
     public void showProfilePage() {
@@ -357,7 +357,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void loadUserProfile(String userID) {
-        functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
 
@@ -481,7 +480,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         if (response_code.equals("1")) {
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
-                            functions.showSnackBar(getString(string.loginSuccessful), findViewById(android.R.id.content), getApplicationContext());
+                            //functions.showSnackBar(getString(string.loginSuccessful), findViewById(android.R.id.content), getApplicationContext());
                             loadUserProfile(userID);
                         }
 
@@ -511,7 +510,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        //transaction.addToBackStack(null);
+        transaction.addToBackStack(null);
         manager.popBackStack();
         transaction.replace(id.fragmentContainerView, fragment, fragString);
         transaction.commit();

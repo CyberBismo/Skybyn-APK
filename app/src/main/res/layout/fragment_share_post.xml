@@ -8,7 +8,7 @@
     tools:context=".SharePost">
 
     <LinearLayout
-        android:layout_width="412dp"
+        android:layout_width="match_parent"
         android:layout_height="286dp"
         android:orientation="vertical"
         android:weightSum="2"
@@ -41,10 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="151dp"
             android:layout_marginTop="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:background="@drawable/text_selector"
             android:ems="10"
             android:foregroundGravity="center_horizontal"
@@ -53,6 +49,10 @@
             android:inputType="textMultiLine"
             android:maxLength="@integer/max_post_size"
             android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white" />
 

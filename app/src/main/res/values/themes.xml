@@ -28,10 +28,10 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.WeSocial.PrefSettings"  parent="Theme.WeSocial.ActionBar">
-        <item name="colorControlNormal">@color/main_colour</item>
-        <item name="colorControlActivated">@color/green</item>
-
- </style>
+    <style name="PreferenceScreen" parent="Theme.AppCompat">
+    <item name="android:textColor">@color/light_main_colour</item>
+    <item name="android:textColorPrimary">@color/light_main_colour</item>
+<item name="android:background">@color/black</item>
+</style>
 
 </resources>

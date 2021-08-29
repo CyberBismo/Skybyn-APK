@@ -27,10 +27,10 @@ import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link notification#newInstance} factory method to
+ * Use the {@link Notification#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class notification extends Fragment {
+public class Notification extends Fragment {
 
     Functions functions = new Functions();
     Data data = new Data();
@@ -40,23 +40,21 @@ public class notification extends Fragment {
     LottieAnimationView lottie;
 
 
-    public notification() {
+    public Notification() {
         // Required empty public constructor
     }
 
-    public static notification newInstance(String param1, String param2) {
-
-        notification fragment = new notification();
+    public static Notification newInstance(String param1, String param2) {
+        Notification fragment = new Notification();
         Bundle args = new Bundle();
         fragment.setArguments(args);
-
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -76,8 +74,6 @@ public class notification extends Fragment {
         userID = Frontpage.userID;
         loadNotification();
     }
-
-
 
 
     private void loadNotification() {
@@ -127,20 +123,15 @@ public class notification extends Fragment {
                         /***notificationPost = (String) jsonObject.get("post").toString();
                         notificationPage = (String) jsonObject.get("page").toString();
                         notificationGroup = (String) jsonObject.get("group").toString();
- **/
-                        //notificationType = getString(R.string.notifications);
-
-
+ **/                     //notificationType = getString(R.string.notifications);
                         notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
-                        Log.i("JSON OBJECT",jsonObject.toString());
-                    }
-
+                        }
                     NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(notificationsAdapter);
-                    notificationsAdapter.notifyDataSetChanged();
                     lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+recyclerView.getAdapter().getItemCount()+")");
+                    notificationsAdapter.notifyDataSetChanged();
                 }
                 if (!functions.isJsonArray(response.toString())) {
                     Toast.makeText(getActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();

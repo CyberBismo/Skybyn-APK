@@ -34,27 +34,23 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         NotificationDataClass notificationDataClass = NotificationDataClass.get(position);
         holder.Title.setText(notificationDataClass.getTitle());
         holder.Content.setText(notificationDataClass.getContent());
-        HashMap<String,String>  notiData = new HashMap<>();
-        notiData.put("notiID",notificationDataClass.getID());
-        notiData.put("notiType",notificationDataClass.getType());
-        holder.Content.setTag(R.integer.integer_key, notiData);
         holder.date.setText(notificationDataClass.getDate());
-
+        holder.imgNotificationSender.setTag(R.integer.integer_key_zero,notificationDataClass.getAvatarLink());
+        functions.loadProfilePictureThumb(holder.imgNotificationSender.getTag(R.integer.integer_key_zero).toString(),holder.imgNotificationSender);
 
 
         if (notificationDataClass.getRead().equals("0")) {
-            holder.imgNotificationSender.setImageDrawable(ContextCompat.getDrawable(holder.imgNotificationSender.getContext(), R.drawable.unread_notification));
             Typeface typeface  = ResourcesCompat.getFont(holder.Title.getContext(),R.font.nexabold);
             holder.Content.setTypeface(typeface);
             holder.notificationCardView.setCardBackgroundColor(ContextCompat.getColor(holder.notificationCardView.getContext(),R.color.main_colour));
             holder.Title.setTypeface(typeface);
 
         }else{
-            holder.imgNotificationSender.setImageDrawable(ContextCompat.getDrawable(holder.imgNotificationSender.getContext(), R.drawable.read_notification));
             holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(),R.color.light_gray));
             holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(),R.color.light_gray));
-
         }
+
+
 
     }
     public NotificationsAdapter( List <NotificationDataClass> NotificationDataClass){

@@ -7,6 +7,5 @@
         android:key="@string/biometric_prompt_key"
         android:summary="@string/biometric_prompt_message"
         android:title="@string/biometric_prompt_key"
-
         />
 </PreferenceScreen>

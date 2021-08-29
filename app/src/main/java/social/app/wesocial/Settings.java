@@ -20,6 +20,9 @@ SharedPreferences sharedPreferences;
         sharedPreferences= getActivity().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         Boolean biometricPrompt = sharedPreferences.getBoolean(getString(R.string.biometric_prompt_key),false);
         switchPreference = (SwitchPreference) findPreference(getString(R.string.biometric_prompt_key));
+        getActivity().setTheme(R.style.PreferenceScreen);
+
+
         if (biometricPrompt) {
             switchPreference.setChecked(true);
         }else{
@@ -33,14 +36,11 @@ SharedPreferences sharedPreferences;
                 if (switchPreference.isChecked()) {
                     switchPreference.setChecked(false);
                     editor.putBoolean(getString(R.string.biometric_prompt_key), false);
-                    Toast.makeText(getContext(),"Checked",Toast.LENGTH_SHORT).show();
                 }else{
                     switchPreference.setChecked(true);
                     editor.putBoolean(getString(R.string.biometric_prompt_key), true);
-                    Toast.makeText(getContext(),"unChecked",Toast.LENGTH_SHORT).show();
                 }
                 editor.commit();
-                Toast.makeText(getContext(),"Saved",Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

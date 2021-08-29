@@ -134,7 +134,6 @@ SwipeRefreshLayout mSwipeRefreshLayout;
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
         loadTimelinePosts();
          mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

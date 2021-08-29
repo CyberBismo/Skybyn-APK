@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="max_post_size">2000</integer>
-    <integer name="integer_key">0</integer>
+    <integer name="integer_key_zero">0</integer>
 </resources>

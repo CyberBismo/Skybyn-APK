@@ -9,15 +9,15 @@
     tools:context="social.app.wesocial.Frontpage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:orientation="vertical">
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <include
             android:id="@+id/include"
             layout="@layout/toolbar"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,23 +41,35 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:targetApi="lollipop" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragmentContainerView"
-            android:layout_width="405dp"
-            android:layout_height="616dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="428dp"
+            android:layout_height="696dp"
+            android:layout_marginBottom="36dp"
+            app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include"
-            app:layout_constraintVertical_bias="0.016"
-            tools:layout="@layout/fragment_timeline" />
+            app:layout_constraintVertical_bias="0.0">
 
-        s<androidx.coordinatorlayout.widget.CoordinatorLayout
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout="@layout/fragment_timeline" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="98dp"
+            android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,16 +112,16 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/post"
                 android:contentDescription="@string/app_name"
-                app:srcCompat="@drawable/post"
                 android:theme="@style/Theme.WeSocial"
                 android:tint="@color/white"
+                android:visibility="visible"
                 app:backgroundTint="@color/main_colour"
                 app:fabSize="normal"
-                app:layout_anchor="@+id/bottomAppBar"
-                app:layout_anchorGravity="center" />
+                app:layout_anchor="@id/bottomAppBar"
+                app:layout_anchorGravity="center"
+                app:srcCompat="@drawable/post" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
