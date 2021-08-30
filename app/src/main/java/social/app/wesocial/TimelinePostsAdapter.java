@@ -32,8 +32,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     private final List<TimelineDataClass> TimelineDataClass;
     Functions functions = new Functions();
     Data data = new Data();
-    RecyclerView timelineRecyclerView;
-    public Boolean userLikedPost = false;
     String postID;
 
 
@@ -84,6 +82,11 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int arg1) {
+
+                            TimelineDataClass.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());
+                            
                             postID = holder.txtTimelineContent.getTag().toString();
                             HashMap<String, String> postData = new HashMap<>();
                             postData.put("userID", Frontpage.userID);
@@ -99,9 +102,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                         if (responseCode.equals("1")) {
                                             //REMOVE FROM RECYCLERVIEW
                                             Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-                                            TimelineDataClass.remove(holder.getAdapterPosition());
-                                            notifyItemRemoved(holder.getAdapterPosition());
-                                            notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());
+
                                         }
 
                                         if (responseCode.equals("0")) {
@@ -166,7 +167,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                 holder.imgTimelinePostLike.setTag("1");
 
 
-
                             }
                             if (responseCode.equals("2")) {
                                 likes = jsonObject.get("likes").toString();
@@ -190,16 +190,17 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
             }
+
             @Override
             public void onClick(View view) {
-                int Likes = Integer.valueOf(holder.txtTimelineLikes.getText().toString()) ;
+                int Likes = Integer.valueOf(holder.txtTimelineLikes.getText().toString());
                 if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
                     holder.imgTimelinePostLike.setLiked(true);
-                    holder.txtTimelineLikes.setText(String.valueOf(Likes+1));
+                    holder.txtTimelineLikes.setText(String.valueOf(Likes + 1));
 
                 } else {
                     holder.imgTimelinePostLike.setLiked(false);
-                    holder.txtTimelineLikes.setText(String.valueOf(Likes-1));
+                    holder.txtTimelineLikes.setText(String.valueOf(Likes - 1));
                 }
                 sendLike();
             }
