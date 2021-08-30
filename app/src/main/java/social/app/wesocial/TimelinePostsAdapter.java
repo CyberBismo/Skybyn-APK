@@ -1,28 +1,28 @@
 package social.app.wesocial;
 
-import static social.app.wesocial.R.*;
+import static social.app.wesocial.R.id;
+import static social.app.wesocial.R.layout;
+import static social.app.wesocial.R.string;
 
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.like.LikeButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,9 +63,10 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
 
         if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
-            holder.imgTimelinePostLike.setImageDrawable(ContextCompat.getDrawable(holder.imgTimelinePostLike.getContext(), drawable.like));
+            holder.imgTimelinePostLike.setLiked(false);
         } else {
-            holder.imgTimelinePostLike.setImageDrawable(ContextCompat.getDrawable(holder.imgTimelinePostLike.getContext(), drawable.liked));
+            holder.imgTimelinePostLike.setLiked(true);
+
         }
 
         String userID = Frontpage.userID;
@@ -95,16 +96,16 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                         String responseCode = jsonObject.get("responseCode").toString();
                                         String message = jsonObject.get("message").toString();
 
-                                        if (responseCode.equals("1")){
+                                        if (responseCode.equals("1")) {
                                             //REMOVE FROM RECYCLERVIEW
-                                            Toast.makeText(holder.itemView.getContext(),message,Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
                                             TimelineDataClass.remove(holder.getAdapterPosition());
                                             notifyItemRemoved(holder.getAdapterPosition());
-                                            notifyItemRangeChanged(holder.getAdapterPosition(),TimelineDataClass.size());
+                                            notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());
                                         }
 
-                                        if (responseCode.equals("0")){
-                                            Toast.makeText(holder.itemView.getContext(),message,Toast.LENGTH_SHORT).show();
+                                        if (responseCode.equals("0")) {
+                                            Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
 
                                         }
 
@@ -117,7 +118,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                 }
                             });
 
-                            networkController.PostMethod(data.deletePost_Api,postData);
+                            networkController.PostMethod(data.deletePost_Api, postData);
                         }
                     });
 
@@ -138,47 +139,72 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         });
 
         //like post
-        holder.imgTimelinePostLike.setOnClickListener(view -> {
-            HashMap<String, String> postData = new HashMap<>();
-            postID = holder.txtTimelineContent.getTag().toString();
-            postData.put("userID", Frontpage.userID);
-            postData.put("postID", postID);
 
-            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
-                @Override
-                public void notifySuccess(String response) throws JSONException {
-                    Log.i("resasss",response);
-                    if (functions.isJsonObject(response)) {
-                        JSONObject jsonObject = new JSONObject(response);
-                        String responseCode = jsonObject.get("responseCode").toString();
-                        String message = jsonObject.get("message").toString();
-                        String likes = "";
 
-                        if (responseCode.equals("1")) {
-                            likes = jsonObject.get("likes").toString();
-                            holder.imgTimelinePostLike.setImageDrawable(ContextCompat.getDrawable(holder.imgTimelinePostLike.getContext(), drawable.liked));
+        holder.imgTimelinePostLike.setOnClickListener(new View.OnClickListener() {
+            public void sendLike() {
+
+
+                HashMap<String, String> postData = new HashMap<>();
+                postID = holder.txtTimelineContent.getTag().toString();
+                postData.put("userID", Frontpage.userID);
+                postData.put("postID", postID);
+
+                NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                    @Override
+                    public void notifySuccess(String response) throws JSONException {
+                        Log.i("response", response);
+                        if (functions.isJsonObject(response)) {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String responseCode = jsonObject.get("responseCode").toString();
+                            String message = jsonObject.get("message").toString();
+                            String likes = "";
+
+                            if (responseCode.equals("1")) {
+                                likes = jsonObject.get("likes").toString();
+                                holder.imgTimelinePostLike.setLiked(true);
+                                holder.imgTimelinePostLike.setTag("1");
+
+
+
+                            }
+                            if (responseCode.equals("2")) {
+                                likes = jsonObject.get("likes").toString();
+                                holder.imgTimelinePostLike.setLiked(false);
+                                holder.imgTimelinePostLike.setTag("0");
+                            }
+
+                            holder.txtTimelineLikes.setText(likes);
+                            Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
 
 
                         }
-                        if (responseCode.equals("2")) {
-                            likes = jsonObject.get("likes").toString();
-                            holder.imgTimelinePostLike.setImageDrawable(ContextCompat.getDrawable(holder.imgTimelinePostLike.getContext(), drawable.like));
-                        }
-
-                        holder.txtTimelineLikes.setText(likes);
-                        Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-
                     }
-                }
 
-                @Override
-                public void notifyError(VolleyError error) {
-                    Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void notifyError(VolleyError error) {
+                        Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                networkController.PostMethod(data.like_Api, postData);
+
+
+            }
+            @Override
+            public void onClick(View view) {
+                int Likes = Integer.valueOf(holder.txtTimelineLikes.getText().toString()) ;
+                if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
+                    holder.imgTimelinePostLike.setLiked(true);
+                    holder.txtTimelineLikes.setText(String.valueOf(Likes+1));
+
+                } else {
+                    holder.imgTimelinePostLike.setLiked(false);
+                    holder.txtTimelineLikes.setText(String.valueOf(Likes-1));
                 }
-            });
-            networkController.PostMethod(data.like_Api, postData);
+                sendLike();
+            }
         });
+
     }
 
 
@@ -190,7 +216,8 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
-        ImageView imgTimelinePostPicture, ImgTimelinePostDelete, imgTimelinePostLike, imgTimelinePostComment;
+        ImageView imgTimelinePostPicture, ImgTimelinePostDelete, imgTimelinePostComment;
+        LikeButton imgTimelinePostLike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

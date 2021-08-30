@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -95,6 +96,12 @@ Data data = new Data();
         super.onViewCreated(view, savedInstanceState);
         txtPostContent = getView().findViewById(R.id.txtTimelineContent);
         btnPost = getView().findViewById(R.id.btnPost);
+
+        txtPostContent.requestFocus();
+        if(txtPostContent.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+
         LottieAnimationView lottie = getActivity().findViewById(R.id.frontpageProgressView);
 
         btnPost.setOnClickListener( view1 -> {

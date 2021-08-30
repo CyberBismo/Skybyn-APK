@@ -511,9 +511,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.addToBackStack(null);
-        manager.popBackStack();
         transaction.replace(id.fragmentContainerView, fragment, fragString);
+        transaction.addToBackStack(null);
         transaction.commit();
 
     }
