@@ -8,6 +8,7 @@ public class TimelineDataClass {
     private String date;
     private String content;
     private String likes;
+    private String iLike;
     private String comments_count;
 
 
@@ -75,11 +76,20 @@ public class TimelineDataClass {
         this.likes = likes;
     }
 
+    public String getiLike() {
+        return iLike;
+    }
+
+    public void setiLike(String iLike) {
+        this.iLike = iLike;
+    }
+
     public TimelineDataClass(String postID  , String userID, String username,
-                             String avatarLink, String date, String content, String comments_count, String likes) {
+                             String avatarLink, String date, String content, String comments_count, String likes, String iLike) {
         this.postID = postID;
         this.avatarLink = avatarLink;
         this.date = date;
+        this.iLike = iLike;
         this.username = username;
         this.content = content;
         this.userID = userID;

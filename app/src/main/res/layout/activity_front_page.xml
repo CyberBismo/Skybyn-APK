@@ -42,7 +42,7 @@
             tools:targetApi="lollipop" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="428dp"
+            android:layout_width="match_parent"
             android:layout_height="696dp"
             android:layout_marginBottom="36dp"
             app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"

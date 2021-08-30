@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -31,6 +33,8 @@ Data data = new Data();
 LottieAnimationView lottie;
 RecyclerView recyclerView;
 SwipeRefreshLayout mSwipeRefreshLayout;
+
+
 
     private void loadTimelinePosts() {
         functions.showProgress(lottie);
@@ -51,6 +55,7 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                     String timelinePostDate;
                     String timelineUserID;
                     String timelinePostID;
+                    String timelineILike;
                     Long unixTimelinePostDate;
                     String timelineAvatarLink;
                     String timelinePostLikes = "";
@@ -72,10 +77,12 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                         timelinePostLikes = (String) jsonObject.get("likes").toString();
                         timelinePostCommentsCount = (String) jsonObject.get("comments_count").toString();
                         timelinePostContent = (String) jsonObject.get("content");
-                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink
-                                ,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes) );
+                        timelineILike = (String) jsonObject.get("ilike");
 
-                        Log.i("jjOBJECT",jsonObject.toString());
+                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink
+                                ,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike) );
+
+
 
                     }
 
@@ -132,8 +139,13 @@ SwipeRefreshLayout mSwipeRefreshLayout;
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
+
+
+
+
+
         loadTimelinePosts();
-         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

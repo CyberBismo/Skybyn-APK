@@ -466,7 +466,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void notifySuccess(String response) {
 
-                functions.hideProgress(lottieview);
+
                 if (!functions.isJsonObject(response)) {
                     functions.showSnackBarError(getString(string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
                     return;
@@ -485,6 +485,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         }
 
                         if (response_code.equals("0")) {
+                            functions.hideProgress(lottieview);
                             String errorMsg = jsonResponse.get("message").toString();
                             functions.showSnackBarError(errorMsg, findViewById(android.R.id.content), getApplicationContext());
                             logOut();

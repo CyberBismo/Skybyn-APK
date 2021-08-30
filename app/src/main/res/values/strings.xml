@@ -100,6 +100,10 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="liked">Liked</string>
+    <string name="deletePOST">Are you sure you want to delete this post?</string>
+    <string name="yes_delete">Yes, Delete</string>
+    <string name="no">No</string>
 
 
 </resources>
