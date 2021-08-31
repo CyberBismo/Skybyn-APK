@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import kotlin.TypeCastException;
 
@@ -149,11 +150,10 @@ public class Functions  {
 
     public String  convertUnixToDateAndTime(Long UnixDateLong) {
         try {
-            SimpleDateFormat SDF;
-            Long Date = UnixDateLong * 1000L;
-            SDF = new SimpleDateFormat("dd-MM-yyyy  HH:MM:SS");
-
-            return SDF.format(Date);
+            Date date = new Date(UnixDateLong*1000L); // convert seconds to milliseconds
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa z"); // the format of your date
+            String formattedDate = dateFormat.format(date);
+            return formattedDate;
         }catch (TypeCastException e) {
             return  "Loading time...";
 

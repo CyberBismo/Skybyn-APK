@@ -34,6 +34,7 @@
         android:layout_marginBottom="111dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewTimelinePostsComments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -147,8 +148,8 @@
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtShowTimelinePostComments"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.913"
+                app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
+                app:layout_constraintVertical_bias="0.671"
                 app:srcCompat="@drawable/comment"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -157,33 +158,29 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="40dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostContent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/txtShowTimelinePostUsername"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.055"
                 app:srcCompat="@drawable/delete" />
 
             <ImageView
                 android:id="@+id/imgShowTimelinePostEdit"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginBottom="40dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostContent"
                 app:layout_constraintEnd_toStartOf="@+id/imgShowTimelinePostDelete"
-                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintHorizontal_bias="0.703"
                 app:layout_constraintStart_toEndOf="@+id/txtShowTimelinePostUsername"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.055"
                 app:srcCompat="@drawable/edit" />
 
             <com.like.LikeButton
                 android:id="@+id/imgShowTimelinePostLike"
                 android:layout_width="25dp"
                 android:layout_height="20dp"
-                android:layout_marginStart="36dp"
+                android:layout_marginStart="32dp"
                 app:anim_scale_factor="2"
                 app:circle_end_color="@color/light_main_colour"
                 app:circle_start_color="@color/red"
@@ -191,8 +188,8 @@
                 app:icon_type="thumb"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.913"
+                app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
+                app:layout_constraintVertical_bias="0.671"
                 app:like_drawable="@drawable/liked"
                 app:unlike_drawable="@drawable/like" />
         </androidx.constraintlayout.widget.ConstraintLayout>
