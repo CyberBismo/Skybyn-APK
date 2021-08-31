@@ -1,16 +1,28 @@
 package social.app.wesocial;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 
@@ -55,12 +67,45 @@ public class Functions  {
 
     }
 
+    public interface alertDialogListener {
+        void DialogPositive(DialogInterface dialogInterface, int i) ;
+
+        void DialogNegative(DialogInterface dialogInterface, int i);
+    }
+
+    public void showAlertDialog(alertDialogListener alertDialogListener,Context context,String Title, String message,String positiveText, String negativeText) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setMessage(message)
+                .setTitle(Title)
+                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        alertDialogListener.DialogPositive(dialogInterface, i);
+                    }
+                });
+        alertDialog.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialogListener.DialogNegative(dialogInterface, i);
+            }
+        });
+
+
+
+
+
+
+
+    }
+
     public void  loadProfilePictureThumb(String thumbNailLink, View imv){
                 Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.drawable.profile_gray)
                 .error(R.drawable.profile_gray)
-                .into((ImageView) imv);
+                        .into((ImageView) imv);
+
 
 
 
@@ -89,12 +134,25 @@ public class Functions  {
 
     }
 
+    public void LoadFragment(Fragment fragment, String fragString, Activity activity) {
+        FragmentContainerView fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
+        FragmentActivity fragActivity = (FragmentActivity) activity;
+        FragmentManager manager = fragActivity.getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        manager.popBackStack();
+        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
 
     public String  convertUnixToDateAndTime(Long UnixDateLong) {
         try {
             SimpleDateFormat SDF;
             Long Date = UnixDateLong * 1000L;
-            SDF = new SimpleDateFormat("dd-MMM-yyyy HH:MM:SS");
+            SDF = new SimpleDateFormat("dd-MM-yyyy  HH:MM:SS");
+
             return SDF.format(Date);
         }catch (TypeCastException e) {
             return  "Loading time...";

@@ -63,27 +63,23 @@ SwipeRefreshLayout mSwipeRefreshLayout;
 
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<TimelineDataClass> timelinePost = new ArrayList();
-                    JSONObject jsonObject = null;
+                    JSONObject jsonObject;
 
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         timelineAvatarLink = (String) jsonObject.get("avatar");
-                        timelinePostDate = (String) jsonObject.get("date").toString();
+                        timelinePostDate = jsonObject.get("date").toString();
                         timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
                         timelinePostUsername = (String) jsonObject.get("username");
                         timelineUserID = (String) jsonObject.get("userID");
                         timelinePostID = (String) jsonObject.get("postID");
-                        timelinePostLikes = (String) jsonObject.get("likes").toString();
-                        timelinePostCommentsCount = (String) jsonObject.get("comments_count").toString();
+                        timelinePostLikes = jsonObject.get("likes").toString();
+                        timelinePostCommentsCount = jsonObject.get("comments_count").toString();
                         timelinePostContent = (String) jsonObject.get("content");
-                        timelineILike = (String) jsonObject.get("ilike");
+                        timelineILike = jsonObject.get("ilike").toString();
 
-                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink
-                                ,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike) );
-
-
-
+                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike));
                     }
 
                     TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
@@ -92,10 +88,7 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                     recyclerView.setAdapter(timelinepostsAdapter);
                     timelinepostsAdapter.notifyDataSetChanged();
                 }
-                /**if (!functions.isJsonArray(response.toString())) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
-                }
-                 **/
+
             }
 
             @Override
@@ -135,13 +128,16 @@ SwipeRefreshLayout mSwipeRefreshLayout;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loadTimelinePosts();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
-
-
-
 
 
         loadTimelinePosts();

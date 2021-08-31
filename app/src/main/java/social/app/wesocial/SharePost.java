@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -34,7 +35,6 @@ public TextView txtPostContent;
 public Button btnPost;
 Functions functions= new Functions();
 Data data = new Data();
-
 
     public SharePost() {
         // Required empty public constructor
@@ -79,18 +79,7 @@ Data data = new Data();
                 .show();
     }
 
-    public void LoadFragment(Fragment fragment, String fragString) {
-        //FrameLayout frameLayout = findViewById(id.fragmentFrame);
-        FragmentContainerView fragmentContainerView = getActivity().findViewById(R.id.fragmentContainerView);
-        //FragmentContainerView.setVisibility(View.VISIBLE);
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        manager.popBackStack();
-        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
-        transaction.addToBackStack(null);
-        transaction.commit();
 
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -130,8 +119,9 @@ Data data = new Data();
                                 case "1":
                                     txtPostContent.setText("");
                                     functions.showSnackBar(message,getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
-                                    Fragment timelineFragment = Timeline.newInstance("", "");
-                                    LoadFragment(timelineFragment, "timelinePosts");
+                                    Fragment timelineFragment = Timeline.newInstance("","");
+
+                                    functions.LoadFragment(timelineFragment, "timelinePosts",getActivity());
 
                                     break;
 

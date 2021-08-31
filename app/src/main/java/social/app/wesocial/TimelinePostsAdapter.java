@@ -5,6 +5,7 @@ import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -33,7 +35,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
-
+    Frontpage frontpage;
 
     public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
         TimelineDataClass = timelineDataClass;
@@ -51,6 +53,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
+
         holder.txtUsername.setText(timelineDataClass.getUsername());
         holder.txtUsername.setTag(timelineDataClass.getUserID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
@@ -59,6 +62,24 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineContent.setText(timelineDataClass.getContent());
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
+        holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
+
+        holder.cardView.setOnClickListener(view -> {
+            Intent i = new Intent(holder.itemView.getContext(),showFullPost.class);
+            HashMap<String,Object> timeLinePostDetails= new HashMap<>();
+            timeLinePostDetails.put("postID",holder.txtTimelineLikes.getText().toString());
+            timeLinePostDetails.put("content",holder.txtTimelineContent.getText().toString());
+            timeLinePostDetails.put("comments_count",holder.txtTimelineCommentsCount.getText().toString());
+            timeLinePostDetails.put("likes",holder.txtTimelineLikes.getText().toString());
+            timeLinePostDetails.put("username",holder.txtUsername.getText().toString());
+            timeLinePostDetails.put("userID",holder.txtUsername.getTag().toString());
+            timeLinePostDetails.put("date",holder.txtTimelineDate.getText().toString());
+            timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
+            timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
+            i.putExtra("timeLinePostDetails",timeLinePostDetails);
+            holder.itemView.getContext().startActivity(i);
+
+        });
 
         if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
             holder.imgTimelinePostLike.setLiked(false);
@@ -74,53 +95,50 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         }
 
         functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
-
         holder.ImgTimelinePostDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
+            alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
+            alertDialogBuilder.setTitle(holder.itemView.getContext().getString(R.string.deletePostTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int arg1) {
+                    (dialog, arg1) -> {
+                        TimelineDataClass.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
+                        notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());
 
-                            TimelineDataClass.remove(holder.getAdapterPosition());
-                            notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());
-                            
-                            postID = holder.txtTimelineContent.getTag().toString();
-                            HashMap<String, String> postData = new HashMap<>();
-                            postData.put("userID", Frontpage.userID);
-                            postData.put("postID", postID);
-                            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
-                                @Override
-                                public void notifySuccess(String response) throws JSONException {
-                                    if (functions.isJsonObject(response)) {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String responseCode = jsonObject.get("responseCode").toString();
-                                        String message = jsonObject.get("message").toString();
+                        postID = holder.txtTimelineContent.getTag().toString();
+                        HashMap<String, String> postData = new HashMap<>();
+                        postData.put("userID", Frontpage.userID);
+                        postData.put("postID", postID);
+                        NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                            @Override
+                            public void notifySuccess(String response) throws JSONException {
+                                if (functions.isJsonObject(response)) {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String responseCode = jsonObject.get("responseCode").toString();
+                                    String message = jsonObject.get("message").toString();
 
-                                        if (responseCode.equals("1")) {
-                                            //REMOVE FROM RECYCLERVIEW
-                                            Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-                                        }
-
-                                        if (responseCode.equals("0")) {
-                                            Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-                                        }
+                                    if (responseCode.equals("1")) {
+                                        //REMOVE FROM RECYCLERVIEW
+                                        Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
 
                                     }
+
+                                    if (responseCode.equals("0")) {
+                                        Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+
+                                    }
+
                                 }
+                            }
 
-                                @Override
-                                public void notifyError(VolleyError error) {
+                            @Override
+                            public void notifyError(VolleyError error) {
 
-                                }
-                            });
+                            }
+                        });
 
-                            networkController.PostMethod(data.deletePost_Api, postData);
-                        }
+                        networkController.PostMethod(data.deletePost_Api, postData);
                     });
 
 
@@ -133,18 +151,11 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
             AlertDialog alertDialog = alertDialogBuilder.create();
-            /*Button deleteButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-            deleteButton.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),color.red));
-            deleteButton.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),color.white));*/
             alertDialog.show();
         });
-
         //like post
-
-
         holder.imgTimelinePostLike.setOnClickListener(new View.OnClickListener() {
             public void sendLike() {
-
 
                 HashMap<String, String> postData = new HashMap<>();
                 postID = holder.txtTimelineContent.getTag().toString();
@@ -174,6 +185,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                 holder.imgTimelinePostLike.setTag("0");
                             }
 
+
                             holder.txtTimelineLikes.setText(likes);
                             Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
 
@@ -190,22 +202,23 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
             }
-
             @Override
             public void onClick(View view) {
+                //holder.imgTimelinePostLike.animate();
                 int Likes = Integer.valueOf(holder.txtTimelineLikes.getText().toString());
                 if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
                     holder.imgTimelinePostLike.setLiked(true);
                     holder.txtTimelineLikes.setText(String.valueOf(Likes + 1));
-
                 } else {
                     holder.imgTimelinePostLike.setLiked(false);
-                    holder.txtTimelineLikes.setText(String.valueOf(Likes - 1));
+                    if (Integer.valueOf(holder.txtTimelineLikes.getText().toString()) > 0)
+                        holder.txtTimelineLikes.setText(String.valueOf(Likes - 1));
                 }
+
+
                 sendLike();
             }
         });
-
     }
 
 
@@ -215,14 +228,14 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView txtUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
         ImageView imgTimelinePostPicture, ImgTimelinePostDelete, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
+        CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            cardView = itemView.findViewById(id.displayTimelineCardView);
             txtTimelineContent = itemView.findViewById(id.txtTimelinePostContent);
             txtUsername = itemView.findViewById(id.txtTimelinePostUsername);
             txtTimelineDate = itemView.findViewById(id.txtTimelinePostDate);
@@ -230,7 +243,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             txtTimelineCommentsCount = itemView.findViewById(id.txtTimelinePostComments);
             imgTimelinePostPicture = itemView.findViewById(id.imgTimelinePostProfilePicture);
             ImgTimelinePostDelete = itemView.findViewById(id.imgTimelinePostDelete);
-            imgTimelinePostLike = itemView.findViewById(id.imgTimelinePostLike);
+            imgTimelinePostLike = itemView.findViewById(id.imgShowTimelinePostLike);
             imgTimelinePostComment = itemView.findViewById(id.imgTimelinePostComment);
 
 

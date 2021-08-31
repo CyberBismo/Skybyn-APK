@@ -1,27 +1,20 @@
 package social.app.wesocial;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static social.app.wesocial.R.drawable;
 import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,9 +30,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -57,9 +47,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -81,28 +69,24 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
-
-
-    private static final int PERMISSION_REQUEST_CODE = 200;
-
+    public Activity frontpageActivity;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
 
-
+        //GETTING REFERENCe To the activity
+        frontpageActivity = this;
         configureToolbarAndDrawer();
         checkAppUpdate();
 
         Intent intent = getIntent();
         loginAction = intent.getStringExtra("loginAction");
         lottieview = findViewById(id.frontpageProgressView);
-
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
         bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
@@ -113,16 +97,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
 
-        //Coloured sideNav icons
-        //sideNavView.setItemIconTintList(null);
-        //bottomNavigationView.setItemIconTintList(null);
-
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance("", "");
-            LoadFragment(sharePostFragment, "", false);
+            functions.LoadFragment(sharePostFragment,"",Frontpage.this);
         });
-        registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
 
         if (loginAction.equals(data.fingerprint_auth)) {
             //perform login
@@ -135,40 +115,22 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch (item.getItemId()) {
                     case id.timeline:
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment, getString(string.Timeline), true);
+                        functions.LoadFragment(timelineFragment, getString(string.Timeline), Frontpage.this);
                         return true;
 
                     case id.messages:
                         Fragment messagesFagment = Messages.newInstance(userID, "");
-                        LoadFragment(messagesFagment, getString(string.messages), false);
+                        functions.LoadFragment(messagesFagment, getString(string.messages), Frontpage.this);
                         return true;
-
-
                 }
                 return false;
             }
         });
+   }
 
-
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
-                installApk();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.permission_required), Toast.LENGTH_LONG).show();
-
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -179,12 +141,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void showNotifications() {
         Fragment notificationFragment = Notification.newInstance(userID, "");
-        LoadFragment(notificationFragment, "Notification", false);
+        functions.LoadFragment(notificationFragment, "Notification", Frontpage.this);
     }
 
     public void showProfilePage() {
         Fragment profileFragment = Profile.newInstance(userID, "");
-        LoadFragment(profileFragment, getString(string.profile), false);
+        functions.LoadFragment(profileFragment, getString(string.profile), Frontpage.this);
     }
 
 
@@ -263,8 +225,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Integer serverVersion = Integer.valueOf(response);
                     if (serverVersion > currentVersion) {
                         //DOWNLOAD AND INSTALL
-                        //                    downloadApk();
-
                     }
                 } catch (Exception e) {
                     Log.i("e:", e.getMessage());
@@ -277,83 +237,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
         networkController.GetMethod(data.version_url);
-
-    }
-
-
-    private void downloadApk() {
-        downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(data.apk_url));
-        request.setTitle(getString(string.app_name))
-                .setDescription("Update is downloading...")
-                .setDestinationInExternalFilesDir(this,
-                        Environment.DIRECTORY_DOWNLOADS, data.apk_name)
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        //Enqueue the download.The download will start automatically once the download manager is ready
-        // to execute it and connectivity is available.
-        downLoadId = downloadManager.enqueue(request);
-    }
-
-    private BroadcastReceiver onDownloadComplete = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //Fetching the download id received with the broadcast
-            long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            //Checking if the received broadcast is for our enqueued download by matching download id
-            if (downLoadId == id) {
-                installApk();
-
-            }
-        }
-    };
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
-        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void requestPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-    }
-
-
-    private void installApk() {
-        Toast.makeText(getApplicationContext(), getString(R.string.update_Downloaded), Toast.LENGTH_LONG).show();
-        try {
-            Context mContext = null;
-            File file = new File(Environment.DIRECTORY_DOWNLOADS + "/" + data.apk_name);
-
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (Build.VERSION.SDK_INT >= 24) {
-                Uri downloaded_apk = FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName() + ".provider", file);
-                intent.setDataAndType(downloaded_apk, "application/vnd.android.package-archive");
-                @SuppressLint("QueryPermissionsNeeded") List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    mContext.grantUriPermission(mContext.getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(intent);
-            } else {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
-                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(onDownloadComplete);
+
     }
 
     public void loadUserProfile(String userID) {
@@ -375,7 +264,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        LoadFragment(timelineFragment, "posts", true);
+                        functions.LoadFragment(timelineFragment, "posts", Frontpage.this);
 
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
@@ -453,25 +342,20 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions.showProgress(lottieview);
         String username;
         String password;
-
         username = sharedpreferences.getString("username", "");
         password = sharedpreferences.getString("password", "");
 
         HashMap<String, String> postData = new HashMap<>();
-
         postData.put("username", username);
         postData.put("password", password);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) {
-
-
                 if (!functions.isJsonObject(response)) {
                     functions.showSnackBarError(getString(string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
                     return;
                 }
-
                 if (functions.isJsonObject(response)) {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
@@ -490,11 +374,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             functions.showSnackBarError(errorMsg, findViewById(android.R.id.content), getApplicationContext());
                             logOut();
                         }
-
                     } catch (JSONException e) {
                     }
                 }
-
             }
 
             @Override
@@ -504,34 +386,23 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
         networkController.PostMethod(data.login_Api, postData);
-
     }
 
-    public void LoadFragment(Fragment fragment, String fragString, Boolean timeline) {
-        FragmentContainerView fragmentContainerView = findViewById(id.fragmentContainerView);
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(id.fragmentContainerView, fragment, fragString);
-        transaction.addToBackStack(null);
-        transaction.commit();
 
-    }
-
+    
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
                 logOut();
                 break;
-
             case id.settings:
-                Settings settings= new Settings();
-                LoadFragment(settings,"",false);
+                Settings settings = new Settings();
+                functions.LoadFragment(settings, "", Frontpage.this);
                 break;
 
             case id.myNotifications:
                 if (userLoggedIn) {
-                    //OpenFragment
                     showNotifications();
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
@@ -540,7 +411,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             case id.profile:
                 if (userLoggedIn) {
-                    //OpenFragment
                     showProfilePage();
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
@@ -550,13 +420,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             case R.id.closeapp:
                 finishAffinity();
                 break;
-
-
         }
-        drawerLayout.closeDrawer(sideNavView);
 
+        drawerLayout.closeDrawer(sideNavView);
         return false;
     }
-
-
 }
