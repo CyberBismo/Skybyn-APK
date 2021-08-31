@@ -6,6 +6,7 @@ import static social.app.wesocial.R.string;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Data data = new Data();
     String postID;
     Frontpage frontpage;
+    Integer PostLength = 700;
 
     public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
         TimelineDataClass = timelineDataClass;
@@ -59,16 +61,22 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
         holder.txtTimelineLikes.setText(timelineDataClass.getLikes());
         holder.txtTimelineCommentsCount.setText(timelineDataClass.getComments_count());
-        holder.txtTimelineContent.setText(timelineDataClass.getContent());
+        if (timelineDataClass.getContent().length() > PostLength){
+            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"<font color=\"#005DC1\"> <u>View More</u></font>"));
+        }else{
+            holder.txtTimelineContent.setText( timelineDataClass.getContent());
+        }
+
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
+        holder.txtTimelineDate.setTag(timelineDataClass.getContent());
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
         holder.cardView.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(),showFullPost.class);
             HashMap<String,Object> timeLinePostDetails= new HashMap<>();
-            timeLinePostDetails.put("postID",holder.txtTimelineLikes.getText().toString());
-            timeLinePostDetails.put("content",holder.txtTimelineContent.getText().toString());
+
+            timeLinePostDetails.put("content",holder.txtTimelineDate.getTag().toString());
             timeLinePostDetails.put("comments_count",holder.txtTimelineCommentsCount.getText().toString());
             timeLinePostDetails.put("likes",holder.txtTimelineLikes.getText().toString());
             timeLinePostDetails.put("username",holder.txtUsername.getText().toString());

@@ -155,7 +155,7 @@ public class Functions  {
             String formattedDate = dateFormat.format(date);
             return formattedDate;
         }catch (TypeCastException e) {
-            return  "Loading time...";
+            return  "Loading ...";
 
         }
         }

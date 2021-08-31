@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ Data data = new Data();
 LottieAnimationView lottie;
 RecyclerView recyclerView;
 SwipeRefreshLayout mSwipeRefreshLayout;
+Integer PostLength = 700;
 
 
 
@@ -76,9 +78,10 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                         timelinePostID = (String) jsonObject.get("postID");
                         timelinePostLikes = jsonObject.get("likes").toString();
                         timelinePostCommentsCount = jsonObject.get("comments_count").toString();
-                        timelinePostContent = (String) jsonObject.get("content");
-                        timelineILike = jsonObject.get("ilike").toString();
 
+                        timelinePostContent = (String) jsonObject.get("content");
+
+                        timelineILike = jsonObject.get("ilike").toString();
                         timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike));
                     }
 

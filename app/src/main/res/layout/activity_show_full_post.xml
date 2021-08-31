@@ -7,30 +7,9 @@
     android:background="@color/black"
     android:paddingTop="10dp">
 
-    <EditText
-        android:id="@+id/editTextTextMultiLine"
-        android:layout_width="285dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/text_selector"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/write_a_comment"
-        android:inputType="textMultiLine"
-        android:paddingStart="5dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/light_gray"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnShowTimelineSendComment"
-        app:layout_constraintHorizontal_bias="0.105"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <androidx.cardview.widget.CardView
         android:layout_width="380dp"
-        android:layout_height="309dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="111dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="5dp"
@@ -44,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/black"
             android:visibility="visible">
 
@@ -115,9 +94,9 @@
 
             <TextView
                 android:id="@+id/txtShowTimelinePostDate"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_width="270dp"
+                android:layout_height="20dp"
+                android:layout_marginBottom="12dp"
                 android:fontFamily="@font/nexalight"
                 android:gravity="top|center_vertical"
                 android:text="@string/app_name"
@@ -125,13 +104,13 @@
                 android:textSize="11sp"
                 app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostContent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.327"
+                app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/txtShowTimelinePostContent"
                 android:layout_width="348dp"
-                android:layout_height="137dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="96dp"
                 android:fontFamily="@font/nexabold"
                 android:textColor="@color/white"
@@ -199,9 +178,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTimelinePostsComments"
         android:layout_width="391dp"
-        android:layout_height="362dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="284dp"
+        android:background="@drawable/button_selector"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -209,8 +189,8 @@
 
     <Button
         android:id="@+id/btnShowTimelineSendComment"
-        android:layout_width="62dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="52dp"
         android:layout_marginTop="63dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="28dp"
@@ -221,5 +201,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTimelinePostsComments"
+        app:layout_constraintVertical_bias="0.905"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="285dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="44dp"
+        android:background="@drawable/text_selector"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/write_a_comment"
+        android:inputType="textMultiLine"
+        android:paddingStart="5dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/light_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnShowTimelineSendComment"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
