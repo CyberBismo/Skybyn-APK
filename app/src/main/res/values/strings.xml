@@ -109,6 +109,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="deletePostTitle">Delete Post</string>
     <string name="write_a_comment">Write a comment...</string>
+    <string name="comment_too_short">Comment too short.</string>
+    <string name="comment_longer_than">Your comment is longer than</string>
+    <string name="posting_comment">Posting Comment</string>
+    <string name="error_commenting">An error occured while posting comment...</string>
+    <string name="comments">Comments</string>
+    <string name="Delete">Delete</string>
+    <string name="Edit">Edit</string>
 
 
 </resources>

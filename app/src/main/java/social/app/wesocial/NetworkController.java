@@ -30,7 +30,7 @@ public class NetworkController {
     }
 
 
-    public void PostMethod(String URL,Map<String,String> postParams) {
+    public void PostMethod(String URL,HashMap<String,String> postParams) {
         StringRequest postRequest = new StringRequest(Request.Method.POST,   URL, new Response.Listener<String>() {
 
             @Override
@@ -41,17 +41,13 @@ public class NetworkController {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("TAG", "Error: " + error.getMessage());
-                result.notifyError(error);
-
-            }
+        }, error -> {
+            VolleyLog.d("TAG", "Error: " + error.getMessage());
+            result.notifyError(error);
         }) {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+            protected HashMap<String, String> getParams() {
+                HashMap<String, String> params = new HashMap<String, String>();
                 params = postParams;
                 return params;
             }

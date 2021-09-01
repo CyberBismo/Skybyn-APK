@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
@@ -26,10 +27,12 @@ import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import kotlin.TypeCastException;
 
 public class Functions  {
+
 
     public Boolean isJsonObject(String json){
         return json.startsWith("{"); }
@@ -68,7 +71,9 @@ public class Functions  {
 
     }
 
-    public interface alertDialogListener {
+
+
+    /*public interface alertDialogListener {
         void DialogPositive(DialogInterface dialogInterface, int i) ;
 
         void DialogNegative(DialogInterface dialogInterface, int i);
@@ -87,19 +92,14 @@ public class Functions  {
                 });
         alertDialog.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                alertDialogListener.DialogNegative(dialogInterface, i);
+            public void onClick(DialogInterface dialog, int i) {
+                alertDialogListener.DialogNegative(dialog, i);
             }
-        });
-
-
-
-
-
-
+        }).show();
 
     }
 
+*/
     public void  loadProfilePictureThumb(String thumbNailLink, View imv){
                 Glide.with(imv)
                 .load(thumbNailLink)
@@ -120,6 +120,7 @@ public class Functions  {
     }
 
     public void  showSnackBarError( String msg ,View view,Context context) {
+
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(context, R.color.red))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))

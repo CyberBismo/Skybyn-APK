@@ -36,8 +36,6 @@ RecyclerView recyclerView;
 SwipeRefreshLayout mSwipeRefreshLayout;
 Integer PostLength = 700;
 
-
-
     private void loadTimelinePosts() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -78,10 +76,9 @@ Integer PostLength = 700;
                         timelinePostID = (String) jsonObject.get("postID");
                         timelinePostLikes = jsonObject.get("likes").toString();
                         timelinePostCommentsCount = jsonObject.get("comments_count").toString();
-
                         timelinePostContent = (String) jsonObject.get("content");
-
                         timelineILike = jsonObject.get("ilike").toString();
+
                         timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike));
                     }
 
@@ -90,6 +87,7 @@ Integer PostLength = 700;
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(timelinepostsAdapter);
                     timelinepostsAdapter.notifyDataSetChanged();
+
                 }
 
             }
@@ -141,17 +139,12 @@ Integer PostLength = 700;
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
-
-
         loadTimelinePosts();
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
-                loadTimelinePosts();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
+            loadTimelinePosts();
+            mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 

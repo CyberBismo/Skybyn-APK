@@ -37,7 +37,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Data data = new Data();
     String postID;
     Frontpage frontpage;
-    Integer PostLength = 700;
+    Integer PostLength = data.maxPostDisplayLength;
 
     public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
         TimelineDataClass = timelineDataClass;
@@ -52,6 +52,24 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     }
 
 
+    public  String trimValue(String value) {
+        if (value.length() == 4 || value.length() == 7 ) {
+            //It is one thousand
+            value = value.substring(0,1).concat(".").concat(value.substring(1,2).concat("k"));
+        }else if(value.length() == 5){
+            value = value.substring(0,2).concat(".").concat(value.substring(2,3).concat("k"));;
+        }else if(value.length() == 6){
+            value = value.substring(0,3).concat(".").concat(value.substring(3,4)).concat("k");
+        } else if(value.length() == 7){
+        value = value.substring(0,1).concat(".").concat(value.substring(1,2)).concat("M");
+        } else if(value.length() == 8) {
+            value = value.substring(0, 2).concat(".").concat(value.substring(2, 3)).concat("M");
+        }else{
+            value = value;
+        }
+        return value;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
@@ -59,8 +77,9 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtUsername.setText(timelineDataClass.getUsername());
         holder.txtUsername.setTag(timelineDataClass.getUserID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
-        holder.txtTimelineLikes.setText(timelineDataClass.getLikes());
-        holder.txtTimelineCommentsCount.setText(timelineDataClass.getComments_count());
+        holder.txtTimelineLikes.setText(trimValue(timelineDataClass.getLikes()));
+        holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
+
         if (timelineDataClass.getContent().length() > PostLength){
             holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"<font color=\"#005DC1\"> <u>View More</u></font>"));
         }else{
@@ -69,18 +88,20 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
         holder.txtTimelineDate.setTag(timelineDataClass.getContent());
-        holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
+        holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike().toString());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
-        holder.cardView.setOnClickListener(view -> {
+        holder.txtTimelineContent.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(),showFullPost.class);
             HashMap<String,Object> timeLinePostDetails= new HashMap<>();
 
             timeLinePostDetails.put("content",holder.txtTimelineDate.getTag().toString());
             timeLinePostDetails.put("comments_count",holder.txtTimelineCommentsCount.getText().toString());
             timeLinePostDetails.put("likes",holder.txtTimelineLikes.getText().toString());
+            timeLinePostDetails.put("ilike",holder.imgTimelinePostLike.getTag().toString());
             timeLinePostDetails.put("username",holder.txtUsername.getText().toString());
             timeLinePostDetails.put("userID",holder.txtUsername.getTag().toString());
+            timeLinePostDetails.put("postID",holder.txtTimelineContent.getTag().toString());
             timeLinePostDetails.put("date",holder.txtTimelineDate.getText().toString());
             timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
             timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
@@ -99,13 +120,12 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         String userID = Frontpage.userID;
         //If the timeLine Post is by Me!
         if (holder.txtUsername.getTag().toString().equals(userID)) {
-            holder.ImgTimelinePostDelete.setVisibility(View.VISIBLE);
+            holder.txtTimelinePostDelete.setVisibility(View.VISIBLE);
         }
 
         functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
-        holder.ImgTimelinePostDelete.setOnClickListener(view -> {
+        holder.txtTimelinePostDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
-            alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(R.string.deletePostTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
@@ -237,22 +257,23 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
-        ImageView imgTimelinePostPicture, ImgTimelinePostDelete, imgTimelinePostComment;
+        ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
         CardView cardView;
+        TextView  txtTimelinePostDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(id.displayTimelineCardView);
-            txtTimelineContent = itemView.findViewById(id.txtTimelinePostContent);
-            txtUsername = itemView.findViewById(id.txtTimelinePostUsername);
-            txtTimelineDate = itemView.findViewById(id.txtTimelinePostDate);
-            txtTimelineLikes = itemView.findViewById(id.txtTimelinePostLikes);
-            txtTimelineCommentsCount = itemView.findViewById(id.txtTimelinePostComments);
-            imgTimelinePostPicture = itemView.findViewById(id.imgTimelinePostProfilePicture);
-            ImgTimelinePostDelete = itemView.findViewById(id.imgTimelinePostDelete);
+            txtTimelineContent = itemView.findViewById(id.txtShowTimelinePostContent);
+            txtUsername = itemView.findViewById(id.txtShowTimelinePostUsername);
+            txtTimelineDate = itemView.findViewById(id.txtShowTimelinePostDate);
+            txtTimelineLikes = itemView.findViewById(id.txtShowTimelinePostLikes);
+            txtTimelineCommentsCount = itemView.findViewById(id.txtShowTimelinePostComments);
+            imgTimelinePostPicture = itemView.findViewById(id.imgShowTimelinePostProfilePicture);
+            txtTimelinePostDelete = itemView.findViewById(id.txtTimelinePostDelete);
             imgTimelinePostLike = itemView.findViewById(id.imgShowTimelinePostLike);
-            imgTimelinePostComment = itemView.findViewById(id.imgTimelinePostComment);
+            imgTimelinePostComment = itemView.findViewById(id.imgShowTimelinePostComment);
 
 
         }

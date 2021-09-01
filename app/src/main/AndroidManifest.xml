@@ -31,7 +31,9 @@
         android:theme="@style/Theme.WeSocial">
         <activity
             android:name=".showFullPost"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            />
         <activity
             android:name=".Settings"
             android:exported="true"

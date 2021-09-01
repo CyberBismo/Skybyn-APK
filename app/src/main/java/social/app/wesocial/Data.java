@@ -15,9 +15,12 @@ public class Data {
     public String post_Api = "https://wesocial.space/api/post.php";
     public String timeline_Api = "https://wesocial.space/api/timeline.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
+    public String send_comment_Api = "https://wesocial.space/api/comment.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
+    public Integer maxPostDisplayLength = 700;
+    public Integer maxCommentPostLength = 2000;
 
     public String generateProfilePictureThumb(String userID, String thumb_name){
         return  "https://wesocial.space/sources/users/avatars/"+userID+"/"+thumb_name;
