@@ -34,7 +34,7 @@ public class showFullPost extends AppCompatActivity {
     LottieAnimationView lottie;
     NetworkController networkController;
     LikeButton btnShowtimePostLike;
-    String postID, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
+    String postID, postAvatarlink,posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
     HashMap<String, Object> timelinePostDetails = new HashMap<>();
 
 
@@ -119,7 +119,7 @@ public class showFullPost extends AppCompatActivity {
         postDate = timelinePostDetails.get("date").toString();
         postContent = timelinePostDetails.get("content").toString();
         postLikes = timelinePostDetails.get("likes").toString();
-        postID = timelinePostDetails.get("avatarLink").toString();
+         postAvatarlink = timelinePostDetails.get("avatarLink").toString();
         postCommentsCount = timelinePostDetails.get("comments_count").toString();
         userLikedPost = timelinePostDetails.get("ilike").toString();
     }
@@ -135,7 +135,7 @@ public class showFullPost extends AppCompatActivity {
 
         Log.i("Timeline", timelinePostDetails.toString());
 
-        functions.loadProfilePictureThumb(postID, imgShowTimelinePostProfilePicture);
+        functions.loadProfilePictureThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
         txtShowTimelinePostUsername.setText(postUsername);
         txtShowTimelinePostDate.setText(postDate);
         txtShowTimelinePostContent.setText(postContent);
@@ -241,10 +241,25 @@ public class showFullPost extends AppCompatActivity {
 
             networkController = new NetworkController(this, new NetworkController.IResult() {
                 @Override
-                public void notifySuccess(String response) {
+                public void notifySuccess(String response) throws JSONException {
                     Log.i("Response", response.toString());
                     functions.hideProgress(lottie);
-                    btnSendTimelineComment.setEnabled(true);
+                    if (functions.isJsonObject(response)){
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.get("message").toString();
+                        String responseCode = jsonObject.get("responseCode").toString();
+
+                        if (responseCode.equals("1")) {
+                            functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
+                         }
+
+                        if (responseCode.equals("0")) {
+                            functions.showSnackBarError(message, findViewById(android.R.id.content), getApplicationContext());
+                        }
+                        btnSendTimelineComment.setEnabled(true);
+                        txtPostComment.setText("");
+                    }
+
                 }
 
                 @Override
