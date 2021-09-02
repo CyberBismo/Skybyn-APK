@@ -36,12 +36,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
 
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:weightSum="10">
+            android:weightSum="20">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/displayTimelineCardView"
@@ -60,7 +60,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black"
-                    android:visibility="visible">
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/imgShowTimelinePostProfilePicture"
@@ -182,12 +185,12 @@
                         android:textSize="12sp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtShowTimelinePostDelete"
+                        app:layout_constraintEnd_toStartOf="@+id/txtCommentDelete"
                         app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostComments"
                         app:layout_constraintVertical_bias="0.857" />
 
                     <TextView
-                        android:id="@+id/txtShowTimelinePostDelete"
+                        android:id="@+id/txtCommentDelete"
                         android:layout_width="40dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="24dp"
@@ -203,7 +206,7 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <com.like.LikeButton
-                        android:id="@+id/btnShowTimelinePostLike"
+                        android:id="@+id/btnCommentLike"
                         android:layout_width="25dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="24dp"
@@ -222,25 +225,25 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/txtComments"
+                android:id="@+id/txtCommentsCount"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/dark_gray_2"
+                android:background="@color/black"
                 android:fontFamily="@font/nexabold"
                 android:gravity="center_horizontal|center_vertical"
                 android:singleLine="true"
                 android:text="@string/comments"
                 android:textColor="@color/light_gray"
                 app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostDate"
-                app:layout_constraintEnd_toStartOf="@+id/txtShowTimelinePostDelete"
+                app:layout_constraintEnd_toStartOf="@+id/txtCommentDelete"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/TimelineCommentsRecyclerview"
+                android:id="@+id/commentsRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_weight="5"
@@ -252,7 +255,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/dark_gray_2"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

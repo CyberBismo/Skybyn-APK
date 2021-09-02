@@ -160,6 +160,18 @@ public class Functions  {
 
         }
         }
+
+    public String  convertUnixToDateAndTimeNoGMT(Long UnixDateLong) {
+        try {
+            Date date = new Date(UnixDateLong*1000L); // convert seconds to milliseconds
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
+            String formattedDate = dateFormat.format(date);
+            return formattedDate;
+        }catch (TypeCastException e) {
+            return  "Loading ...";
+
+        }
+    }
     }
 
 

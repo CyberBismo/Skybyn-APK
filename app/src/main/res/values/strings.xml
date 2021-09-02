@@ -116,6 +116,8 @@
     <string name="comments">Comments</string>
     <string name="Delete">Delete</string>
     <string name="Edit">Edit</string>
+    <string name="deleteComment">Are you sure you want to Delete this comment?</string>
+    <string name="deleteCommentTitle">Delete Comment</string>
 
 
 </resources>
