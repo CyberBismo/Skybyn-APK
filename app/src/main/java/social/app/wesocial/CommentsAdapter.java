@@ -69,6 +69,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         return value;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, int position) {
         CommentDataClass commentDataClass = CommentDataClass.get(position);
@@ -108,9 +109,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(string.deleteCommentTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
                     (dialog, arg1) -> {
-                        CommentDataClass.remove(holder.getAdapterPosition());
-                        notifyItemRemoved(holder.getAdapterPosition());
-                        notifyItemRangeChanged(holder.getAdapterPosition(), CommentDataClass.size());
 
                         postID = holder.txtCommentContent.getTag().toString();
                         HashMap<String, String> postData = new HashMap<>();
@@ -121,14 +119,18 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                             @Override
                             public void notifySuccess(String response) throws JSONException {
                                 if (functions.isJsonObject(response)) {
-                                    Log.i("ress",response);
                                     JSONObject jsonObject = new JSONObject(response);
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
 
                                     if (responseCode.equals("1")) {
                                         //REMOVE FROM RECYCLERVIEW
+
+                                        CommentDataClass.remove(holder.getAdapterPosition());
+                                        notifyItemRemoved(holder.getAdapterPosition());
+                                        notifyItemRangeChanged(holder.getAdapterPosition(), CommentDataClass.size());
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+
 
                                     }
 
@@ -146,7 +148,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                             }
                         });
 
-                        networkController.PostMethod(data.deletePost_Api, postData);
+                        networkController.PostMethod(data.deleteComment_Api, postData);
                     });
 
 
@@ -184,9 +186,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                                 likes = jsonObject.get("likes").toString();
                                 holder.btnCommentLike.setLiked(true);
                                 holder.btnCommentLike.setTag("1");
-
-
                             }
+
                             if (responseCode.equals("2")) {
                                 likes = jsonObject.get("likes").toString();
                                 holder.btnCommentLike.setLiked(false);
@@ -207,9 +208,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                     }
                 });
                 networkController.PostMethod(data.like_Api, postData);
-
-
             }
+
 
             @Override
             public void onClick(View view) {
@@ -257,4 +257,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         }
     }
+
+
 }

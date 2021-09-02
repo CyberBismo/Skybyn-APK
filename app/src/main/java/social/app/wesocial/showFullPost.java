@@ -165,8 +165,7 @@ public class showFullPost extends AppCompatActivity {
                         commentDate = jsonObject.get("date").toString();
                         commentDate = functions.convertUnixToDateAndTimeNoGMT(Long.valueOf(commentDate));
                         commentUsername = (String) jsonObject.get("username");
-                        //commentUserID = (String) jsonObject.get("userID");
-                        commentUserID = "2";
+                        commentUserID = (String) jsonObject.get("userID");
                         commentID = (String) jsonObject.get("commentID");
                         commentLikes = jsonObject.get("likes").toString();
                         commentContent = (String) jsonObject.get("content");
