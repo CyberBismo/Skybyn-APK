@@ -78,10 +78,9 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.txtCommentUsername.setTag(commentDataClass.getUserID());
         holder.txtCommentDate.setText(commentDataClass.getDate());
         holder.txtCommentLikes.setText(trimValue(commentDataClass.getLikes()));
-
         holder.txtCommentContent.setTag(commentDataClass.getCommentID());
         holder.txtCommentContent.setText(commentDataClass.getContent());
-        holder.btnCommentLike.setTag(commentDataClass.getiLike().toString());
+        holder.btnCommentLike.setTag(commentDataClass.getiLike());
         holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
 
         holder.txtCommentContent.setOnClickListener(view -> {
@@ -125,13 +124,10 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
                                     if (responseCode.equals("1")) {
                                         //REMOVE FROM RECYCLERVIEW
-
                                         CommentDataClass.remove(holder.getAdapterPosition());
                                         notifyItemRemoved(holder.getAdapterPosition());
                                         notifyItemRangeChanged(holder.getAdapterPosition(), CommentDataClass.size());
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-
                                     }
 
                                     if (responseCode.equals("0")) {
@@ -165,12 +161,14 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         });
         //like post
         holder.btnCommentLike.setOnClickListener(new View.OnClickListener() {
-            public void sendLike() {
 
+            public void sendLike() {
                 HashMap<String, String> postData = new HashMap<>();
+                String commentID = holder.txtCommentContent.getTag().toString();
                 postID = holder.txtCommentContent.getTag().toString();
                 postData.put("userID", Frontpage.userID);
                 postData.put("postID", postID);
+                postData.put("commentID", commentID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                     @Override
@@ -193,12 +191,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                                 holder.btnCommentLike.setLiked(false);
                                 holder.btnCommentLike.setTag("0");
                             }
-
-
                             holder.txtCommentLikes.setText(likes);
                             Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
-
                         }
                     }
 
