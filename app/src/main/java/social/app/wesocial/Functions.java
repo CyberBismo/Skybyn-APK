@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -161,6 +162,17 @@ public class Functions  {
         }
         }
 
+    public  void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(),
+                    0
+            );
+        }
+    }
     public String  convertUnixToDateAndTimeNoGMT(Long UnixDateLong) {
         try {
             Date date = new Date(UnixDateLong*1000L); // convert seconds to milliseconds

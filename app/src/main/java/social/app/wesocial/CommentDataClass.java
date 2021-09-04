@@ -9,7 +9,15 @@ public class CommentDataClass {
     private String content;
     private String likes;
     private String iLike;
+    private String postID;
 
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
+    }
 
     public String getCommentID() {
         return commentID;
@@ -76,7 +84,7 @@ public class CommentDataClass {
     }
 
     public CommentDataClass(String commentID, String userID, String username,
-                            String avatarLink, String date, String content,String likes, String iLike) {
+                            String avatarLink, String date, String content,String likes, String iLike,String postID) {
         this.commentID = commentID;
         this.avatarLink = avatarLink;
         this.date = date;
@@ -85,6 +93,7 @@ public class CommentDataClass {
         this.content = content;
         this.userID = userID;
         this.likes = likes;
+        this.postID = postID;
 
 
     }

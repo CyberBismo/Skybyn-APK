@@ -143,8 +143,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_su.setOnClickListener(v -> toggleForgot());
 
 
+        //BUTTON TO VERIFY ONE TIME CODE
         btnVerifyOTC.setOnClickListener(view -> {
-
+            functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (txtOneTimeCode.getText().toString().equals(oneTimetoken)) {
                 //Register User
                 performRegistration();
@@ -156,8 +157,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         });
 
+        //BUTTON TO SignIn
         btnSignIn.setOnClickListener(v -> {
-
+            functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (TextUtils.isEmpty(txtLoginUserName.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtLoginUserName.setError(ErrorMessage);
@@ -171,8 +173,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
-
+        //BUTTON to Register User
         btnSign_up.setOnClickListener(v -> {
+            functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUsername.setError(ErrorMessage);
@@ -201,10 +204,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
 
-
+        //BUTTON TO VERIFY Email
         BtnVerify_email = findViewById(R.id.verify_email);
         BtnVerify_email.setOnClickListener(v -> {
-
+            functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (!functions.validateEmail(txtEmail.getText().toString())) {
                 ShowToast(getString(R.string.invalid_email));
             }

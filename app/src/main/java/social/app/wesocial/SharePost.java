@@ -94,6 +94,7 @@ Data data = new Data();
         LottieAnimationView lottie = getActivity().findViewById(R.id.frontpageProgressView);
 
         btnPost.setOnClickListener( view1 -> {
+            functions.hideSoftKeyboard(getActivity());
             if (txtPostContent.length() > getResources().getInteger(R.integer.max_post_size)) {
                 functions.showSnackBarError(getString(R.string.post_Long), getActivity().findViewById(android.R.id.content), getActivity().getApplicationContext());
                 return;

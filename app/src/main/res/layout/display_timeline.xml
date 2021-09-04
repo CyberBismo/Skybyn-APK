@@ -59,7 +59,7 @@
                 android:id="@+id/txtShowTimelinePostLikes"
                 android:layout_width="93dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="128dp"
+                android:layout_marginEnd="120dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"

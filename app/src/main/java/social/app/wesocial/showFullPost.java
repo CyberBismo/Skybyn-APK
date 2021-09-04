@@ -153,6 +153,7 @@ public class showFullPost extends AppCompatActivity {
                     String commentILike;
                     String commentAvatarLink;
                     String commentLikes = "";
+                    String commentPostID = "";
 
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<CommentDataClass> commentData = new ArrayList();
@@ -170,8 +171,10 @@ public class showFullPost extends AppCompatActivity {
                         commentLikes = jsonObject.get("likes").toString();
                         commentContent = (String) jsonObject.get("content");
                         commentILike = jsonObject.get("ilike").toString();
+                        commentPostID = jsonObject.get("postID").toString();
 
-                        commentData.add(new CommentDataClass(commentID,commentUserID,commentUsername,commentAvatarLink,commentDate,commentContent,commentLikes,commentILike));
+
+                        commentData.add(new CommentDataClass(commentID,commentUserID,commentUsername,commentAvatarLink,commentDate,commentContent,commentLikes,commentILike,commentPostID));
                     }
 
                     CommentsAdapter commentsAdapter = new CommentsAdapter(commentData);
@@ -303,6 +306,7 @@ public class showFullPost extends AppCompatActivity {
 
         //Send Comment
         btnSendTimelineComment.setOnClickListener(view -> {
+            functions.hideSoftKeyboard(showFullPost.this);
             String content = txtPostComment.getText().toString();
             if (content.length() <= 0) {
                 functions.showSnackBarError(getString(R.string.comment_too_short), findViewById(android.R.id.content), getApplicationContext());

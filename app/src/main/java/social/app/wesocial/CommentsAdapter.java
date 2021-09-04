@@ -78,8 +78,11 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.txtCommentUsername.setTag(commentDataClass.getUserID());
         holder.txtCommentDate.setText(commentDataClass.getDate());
         holder.txtCommentLikes.setText(trimValue(commentDataClass.getLikes()));
-        holder.txtCommentContent.setTag(commentDataClass.getCommentID());
+        //GET COMMENTID
+        holder.txtCommentContent.setTag(R.integer.commentIDTag,commentDataClass.getCommentID());
         holder.txtCommentContent.setText(commentDataClass.getContent());
+        //GET POSTID
+        holder.txtCommentContent.setTag(R.integer.postIDTag, commentDataClass.getPostID());
         holder.btnCommentLike.setTag(commentDataClass.getiLike());
         holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
 
@@ -112,8 +115,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                         postID = holder.txtCommentContent.getTag().toString();
                         HashMap<String, String> postData = new HashMap<>();
                         postData.put("userID", Frontpage.userID);
-                        postData.put("commentID", holder.txtCommentContent.getTag().toString());
-                        Log.i("commentID",holder.txtCommentContent.getTag().toString());
+                        postData.put("commentID", holder.txtCommentContent.getTag(R.integer.commentIDTag).toString());
                         NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                             @Override
                             public void notifySuccess(String response) throws JSONException {
@@ -154,8 +156,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                     dialog.dismiss();
                 }
             });
-
-
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         });
@@ -164,10 +164,9 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
             public void sendLike() {
                 HashMap<String, String> postData = new HashMap<>();
-                String commentID = holder.txtCommentContent.getTag().toString();
-                postID = holder.txtCommentContent.getTag().toString();
+                String commentID = holder.txtCommentContent.getTag(R.integer.commentIDTag).toString();
+                postID = holder.txtCommentContent.getTag(R.integer.postIDTag).toString();
                 postData.put("userID", Frontpage.userID);
-                postData.put("postID", postID);
                 postData.put("commentID", commentID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
