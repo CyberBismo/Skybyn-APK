@@ -274,7 +274,7 @@ public class showFullPost extends AppCompatActivity {
 
         //DELETE POST BUTTON with AlertDialog Confirmation
         txtShowTimelinePostDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext(),R.style.AlertDialogCustom);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogCustom);
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.warning)); alertDialogBuilder.setMessage(getString(R.string.deletePOST));
             alertDialogBuilder.setTitle(getString(R.string.deletePostTitle));
             alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
