@@ -51,6 +51,8 @@ public class Functions  {
         lottieview.setAlpha(0.85f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
+        lottieview.setEnabled(false);
+        lottieview.setClickable(false);
         lottieview.playAnimation();
 
     }

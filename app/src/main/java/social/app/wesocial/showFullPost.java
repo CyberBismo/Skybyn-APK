@@ -4,12 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +45,7 @@ public class showFullPost extends AppCompatActivity {
     TextView txtCommentsCount;
     String postID, postAvatarlink,posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
     HashMap<String, Object> timelinePostDetails = new HashMap<>();
+    ActionBar actionBar;
 
 
     private void sendLike() {
@@ -130,6 +134,7 @@ public class showFullPost extends AppCompatActivity {
          postAvatarlink = timelinePostDetails.get("avatarLink").toString();
         postCommentsCount = timelinePostDetails.get("comments_count").toString();
         userLikedPost = timelinePostDetails.get("ilike").toString();
+        actionBar.setTitle("Comments on:"+" "+postContent);
     }
 
     private void loadComments() {
@@ -183,6 +188,7 @@ public class showFullPost extends AppCompatActivity {
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
                     txtCommentsCount.setText("Comments("+String.valueOf(commentsAdapter.getItemCount())+")");
+
                     recyclerView.scrollToPosition(commentsAdapter.getItemCount());
 
 
@@ -200,16 +206,29 @@ public class showFullPost extends AppCompatActivity {
         networkController.PostMethod(data.comments_Api, postData);
             }
 
+    @Override
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        
+        if (item.getItemId() ==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showfullpost);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         getAllViewsbyID();
         getPostIntentContent();
         verifyIfIamPoster();
         loadComments();
         Log.i("Timeline", timelinePostDetails.toString());
+
+
 
 
         txtPostComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
