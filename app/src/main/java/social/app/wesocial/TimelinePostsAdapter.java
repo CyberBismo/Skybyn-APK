@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -125,7 +127,8 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
         holder.txtTimelinePostDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(),R.style.AlertDialogCustom);
+            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.warning));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(R.string.deletePostTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),

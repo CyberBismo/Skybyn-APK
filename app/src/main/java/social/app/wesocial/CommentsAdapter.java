@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -106,7 +107,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         functions.loadProfilePictureThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
 
         holder.txtCommentDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(),R.style.AlertDialogCustom);
+            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.warning));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deleteComment));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(string.deleteCommentTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),

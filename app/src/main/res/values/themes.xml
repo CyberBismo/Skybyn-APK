@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.WeSocial.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.WeSocial.ActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/main_colour</item> <!-- Content background -->
         <item name="colorPrimaryVariant">@color/black</item> <!-- Notification bar -->
@@ -33,5 +33,7 @@
     <item name="android:textColorPrimary">@color/light_main_colour</item>
 <item name="android:background">@color/black</item>
 </style>
-
+<style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:colorAccent">@color/main_colour</item>
+</style>
 </resources>

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -202,14 +203,11 @@ public class showFullPost extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
         networkController.PostMethod(data.comments_Api, postData);
             }
 
     @Override
-
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        
         if (item.getItemId() ==android.R.id.home){
             finish();
         }
@@ -226,19 +224,22 @@ public class showFullPost extends AppCompatActivity {
         getPostIntentContent();
         verifyIfIamPoster();
         loadComments();
-        Log.i("Timeline", timelinePostDetails.toString());
-
-
 
 
         txtPostComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus){
-                    recyclerView.scrollToPosition(recyclerView.getChildCount());
+                    try {
+                        recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount());
+                    }catch (Exception e){
+                        recyclerView.scrollToPosition(0);
+                    }
+
                 }
             }
         });
+
         functions.loadProfilePictureThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
         txtShowTimelinePostUsername.setText(postUsername);
         txtShowTimelinePostDate.setText(postDate);
@@ -273,8 +274,8 @@ public class showFullPost extends AppCompatActivity {
 
         //DELETE POST BUTTON with AlertDialog Confirmation
         txtShowTimelinePostDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
-            alertDialogBuilder.setMessage(getString(R.string.deletePOST));
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext(),R.style.AlertDialogCustom);
+            alertDialogBuilder.setIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.warning)); alertDialogBuilder.setMessage(getString(R.string.deletePOST));
             alertDialogBuilder.setTitle(getString(R.string.deletePostTitle));
             alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                 @Override
@@ -319,7 +320,8 @@ public class showFullPost extends AppCompatActivity {
                         networkController.PostMethod(data.deletePost_Api, postData);
                     });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            alertDialogBuilder.show();
+            //alertDialog.show();
         });
 
 
@@ -384,7 +386,8 @@ public class showFullPost extends AppCompatActivity {
             btnSendTimelineComment.setEnabled(false);
         });
 
-        //CLOSE ON CREATE
+
+        //END OF ON CREATE
     }
 
 
