@@ -3,5 +3,5 @@
     <integer name="max_post_size">2000</integer>
     <integer name="integer_key_zero">0</integer>
     <integer name="commentIDTag">0</integer>
-    <integer name="postIDTag">1</integer>
+    <integer name="commentsPostIDTag">1</integer>
 </resources>
