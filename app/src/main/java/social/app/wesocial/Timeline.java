@@ -46,8 +46,11 @@ Integer PostLength = 700;
             public void notifySuccess(String response) throws JSONException {
                 Log.i("response",response.toString());
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(),response,Toast.LENGTH_LONG);
 
+                if (!functions.isJsonArray(response)) {
+                    functions.showSnackBarError(getActivity().getString(R.string.no_timeline),getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
+                    return;
+                }
 
                 if (functions.isJsonArray(response)) {
                     String timelinePostContent;

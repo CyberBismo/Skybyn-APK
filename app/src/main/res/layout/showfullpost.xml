@@ -24,14 +24,17 @@
         tools:targetApi="lollipop" />
 
     <ScrollView
-        android:layout_width="397dp"
-        android:layout_height="598dp"
-        android:layout_marginBottom="1dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="409dp"
+        android:layout_height="616dp"
         android:background="@color/black"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck">
 
         <LinearLayout
@@ -48,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:visibility="visible"
                 app:cardBackgroundColor="@color/black"
                 app:cardCornerRadius="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +74,7 @@
                         android:layout_width="39dp"
                         android:layout_height="35dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="10dp"
                         android:background="@color/transparent_full"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="1dp"
@@ -85,8 +89,8 @@
                         android:id="@+id/txtShowTimelinePostUsername"
                         android:layout_width="200dp"
                         android:layout_height="27dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="124dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="132dp"
                         android:fontFamily="@font/nexabold"
                         android:gravity="center_vertical"
                         android:singleLine="true"
@@ -152,12 +156,15 @@
                         android:layout_width="351dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="100dp"
+                        android:enabled="false"
                         android:fontFamily="sans-serif"
+                        android:minHeight="48dp"
                         android:textColor="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.619"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                     <ImageView
                         android:id="@+id/imgShowTimelinePostComment"
@@ -174,7 +181,7 @@
                         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <TextView
-                        android:id="@+id/txtShowTielinePostEdit"
+                        android:id="@+id/txtShowTimelinePostEdit"
                         android:layout_width="40dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="4dp"
@@ -248,6 +255,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="5"
                 android:background="@color/white" />
+
         </LinearLayout>
     </ScrollView>
 
@@ -255,6 +263,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:cardBackgroundColor="@color/black"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -298,6 +307,7 @@
             android:textColorHint="@color/light_gray"
             android:textSize="14sp"
             tools:ignore="SpeakableTextPresentCheck" />
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

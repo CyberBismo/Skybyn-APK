@@ -126,6 +126,9 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         }
 
         functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
+
+        //Timeline Delete Post
+
         holder.txtTimelinePostDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(),R.style.AlertDialogCustom);
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.warning));

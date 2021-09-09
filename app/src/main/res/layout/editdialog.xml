@@ -32,6 +32,7 @@
         android:inputType="textMultiLine"
         android:minLines="40"
         android:paddingStart="5dp"
+        android:textColor="@color/white"
         tools:ignore="SpeakableTextPresentCheck">
 
         <requestFocus />

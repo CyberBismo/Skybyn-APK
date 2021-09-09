@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
-    Frontpage frontpage;
-    Integer PostLength = data.maxPostDisplayLength;
 
     public CommentsAdapter(List<CommentDataClass> commentDataClass) {
         CommentDataClass = commentDataClass;
@@ -57,7 +56,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             value = value.substring(0, 1).concat(".").concat(value.substring(1, 2).concat("k"));
         } else if (value.length() == 5) {
             value = value.substring(0, 2).concat(".").concat(value.substring(2, 3).concat("k"));
-            ;
         } else if (value.length() == 6) {
             value = value.substring(0, 3).concat(".").concat(value.substring(3, 4)).concat("k");
         } else if (value.length() == 7) {
@@ -65,7 +63,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         } else if (value.length() == 8) {
             value = value.substring(0, 2).concat(".").concat(value.substring(2, 3)).concat("M");
         } else {
-            value = value;
         }
         return value;
     }
@@ -75,6 +72,78 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, int position) {
         CommentDataClass commentDataClass = CommentDataClass.get(position);
 
+        holder.txtCommentEdit.setOnClickListener(view -> {
+            LayoutInflater li = LayoutInflater.from(holder.itemView.getContext());
+            View editLayout = li.inflate(R.layout.editdialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    holder.itemView.getContext(),R.style.AlertDialogCustom);
+            // set alert_dialog.xml to alertdialog builder
+            alertDialogBuilder.setView(editLayout);
+
+            final EditText txtContent = editLayout.findViewById(id.etUserInput);
+            txtContent.setText(holder.txtCommentContent.getText().toString());
+            txtContent.setSelection(txtContent.length());
+
+            // set dialog message
+            alertDialogBuilder.setCancelable(true);
+            alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.save),
+                    (dialog, id) -> {
+                        HashMap<String, String> postData = new HashMap<>();
+                        postData.put("userID", Frontpage.userID);
+                        postData.put("postID", holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString());
+                        postData.put("commentID", holder.txtCommentContent.getTag(R.integer.commentIDTag).toString());
+                        postData.put("content", txtContent.getText().toString());
+
+
+                        NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                            @Override
+                            public void notifySuccess(String response) throws JSONException {
+                                Log.i("response",response);
+
+                                if (!functions.isJsonObject(response)) {
+                                    Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.something_wrong), Toast.LENGTH_SHORT).show();
+                                }
+
+                                if (functions.isJsonObject(response)) {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String responseCode = jsonObject.get("responseCode").toString();
+                                    String message = jsonObject.get("message").toString();
+                                    String content = jsonObject.get("content").toString();
+                                    if (responseCode.equals("1")) {
+                                        holder.txtCommentContent.setText(content);
+                                        Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    if (responseCode.equals("0")) {
+                                        Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void notifyError(VolleyError error) {
+                                //functions.showSnackBar(holder.itemView.getContext().getString(string.network_something_wrong),holder.itemView.findViewById(android.R.id.content), holder.itemView.getContext());
+                            }
+                        });
+                        Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.updating_comment),Toast.LENGTH_SHORT).show();
+                        networkController.PostMethod(data.editComment_Api, postData);
+
+
+                        //SAVE EDIT
+                    });
+            alertDialogBuilder.setNegativeButton("Cancel",
+                    (dialog, id) -> dialog.cancel());
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+
+        });// get alert_dialog.xml view
+
         holder.txtCommentUsername.setText(commentDataClass.getUsername());
         holder.txtCommentUsername.setTag(commentDataClass.getUserID());
         holder.txtCommentDate.setText(commentDataClass.getDate());
@@ -83,7 +152,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.txtCommentContent.setTag(R.integer.commentIDTag,commentDataClass.getCommentID());
         holder.txtCommentContent.setText(commentDataClass.getContent());
         //GET POSTID
-        holder.txtCommentContent.setTag(R.integer.postIDTag, commentDataClass.getPostID());
+        holder.txtCommentContent.setTag(R.integer.commentsPostIDTag, commentDataClass.getPostID());
         holder.btnCommentLike.setTag(commentDataClass.getiLike());
         holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
 
@@ -91,12 +160,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         });
 
-        if (holder.btnCommentLike.getTag().toString().equals("0")) {
-            holder.btnCommentLike.setLiked(false);
-        } else {
-            holder.btnCommentLike.setLiked(true);
-
-        }
+        holder.btnCommentLike.setLiked(!holder.btnCommentLike.getTag().toString().equals("0"));
 
         String userID = Frontpage.userID;
         //If the timeLine Post is by Me!
@@ -107,36 +171,42 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         functions.loadProfilePictureThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
 
         holder.txtCommentDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(),R.style.AlertDialogCustom);
-            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.warning));
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(), R.style.AlertDialogCustom);
+            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.txtCommentContent.getContext(), R.drawable.warning));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deleteComment));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(string.deleteCommentTitle));
-            alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
+            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(R.string.yes_delete),
                     (dialog, arg1) -> {
-
-                        postID = holder.txtCommentContent.getTag().toString();
                         HashMap<String, String> postData = new HashMap<>();
                         postData.put("userID", Frontpage.userID);
+                        postData.put("postID", holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString());
                         postData.put("commentID", holder.txtCommentContent.getTag(R.integer.commentIDTag).toString());
+
+
                         NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                             @Override
                             public void notifySuccess(String response) throws JSONException {
+                                Log.i("response",response);
                                 if (functions.isJsonObject(response)) {
                                     JSONObject jsonObject = new JSONObject(response);
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
-
                                     if (responseCode.equals("1")) {
-                                        //REMOVE FROM RECYCLERVIEW
-                                        CommentDataClass.remove(holder.getAdapterPosition());
+                                       CommentDataClass.remove(holder.getAdapterPosition());
                                         notifyItemRemoved(holder.getAdapterPosition());
                                         notifyItemRangeChanged(holder.getAdapterPosition(), CommentDataClass.size());
+
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-                                    }
+                                        }
 
                                     if (responseCode.equals("0")) {
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-
                                     }
 
                                 }
@@ -150,16 +220,9 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
                         networkController.PostMethod(data.deleteComment_Api, postData);
                     });
-
-
-            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            alertDialogBuilder.show();
+
         });
         //like post
         holder.btnCommentLike.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +230,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             public void sendLike() {
                 HashMap<String, String> postData = new HashMap<>();
                 String commentID = holder.txtCommentContent.getTag(R.integer.commentIDTag).toString();
-                postID = holder.txtCommentContent.getTag(R.integer.postIDTag).toString();
+                postID = holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString();
                 postData.put("userID", Frontpage.userID);
                 postData.put("commentID", commentID);
 
@@ -209,13 +272,13 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 //holder.imgTimelinePostLike.animate();
-                int Likes = Integer.valueOf(holder.txtCommentLikes.getText().toString());
+                int Likes = Integer.parseInt(holder.txtCommentLikes.getText().toString());
                 if (holder.btnCommentLike.getTag().toString().equals("0")) {
                     holder.btnCommentLike.setLiked(true);
                     holder.txtCommentLikes.setText(String.valueOf(Likes + 1));
                 } else {
                     holder.btnCommentLike.setLiked(false);
-                    if (Integer.valueOf(holder.txtCommentLikes.getText().toString()) > 0)
+                    if (Integer.parseInt(holder.txtCommentLikes.getText().toString()) > 0)
                         holder.txtCommentLikes.setText(String.valueOf(Likes - 1));
                 }
 
@@ -231,8 +294,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         return CommentDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCommentUsername, txtCommentContent, txtCommentDate, txtCommentLikes;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCommentUsername, txtCommentContent, txtCommentDate, txtCommentLikes,txtCommentEdit;
         ImageView imgCommentPicture;
         LikeButton btnCommentLike;
         CardView cardView;
@@ -242,6 +305,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             super(itemView);
             cardView = itemView.findViewById(id.displayCommentCardView);
             txtCommentContent = itemView.findViewById(id.txtCommentContent);
+            txtCommentEdit = itemView.findViewById(id.txtCommentEdit);
             txtCommentUsername = itemView.findViewById(id.txtCommentUsername);
             txtCommentDate = itemView.findViewById(id.txtCommentDate);
             txtCommentLikes = itemView.findViewById(id.txtCommentLikes);
