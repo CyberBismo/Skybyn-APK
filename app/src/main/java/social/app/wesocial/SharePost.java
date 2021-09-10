@@ -122,7 +122,7 @@ Data data = new Data();
                                     functions.showSnackBar(message,getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
                                     Fragment timelineFragment = Timeline.newInstance("","");
 
-                                    functions.LoadFragment(timelineFragment, "timelinePosts",getActivity());
+                                    functions.LoadFragment(timelineFragment, "timelinePosts",getActivity(),true);
 
                                     break;
 

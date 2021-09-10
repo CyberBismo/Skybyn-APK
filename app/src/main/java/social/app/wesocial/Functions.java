@@ -14,8 +14,10 @@ import com.airbnb.lottie.LottieDrawable;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -139,7 +141,7 @@ public class Functions  {
 
     }
 
-    public void LoadFragment(Fragment fragment, String fragString, Activity activity) {
+    public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
         FragmentContainerView fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
@@ -147,6 +149,17 @@ public class Functions  {
         manager.popBackStack();
         transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
+
+        Frontpage.isTimeline = isTimeline;
+
+        CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
+        if (isTimeline){
+            bottomLayout.setVisibility(View.VISIBLE);
+
+        }else{
+            bottomLayout.setVisibility(View.INVISIBLE);
+        }
+
         transaction.commit();
 
     }
