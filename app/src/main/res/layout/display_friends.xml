@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friendCardView"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:cardBackgroundColor="@color/dark_gray_2"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtFriendUsername"
+            android:layout_width="200dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="104dp"
+            android:fontFamily="@font/nexabold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/username"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/txtFriendNickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtFriendGoToProfile"
+            android:layout_width="200dp"
+            android:layout_height="27dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/nexalight"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/goto_profile"
+            android:textColor="@color/light_main_colour"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtFriendNickname"
+            app:layout_constraintVertical_bias="0.329" />
+
+        <TextView
+            android:id="@+id/txtFriendNickname"
+            android:layout_width="200dp"
+            android:layout_height="27dp"
+            android:layout_marginEnd="104dp"
+            android:layout_marginBottom="108dp"
+            android:fontFamily="@font/nexabold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/Nickname"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/imgFriendProfilePicture" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgFriendProfilePicture"
+            android:layout_width="81dp"
+            android:layout_height="77dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/transparent_full"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/txtFriendUsername"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnBlockFriend"
+            android:layout_width="74dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/button_selector_red"
+            android:text="@string/block"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtFriendGoToProfile"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtFriendNickname"
+            app:layout_constraintVertical_bias="0.055"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -125,6 +125,9 @@
     <string name="updating_post">Updating Post...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="block">Block</string>
+    <string name="goto_profile">Go to profile.</string>
+    <string name="no_friends">Sorry, we could not fetch your friends list.</string>
 
 
 </resources>

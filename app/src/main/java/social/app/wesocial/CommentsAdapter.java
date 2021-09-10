@@ -88,6 +88,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             alertDialogBuilder.setCancelable(true);
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.save),
                     (dialog, id) -> {
+
                         HashMap<String, String> postData = new HashMap<>();
                         postData.put("userID", Frontpage.userID);
                         postData.put("postID", holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString());

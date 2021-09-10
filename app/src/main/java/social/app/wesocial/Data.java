@@ -17,6 +17,7 @@ public class Data {
     public String notification_Api = "https://wesocial.space/api/noti.php";
     public String post_Api = "https://wesocial.space/api/post.php";
     public String timeline_Api = "https://wesocial.space/api/timeline.php";
+    public String friends_Api = "https://wesocial.space/api/friends.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
     public String send_comment_Api = "https://wesocial.space/api/comment.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
