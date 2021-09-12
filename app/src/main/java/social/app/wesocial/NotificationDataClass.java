@@ -41,27 +41,21 @@ public class NotificationDataClass {
     public void setContent(String Content) {
         this.Content = Content;
     }
-
     public String getRead() {
         return read;
     }
-
     public void setRead(String read) {
         this.read = read;
     }
-
     public String getAvatarLink() {
         return avatarLink;
     }
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public void setAvatarLink(String avatarLink) {
         this.avatarLink = avatarLink;
     }

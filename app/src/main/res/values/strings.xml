@@ -111,7 +111,7 @@
     <string name="comment_too_short">Comment too short.</string>
     <string name="comment_longer_than">Your comment is longer than</string>
     <string name="posting_comment">Posting Comment</string>
-    <string name="error_commenting">An error occured while posting comment...</string>
+    <string name="error_commenting">An error occurred while posting comment...</string>
     <string name="comments">Comments</string>
     <string name="Delete">Delete</string>
     <string name="Edit">Edit</string>
@@ -123,11 +123,8 @@
     <string name="no_timeline">We have nothing to show you now...</string>
     <string name="updating_comment">Updating comment..</string>
     <string name="updating_post">Updating Post...</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="block">Block</string>
-    <string name="goto_profile">Go to profile.</string>
+    <string name="goto_profile">View Profile >></string>
     <string name="no_friends">Sorry, we could not fetch your friends list.</string>
-
-
 </resources>

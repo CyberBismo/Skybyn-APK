@@ -26,11 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Friends#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Friends extends Fragment {
 LottieAnimationView lottie;
 RecyclerView friendsRecyclerView;
@@ -44,7 +40,6 @@ Data data = new Data();
 
     public static Friends newInstance(String param1, String param2) {
         Friends fragment = new Friends();
-        Bundle args = new Bundle();
         return fragment;
     }
 
@@ -99,7 +94,6 @@ Data data = new Data();
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<FriendsDataClass> friendsDataClass = new ArrayList();
                     JSONObject jsonObject;
-
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);

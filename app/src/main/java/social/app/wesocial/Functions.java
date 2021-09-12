@@ -146,17 +146,18 @@ public class Functions  {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+
+        transaction.add(R.id.fragmentContainerView, fragment, fragString);
         manager.popBackStack();
-        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
-
+        transaction.setReorderingAllowed(true);
         Frontpage.isTimeline = isTimeline;
-
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
+
         if (isTimeline){
             bottomLayout.setVisibility(View.VISIBLE);
-
         }else{
+
             bottomLayout.setVisibility(View.INVISIBLE);
         }
 

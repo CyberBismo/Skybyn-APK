@@ -110,7 +110,6 @@ Integer PostLength = 700;
         // Required empty public constructor
     }
 
-
     public static Timeline newInstance(String param1, String param2) {
         Timeline fragment = new Timeline();
         Bundle args = new Bundle();
@@ -143,7 +142,9 @@ Integer PostLength = 700;
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
         loadTimelinePosts();
+
         mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
+
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
             loadTimelinePosts();

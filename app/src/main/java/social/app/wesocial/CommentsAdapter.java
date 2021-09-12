@@ -176,12 +176,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.txtCommentContent.getContext(), R.drawable.warning));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deleteComment));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(string.deleteCommentTitle));
-            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(R.string.no), (dialog, which) -> dialog.dismiss());
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(R.string.yes_delete),
                     (dialog, arg1) -> {
                         HashMap<String, String> postData = new HashMap<>();

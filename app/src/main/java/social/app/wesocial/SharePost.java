@@ -86,6 +86,7 @@ Data data = new Data();
         txtPostContent = getView().findViewById(R.id.txtTimelineContent);
         btnPost = getView().findViewById(R.id.btnPost);
 
+
         txtPostContent.requestFocus();
         if(txtPostContent.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -95,10 +96,12 @@ Data data = new Data();
 
         btnPost.setOnClickListener( view1 -> {
             functions.hideSoftKeyboard(getActivity());
+
             if (txtPostContent.length() > getResources().getInteger(R.integer.max_post_size)) {
                 functions.showSnackBarError(getString(R.string.post_Long), getActivity().findViewById(android.R.id.content), getActivity().getApplicationContext());
                 return;
             }
+
                 if (txtPostContent.length() == 0 ){
                     functions.showSnackBarError(getString(R.string.empty_post),getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
                     return;
@@ -122,10 +125,9 @@ Data data = new Data();
                                     functions.showSnackBar(message,getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
                                     Fragment timelineFragment = Timeline.newInstance("","");
                                     functions.LoadFragment(timelineFragment, "timelinePosts",getActivity(),true);
-
                                     break;
 
-                                case "0":
+                                    case "0":
                                     functions.showSnackBarError(message,getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
                                     break;
 
