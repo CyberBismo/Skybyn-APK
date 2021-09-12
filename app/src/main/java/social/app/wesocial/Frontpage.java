@@ -7,6 +7,7 @@ import static social.app.wesocial.R.string;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -68,7 +70,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     FloatingActionButton fab;
     public  static  Boolean isTimeline = false;
     public Activity frontpageActivity;
-
+    SearchView searchView;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
 
@@ -110,6 +112,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             loadUserProfile(userID);
         }
 
+
+
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -129,11 +134,29 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         });
    }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+         searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                return true;
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 

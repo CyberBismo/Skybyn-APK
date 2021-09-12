@@ -127,4 +127,5 @@
     <string name="block">Block</string>
     <string name="goto_profile">View Profile >></string>
     <string name="no_friends">Sorry, we could not fetch your friends list.</string>
+    <string name="search">Search</string>
 </resources>
