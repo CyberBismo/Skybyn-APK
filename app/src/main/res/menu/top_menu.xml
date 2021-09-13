@@ -13,6 +13,7 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always"
+        android:iconTint="@color/white"
         android:icon="@android:drawable/ic_search_category_default"/>
 
 </menu>

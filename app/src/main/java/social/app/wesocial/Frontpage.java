@@ -142,6 +142,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
          searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment searchFragment  = Search.newInstance("","");
+                functions.LoadFragment(searchFragment,getString(string.search),Frontpage.this,false);
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

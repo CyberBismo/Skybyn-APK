@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +59,7 @@ Data data = new Data();
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
-        friendsRecyclerView = getActivity().findViewById(R.id.friendsRecyclervView);
+        friendsRecyclerView = getActivity().findViewById(R.id.searchRecyclervView);
         txtFriendsTitle= getActivity().findViewById(R.id.txtFriendsTitle);
         loadFriends();
 
