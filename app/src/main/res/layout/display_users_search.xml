@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userSearchCardView"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardBackgroundColor="@color/black"
+    app:cardElevation="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtUserSearchNickname"
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/nexalight"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/Nickname"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnUserSearchAddFriend" />
+
+        <TextView
+            android:id="@+id/txtUserSearchUsername"
+            android:layout_width="150dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="28dp"
+            android:fontFamily="@font/nexabold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/username"
+            android:textColor="@color/light_main_colour"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtUserSearchNickname"
+            app:layout_constraintEnd_toStartOf="@+id/txtUserSearchOnline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.636" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgUserSearchProfilePicture"
+            android:layout_width="60dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/transparent_full"
+            app:civ_border_color="@color/light_main_colour"
+            app:civ_border_width="2dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.645" />
+
+        <Button
+            android:id="@+id/btnUserSearchAddFriend"
+            android:layout_width="89dp"
+            android:layout_height="34dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/button_selector"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/add_friend"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/txtUserSearchOnline"
+            android:layout_width="138dp"
+            android:layout_height="14dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnUserSearchAddFriend"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

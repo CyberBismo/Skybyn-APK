@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ Data data = new Data();
         lottie = getActivity().findViewById(R.id.frontpageProgressView);
         friendsRecyclerView = getActivity().findViewById(R.id.searchRecyclervView);
         txtFriendsTitle= getActivity().findViewById(R.id.txtFriendsTitle);
+
         loadFriends();
 
     }

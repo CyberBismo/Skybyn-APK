@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_gray_2"
+    android:background="@color/black"
     tools:context=".Search">
 
     <TextView
@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:gravity="center_horizontal"
         android:text="@string/search"
-        android:textColor="@color/light_main_colour"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView

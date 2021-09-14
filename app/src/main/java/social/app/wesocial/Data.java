@@ -14,6 +14,7 @@ public class Data {
     public String registration_Api = "https://wesocial.space/api/reg.php";
     public String verifyEmail_Api = "https://wesocial.space/api/verify.php";
     public String profile_Api = "https://wesocial.space/api/profile.php";
+    public String search_Api = "https://wesocial.space/api/search.php";
     public String notification_Api = "https://wesocial.space/api/noti.php";
     public String post_Api = "https://wesocial.space/api/post.php";
     public String timeline_Api = "https://wesocial.space/api/timeline.php";
@@ -25,6 +26,11 @@ public class Data {
     public String fingerprint_auth = "fingerprint_auth";
     public Integer maxPostDisplayLength = 700;
     public Integer maxCommentPostLength = 2000;
+    public String add_friend_action="add";
+    public String block_friend_action="block";
+    public String unblock_friend_action="unblock";
+    public String accept_friend_action="accept";
+    public String remove_friend_action="remove";
 
     public String generateProfilePictureThumb(String userID, String thumb_name){
         return  "https://wesocial.space/sources/users/avatars/"+userID+"/"+thumb_name;

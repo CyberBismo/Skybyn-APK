@@ -2,11 +2,24 @@ package social.app.wesocial;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +27,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class Search extends Fragment {
+public static String response,keyword;
+public static RecyclerView recyclerView;
+public static TextView txtSearchTitle;
 
 
 
@@ -21,17 +37,11 @@ public class Search extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Search.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Search newInstance(String param1, String param2) {
         Search fragment = new Search();
+       response = param2;
+       keyword = param1;
+
         return fragment;
     }
 
@@ -47,4 +57,61 @@ public class Search extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.searchRecyclervView);
+        try {
+            showSearchResults(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showSearchResults(String response) throws JSONException {
+        String searchUsername;
+        String searchUserNickname;
+        String searchUserID;
+        String searchUserAvatarLink;
+        String searchUserOnline= "";
+        String searchUserisFriend= "";
+
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<UserDataClass> userSearchData = new ArrayList();
+        JSONObject jsonObject;
+
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            searchUserAvatarLink = (String) jsonObject.get("avatar");
+            searchUserOnline = jsonObject.get("online").toString();
+            searchUsername = jsonObject.get("username").toString();
+            searchUserisFriend = jsonObject.get("friends").toString();
+            searchUserNickname = jsonObject.get("nickname").toString();
+            searchUserID = jsonObject.get("id").toString();
+
+            userSearchData.add(new UserDataClass(searchUserID,searchUserAvatarLink,searchUserNickname,searchUsername,searchUserisFriend,searchUserOnline));
+        }
+
+        userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(userSearchAdapter);
+        userSearchAdapter.notifyDataSetChanged();
+
+
+        txtSearchTitle = getActivity().findViewById(R.id.txtSearchTitle);
+        txtSearchTitle.setText("Search Results for:"+keyword);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Frontpage.searchView.clearFocus();
+            }
+        },3000);
+
+    }
+
 }

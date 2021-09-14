@@ -57,7 +57,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     String loginAction;
     public static String userID;
     DownloadManager downloadManager;
-    LottieAnimationView lottieview;
+    LottieAnimationView lottie;
     long downLoadId;
     ImageView imgNavProfilePicture;
     View navHeaderView;
@@ -68,9 +68,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
-    public  static  Boolean isTimeline = false;
+    public static Boolean isTimeline = false;
     public Activity frontpageActivity;
-    SearchView searchView;
+    public static SearchView searchView;
+    private String keyword;
+    private Boolean onQuery;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
 
@@ -86,7 +89,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         Intent intent = getIntent();
         loginAction = intent.getStringExtra("loginAction");
-        lottieview = findViewById(id.frontpageProgressView);
+        lottie = findViewById(id.frontpageProgressView);
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
         bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
@@ -100,7 +103,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance("", "");
-            functions.LoadFragment(sharePostFragment,"",Frontpage.this,false);
+            functions.LoadFragment(sharePostFragment, "", Frontpage.this, false);
         });
 
 
@@ -113,26 +116,66 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         }
 
 
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case id.timeline:
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        functions.LoadFragment(timelineFragment, getString(string.Timeline), Frontpage.this,true);
+                        functions.LoadFragment(timelineFragment, getString(string.Timeline), Frontpage.this, true);
                         return true;
 
                     case id.messages:
                         Fragment messagesFagment = Messages.newInstance(userID, "");
-                        functions.LoadFragment(messagesFagment, getString(string.messages), Frontpage.this,false);
+                        functions.LoadFragment(messagesFagment, getString(string.messages), Frontpage.this, false);
                         return true;
                 }
                 return false;
             }
         });
-   }
+    }
+
+    public void  performSearch(String userID, String keyword, Boolean onQuery) {
+
+        this.keyword = keyword;
+        this.onQuery = onQuery;
+        if (!onQuery) {
+            functions.showProgress(lottie);
+        }
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("keyword", keyword);
+        postData.put("userID", userID);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                Log.i("response", response.toString());
+                functions.hideProgress(lottie);
+
+                if (!functions.isJsonArray(response)) {
+                    functions.showSnackBarError(getString(R.string.no_search_result) + keyword, findViewById(android.R.id.content), getApplicationContext());
+                    return;
+                }
+
+                if (functions.isJsonArray(response)) {
+                    Log.i("response", response);
+                    Fragment searchFragment = Search.newInstance(keyword, response);
+                    functions.LoadFragment(searchFragment, getString(string.search), Frontpage.this, false);
+                    functions.showSnackBar(getString(R.string.we_found_result)+keyword, findViewById(android.R.id.content), getApplicationContext());
+
+                }
+
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottie);
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+        networkController.PostMethod(data.search_Api, postData);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,24 +183,33 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         inflater.inflate(R.menu.top_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-         searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Fragment searchFragment  = Search.newInstance("","");
-                functions.LoadFragment(searchFragment,getString(string.search),Frontpage.this,false);
+                Fragment searchFragment = Search.newInstance("", "");
+                functions.LoadFragment(searchFragment, getString(string.search), Frontpage.this, false);
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-
+                if (!query.equals("")) {
+                    performSearch(Frontpage.userID, query, false);
+                }
+                functions.hideSoftKeyboard(Frontpage.this);
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String query) {
+                if (!query.equals("")) {
+                    performSearch(Frontpage.userID, query, true);
+
+                }
 
                 return true;
             }
@@ -169,18 +221,18 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void showNotifications() {
         Fragment notificationFragment = Notification.newInstance(userID, "");
-        functions.LoadFragment(notificationFragment, "Notification", Frontpage.this,false);
+        functions.LoadFragment(notificationFragment, "Notification", Frontpage.this, false);
     }
 
 
-        public void showFriendsPage() {
+    public void showFriendsPage() {
         Fragment friendsFragment = Friends.newInstance(userID, "");
-        functions.LoadFragment(friendsFragment, getString(string.Friends), Frontpage.this,false);
+        functions.LoadFragment(friendsFragment, getString(string.Friends), Frontpage.this, false);
     }
 
     public void showProfilePage() {
         Fragment profileFragment = Profile.newInstance(userID, "");
-        functions.LoadFragment(profileFragment, getString(string.profile), Frontpage.this,false);
+        functions.LoadFragment(profileFragment, getString(string.profile), Frontpage.this, false);
     }
 
     @Override
@@ -278,6 +330,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+
     public void loadUserProfile(String userID) {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
@@ -286,7 +339,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void notifySuccess(String response) throws JSONException {
                 //Load profile picture thumb after profile loads.
-                functions.hideProgress(lottieview);
+                functions.hideProgress(lottie);
 
                 if (functions.isJsonObject(response.toString())) {
                     Log.i("Json", response);
@@ -297,7 +350,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance(userID, "");
-                        functions.LoadFragment(timelineFragment, "posts", Frontpage.this,true);
+                        functions.LoadFragment(timelineFragment, "posts", Frontpage.this, true);
 
                         String username = jsonObject.getString("username").toString();
                         String email = jsonObject.getString("email").toString();
@@ -345,7 +398,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             @Override
             public void notifyError(VolleyError error) {
-                functions.hideProgress(lottieview);
+                functions.hideProgress(lottie);
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
                 logOut();
 
@@ -372,7 +425,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void performLoginAuth() {
-        functions.showProgress(lottieview);
+        functions.showProgress(lottie);
         String username;
         String password;
         username = sharedpreferences.getString("username", "");
@@ -402,7 +455,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         }
 
                         if (response_code.equals("0")) {
-                            functions.hideProgress(lottieview);
+                            functions.hideProgress(lottie);
                             String errorMsg = jsonResponse.get("message").toString();
                             functions.showSnackBarError(errorMsg, findViewById(android.R.id.content), getApplicationContext());
                             logOut();
@@ -414,7 +467,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             @Override
             public void notifyError(VolleyError error) {
-                functions.hideProgress(lottieview);
+                functions.hideProgress(lottie);
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
@@ -422,7 +475,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
@@ -431,7 +483,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 break;
             case id.settings:
                 Settings settings = new Settings();
-                functions.LoadFragment(settings, "", Frontpage.this,false);
+                functions.LoadFragment(settings, "", Frontpage.this, false);
                 break;
 
             case id.myNotifications:
@@ -444,8 +496,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             case id.timeline:
                 if (userLoggedIn) {
-                    Fragment timelineFragment = Timeline.newInstance("","");
-                    functions.LoadFragment(timelineFragment, "timelinePosts",Frontpage.this,true);
+                    Fragment timelineFragment = Timeline.newInstance("", "");
+                    functions.LoadFragment(timelineFragment, "timelinePosts", Frontpage.this, true);
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
                 }

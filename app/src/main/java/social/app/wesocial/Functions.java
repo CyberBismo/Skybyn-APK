@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -36,6 +38,7 @@ import kotlin.TypeCastException;
 
 public class Functions  {
 
+    public static FragmentContainerView fragmentContainerView;
 
     public Boolean isJsonObject(String json){
         return json.startsWith("{"); }
@@ -142,22 +145,24 @@ public class Functions  {
     }
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
-        FragmentContainerView fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
+         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
+         Integer FragmentContainerHeight = fragmentContainerView.getHeight();
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
-        transaction.add(R.id.fragmentContainerView, fragment, fragString);
+        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         manager.popBackStack();
         transaction.addToBackStack(null);
-        transaction.setReorderingAllowed(true);
         Frontpage.isTimeline = isTimeline;
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
 
+
         if (isTimeline){
             bottomLayout.setVisibility(View.VISIBLE);
-        }else{
 
+        }else{
+            fragmentContainerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             bottomLayout.setVisibility(View.INVISIBLE);
         }
 

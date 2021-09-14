@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -31,8 +28,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
         FriendsDataClass friendsDataClass = FriendsDataClass.get(position);
         holder.txtFriendUsername.setText(friendsDataClass.getFriendUsername());
+        //SAVE THE User's ID INSIDE VIEW'S Tag
         holder.txtFriendUsername.setTag(friendsDataClass.getFriendID());
         holder.txtFriendNickname.setText(friendsDataClass.getFriendNickname());
+        //SAVE THE AVATAR LINK INSIDE VIEW'S Tag
         holder.imgFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
         functions.loadProfilePictureThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
 
@@ -55,10 +54,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtFriendUsername = itemView.findViewById(R.id.txtFriendUsername);
-            txtFriendNickname = itemView.findViewById(R.id.txtFriendNickname);
-            imgFriendProfilePicture = itemView.findViewById(R.id.imgFriendProfilePicture);
-            btnBlockFriend = itemView.findViewById(R.id.btnBlockFriend);
+            txtFriendUsername = itemView.findViewById(R.id.txtUserSearchUsername);
+            txtFriendNickname = itemView.findViewById(R.id.txtUserSearchNickname);
+            imgFriendProfilePicture = itemView.findViewById(R.id.imgUserSearchProfilePicture);
+            btnBlockFriend = itemView.findViewById(R.id.btnUserSearchAddFriend);
             friendCardView=itemView.findViewById(R.id.friendCardView);
         }
     }
