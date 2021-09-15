@@ -4,7 +4,6 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,7 +168,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             holder.txtCommentDelete.setVisibility(View.VISIBLE);
         }
 
-        functions.loadProfilePictureThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
+        functions.loadProfilePictureDrawableThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
 
         holder.txtCommentDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(), R.style.AlertDialogCustom);

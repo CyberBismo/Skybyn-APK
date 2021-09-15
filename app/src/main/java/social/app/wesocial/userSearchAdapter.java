@@ -6,7 +6,6 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 
 class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolder> {
@@ -57,7 +58,7 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
         holder.txtUserSearchUsername.setTag(R.integer.integer_key_zero, userDataClass.getUserID());
         holder.txtUserSearchNickname.setText(userDataClass.getUserNickname());
 
-        functions.loadProfilePictureThumb(userDataClass.getUserAvatarLink(), holder.imgUserSearchProfilePicture);
+        functions.loadProfilePictureDrawableThumb(userDataClass.getUserAvatarLink(), holder.imgUserSearchProfilePicture);
 
         if (userDataClass.getIsFriend().equals(1)) {
             holder.btnUserSearchAddFriend.setVisibility(INVISIBLE);
@@ -93,18 +94,11 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                         @Override
                         public void notifySuccess(String response) throws JSONException {
                             if (functions.isJsonObject(response)) {
-                                Log.i("response",response);
+                                Timber.i(response.toString());
                                 JSONObject jsonObject = new JSONObject(response);
                                 String responseCode = jsonObject.get("responseCode").toString();
                                 String message = jsonObject.get("message").toString();
-                                if (responseCode.equals("1")) {
-                                    //REMOVE FROM RECYCLERVIEW
-                                    Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-                                }
-                                if (responseCode.equals("0")) {
-                                    Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-                                }
-
+                                Toast.makeText(holder.itemView.getContext(),message, Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -113,11 +107,12 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
 
                         }
                     });
-                    networkController.PostMethod(data.friends_Api, postData);
+                    networkController.PostMethod(data.add_friend_Api, postData);
                 }
         );
 
     }
+
 
     @Override
     public int getItemCount() {

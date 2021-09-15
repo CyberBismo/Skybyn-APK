@@ -33,7 +33,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.txtFriendNickname.setText(friendsDataClass.getFriendNickname());
         //SAVE THE AVATAR LINK INSIDE VIEW'S Tag
         holder.imgFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
-        functions.loadProfilePictureThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
+        functions.loadProfilePictureDrawableThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
 
     }
     public FriendsAdapter(List <FriendsDataClass> FriendsDataClass){

@@ -108,17 +108,17 @@ public class Functions  {
     }
 
 */
-    public void  loadProfilePictureThumb(String thumbNailLink, View imv){
-                Glide.with(imv)
+
+
+    public void  loadProfilePictureDrawableThumb(String thumbNailLink, View imv){
+        Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.drawable.profile_gray)
                 .error(R.drawable.profile_gray)
-                        .into((ImageView) imv);
-
-
-
+                .into((ImageView) imv);
 
     }
+
 
     public void  showSnackBar( String msg ,View view,Context context) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
@@ -135,13 +135,23 @@ public class Functions  {
                 .show();
     }
 
-    public void  loadNotificationThumb(String thumbNailLink, View imv){
-                Glide.with(imv)
+    public void  loadNotificationThumb(Object thumbNailLink, View imv,Boolean friendRequest){
+        if (friendRequest)  {
+            Glide.with(imv)
+                    .load(thumbNailLink)
+                    .placeholder(R.drawable.friend_request)
+                    .error(R.drawable.friend_request)
+                        .into((ImageView) imv);
+
+        }else{
+
+        Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.mipmap.ic_launcher_round)
                 .error(R.mipmap.ic_launcher_round)
                 .into((ImageView) imv);
 
+    }
     }
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {

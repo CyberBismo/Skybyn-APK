@@ -19,6 +19,10 @@ public class Data {
     public String post_Api = "https://wesocial.space/api/post.php";
     public String timeline_Api = "https://wesocial.space/api/timeline.php";
     public String friends_Api = "https://wesocial.space/api/friends.php";
+    public String add_friend_Api = "https://wesocial.space/api/friendAdd.php";
+    public String remove_friend_Api = "https://wesocial.space/api/friendRem.php";
+    public String unblock_friend_Api = "https://wesocial.space/api/friendUnblock.php";
+    public String accept_friend_Api = "https://wesocial.space/api/friendAcc.php";
     public String comments_Api = "https://wesocial.space/api/comments.php";
     public String send_comment_Api = "https://wesocial.space/api/comment.php";
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
@@ -31,6 +35,7 @@ public class Data {
     public String unblock_friend_action="unblock";
     public String accept_friend_action="accept";
     public String remove_friend_action="remove";
+
 
     public String generateProfilePictureThumb(String userID, String thumb_name){
         return  "https://wesocial.space/sources/users/avatars/"+userID+"/"+thumb_name;

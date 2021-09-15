@@ -236,7 +236,7 @@ public class showFullPost extends AppCompatActivity {
         loadComments();
 
 
-        functions.loadProfilePictureThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
+        functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
         txtShowTimelinePostUsername.setText(postUsername);
         txtShowTimelinePostDate.setText(postDate);
         txtShowTimelinePostContent.setText(postContent);

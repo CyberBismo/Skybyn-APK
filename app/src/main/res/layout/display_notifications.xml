@@ -27,42 +27,55 @@
             android:background="@color/transparent_full">
 
 
-            <com.mikhaellopez.circularimageview.CircularImageView
+            <Button
+                android:id="@+id/btnNotiAcceptFriendRequest"
+                android:layout_width="89dp"
+                android:layout_height="34dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/button_selector"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/accept"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.533"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <ImageView
                 android:id="@+id/imgNotificationSender"
                 android:layout_width="53dp"
                 android:layout_height="52dp"
                 android:background="@color/transparent_full"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
-                app:civ_shadow_color="@color/white"
-                app:civ_shadow_radius="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.045"
+                app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.388" />
+                app:layout_constraintVertical_bias="0.188" />
 
             <TextView
                 android:id="@+id/lblNotificationContent"
-                android:layout_width="303dp"
+                android:layout_width="200dp"
                 android:layout_height="54dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="28dp"
                 android:fontFamily="@font/nexalight"
                 android:foregroundGravity="center_horizontal"
                 android:paddingStart="5dp"
                 android:text="@string/test_notification_details"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:textStyle="italic"
+                android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.824"
+                app:layout_constraintHorizontal_bias="0.39"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/lblNotificationTitle"
-                android:layout_width="300dp"
+                android:layout_width="200dp"
                 android:layout_height="25dp"
                 android:fontFamily="@font/nexalight"
                 android:foregroundGravity="center_horizontal"
@@ -74,17 +87,17 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/lblNotificationContent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.84"
+                app:layout_constraintHorizontal_bias="0.395"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.888" />
+                app:layout_constraintVertical_bias="0.566" />
 
             <TextView
                 android:id="@+id/lblNotificationDate"
                 android:layout_width="136dp"
                 android:layout_height="17dp"
-                android:layout_marginEnd="28dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="4dp"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"

@@ -124,7 +124,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             holder.txtTimelinePostDelete.setVisibility(View.VISIBLE);
         }
 
-        functions.loadProfilePictureThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
+        functions.loadProfilePictureDrawableThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
 
         //Timeline Delete Post
 

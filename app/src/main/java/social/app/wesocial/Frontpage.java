@@ -48,6 +48,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedpreferences;
@@ -79,6 +81,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree());
+        }
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
 
@@ -365,10 +371,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         deactivated_reason = jsonObject.get("deactivated_reason").toString();
                         banned = jsonObject.get("banned").toString();
                         banned_reason = jsonObject.get("banned_reason").toString();
-                        functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
+                        functions.loadProfilePictureDrawableThumb(avatarLink, imgNavProfilePicture);
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
-                        functions.loadProfilePictureThumb(avatarLink, imgNavProfilePicture);
+                        functions.loadProfilePictureDrawableThumb(avatarLink, imgNavProfilePicture);
                         if (banned.equals("1")) {
                             showAlertDialog("", banned_reason, false, true);
                         }

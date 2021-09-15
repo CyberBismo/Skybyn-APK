@@ -110,7 +110,7 @@ public static TextView txtSearchTitle;
             public void run() {
                 Frontpage.searchView.clearFocus();
             }
-        },3000);
+        },2000);
 
     }
 

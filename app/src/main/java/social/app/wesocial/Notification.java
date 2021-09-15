@@ -113,12 +113,13 @@ public class Notification extends Fragment {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         notificationContent = (String) jsonObject.get("content");
-                        notificationAvatarLink = "";//(String) jsonObject.get("avatar");
+                        notificationAvatarLink = (String) jsonObject.get("avatar");
                         notificationDate = (String) jsonObject.get("date").toString();
                         notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
                         notificationTitle = (String) jsonObject.get("title");
                         notificationID = (String) jsonObject.get("notiID");
                         notificationRead = (String) jsonObject.get("read");
+                        notificationType = (String) jsonObject.get("type");
 
                         /***notificationPost = (String) jsonObject.get("post").toString();
                         notificationPage = (String) jsonObject.get("page").toString();
