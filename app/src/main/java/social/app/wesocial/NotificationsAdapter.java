@@ -1,5 +1,7 @@
 package social.app.wesocial;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
@@ -32,6 +42,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public static final String notificationType_updates = "updates";
     public static final String notificationType_system = "system";
     public static final String notificationType_comment = "comment";
+    public static Activity activity;
 
 
     @NonNull
@@ -42,6 +53,26 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         return new ViewHolder(itemView);
     }
 
+
+    public void updateNotiReadStatus(String notiID,Context context){
+        HashMap<String,String> postData = new HashMap<>();
+        postData.put("notiID",notiID);
+
+        NetworkController networkController = new NetworkController(context, new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                Timber.i(response);
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+
+            }
+        });
+
+        networkController.PostMethod(data.read_notification_Api,postData);
+
+    }
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.ViewHolder holder, int position) {
 
@@ -49,6 +80,20 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.Title.setText(notificationDataClass.getTitle());
         holder.Content.setText(notificationDataClass.getContent());
         holder.date.setText(notificationDataClass.getDate());
+
+            holder.notificationCardView.setOnClickListener(view -> {
+                updateNotiReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
+            });
+
+        holder.btnNotiAcceptFriendRequest.setOnClickListener(view -> {
+            Fragment friendFragment = Friends.newInstance(data.accept_friend_action,"");
+            functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(),false);
+            holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
+            holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
+            updateNotiReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
+
+        });
+
         holder.imgNotificationSender.setTag(R.integer.integer_key_zero, notificationDataClass.getAvatarLink());
 
         switch (notificationDataClass.getType()) {
@@ -96,7 +141,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             holder.Content.setTypeface(typeface);
             holder.notificationCardView.setCardBackgroundColor(ContextCompat.getColor(holder.notificationCardView.getContext(), R.color.dark_gray_2));
             holder.Title.setTypeface(typeface);
-
         } else {
             holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
             holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
@@ -105,8 +149,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     }
 
-    public NotificationsAdapter(List<NotificationDataClass> NotificationDataClass) {
+    public NotificationsAdapter( List<NotificationDataClass> NotificationDataClass) {
         this.NotificationDataClass = NotificationDataClass;
+
+
     }
 
     @Override

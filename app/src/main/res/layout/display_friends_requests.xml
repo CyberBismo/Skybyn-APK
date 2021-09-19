@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/friendCardView"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    app:cardBackgroundColor="@color/dark_gray_2"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/black">
+
+        <TextView
+            android:id="@+id/txtFriendRequestsUsername"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/nexabold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/username"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/txtFriendRequestsNickname"
+            app:layout_constraintEnd_toStartOf="@+id/btnFriendsAcceptRequests"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtFriendRequestsNickname"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="@font/nexabold"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/Nickname"
+            android:textColor="@color/light_main_colour"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFriendsDeclineRequests" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgFriendRequestsProfilePicture"
+            android:layout_width="65dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/transparent_full"
+            app:civ_border_color="@color/light_main_colour"
+            app:civ_border_width="2dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.413" />
+
+        <Button
+            android:id="@+id/btnFriendsAcceptRequests"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/button_selector"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnFriendsDeclineRequests"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/btnFriendsDeclineRequests"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_selector_red"
+            android:text="@string/decline"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

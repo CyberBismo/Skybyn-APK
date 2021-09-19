@@ -207,7 +207,7 @@ public class showFullPost extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.comments_Api, postData);
+        networkController.PostMethod(data.list_comments_Api, postData);
     }
 
     @Override
@@ -456,7 +456,7 @@ public class showFullPost extends AppCompatActivity {
 
                 }
             });
-            networkController.PostMethod(data.send_comment_Api, postData);
+            networkController.PostMethod(data.add_comment_Api, postData);
             //Toast.makeText(getApplicationContext(),getString(R.string.posting_comment),Toast.LENGTH_SHORT).show();
             btnSendTimelineComment.setEnabled(false);
         });

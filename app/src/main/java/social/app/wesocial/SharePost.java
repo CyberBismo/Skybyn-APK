@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -8,9 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -143,7 +139,7 @@ Data data = new Data();
                     }
                 });
 
-                networkController.PostMethod(data.post_Api,postData);
+                networkController.PostMethod(data.addPost_Api,postData);
 
         });
     }

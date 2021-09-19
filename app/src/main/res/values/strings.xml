@@ -128,6 +128,7 @@
     <string name="block">Block</string>
     <string name="goto_profile">View Profile >></string>
     <string name="no_friends">Sorry, we could not fetch your friends list.</string>
+    <string name="no_friend_requests">Sorry, we could not fetch your friend requests.</string>
     <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -138,4 +139,8 @@
     <string name="we_found_result">"We found some results for "</string>
     <string name="new_friend_request">New Friend Request</string>
     <string name="accept">Accept</string>
+    <string name="blocked">Blocked</string>
+    <string name="friend_requests">Friend Requests</string>
+    <string name="decline">Decline</string>
+    <string name="unblock">Unblock</string>
 </resources>
