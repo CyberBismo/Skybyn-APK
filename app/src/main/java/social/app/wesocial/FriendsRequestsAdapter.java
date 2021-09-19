@@ -54,7 +54,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         functions.loadProfilePictureDrawableThumb(holder.imgFriendRequestsProfilePicture.getTag().toString(), holder.imgFriendRequestsProfilePicture);
             holder.btnAcceptFriendRequest.setOnClickListener(view -> {
                 HashMap<String,String> postData = new HashMap<>();
-                postData.put("friend_id",holder.txtFriendRequestsUsername.getTag().toString());
+                postData.put("friendID",holder.txtFriendRequestsUsername.getTag().toString());
                 postData.put("userID",Frontpage.userID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
@@ -101,7 +101,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
             holder.btnDeclineFriendRequest.setOnClickListener(view -> {
             HashMap<String,String> postData = new HashMap<>();
-            postData.put("friend_id",holder.txtFriendRequestsUsername.getTag().toString());
+            postData.put("friendID",holder.txtFriendRequestsUsername.getTag().toString());
             postData.put("userID",Frontpage.userID);
 
             NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {

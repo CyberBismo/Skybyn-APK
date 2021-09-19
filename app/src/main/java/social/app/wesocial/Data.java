@@ -36,7 +36,7 @@ public class Data {
     public String list_blockedFriends_Api = "https://wesocial.space/api/friend/blocked.php";
     public String remove_friend_Api = "https://wesocial.space/api/friend/remove.php";
     public String unblock_friend_Api = "https://wesocial.space/api/friend/unblock.php";
-    public String lock_friend_Api = "https://wesocial.space/api/friend/block.php";
+    public String block_friend_Api = "https://wesocial.space/api/friend/block.php";
     public String accept_friend_Api = "https://wesocial.space/api/friend/accept.php";
 
     // COMMENTS Api
