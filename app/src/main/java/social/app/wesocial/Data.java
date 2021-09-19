@@ -41,10 +41,10 @@ public class Data {
     public String cancel_friend_Api = "https://wesocial.space/api/friend/cancel.php";
 
     // COMMENTS Api
-    public String list_comments_Api = "https://wesocial.space/api/comments/list.php";
-    public String add_comment_Api = "https://wesocial.space/api/comments/add.php";
-    public String deleteComment_Api = "https://wesocial.space/api/comments/delete.php";
-    public String editComment_Api = "https://wesocial.space/api/comments/edit.php";
+    public String list_comments_Api = "https://wesocial.space/api/comment/list.php";
+    public String add_comment_Api = "https://wesocial.space/api/comment/add.php";
+    public String deleteComment_Api = "https://wesocial.space/api/comment/delete.php";
+    public String editComment_Api = "https://wesocial.space/api/comment/edit.php";
 
 
     public String forgotPassword_Api = "https://wesocial.space/api/forgot.php";
