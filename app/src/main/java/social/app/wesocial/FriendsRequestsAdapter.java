@@ -27,14 +27,16 @@ import timber.log.Timber;
 
 
 public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequestsAdapter.ViewHolder> {
+
     private final List <FriendsDataClass> FriendsDataClass;
+
     Functions functions =new Functions();
     Data data =new Data();
+
     @NonNull
     @Override
     public FriendsRequestsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_friends_requests, parent, false);
-
         return new ViewHolder(itemView);
     }
 
@@ -52,6 +54,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         holder.imgFriendRequestsProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
 
         functions.loadProfilePictureDrawableThumb(holder.imgFriendRequestsProfilePicture.getTag().toString(), holder.imgFriendRequestsProfilePicture);
+
+        //BUTTON CLICK TO ACCEPT REQUEST
             holder.btnAcceptFriendRequest.setOnClickListener(view -> {
                 HashMap<String,String> postData = new HashMap<>();
                 postData.put("friendID",holder.txtFriendRequestsUsername.getTag().toString());
@@ -72,6 +76,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
                                 FriendsDataClass.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
                                 notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+                                message = message + holder.txtFriendRequestsUsername.getText().toString();
 
                             }
 
@@ -99,6 +104,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
             });
 
+        //BUTTON CLICK TO DECLINE REQUEST
             holder.btnDeclineFriendRequest.setOnClickListener(view -> {
             HashMap<String,String> postData = new HashMap<>();
             postData.put("friendID",holder.txtFriendRequestsUsername.getTag().toString());
@@ -143,6 +149,50 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         });
 
 
+            //BUTTON CLICK TO CANCEL REQUEST
+        holder.btnCancelFriendRequest.setOnClickListener(view -> {
+            HashMap<String,String> postData = new HashMap<>();
+            postData.put("friendID",holder.txtFriendRequestsUsername.getTag().toString());
+            postData.put("userID",Frontpage.userID);
+
+            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                @Override
+                public void notifySuccess(String response) throws JSONException {
+                    Timber.i(response);
+                    functions.hideProgress(lottie);
+
+                    if (functions.isJsonObject(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.get("message").toString();
+                        String responseCode = jsonObject.get("responseCode").toString();
+
+                        if (responseCode.equals("1")) {
+                            FriendsDataClass.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+
+                        }
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(holder.itemView.getContext()).create();
+                        alertDialog.setTitle("");
+                        alertDialog.setMessage(message);
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }
+                }
+                @Override
+                public void notifyError(VolleyError error) {
+                    functions.hideProgress(lottie);
+                }
+            });
+
+            functions.showProgress(lottie);
+
+            networkController.PostMethod(data.cancel_friend_Api,postData);
+
+        });
+
     }
 
 
@@ -160,16 +210,18 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         TextView txtFriendRequestsUsername, txtFriendRequestsNickname;
         ImageView imgFriendRequestsProfilePicture;
         CardView friendCardView;
-        Button btnAcceptFriendRequest;
-        Button btnDeclineFriendRequest;
+        Button btnAcceptFriendRequest,btnDeclineFriendRequest,btnCancelFriendRequest;;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtFriendRequestsUsername = itemView.findViewById(R.id.txtFriendRequestsUsername);
             txtFriendRequestsNickname = itemView.findViewById(R.id.txtFriendRequestsNickname);
             imgFriendRequestsProfilePicture = itemView.findViewById(R.id.imgFriendRequestsProfilePicture);
-            btnAcceptFriendRequest = itemView.findViewById(R.id.btnFriendsAcceptRequests);
-            btnDeclineFriendRequest = itemView.findViewById(R.id.btnFriendsDeclineRequests);
+            btnAcceptFriendRequest = itemView.findViewById(R.id.btnAcceptFriendRequest);
+            btnDeclineFriendRequest = itemView.findViewById(R.id.btnDeclineFriendRequest);
+            btnDeclineFriendRequest = itemView.findViewById(R.id.btnDeclineFriendRequest);
+            btnCancelFriendRequest = itemView.findViewById(R.id.btnCancelFriendRequest);
             friendCardView=itemView.findViewById(R.id.friendCardView);
         }
     }

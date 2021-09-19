@@ -16,25 +16,25 @@
         <TextView
             android:id="@+id/txtFriendRequestsUsername"
             android:layout_width="180dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="140dp"
             android:fontFamily="@font/nexabold"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/username"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/txtFriendRequestsNickname"
-            app:layout_constraintEnd_toStartOf="@+id/btnFriendsAcceptRequests"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/txtFriendRequestsNickname"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="32dp"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="144dp"
+            android:layout_marginBottom="60dp"
             android:fontFamily="@font/nexabold"
             android:gravity="center_vertical"
             android:singleLine="true"
@@ -42,7 +42,7 @@
             android:textColor="@color/light_main_colour"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnFriendsDeclineRequests" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imgFriendRequestsProfilePicture"
@@ -60,28 +60,42 @@
             app:layout_constraintVertical_bias="0.413" />
 
         <Button
-            android:id="@+id/btnFriendsAcceptRequests"
-            android:layout_width="100dp"
+            android:id="@+id/btnDeclineFriendRequest"
+            android:layout_width="80dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_selector_dark_gray"
+            android:text="@string/decline"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnCancelFriendRequest"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/btnAcceptFriendRequest"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/button_selector"
             android:text="@string/accept"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/btnFriendsDeclineRequests"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDeclineFriendRequest"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Button
-            android:id="@+id/btnFriendsDeclineRequests"
-            android:layout_width="100dp"
+            android:id="@+id/btnCancelFriendRequest"
+            android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/button_selector_red"
-            android:text="@string/decline"
-            android:textColor="@color/white"
+            android:layout_marginEnd="44dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_selector_dark_gray"
+            android:text="@string/cancel"
+            android:textColor="@color/light_gray"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

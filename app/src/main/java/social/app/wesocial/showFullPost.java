@@ -326,6 +326,7 @@ public class showFullPost extends AppCompatActivity {
                                     //functions.showSnackBar(holder.itemView.getContext().getString(string.network_something_wrong),holder.itemView.findViewById(android.R.id.content), holder.itemView.getContext());
                                 }
                             });
+
                             Toast.makeText(getApplicationContext(), getString(R.string.updating_post),Toast.LENGTH_SHORT).show();
                             networkController.PostMethod(data.editPost_Api, postData);
 

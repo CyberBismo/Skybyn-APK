@@ -89,12 +89,12 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                     HashMap<String, String> postData = new HashMap<>();
                     postData.put("userID", Frontpage.userID);
                     postData.put("friendID", (String) holder.txtUserSearchUsername.getTag(R.integer.integer_key_zero));
-                    postData.put("action",data.add_friend_action);
+                    //postData.put("action",data.add_friend_action);
                     NetworkController networkController = new NetworkController(holder.itemView.getContext(),new NetworkController.IResult() {
                         @Override
                         public void notifySuccess(String response) throws JSONException {
                             if (functions.isJsonObject(response)) {
-                                Timber.i(response.toString());
+                                Timber.i(response);
                                 JSONObject jsonObject = new JSONObject(response);
                                 String responseCode = jsonObject.get("responseCode").toString();
                                 String message = jsonObject.get("message").toString();
