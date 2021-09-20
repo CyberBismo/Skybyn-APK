@@ -118,10 +118,12 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         }
 
-        String userID = Frontpage.userID;
+
         //If the timeLine Post is by Me!
-        if (holder.txtUsername.getTag().toString().equals(userID)) {
+        if (holder.txtUsername.getTag().toString().equals(Frontpage.userID)) {
             holder.txtTimelinePostDelete.setVisibility(View.VISIBLE);
+        }else{
+            holder.txtTimelinePostDelete.setVisibility(View.INVISIBLE);
         }
 
         functions.loadProfilePictureDrawableThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);

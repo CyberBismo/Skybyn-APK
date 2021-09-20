@@ -131,6 +131,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 break;
 
             default:
+                functions.loadNotificationThumb(notificationDataClass.getAvatarLink().toString(), holder.imgNotificationSender,true);
                 holder.Title.setText(notificationDataClass.getTitle());
                 holder.btnNotiAcceptFriendRequest.setVisibility(View.INVISIBLE);
         }

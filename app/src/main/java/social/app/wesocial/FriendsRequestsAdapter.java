@@ -76,7 +76,8 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
                                 FriendsDataClass.remove(holder.getAdapterPosition());
                                 notifyItemRemoved(holder.getAdapterPosition());
                                 notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
-                                message = message + holder.txtFriendRequestsUsername.getText().toString();
+                                //message = message + holder.txtFriendRequestsUsername.getText().toString();
+
 
                             }
 
@@ -84,11 +85,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
                             alertDialog.setTitle("");
                             alertDialog.setMessage(message);
                             alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
+                                    (dialog, which) -> dialog.dismiss());
                             alertDialog.show();
                         }
                     }

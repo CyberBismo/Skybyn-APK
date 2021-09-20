@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     private final List <FriendsDataClass> FriendsDataClass;
     Functions functions =new Functions();
+    Data data =new Data();
     @NonNull
     @Override
     public FriendsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -26,6 +38,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
+        Activity activity = (Activity) holder.itemView.getContext();
+        LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
+
         FriendsDataClass friendsDataClass = FriendsDataClass.get(position);
         holder.txtFriendUsername.setText(friendsDataClass.getFriendUsername());
         //SAVE THE User's ID INSIDE VIEW'S Tag
@@ -34,6 +49,99 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         //SAVE THE AVATAR LINK INSIDE VIEW'S Tag
         holder.imgFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
         functions.loadProfilePictureDrawableThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
+
+        //BUTTON TO REMOVE FRIEND
+        holder.btnRemoveFriend.setOnClickListener(view -> {
+            HashMap<String,String> postData = new HashMap<>();
+            postData.put("friendID",holder.txtFriendUsername.getTag().toString());
+            postData.put("userID",Frontpage.userID);
+
+            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                @Override
+                public void notifySuccess(String response) throws JSONException {
+                    Timber.i(response);
+                    functions.hideProgress(lottie);
+
+                    if (functions.isJsonObject(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.get("message").toString();
+                        String responseCode = jsonObject.get("responseCode").toString();
+
+                        if (responseCode.equals("1")) {
+                            FriendsDataClass.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+
+                        }
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(holder.itemView.getContext()).create();
+                        alertDialog.setTitle("");
+                        alertDialog.setMessage(message);
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }
+                }
+                @Override
+                public void notifyError(VolleyError error) {
+
+                }
+            });
+
+            functions.showProgress(lottie);
+
+            networkController.PostMethod(data.remove_friend_Api,postData);
+
+
+        });
+
+
+
+        //BUTTON TO BLOCK FRIEND
+        holder.btnBlockFriend.setOnClickListener(view -> {
+            HashMap<String,String> postData = new HashMap<>();
+            postData.put("friendID",holder.txtFriendUsername.getTag().toString());
+            postData.put("userID",Frontpage.userID);
+
+            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                @Override
+                public void notifySuccess(String response) throws JSONException {
+                    Timber.i(response);
+                    functions.hideProgress(lottie);
+
+                    if (functions.isJsonObject(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.get("message").toString();
+                        String responseCode = jsonObject.get("responseCode").toString();
+
+                        if (responseCode.equals("1")) {
+                            FriendsDataClass.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+
+                        }
+
+                        AlertDialog alertDialog = new AlertDialog.Builder(holder.itemView.getContext()).create();
+                        alertDialog.setTitle("");
+                        alertDialog.setMessage(message);
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }
+                }
+                @Override
+                public void notifyError(VolleyError error) {
+
+                }
+            });
+
+            functions.showProgress(lottie);
+
+            networkController.PostMethod(data.block_friend_Api,postData);
+
+
+        });
+
 
     }
     public FriendsAdapter(List <FriendsDataClass> FriendsDataClass){
@@ -50,14 +158,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         TextView txtFriendUsername, txtFriendNickname;
         ImageView imgFriendProfilePicture;
         CardView friendCardView;
-        Button btnBlockFriend;
+        Button btnBlockFriend , btnRemoveFriend;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtFriendUsername = itemView.findViewById(R.id.txtUserSearchUsername);
-            txtFriendNickname = itemView.findViewById(R.id.txtUserSearchNickname);
-            imgFriendProfilePicture = itemView.findViewById(R.id.imgUserSearchProfilePicture);
-            btnBlockFriend = itemView.findViewById(R.id.btnUserSearchAddFriend);
+            txtFriendUsername = itemView.findViewById(R.id.txtFriendUsername);
+            txtFriendNickname = itemView.findViewById(R.id.txtFriendNickname);
+            imgFriendProfilePicture = itemView.findViewById(R.id.imgFriendProfilePicture);
+            btnRemoveFriend = itemView.findViewById(R.id.btnRemoveFriend);
+            btnBlockFriend = itemView.findViewById(R.id.btnBlockFriend);
             friendCardView=itemView.findViewById(R.id.friendCardView);
         }
     }

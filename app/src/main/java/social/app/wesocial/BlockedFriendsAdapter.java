@@ -53,7 +53,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
 
             holder.btnUnblockFriend.setOnClickListener(view -> {
                 HashMap<String,String> postData = new HashMap<>();
-                postData.put("friend_id",friendsDataClass.getFriendID());
+                postData.put("friendID",friendsDataClass.getFriendID());
                 postData.put("userID",Frontpage.userID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {

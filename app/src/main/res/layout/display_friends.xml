@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txtUserSearchUsername"
+            android:id="@+id/txtFriendUsername"
             android:layout_width="200dp"
             android:layout_height="27dp"
             android:layout_marginTop="24dp"
@@ -23,13 +23,13 @@
             android:singleLine="true"
             android:text="@string/username"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/txtUserSearchNickname"
+            app:layout_constraintBottom_toTopOf="@+id/txtFriendNickname"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.115" />
 
         <TextView
-            android:id="@+id/txtUserSearchNickname"
+            android:id="@+id/txtFriendNickname"
             android:layout_width="200dp"
             android:layout_height="27dp"
             android:layout_marginEnd="88dp"
@@ -43,7 +43,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/imgUserSearchProfilePicture"
+            android:id="@+id/imgFriendProfilePicture"
             android:layout_width="81dp"
             android:layout_height="77dp"
             android:layout_marginStart="24dp"
@@ -53,13 +53,13 @@
             app:civ_border_width="2dp"
             app:civ_shadow_color="@color/white"
             app:civ_shadow_radius="5dp"
-            app:layout_constraintEnd_toStartOf="@+id/txtUserSearchUsername"
+            app:layout_constraintEnd_toStartOf="@+id/txtFriendUsername"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btnUserSearchAddFriend"
+            android:id="@+id/btnBlockFriend"
             android:layout_width="74dp"
             android:layout_height="30dp"
             android:layout_marginStart="120dp"
@@ -67,11 +67,11 @@
             android:text="@string/block"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/txtUserSearchOnline"
+            app:layout_constraintBottom_toTopOf="@+id/txtFriendOnline"
             app:layout_constraintEnd_toStartOf="@+id/btnRemoveFriend"
             app:layout_constraintHorizontal_bias="0.272"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgUserSearchProfilePicture"
+            app:layout_constraintTop_toBottomOf="@+id/imgFriendProfilePicture"
             app:layout_constraintVertical_bias="0.0"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -90,7 +90,7 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
-            android:id="@+id/txtUserSearchOnline"
+            android:id="@+id/txtFriendOnline"
             android:layout_width="199dp"
             android:layout_height="22dp"
             android:layout_marginBottom="28dp"

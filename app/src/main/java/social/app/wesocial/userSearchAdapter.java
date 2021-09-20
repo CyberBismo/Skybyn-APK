@@ -130,11 +130,11 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(id.userSearchCardView);
-            txtUserSearchUsername = itemView.findViewById(id.txtUserSearchUsername);
-            txtUserSearchNickname = itemView.findViewById(id.txtUserSearchNickname);
-            txtUserSearchOnline = itemView.findViewById(id.txtUserSearchOnline);
-            imgUserSearchProfilePicture = itemView.findViewById(id.imgUserSearchProfilePicture);
-            btnUserSearchAddFriend = itemView.findViewById(id.btnUserSearchAddFriend);
+            txtUserSearchUsername = itemView.findViewById(id.txtFriendUsername);
+            txtUserSearchNickname = itemView.findViewById(id.txtFriendNickname);
+            txtUserSearchOnline = itemView.findViewById(id.txtFriendOnline);
+            imgUserSearchProfilePicture = itemView.findViewById(id.imgFriendProfilePicture);
+            btnUserSearchAddFriend = itemView.findViewById(id.btnBlockFriend);
 
         }
     }

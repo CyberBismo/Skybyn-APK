@@ -129,9 +129,9 @@
     <string name="goto_profile">View Profile >></string>
     <string name="no_friends">Sorry, we could not find any friends on  your friends list.</string>
     <string name="no_friend_requests">No pending friend requests.</string>
+    <string name="no_blocked_friends">No blocked friends.</string>
     <string name="search">Search</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="no_search_result">"Sorry, we couldnt find anything that matches "</string>
     <string name="add_friend">Add friend</string>
     <string name="remove">Remove</string>
