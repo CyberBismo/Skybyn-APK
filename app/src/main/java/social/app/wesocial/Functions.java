@@ -1,55 +1,50 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieDrawable;
-import com.android.volley.VolleyError;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import org.json.JSONException;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
+import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import kotlin.TypeCastException;
 
-public class Functions  {
+public class Functions {
 
     public static FragmentContainerView fragmentContainerView;
 
-    public Boolean isJsonObject(String json){
-        return json.startsWith("{"); }
+    public Boolean isJsonObject(String json) {
+        return json.startsWith("{");
+    }
 
-    public Boolean isJsonArray(String json){
-        return json.startsWith("["); }
+    public Boolean isJsonArray(String json) {
+        return json.startsWith("[");
+    }
 
-    public Boolean validateEmail(String email){
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches(); }
+    public Boolean validateEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 
-      public void  showProgress(LottieAnimationView lottieview) {
+    public void showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.wesocialdot);
@@ -62,7 +57,7 @@ public class Functions  {
 
     }
 
-    public void  showFingerPrintPrompt(LottieAnimationView lottieview) {
+    public void showFingerPrintPrompt(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.fingerprint2);
@@ -73,44 +68,17 @@ public class Functions  {
 
     }
 
-    public void hideProgress(LottieAnimationView lottieview)
-    { lottieview.setVisibility(LottieAnimationView.GONE);
-    lottieview.pauseAnimation();
+    public void hideProgress(LottieAnimationView lottieview) {
+        lottieview.setVisibility(LottieAnimationView.GONE);
+        lottieview.pauseAnimation();
 
     }
 
 
 
-    /*public interface alertDialogListener {
-        void DialogPositive(DialogInterface dialogInterface, int i) ;
-
-        void DialogNegative(DialogInterface dialogInterface, int i);
-    }
-
-    public void showAlertDialog(alertDialogListener alertDialogListener,Context context,String Title, String message,String positiveText, String negativeText) {
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setMessage(message)
-                .setTitle(Title)
-                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        alertDialogListener.DialogPositive(dialogInterface, i);
-                    }
-                });
-        alertDialog.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                alertDialogListener.DialogNegative(dialog, i);
-            }
-        }).show();
-
-    }
-
-*/
 
 
-    public void  loadProfilePictureDrawableThumb(String thumbNailLink, View imv){
+    public void loadProfilePictureDrawableThumb(String thumbNailLink, View imv) {
         Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.drawable.profile_gray)
@@ -120,14 +88,14 @@ public class Functions  {
     }
 
 
-    public void  showSnackBar( String msg ,View view,Context context) {
+    public void showSnackBar(String msg, View view, Context context) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(context, R.color.main_colour))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))
                 .show();
     }
 
-    public void  showSnackBarError( String msg ,View view,Context context) {
+    public void showSnackBarError(String msg, View view, Context context) {
 
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(context, R.color.red))
@@ -135,28 +103,27 @@ public class Functions  {
                 .show();
     }
 
-    public void  loadNotificationThumb(Object thumbNailLink, View imv,Boolean friendRequest){
-        if (friendRequest)  {
+    public void loadNotificationThumb(Object thumbNailLink, View imv, Boolean friendRequest) {
+        if (friendRequest) {
             Glide.with(imv)
                     .load(thumbNailLink)
                     .placeholder(R.drawable.friend_request)
                     .error(R.drawable.friend_request)
-                        .into((ImageView) imv);
+                    .into((ImageView) imv);
 
-        }else{
+        } else {
 
-        Glide.with(imv)
-                .load(thumbNailLink)
-                .placeholder(R.mipmap.ic_launcher_round)
-                .error(R.mipmap.ic_launcher_round)
-                .into((ImageView) imv);
+            Glide.with(imv)
+                    .load(thumbNailLink)
+                    .placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.mipmap.ic_launcher_round)
+                    .into((ImageView) imv);
 
-    }
+        }
     }
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
-         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
-         Integer FragmentContainerHeight = fragmentContainerView.getHeight();
+        fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -168,10 +135,10 @@ public class Functions  {
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
 
 
-        if (isTimeline){
+        if (isTimeline) {
             bottomLayout.setVisibility(View.VISIBLE);
 
-        }else{
+        } else {
             fragmentContainerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             bottomLayout.setVisibility(View.INVISIBLE);
         }
@@ -181,41 +148,40 @@ public class Functions  {
     }
 
 
-    public String  convertUnixToDateAndTime(Long UnixDateLong) {
+    public String convertUnixToDateAndTime(Long UnixDateLong) {
         try {
-            Date date = new Date(UnixDateLong*1000L); // convert seconds to milliseconds
-            SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
-            String formattedDate = dateFormat.format(date);
-            return formattedDate;
-        }catch (TypeCastException e) {
-            return  "Loading ...";
+            Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
+            return dateFormat.format(date);
+        } catch (TypeCastException e) {
+            return "Loading ...";
 
         }
-        }
+    }
 
-    public  void hideSoftKeyboard(Activity activity) {
+    public void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
                         Activity.INPUT_METHOD_SERVICE);
-        if(inputMethodManager.isAcceptingText()){
+        if (inputMethodManager.isAcceptingText()) {
             inputMethodManager.hideSoftInputFromWindow(
                     activity.getCurrentFocus().getWindowToken(),
                     0
             );
         }
     }
-    public String  convertUnixToDateAndTimeNoGMT(Long UnixDateLong) {
+
+    public String convertUnixToDateAndTimeNoGMT(Long UnixDateLong) {
         try {
-            Date date = new Date(UnixDateLong*1000L); // convert seconds to milliseconds
-            SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
-            String formattedDate = dateFormat.format(date);
-            return formattedDate;
-        }catch (TypeCastException e) {
-            return  "Loading ...";
+            Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
+            return dateFormat.format(date);
+        } catch (TypeCastException e) {
+            return "Loading ...";
 
         }
     }
-    }
+}
 
 
 
