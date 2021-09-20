@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,27 +25,30 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import timber.log.Timber;
+
 public class Timeline extends Fragment {
 Functions functions = new Functions();
 Data data = new Data();
 LottieAnimationView lottie;
 RecyclerView recyclerView;
 SwipeRefreshLayout mSwipeRefreshLayout;
-Integer PostLength = 700;
+
 
     private void loadTimelinePosts() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("user", Frontpage.userID);
 
-        NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response",response.toString());
+                Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(getActivity().getString(R.string.no_timeline),getActivity().findViewById(android.R.id.content),getActivity().getApplicationContext());
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_timeline),requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                     return;
                 }
 
@@ -56,13 +59,13 @@ Integer PostLength = 700;
                     String timelineUserID;
                     String timelinePostID;
                     String timelineILike;
-                    Long unixTimelinePostDate;
+
                     String timelineAvatarLink;
-                    String timelinePostLikes = "";
-                    String timelinePostCommentsCount = "";
+                    String timelinePostLikes;
+                    String timelinePostCommentsCount;
 
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<TimelineDataClass> timelinePost = new ArrayList();
+                    ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
                     JSONObject jsonObject;
 
 
@@ -83,7 +86,7 @@ Integer PostLength = 700;
                     }
 
                     TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(timelinepostsAdapter);
                     timelinepostsAdapter.notifyDataSetChanged();
@@ -95,7 +98,7 @@ Integer PostLength = 700;
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,11 +110,8 @@ Integer PostLength = 700;
         // Required empty public constructor
     }
 
-    public static Timeline newInstance(String param1, String param2) {
-        Timeline fragment = new Timeline();
-        Bundle args = new Bundle();
-
-        return fragment;
+    public static Timeline newInstance() {
+        return new Timeline();
     }
 
 
@@ -136,14 +136,14 @@ Integer PostLength = 700;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lottie = getActivity().findViewById(R.id.frontpageProgressView);
-        recyclerView = getActivity().findViewById(R.id.postsRecyclerView);
+        lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        recyclerView = requireActivity().findViewById(R.id.postsRecyclerView);
         loadTimelinePosts();
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.timelineSwipeToRefresh);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) requireView().findViewById(R.id.timelineSwipeToRefresh);
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            Toast.makeText(getActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
             loadTimelinePosts();
             mSwipeRefreshLayout.setRefreshing(false);
         });

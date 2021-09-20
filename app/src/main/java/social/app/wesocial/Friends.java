@@ -66,7 +66,7 @@ public class Friends extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
-        friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclervView);
+        friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclerView);
         txtFriendsTitle = requireActivity().findViewById(R.id.txtFriendsTitle);
         Button btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
         Button btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);

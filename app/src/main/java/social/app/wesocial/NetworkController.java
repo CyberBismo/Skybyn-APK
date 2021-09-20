@@ -1,13 +1,9 @@
 package social.app.wesocial;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
@@ -16,13 +12,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import timber.log.Timber;
 
 public class NetworkController {
     Context context;
     RequestQueue requestQueue;
     IResult result;
-    
+
     public NetworkController(Context context, IResult result) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
@@ -30,16 +27,12 @@ public class NetworkController {
     }
 
 
-    public void PostMethod(String URL,HashMap<String,String> postParams) {
-        StringRequest postRequest = new StringRequest(Request.Method.POST,   URL, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                try {
-                    result.notifySuccess(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    public void PostMethod(String URL, HashMap<String, String> postParams) {
+        StringRequest postRequest = new StringRequest(Request.Method.POST, URL, response -> {
+            try {
+                result.notifySuccess(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }, error -> {
             VolleyLog.d("TAG", "Error: " + error.getMessage());
@@ -47,7 +40,7 @@ public class NetworkController {
         }) {
             @Override
             protected HashMap<String, String> getParams() {
-                HashMap<String, String> params = new HashMap<String, String>();
+                HashMap<String, String> params;
                 params = postParams;
                 return params;
             }
@@ -60,21 +53,15 @@ public class NetworkController {
     public void GetMethod(String URL) {
 
         StringRequest GetRequest = new StringRequest(Request.Method.GET, URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            result.notifySuccess(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                response -> {
+                    try {
+                        result.notifySuccess(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Volley Error", error.toString());
-                result.notifyError(error);
-            }
+                }, error -> {
+            Timber.e(error.toString());
+            result.notifyError(error);
         });
         requestQueue.add(GetRequest);
 

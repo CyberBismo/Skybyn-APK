@@ -1,19 +1,18 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 public class Search extends Fragment {
 public static String response,keyword;
 public static RecyclerView recyclerView;
-public static TextView txtSearchTitle;
 
 
 
@@ -61,7 +59,7 @@ public static TextView txtSearchTitle;
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.searchRecyclervView);
+        recyclerView = view.findViewById(R.id.searchRecyclerView);
         try {
             showSearchResults(response);
         } catch (JSONException e) {
@@ -69,16 +67,17 @@ public static TextView txtSearchTitle;
         }
     }
 
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     public void showSearchResults(String response) throws JSONException {
         String searchUsername;
         String searchUserNickname;
         String searchUserID;
         String searchUserAvatarLink;
-        String searchUserOnline= "";
-        String searchUserisFriend= "";
+        String searchUserOnline;
+        String isSearchedUserAFriend;
 
         JSONArray jsonArray = new JSONArray(response);
-        ArrayList<UserDataClass> userSearchData = new ArrayList();
+        ArrayList<UserDataClass> userSearchData = new ArrayList<>();
         JSONObject jsonObject;
 
 
@@ -87,30 +86,26 @@ public static TextView txtSearchTitle;
             searchUserAvatarLink = (String) jsonObject.get("avatar");
             searchUserOnline = jsonObject.get("online").toString();
             searchUsername = jsonObject.get("username").toString();
-            searchUserisFriend = jsonObject.get("friends").toString();
+            isSearchedUserAFriend = jsonObject.get("friends").toString();
             searchUserNickname = jsonObject.get("nickname").toString();
             searchUserID = jsonObject.get("id").toString();
 
-            userSearchData.add(new UserDataClass(searchUserID,searchUserAvatarLink,searchUserNickname,searchUsername,searchUserisFriend,searchUserOnline));
+            userSearchData.add(new UserDataClass(searchUserID,searchUserAvatarLink,searchUserNickname,searchUsername,isSearchedUserAFriend,searchUserOnline));
         }
 
         userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(userSearchAdapter);
         userSearchAdapter.notifyDataSetChanged();
+        TextView txtSearchTitle;
 
 
-        txtSearchTitle = getActivity().findViewById(R.id.txtSearchTitle);
+        txtSearchTitle = requireActivity().findViewById(R.id.txtSearchTitle);
         txtSearchTitle.setText("Search Results for:"+keyword);
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Frontpage.searchView.clearFocus();
-            }
-        },2000);
+        handler.postDelayed(() -> Frontpage.searchView.clearFocus(),2000);
 
     }
 

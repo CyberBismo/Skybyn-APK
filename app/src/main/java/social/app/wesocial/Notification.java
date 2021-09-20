@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +39,6 @@ public class Notification extends Fragment {
     Data data = new Data();
     RecyclerView recyclerView;
     TextView lblNotificationsTitle;
-    String userID;
     LottieAnimationView lottie;
 
 
@@ -44,7 +46,7 @@ public class Notification extends Fragment {
         // Required empty public constructor
     }
 
-    public static Notification newInstance(String param1, String param2) {
+    public static Notification newInstance() {
         Notification fragment = new Notification();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -68,46 +70,42 @@ public class Notification extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = getView().findViewById(R.id.notificationsRecyclerView);
-        lblNotificationsTitle = getView().findViewById(R.id.lblNotificationsTitle);
-        lottie = getActivity().findViewById(R.id.frontpageProgressView);
-        userID = Frontpage.userID;
+        recyclerView = requireView().findViewById(R.id.notificationsRecyclerView);
+        lblNotificationsTitle = requireView().findViewById(R.id.lblNotificationsTitle);
+        lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         loadNotification();
     }
 
 
     private void loadNotification() {
         functions.showProgress(lottie);
-        HashMap<String, String> postData = new HashMap<String, String>();
-        postData.put("user", userID);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("user", Frontpage.userID);
 
-        NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
             @Override
             public void notifySuccess(String response) throws JSONException {
                 functions.hideProgress(lottie);
                 if (response.equals("You've got no new notifications.")){
-                    functions.showSnackBarError(response,getView().findViewById(android.R.id.content),getActivity().getApplicationContext());
+                    functions.showSnackBarError(response,requireView().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                     return;
                 }
 
                 if (functions.isJsonArray(response)) {
-                    Log.i("response",response);
+                    Timber.i(response);
                     String notificationContent;
                     String notificationTitle;
                     String notificationDate;
                     String notificationID;
-                    Long unixNotificationDate;
                     String notificationAvatarLink;
-                    String notificationPost = "";
-                    String notificationPage = "";
-                    String notificationGroup = "";
-                    String notificationType = "";
-                    String notificationRead="";
+                    String notificationType;
+                    String notificationRead;
 
                     JSONArray jsonArray = new JSONArray(response);
 
-                    ArrayList<NotificationDataClass> notifications = new ArrayList();
-                    JSONObject jsonObject = null;
+                    ArrayList<NotificationDataClass> notifications = new ArrayList<>();
+                    JSONObject jsonObject;
 
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -121,28 +119,24 @@ public class Notification extends Fragment {
                         notificationRead = (String) jsonObject.get("read");
                         notificationType = (String) jsonObject.get("type");
 
-                        /***notificationPost = (String) jsonObject.get("post").toString();
-                        notificationPage = (String) jsonObject.get("page").toString();
-                        notificationGroup = (String) jsonObject.get("group").toString();
- **/                     //notificationType = getString(R.string.notifications);
                         notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
                         }
                     NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(notificationsAdapter);
-                    lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+recyclerView.getAdapter().getItemCount()+")");
+                    lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+ Objects.requireNonNull(recyclerView.getAdapter()).getItemCount()+")");
                     notificationsAdapter.notifyDataSetChanged();
                 }
-                if (!functions.isJsonArray(response.toString())) {
-                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                if (!functions.isJsonArray(response)) {
+                    Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 

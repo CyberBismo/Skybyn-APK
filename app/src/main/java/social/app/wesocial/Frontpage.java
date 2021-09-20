@@ -127,7 +127,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case id.timeline:
-                        Fragment timelineFragment = Timeline.newInstance(userID, "");
+                        Fragment timelineFragment = Timeline.newInstance();
                         functions.LoadFragment(timelineFragment, getString(string.Timeline), Frontpage.this, true);
                         return true;
 
@@ -226,7 +226,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showNotifications() {
-        Fragment notificationFragment = Notification.newInstance(userID, "");
+        Fragment notificationFragment = Notification.newInstance();
         functions.LoadFragment(notificationFragment, "Notification", Frontpage.this, false);
     }
 
@@ -355,7 +355,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     if (responseCode.equals("1")) {
                         userLoggedIn = true;
 
-                        Fragment timelineFragment = Timeline.newInstance(userID, "");
+                        Fragment timelineFragment = Timeline.newInstance();
                         functions.LoadFragment(timelineFragment, "posts", Frontpage.this, true);
 
                         String username = jsonObject.getString("username").toString();
@@ -502,7 +502,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             case id.timeline:
                 if (userLoggedIn) {
-                    Fragment timelineFragment = Timeline.newInstance("", "");
+                    Fragment timelineFragment = Timeline.newInstance();
                     functions.LoadFragment(timelineFragment, "timelinePosts", Frontpage.this, true);
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
