@@ -1,7 +1,6 @@
 package social.app.wesocial;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -202,12 +201,12 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
         return FriendsDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtFriendRequestsUsername, txtFriendRequestsNickname;
         ImageView imgFriendRequestsProfilePicture;
         CardView friendCardView;
-        Button btnAcceptFriendRequest,btnDeclineFriendRequest,btnCancelFriendRequest;;
+        Button btnAcceptFriendRequest,btnDeclineFriendRequest,btnCancelFriendRequest;
 
 
         public ViewHolder(@NonNull View itemView) {

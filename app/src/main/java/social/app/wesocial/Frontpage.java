@@ -108,7 +108,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         //Fab On CLick
         fab.setOnClickListener(view -> {
-            Fragment sharePostFragment = SharePost.newInstance("", "");
+            Fragment sharePostFragment = SharePost.newInstance();
             functions.LoadFragment(sharePostFragment, "", Frontpage.this, false);
         });
 
@@ -232,7 +232,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
     public void showFriendsPage() {
-        Fragment friendsFragment = Friends.newInstance(userID, "");
+        Fragment friendsFragment = Friends.newInstance(userID);
         functions.LoadFragment(friendsFragment, getString(string.Friends), Frontpage.this, false);
     }
 

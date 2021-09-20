@@ -1,7 +1,7 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +40,7 @@ public class Friends extends Fragment {
         // Required empty public constructor
     }
 
-    public static Friends newInstance(String param1, String param2) {
+    public static Friends newInstance(String param1) {
         Friends fragment = new Friends();
         action = "";
         action = param1;
@@ -65,25 +65,21 @@ public class Friends extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lottie = getActivity().findViewById(R.id.frontpageProgressView);
-        friendsRecyclerView = getActivity().findViewById(R.id.searchRecyclervView);
-        txtFriendsTitle = getActivity().findViewById(R.id.txtFriendsTitle);
-        Button btnShowFriends = getActivity().findViewById(R.id.btnShowFriendsList);
-        Button btnShowBlockedFriends = getActivity().findViewById(R.id.btnShowBlockedFriendsList);
-        Button btnShowFriendsRequests = getActivity().findViewById(R.id.btnShowFriendsRequestsList);
+        lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclervView);
+        txtFriendsTitle = requireActivity().findViewById(R.id.txtFriendsTitle);
+        Button btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
+        Button btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);
+        Button btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
 
 
-        btnShowBlockedFriends.setOnClickListener(view1 -> {
-            loadBlockedFriends();
-        });
+        btnShowBlockedFriends.setOnClickListener(view1 -> loadBlockedFriends());
 
-        btnShowFriends.setOnClickListener(view1 -> {
-            loadFriends();
-        });
+        btnShowFriends.setOnClickListener(view1 -> loadFriends());
 
-        btnShowFriendsRequests.setOnClickListener(view1 -> {
-            loadFriendsRequests();
-        });
+
+        btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
+
 
         if (action.equals(data.accept_friend_action)) {
             loadFriendsRequests();
@@ -94,38 +90,32 @@ public class Friends extends Fragment {
 
     }
 
-        public static void callLoadFriends(){
-
-
-        }
 
     public void loadFriends() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
-        NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response", response.toString());
+                Timber.i( response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(getActivity().getString(R.string.no_friends), getActivity().findViewById(android.R.id.content), getActivity().getApplicationContext());
-                    Fragment timelineFragment = Timeline.newInstance("", "");
-                    //   functions.LoadFragment(timelineFragment, "timelinePosts",getActivity(),true);
-
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_friends), requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                     return;
                 }
 
                 if (functions.isJsonArray(response)) {
                     String friendUsername;
-                    String friendNickname = "";
-                    String friendID = "";
-                    String friendAvatarLink = "";
+                    String friendNickname;
+                    String friendID;
+                    String friendAvatarLink ;
 
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList();
+                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList<>();
                     JSONObject jsonObject;
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -139,7 +129,7 @@ public class Friends extends Fragment {
                     }
 
                     FriendsAdapter friendsAdapter = new FriendsAdapter(friendsDataClass);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                     friendsRecyclerView.setLayoutManager(mLayoutManager);
                     friendsRecyclerView.setAdapter(friendsAdapter);
                     friendsAdapter.notifyDataSetChanged();
@@ -151,7 +141,7 @@ public class Friends extends Fragment {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -164,14 +154,15 @@ public class Friends extends Fragment {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
-        NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
                 Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(getActivity().getString(R.string.no_friend_requests), getActivity().findViewById(android.R.id.content), getActivity().getApplicationContext());
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_friend_requests), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
 
 
                     return;
@@ -179,12 +170,12 @@ public class Friends extends Fragment {
 
                 if (functions.isJsonArray(response)) {
                     String friendUsername;
-                    String friendNickname = "";
-                    String friendID = "";
-                    String friendAvatarLink = "";
+                    String friendNickname;
+                    String friendID;
+                    String friendAvatarLink;
 
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList();
+                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList<>();
                     JSONObject jsonObject;
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -198,7 +189,7 @@ public class Friends extends Fragment {
                     }
 
                     FriendsRequestsAdapter friendsRequestsAdapter = new FriendsRequestsAdapter(friendsDataClass);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                     friendsRecyclerView.setLayoutManager(mLayoutManager);
                     friendsRecyclerView.setAdapter(friendsRequestsAdapter);
                     friendsRequestsAdapter.notifyDataSetChanged();
@@ -210,7 +201,7 @@ public class Friends extends Fragment {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -223,14 +214,15 @@ public class Friends extends Fragment {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
-        NetworkController networkController = new NetworkController(getActivity().getApplicationContext(), new NetworkController.IResult() {
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
                 Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(getActivity().getString(R.string.no_blocked_friends), getActivity().findViewById(android.R.id.content), getActivity().getApplicationContext());
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_blocked_friends), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                     return;
                 }
 
@@ -241,7 +233,7 @@ public class Friends extends Fragment {
                     String friendAvatarLink;
 
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList();
+                    ArrayList<FriendsDataClass> friendsDataClass = new ArrayList<>();
                     JSONObject jsonObject;
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -255,7 +247,7 @@ public class Friends extends Fragment {
                     }
 
                     BlockedFriendsAdapter blockedFriendsAdapter = new BlockedFriendsAdapter(friendsDataClass);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                     friendsRecyclerView.setLayoutManager(mLayoutManager);
                     friendsRecyclerView.setAdapter(blockedFriendsAdapter);
                     blockedFriendsAdapter.notifyDataSetChanged();
@@ -267,7 +259,7 @@ public class Friends extends Fragment {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 

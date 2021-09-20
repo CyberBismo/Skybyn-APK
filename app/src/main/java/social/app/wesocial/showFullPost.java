@@ -1,9 +1,10 @@
 package social.app.wesocial;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+
+import timber.log.Timber;
 
 
 public class showFullPost extends AppCompatActivity {
@@ -61,7 +65,7 @@ public class showFullPost extends AppCompatActivity {
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response", response);
+                Timber.i(response);
                 if (functions.isJsonObject(response)) {
                     JSONObject jsonObject = new JSONObject(response);
                     String responseCode = jsonObject.get("responseCode").toString();
@@ -98,7 +102,7 @@ public class showFullPost extends AppCompatActivity {
 
     }
 
-    public void getAllViewsbyID() {
+    private void getAllViewsbyID() {
         txtShowTimelinePostUsername = findViewById(R.id.txtShowTimelinePostUsername);
         txtCommentsCount = findViewById(R.id.txtCommentsCount);
         txtShowTimelinePostDate = findViewById(R.id.txtShowTimelinePostDate);
@@ -130,15 +134,15 @@ public class showFullPost extends AppCompatActivity {
     public void getPostIntentContent() {
         Intent i = getIntent();
         timelinePostDetails = (HashMap<String, Object>) i.getSerializableExtra("timeLinePostDetails");
-        postUsername = timelinePostDetails.get("username").toString();
-        posterUserID = timelinePostDetails.get("userID").toString();
-        postID = timelinePostDetails.get("postID").toString();
-        postDate = timelinePostDetails.get("date").toString();
-        postContent = timelinePostDetails.get("content").toString();
-        postLikes = timelinePostDetails.get("likes").toString();
-        postAvatarlink = timelinePostDetails.get("avatarLink").toString();
-        postCommentsCount = timelinePostDetails.get("comments_count").toString();
-        userLikedPost = timelinePostDetails.get("ilike").toString();
+        postUsername = Objects.requireNonNull(timelinePostDetails.get("username")).toString();
+        posterUserID = Objects.requireNonNull(timelinePostDetails.get("userID")).toString();
+        postID = Objects.requireNonNull(timelinePostDetails.get("postID")).toString();
+        postDate = Objects.requireNonNull(timelinePostDetails.get("date")).toString();
+        postContent = Objects.requireNonNull(timelinePostDetails.get("content")).toString();
+        postLikes = Objects.requireNonNull(timelinePostDetails.get("likes")).toString();
+        postAvatarlink = Objects.requireNonNull(timelinePostDetails.get("avatarLink")).toString();
+        postCommentsCount = Objects.requireNonNull(timelinePostDetails.get("comments_count")).toString();
+        userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
         actionBar.setTitle("Comments:" + " " + postContent);
     }
 
@@ -149,9 +153,10 @@ public class showFullPost extends AppCompatActivity {
         postData.put("postID", postID);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response", response.toString());
+                Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (functions.isJsonArray(response)) {
@@ -162,11 +167,11 @@ public class showFullPost extends AppCompatActivity {
                     String commentID;
                     String commentILike;
                     String commentAvatarLink;
-                    String commentLikes = "";
-                    String commentPostID = "";
+                    String commentLikes;
+                    String commentPostID;
 
                     JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<CommentDataClass> commentData = new ArrayList();
+                    ArrayList<CommentDataClass> commentData = new ArrayList<>();
                     JSONObject jsonObject;
 
 
@@ -192,7 +197,7 @@ public class showFullPost extends AppCompatActivity {
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
-                    txtCommentsCount.setText("Comments(" + String.valueOf(commentsAdapter.getItemCount()) + ")");
+                    txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
 
                     recyclerView.scrollToPosition(commentsAdapter.getItemCount());
 
@@ -229,6 +234,7 @@ public class showFullPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.showfullpost);
         actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         getAllViewsbyID();
         getPostIntentContent();
@@ -245,15 +251,11 @@ public class showFullPost extends AppCompatActivity {
         btnShowtimePostLike.setTag(userLikedPost);
 
 
-        if (userLikedPost.equals("1")) {
-            btnShowtimePostLike.setLiked(true);
-        } else {
-            btnShowtimePostLike.setLiked(false);
-        }
+        btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
         //LIKE BUTTON
         btnShowtimePostLike.setOnClickListener(view -> {
 
-            int postLikes = Integer.valueOf(txtShowTimelinePostLikes.getText().toString());
+            int postLikes = Integer.parseInt(txtShowTimelinePostLikes.getText().toString());
 
             //If user has not liked the post before...
             if (userLikedPost.equals("0")) {
@@ -261,7 +263,7 @@ public class showFullPost extends AppCompatActivity {
                 txtShowTimelinePostLikes.setText(String.valueOf(postLikes + 1));
             } else {
                 btnShowtimePostLike.setLiked(false);
-                if (Integer.valueOf(txtShowTimelinePostLikes.getText().toString()) > 0)
+                if (Integer.parseInt(txtShowTimelinePostLikes.getText().toString()) > 0)
                     txtShowTimelinePostLikes.setText(String.valueOf(postLikes - 1));
             }
             sendLike();
@@ -298,7 +300,7 @@ public class showFullPost extends AppCompatActivity {
                             NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
                                 @Override
                                 public void notifySuccess(String response) throws JSONException {
-                                    Log.i("response",response);
+                                    Timber.i(response);
 
                                     if (!functions.isJsonObject(response)) {
                                         Toast.makeText(getApplicationContext(),getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
@@ -352,12 +354,7 @@ public class showFullPost extends AppCompatActivity {
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.warning));
             alertDialogBuilder.setMessage(getString(R.string.deletePOST));
             alertDialogBuilder.setTitle(getString(R.string.deletePostTitle));
-            alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
             alertDialogBuilder.setPositiveButton(getString(R.string.yes_delete),
                     (dialog, arg1) -> {
                         HashMap<String, String> postData = new HashMap<>();
@@ -369,7 +366,7 @@ public class showFullPost extends AppCompatActivity {
 
                             @Override
                             public void notifySuccess(String response) throws JSONException {
-                                Log.i("response",response);
+                                Timber.i(response);
                                 functions.hideProgress(lottie);
                                 if (functions.isJsonObject(response)) {
                                     JSONObject jsonObject = new JSONObject(response);
@@ -394,7 +391,6 @@ public class showFullPost extends AppCompatActivity {
 
                         networkController.PostMethod(data.deletePost_Api, postData);
                     });
-            AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialogBuilder.show();
             //alertDialog.show();
         });
@@ -406,14 +402,12 @@ public class showFullPost extends AppCompatActivity {
             String content = txtPostComment.getText().toString();
             if (content.length() <= 0) {
                 functions.showSnackBarError(getString(R.string.comment_too_short), findViewById(android.R.id.content), getApplicationContext());
-                ;
                 return;
             }
 
 
             if (content.length() > data.maxCommentPostLength) {
                 functions.showSnackBarError(getString(R.string.comment_longer_than).concat(" ".concat(data.maxCommentPostLength.toString())), findViewById(android.R.id.content), getApplicationContext());
-                ;
                 return;
             }
 
@@ -426,7 +420,7 @@ public class showFullPost extends AppCompatActivity {
             networkController = new NetworkController(this, new NetworkController.IResult() {
                 @Override
                 public void notifySuccess(String response) throws JSONException {
-                    Log.i("Response", response.toString());
+                    Timber.i(response);
                     functions.hideProgress(lottie);
                     if (functions.isJsonObject(response)) {
                         JSONObject jsonObject = new JSONObject(response);
@@ -453,8 +447,6 @@ public class showFullPost extends AppCompatActivity {
                     functions.hideProgress(lottie);
                     btnSendTimelineComment.setEnabled(true);
                     functions.showSnackBarError(getString(R.string.error_commenting), findViewById(android.R.id.content), getApplicationContext());
-                    ;
-
                 }
             });
             networkController.PostMethod(data.add_comment_Api, postData);

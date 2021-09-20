@@ -54,11 +54,6 @@ public class Data {
     public Integer maxCommentPostLength = 2000;
 
 
-
-    public String generateProfilePictureThumb(String userID, String thumb_name) {
-        return "https://wesocial.space/sources/users/avatars/" + userID + "/" + thumb_name;
-    }
-
     public String getApkName() {
         return "WeSocial.apk";
     }

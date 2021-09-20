@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">We Social</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
@@ -60,9 +60,9 @@
     <string name="verify">Verify</string>
     <string name="invalidOTC">Invalid code entered.</string>
     <string name="cancel_verification">Cancel</string>
-    <string name="test_notification_details">Test Notification Details. Notifications from users and activites will be shown here.</string>
+    <string name="test_notification_details">Test Notification Details. Notifications from users and activities will be shown here.</string>
     <string name="test_notification_title">Test Notification Title</string>
-    <string name="loadingNotifications">Loading...</string>
+    <string name="loadingNotifications">Loading…</string>
     <string name="not_logged_in">Sorry, you need to be logged in.</string>
 
     <string name="save">Save</string>
@@ -76,13 +76,13 @@
     <string name="confirmNewPassword">Confirm New Password</string>
     <string name="updatePassword">Update Password</string>
     <string name="shareYourThoughts">What\'s on your mind?</string>
-    <string name="sampleUsername">Sample Username...</string>
+    <string name="sampleUsername">Sample Username…</string>
     <string name="Continue">Continue..</string>
     <string name="post_Long">Post Content too long.</string>
     <string name="empty_post">Sorry, your post is empty.</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
-    <string name="refreshing">Updating timeline...</string>
+    <string name="refreshing">Updating timeline…</string>
 
     <string name="biometric_prompt_key">Biometric Prompt</string>
     <string name="biometric_prompt_message">Biometric Prompt on startup </string>
@@ -108,22 +108,22 @@
     <string name="no">No</string>
 
     <string name="deletePostTitle">Delete Post</string>
-    <string name="write_a_comment">Write a comment...</string>
+    <string name="write_a_comment">Write a comment…</string>
     <string name="comment_too_short">Comment too short.</string>
     <string name="comment_longer_than">Your comment is longer than</string>
     <string name="posting_comment">Posting Comment</string>
-    <string name="error_commenting">An error occurred while posting comment...</string>
+    <string name="error_commenting">An error occurred while posting comment…</string>
     <string name="comments">Comments</string>
     <string name="Delete">Delete</string>
     <string name="Edit">Edit</string>
     <string name="deleteComment">Are you sure you want to Delete this comment?</string>
     <string name="deleteCommentTitle">Delete Comment</string>
     <string name="editPost">Edit post</string>
-    <string name="editing_content">Editing content...</string>
+    <string name="editing_content">Editing content…</string>
     <string name="update">Update</string>
-    <string name="no_timeline">We have nothing to show you now...</string>
+    <string name="no_timeline">We have nothing to show you now…</string>
     <string name="updating_comment">Updating comment..</string>
-    <string name="updating_post">Updating Post...</string>
+    <string name="updating_post">Updating Post…</string>
 
     <string name="block">Block</string>
     <string name="goto_profile">View Profile >></string>
@@ -132,7 +132,7 @@
     <string name="no_blocked_friends">No blocked friends.</string>
     <string name="search">Search</string>
 
-    <string name="no_search_result">"Sorry, we couldnt find anything that matches "</string>
+    <string name="no_search_result">"Sorry, we couldn't find anything that matches "</string>
     <string name="add_friend">Add friend</string>
     <string name="remove">Remove</string>
     <string name="offline">offline</string>

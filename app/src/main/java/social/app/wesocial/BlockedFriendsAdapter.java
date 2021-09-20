@@ -1,7 +1,6 @@
 package social.app.wesocial;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +99,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
         return FriendsDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtBlockedFriendUsername, txtBlockedFriendNickname;
         ImageView imgBlockedFriendProfilePicture;

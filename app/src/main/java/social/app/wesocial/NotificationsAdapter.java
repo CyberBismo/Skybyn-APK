@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
-import org.json.JSONException;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,9 +30,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     Functions functions = new Functions();
     Data data = new Data();
 
-    public enum NotificationTypes {friend_request, chat, group, page, updates, system, comment}
 
-    ;
     public static final String notificationType_friendRequest = "friend_request";
     public static final String notificationType_message = "message";
     public static final String notificationType_group = "group";
@@ -42,7 +38,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public static final String notificationType_updates = "updates";
     public static final String notificationType_system = "system";
     public static final String notificationType_comment = "comment";
-    public static Activity activity;
 
 
     @NonNull
@@ -54,13 +49,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
 
 
-    public void updateNotiReadStatus(String notiID,Context context){
+    public void updateNotificationReadStatus(String notificationID, Context context){
         HashMap<String,String> postData = new HashMap<>();
-        postData.put("notiID",notiID);
+        postData.put("notiID",notificationID);
 
         NetworkController networkController = new NetworkController(context, new NetworkController.IResult() {
             @Override
-            public void notifySuccess(String response) throws JSONException {
+            public void notifySuccess(String response) {
                 Timber.i(response);
             }
 
@@ -81,16 +76,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.Content.setText(notificationDataClass.getContent());
         holder.date.setText(notificationDataClass.getDate());
 
-            holder.notificationCardView.setOnClickListener(view -> {
-                updateNotiReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
-            });
+            holder.notificationCardView.setOnClickListener(view -> updateNotificationReadStatus(notificationDataClass.getID(),holder.itemView.getContext()));
 
         holder.btnNotiAcceptFriendRequest.setOnClickListener(view -> {
-            Fragment friendFragment = Friends.newInstance(data.accept_friend_action,"");
+            Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
             functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(),false);
             holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
             holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
-            updateNotiReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
+            updateNotificationReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
 
         });
 
@@ -127,11 +120,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 holder.btnNotiAcceptFriendRequest.setVisibility(View.VISIBLE);
                 holder.Title.setText(holder.itemView.getContext().getString(R.string.new_friend_request));
                 holder.Title.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.light_main_colour));
-                functions.loadNotificationThumb(notificationDataClass.getAvatarLink().toString(), holder.imgNotificationSender,true);
+                functions.loadNotificationThumb(notificationDataClass.getAvatarLink(), holder.imgNotificationSender,true);
                 break;
 
             default:
-                functions.loadNotificationThumb(notificationDataClass.getAvatarLink().toString(), holder.imgNotificationSender,true);
+                functions.loadNotificationThumb(notificationDataClass.getAvatarLink(), holder.imgNotificationSender,true);
                 holder.Title.setText(notificationDataClass.getTitle());
                 holder.btnNotiAcceptFriendRequest.setVisibility(View.INVISIBLE);
         }
@@ -161,9 +154,9 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         return NotificationDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView Title, Content, date, type, ID;
+        TextView Title, Content, date;
         ImageView imgNotificationSender;
         Button btnNotiAcceptFriendRequest;
         CardView notificationCardView;

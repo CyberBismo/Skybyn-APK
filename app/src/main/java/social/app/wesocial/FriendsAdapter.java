@@ -153,7 +153,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return FriendsDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtFriendUsername, txtFriendNickname;
         ImageView imgFriendProfilePicture;

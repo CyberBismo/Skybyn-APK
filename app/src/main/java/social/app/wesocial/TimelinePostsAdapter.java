@@ -4,10 +4,8 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +28,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
+import timber.log.Timber;
+
 
 class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
 
@@ -37,7 +37,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
-    Frontpage frontpage;
     Integer PostLength = data.maxPostDisplayLength;
 
     public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
@@ -54,19 +53,17 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
     public  String trimValue(String value) {
-        if (value.length() == 4 || value.length() == 7 ) {
+        if (value.length() == 4) {
             //It is one thousand
             value = value.substring(0,1).concat(".").concat(value.substring(1,2).concat("k"));
         }else if(value.length() == 5){
-            value = value.substring(0,2).concat(".").concat(value.substring(2,3).concat("k"));;
+            value = value.substring(0,2).concat(".").concat(value.substring(2,3).concat("k"));
         }else if(value.length() == 6){
             value = value.substring(0,3).concat(".").concat(value.substring(3,4)).concat("k");
         } else if(value.length() == 7){
         value = value.substring(0,1).concat(".").concat(value.substring(1,2)).concat("M");
         } else if(value.length() == 8) {
             value = value.substring(0, 2).concat(".").concat(value.substring(2, 3)).concat("M");
-        }else{
-            value = value;
         }
         return value;
     }
@@ -89,7 +86,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
         holder.txtTimelineDate.setTag(timelineDataClass.getContent());
-        holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike().toString());
+        holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
         holder.txtTimelineContent.setOnClickListener(view -> {
@@ -97,7 +94,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             HashMap<String,Object> timeLinePostDetails= new HashMap<>();
 
             timeLinePostDetails.put("content",holder.txtTimelineDate.getTag().toString());
-            timeLinePostDetails.put("comments_count",holder.txtTimelineCommentsCount.getText().toString());
             timeLinePostDetails.put("likes",holder.txtTimelineLikes.getText().toString());
             timeLinePostDetails.put("ilike",holder.imgTimelinePostLike.getTag().toString());
             timeLinePostDetails.put("username",holder.txtUsername.getText().toString());
@@ -111,12 +107,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         });
 
-        if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
-            holder.imgTimelinePostLike.setLiked(false);
-        } else {
-            holder.imgTimelinePostLike.setLiked(true);
-
-        }
+        holder.imgTimelinePostLike.setLiked(!holder.imgTimelinePostLike.getTag().toString().equals("0"));
 
 
         //If the timeLine Post is by Me!
@@ -177,12 +168,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                     });
 
 
-            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(string.no), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            alertDialogBuilder.setNegativeButton(holder.itemView.getContext().getString(string.no), (dialog, which) -> dialog.dismiss());
 
 
             AlertDialog alertDialog = alertDialogBuilder.create();
@@ -200,7 +186,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
-                        Log.i("response", response);
+                        Timber.i(response);
                         if (functions.isJsonObject(response)) {
                             JSONObject jsonObject = new JSONObject(response);
                             String responseCode = jsonObject.get("responseCode").toString();
@@ -240,13 +226,13 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             @Override
             public void onClick(View view) {
                 //holder.imgTimelinePostLike.animate();
-                int Likes = Integer.valueOf(holder.txtTimelineLikes.getText().toString());
+                int Likes = Integer.parseInt(holder.txtTimelineLikes.getText().toString());
                 if (holder.imgTimelinePostLike.getTag().toString().equals("0")) {
                     holder.imgTimelinePostLike.setLiked(true);
                     holder.txtTimelineLikes.setText(String.valueOf(Likes + 1));
                 } else {
                     holder.imgTimelinePostLike.setLiked(false);
-                    if (Integer.valueOf(holder.txtTimelineLikes.getText().toString()) > 0)
+                    if (Integer.parseInt(holder.txtTimelineLikes.getText().toString()) > 0)
                         holder.txtTimelineLikes.setText(String.valueOf(Likes - 1));
                 }
 
@@ -262,7 +248,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         return TimelineDataClass.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
         ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
