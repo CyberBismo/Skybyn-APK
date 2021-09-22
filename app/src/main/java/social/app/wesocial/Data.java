@@ -25,10 +25,13 @@ public class Data {
 
     //  Notification Api
     public String list_notification_Api = notificationAPI+"list.php";
-    public String showMessages_API = messageAPI+"messages.php";
     public String read_notification_Api = notificationAPI+"read.php";
     public String delete_notification_Api = notificationAPI+"delete.php";
     public String create_notification_Api = notificationAPI+"create.php";
+
+    //Messages API
+        public String showMessages_API = messageAPI+"messages.php";
+        public String sendMessage_API = messageAPI+"add.php";
 
     // Timeline Api
     public String addPost_Api = postAPI+"add.php";
