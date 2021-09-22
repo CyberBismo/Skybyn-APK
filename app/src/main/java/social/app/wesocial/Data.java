@@ -2,6 +2,7 @@ package social.app.wesocial;
 
 public class Data {
 
+    // Api shortener
     public String domain = "https://wesocial.space/";
     public String API = domain+"api/";
     public String commentAPI = API+"comment/";
@@ -16,21 +17,26 @@ public class Data {
     public String login_Api = API+"login.php";
     public String like_Api = API+"like.php";
 
+    // General Api
     public String registration_Api = API+"reg.php";
     public String verifyEmail_Api = API+"verify.php";
     public String profile_Api = API+"profile.php";
     public String search_Api = API+"search.php";
-    //  notification Api
+
+    //  Notification Api
     public String list_notification_Api = notificationAPI+"list.php";
     public String showMessages_API = messageAPI+"messages.php";
     public String read_notification_Api = notificationAPI+"read.php";
     public String delete_notification_Api = notificationAPI+"delete.php";
     public String create_notification_Api = notificationAPI+"create.php";
+
     // Timeline Api
     public String addPost_Api = postAPI+"add.php";
     public String timeline_Api = postAPI+"timeline.php";
+    public String user_timeline_Api = postAPI+"user-timeline.php";
     public String deletePost_Api = postAPI+"delete.php";
     public String editPost_Api = API+"edit.php";
+
     //  FRIENDS Api
     public String add_friend_action = "add";
     public String block_friend_action = "block";
@@ -64,6 +70,6 @@ public class Data {
 
 
     public String getApkName() {
-        return "WeSocial.apk";
+        return apk_name;
     }
 }
