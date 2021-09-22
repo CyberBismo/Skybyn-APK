@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Messages">
+    android:orientation="vertical"
+    tools:context=".Messages" >
 
-    <TextView
-        android:id="@+id/textView2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messagesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="502dp"
-        android:fontFamily="@font/nexalight"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="DEV Test: Messages will appear here!"
-        android:textColor="@android:color/holo_blue_bright"
-        android:textSize="40sp" />
-</FrameLayout>
+        android:layout_height="match_parent" />
+</LinearLayout>

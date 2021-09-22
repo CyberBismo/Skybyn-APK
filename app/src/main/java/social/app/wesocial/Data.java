@@ -14,12 +14,13 @@ public class Data {
     public String search_Api = "https://wesocial.space/api/search.php";
     //  notification Api
     public String list_notification_Api = "https://wesocial.space/api/notification/list.php";
+    public String showMessages_API = "https://wesocial.space/api/message/messages.php";
     public String read_notification_Api = "https://wesocial.space/api/notification/read.php";
     public String delete_notification_Api = "https://wesocial.space/api/notification/delete.php";
     public String create_notification_Api = "https://wesocial.space/api/notification/create.php";
     // Timeline Api
     public String addPost_Api = "https://wesocial.space/api/post/add.php";
-    public String timeline_Api = "https://wesocial.space/api/post/timeline.php";
+    public String timeline_Api = "https://we  social.space/api/post/timeline.php";
     public String deletePost_Api = "https://wesocial.space/api/post/delete.php";
     public String editPost_Api = "https://wesocial.space/api/edit.php";
     //  FRIENDS Api

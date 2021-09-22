@@ -33,7 +33,7 @@
     <item name="android:textColorPrimary">@color/light_main_colour</item>
 <item name="android:background">@color/black</item>
 </style>
-<style name="AlertDialogCustom" parent="Theme.WeSocial">
+<style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog.Alert">
     <item name="android:colorAccent">@color/main_colour</item>
     <item name="android:color">@color/main_colour</item>
 </style>

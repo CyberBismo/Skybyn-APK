@@ -1,12 +1,24 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,44 +27,24 @@ import android.view.ViewGroup;
  */
 public class Messages extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Functions functions = new Functions();
+    Data data = new Data();
+    LottieAnimationView lottie;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public Messages() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Messages.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Messages newInstance(String param1, String param2) {
+    public static Messages newInstance() {
         Messages fragment = new Messages();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -61,4 +53,76 @@ public class Messages extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
+
+    private void loadMessages() {
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(),
+                new NetworkController.IResult() {
+                    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
+                    @Override
+                    public void notifySuccess(String response) throws JSONException {
+                        //functions.hideProgress(lottie);
+                        Timber.i(response);
+                        if (functions.isJsonArray(response)) {
+                            Timber.i(response);
+                            /**    String notificationContent;
+                             String notificationTitle;
+                             String notificationDate;
+                             String notificationID;
+                             String notificationAvatarLink;
+                             String notificationType;
+                             String notificationRead;
+
+                             JSONArray jsonArray = new JSONArray(response);
+
+                             ArrayList<NotificationDataClass> notifications = new ArrayList<>();
+                             JSONObject jsonObject;
+
+
+                             for (int i = 0; i < jsonArray.length(); i++) {
+                             jsonObject = jsonArray.getJSONObject(i);
+                             notificationContent = (String) jsonObject.get("content");
+                             notificationAvatarLink = (String) jsonObject.get("avatar");
+                             notificationDate = (String) jsonObject.get("date").toString();
+                             notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
+                             notificationTitle = (String) jsonObject.get("title");
+                             notificationID = (String) jsonObject.get("notiID");
+                             notificationRead = (String) jsonObject.get("read");
+                             notificationType = (String) jsonObject.get("type");
+
+                             notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
+                             }
+                             NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
+                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+                             recyclerView.setLayoutManager(mLayoutManager);
+                             recyclerView.setAdapter(notificationsAdapter);
+                             lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+ Objects.requireNonNull(recyclerView.getAdapter()).getItemCount()+")");
+                             notificationsAdapter.notifyDataSetChanged();
+                             }
+                             if (!functions.isJsonArray(response)) {
+                             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                             }
+                             **/
+                        }
+                    }
+
+                    @Override
+                    public void notifyError(VolleyError error) {
+                        functions.hideProgress(lottie);
+                        Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        networkController.PostMethod(data.showMessages_API, postData);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        loadMessages();
+        super.onViewCreated(view, savedInstanceState);
+    }
 }
+

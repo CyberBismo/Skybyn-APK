@@ -80,7 +80,7 @@ public class Notification extends Fragment {
     private void loadNotification() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("user", Frontpage.userID);
+        postData.put("userID", Frontpage.userID);
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
             @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})

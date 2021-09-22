@@ -96,7 +96,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         });
 
 
-
         //BUTTON TO BLOCK FRIEND
         holder.btnBlockFriend.setOnClickListener(view -> {
             HashMap<String,String> postData = new HashMap<>();

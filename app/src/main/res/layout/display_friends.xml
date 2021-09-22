@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/friendCardView"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/dark_gray_2"
     app:cardElevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="145dp">
 
         <TextView
             android:id="@+id/txtFriendUsername"
             android:layout_width="200dp"
             android:layout_height="27dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="88dp"
+            android:layout_marginEnd="116dp"
             android:fontFamily="@font/nexabold"
             android:gravity="center_vertical"
             android:singleLine="true"
@@ -26,14 +26,14 @@
             app:layout_constraintBottom_toTopOf="@+id/txtFriendNickname"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.115" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/txtFriendNickname"
             android:layout_width="200dp"
             android:layout_height="27dp"
-            android:layout_marginEnd="88dp"
-            android:layout_marginBottom="116dp"
+            android:layout_marginEnd="116dp"
+            android:layout_marginBottom="60dp"
             android:fontFamily="@font/nexabold"
             android:gravity="center_vertical"
             android:singleLine="true"
@@ -44,8 +44,8 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imgFriendProfilePicture"
-            android:layout_width="81dp"
-            android:layout_height="77dp"
+            android:layout_width="65dp"
+            android:layout_height="54dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:background="@color/transparent_full"
@@ -62,25 +62,23 @@
             android:id="@+id/btnBlockFriend"
             android:layout_width="74dp"
             android:layout_height="30dp"
-            android:layout_marginStart="120dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/button_selector_red"
             android:text="@string/block"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/txtFriendOnline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnRemoveFriend"
-            app:layout_constraintHorizontal_bias="0.272"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgFriendProfilePicture"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.243"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Button
             android:id="@+id/btnRemoveFriend"
             android:layout_width="74dp"
             android:layout_height="30dp"
-            android:layout_marginEnd="132dp"
-            android:layout_marginBottom="68dp"
+            android:layout_marginEnd="160dp"
+            android:layout_marginBottom="28dp"
             android:background="@color/dark_gray"
             android:text="@string/remove"
             android:textColor="@color/white"
@@ -91,18 +89,18 @@
 
         <TextView
             android:id="@+id/txtFriendOnline"
-            android:layout_width="199dp"
-            android:layout_height="22dp"
-            android:layout_marginBottom="28dp"
-            android:background="@drawable/online_status"
+            android:layout_width="15dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/online_icon"
             android:foregroundGravity="center_horizontal"
             android:gravity="center_horizontal"
             android:textColor="@color/white"
             android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.113"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

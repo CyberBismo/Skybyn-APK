@@ -82,7 +82,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
         setContentView(layout.activity_front_page);
@@ -132,8 +132,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         return true;
 
                     case id.messages:
-                        Fragment messagesFagment = Messages.newInstance(userID, "");
-                        functions.LoadFragment(messagesFagment, getString(string.messages), Frontpage.this, false);
+                        showMessagesPage();
                         return true;
                 }
                 return false;
@@ -141,7 +140,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         });
     }
 
-    public void  performSearch(String userID, String keyword, Boolean onQuery) {
+    public void performSearch(String userID, String keyword, Boolean onQuery) {
 
         this.keyword = keyword;
         this.onQuery = onQuery;
@@ -168,7 +167,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Log.i("response", response);
                     Fragment searchFragment = Search.newInstance(keyword, response);
                     functions.LoadFragment(searchFragment, getString(string.search), Frontpage.this, false);
-                    functions.showSnackBar(getString(R.string.we_found_result)+keyword, findViewById(android.R.id.content), getApplicationContext());
+                    functions.showSnackBar(getString(R.string.we_found_result) + keyword, findViewById(android.R.id.content), getApplicationContext());
 
                 }
 
@@ -239,6 +238,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public void showProfilePage() {
         Fragment profileFragment = Profile.newInstance(userID, "");
         functions.LoadFragment(profileFragment, getString(string.profile), Frontpage.this, false);
+    }
+
+    public void showMessagesPage() {
+        Fragment messagesFragment = Messages.newInstance();
+        functions.LoadFragment(messagesFragment, getString(string.messages), Frontpage.this, false);
     }
 
     @Override
@@ -525,6 +529,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
                 }
                 break;
+
+            case id.messages:
+                if (userLoggedIn) {
+                    showMessagesPage();
+                } else {
+                    functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
+                }
+                break;
+
 
             case R.id.closeapp:
                 finishAffinity();

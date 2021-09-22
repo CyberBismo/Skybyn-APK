@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
+import timber.log.Timber;
+
 
 class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
@@ -44,7 +46,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     @Override
     public CommentsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(layout.displaycomments, parent, false);
-
         return new ViewHolder(itemView);
     }
 
@@ -70,6 +71,28 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, int position) {
         CommentDataClass commentDataClass = CommentDataClass.get(position);
+        holder.txtCommentUsername.setText(commentDataClass.getUsername());
+        holder.txtCommentUsername.setTag(commentDataClass.getUserID());
+        holder.txtCommentDate.setText(commentDataClass.getDate());
+        holder.txtCommentLikes.setText(trimValue(commentDataClass.getLikes()));
+        //GET COMMENT_ID
+        holder.txtCommentContent.setTag(R.integer.commentIDTag,commentDataClass.getCommentID());
+        holder.txtCommentContent.setText(commentDataClass.getContent());
+        //GET POST_ID
+        holder.txtCommentContent.setTag(R.integer.commentsPostIDTag, commentDataClass.getPostID());
+        holder.btnCommentLike.setTag(commentDataClass.getiLike());
+        holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
+
+        holder.txtCommentUsername.setOnClickListener(view -> Timber.i(commentDataClass.getUserID()));
+        //If the timeLine Post is by Me!
+        if (commentDataClass.getUserID().equals(Frontpage.userID)) {
+            holder.txtCommentDelete.setVisibility(View.VISIBLE);
+            holder.txtCommentEdit.setVisibility(View.VISIBLE);
+        }else{
+            holder.txtCommentDelete.setVisibility(View.INVISIBLE);
+            holder.txtCommentEdit.setVisibility(View.INVISIBLE);
+        }
+
 
         holder.txtCommentEdit.setOnClickListener(view -> {
             LayoutInflater li = LayoutInflater.from(holder.itemView.getContext());
@@ -144,32 +167,15 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         });// get alert_dialog.xml view
 
-        holder.txtCommentUsername.setText(commentDataClass.getUsername());
-        holder.txtCommentUsername.setTag(commentDataClass.getUserID());
-        holder.txtCommentDate.setText(commentDataClass.getDate());
-        holder.txtCommentLikes.setText(trimValue(commentDataClass.getLikes()));
-        //GET COMMENTID
-        holder.txtCommentContent.setTag(R.integer.commentIDTag,commentDataClass.getCommentID());
-        holder.txtCommentContent.setText(commentDataClass.getContent());
-        //GET POSTID
-        holder.txtCommentContent.setTag(R.integer.commentsPostIDTag, commentDataClass.getPostID());
-        holder.btnCommentLike.setTag(commentDataClass.getiLike());
-        holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
-
         holder.txtCommentContent.setOnClickListener(view -> {
 
         });
 
         holder.btnCommentLike.setLiked(!holder.btnCommentLike.getTag().toString().equals("0"));
 
-        String userID = Frontpage.userID;
-        //If the timeLine Post is by Me!
-        if (holder.txtCommentUsername.getTag().toString().equals(userID)) {
-            holder.txtCommentDelete.setVisibility(View.VISIBLE);
-        }
+
 
         functions.loadProfilePictureDrawableThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
-
         holder.txtCommentDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(), R.style.AlertDialogCustom);
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.txtCommentContent.getContext(), R.drawable.warning));
@@ -262,7 +268,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                 });
                 networkController.PostMethod(data.like_Api, postData);
             }
-
 
             @Override
             public void onClick(View view) {
