@@ -70,12 +70,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
-    public static Boolean isTimeline = false;
+
     public Activity frontpageActivity;
     public static SearchView searchView;
     private String keyword;
     private Boolean onQuery;
-
+    public static Boolean isTimeline = true;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
 

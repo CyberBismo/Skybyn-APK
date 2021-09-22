@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -57,6 +58,10 @@ public class Functions {
 
     }
 
+    public void ShowToast(Context context, Object string) {
+        Toast.makeText(context, (String) string.toString(), Toast.LENGTH_LONG).show();
+    }
+
     public void showFingerPrintPrompt(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
@@ -74,10 +79,6 @@ public class Functions {
 
     }
 
-
-
-
-
     public void loadProfilePictureDrawableThumb(String thumbNailLink, View imv) {
         Glide.with(imv)
                 .load(thumbNailLink)
@@ -86,7 +87,6 @@ public class Functions {
                 .into((ImageView) imv);
 
     }
-
 
     public void showSnackBar(String msg, View view, Context context) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
@@ -123,35 +123,38 @@ public class Functions {
     }
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
-        fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         FragmentActivity fragActivity = (FragmentActivity) activity;
-        FragmentManager manager = fragActivity.getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
 
-        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
-        manager.popBackStack();
-        transaction.addToBackStack(null);
-        Frontpage.isTimeline = isTimeline;
+        fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
-
 
         if (isTimeline) {
             bottomLayout.setVisibility(View.VISIBLE);
-
+            Frontpage.isTimeline = true;
         } else {
             fragmentContainerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             bottomLayout.setVisibility(View.INVISIBLE);
+            Frontpage.isTimeline = false;
         }
+
+
+        FragmentManager manager = fragActivity.getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+
+        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
+        transaction.addToBackStack(null);
 
         transaction.commit();
 
     }
 
-
     public String convertUnixToDateAndTime(Long UnixDateLong) {
         try {
             Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
             @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
+
+
             return dateFormat.format(date);
         } catch (TypeCastException e) {
             return "Loading ...";

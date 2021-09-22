@@ -10,12 +10,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import timber.log.Timber;
@@ -30,6 +35,7 @@ public class Messages extends Fragment {
     Functions functions = new Functions();
     Data data = new Data();
     LottieAnimationView lottie;
+    RecyclerView recyclerView;
 
 
     public Messages() {
@@ -40,7 +46,6 @@ public class Messages extends Fragment {
         Messages fragment = new Messages();
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,48 +70,42 @@ public class Messages extends Fragment {
                     public void notifySuccess(String response) throws JSONException {
                         //functions.hideProgress(lottie);
                         Timber.i(response);
+                        //functions.ShowToast(getActivity().getApplicationContext(),response);
                         if (functions.isJsonArray(response)) {
                             Timber.i(response);
-                            /**    String notificationContent;
-                             String notificationTitle;
-                             String notificationDate;
-                             String notificationID;
-                             String notificationAvatarLink;
-                             String notificationType;
-                             String notificationRead;
-
-                             JSONArray jsonArray = new JSONArray(response);
-
-                             ArrayList<NotificationDataClass> notifications = new ArrayList<>();
+                            JSONArray jsonArray = new JSONArray(response);
+                             ArrayList<MessageListDataClass> messages = new ArrayList<>();
                              JSONObject jsonObject;
 
+                             String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
 
                              for (int i = 0; i < jsonArray.length(); i++) {
-                             jsonObject = jsonArray.getJSONObject(i);
-                             notificationContent = (String) jsonObject.get("content");
-                             notificationAvatarLink = (String) jsonObject.get("avatar");
-                             notificationDate = (String) jsonObject.get("date").toString();
-                             notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
-                             notificationTitle = (String) jsonObject.get("title");
-                             notificationID = (String) jsonObject.get("notiID");
-                             notificationRead = (String) jsonObject.get("read");
-                             notificationType = (String) jsonObject.get("type");
+                                 jsonObject = jsonArray.getJSONObject(i);
+                                 content = jsonObject.get("content").toString();
+                                 avatarlink = jsonObject.get("avatar").toString();
+                                 date = jsonObject.get("date").toString();
+                                 online = jsonObject.get("online").toString();
+                                 msgID = jsonObject.get("msgID").toString();
+                                 friendID = jsonObject.get("friendID").toString();
+                                 userID = jsonObject.get("userID").toString();
+                                 username = jsonObject.get("username").toString();
+                                 nickName = jsonObject.get("nickname").toString();
 
-                             notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
+                                 messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
                              }
-                             NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
+                             MessageListAdapter messageListAdapter = new MessageListAdapter(messages);
                              RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
                              recyclerView.setLayoutManager(mLayoutManager);
-                             recyclerView.setAdapter(notificationsAdapter);
-                             lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+ Objects.requireNonNull(recyclerView.getAdapter()).getItemCount()+")");
-                             notificationsAdapter.notifyDataSetChanged();
+                             recyclerView.setAdapter(messageListAdapter);
+
+                             messageListAdapter.notifyDataSetChanged();
                              }
                              if (!functions.isJsonArray(response)) {
                              Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                              }
-                             **/
+
                         }
-                    }
+
 
                     @Override
                     public void notifyError(VolleyError error) {
@@ -121,6 +120,7 @@ public class Messages extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        recyclerView = view.findViewById(R.id.messagesRecyclerView);
         loadMessages();
         super.onViewCreated(view, savedInstanceState);
     }

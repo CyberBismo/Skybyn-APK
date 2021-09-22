@@ -1,19 +1,24 @@
 package social.app.wesocial;
 
+import static social.app.wesocial.Frontpage.isTimeline;
+import static social.app.wesocial.Functions.fragmentContainerView;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
@@ -28,14 +33,19 @@ import java.util.HashMap;
 import timber.log.Timber;
 
 public class Timeline extends Fragment {
-Functions functions = new Functions();
-Data data = new Data();
-LottieAnimationView lottie;
-RecyclerView recyclerView;
-SwipeRefreshLayout mSwipeRefreshLayout;
+    Functions functions = new Functions();
+    Data data = new Data();
+    LottieAnimationView lottie;
+    RecyclerView recyclerView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     private void loadTimelinePosts() {
+        Frontpage.isTimeline = true;
+        fragmentContainerView = requireActivity().findViewById(R.id.fragmentContainerView);
+        CoordinatorLayout bottomLayout = requireActivity().findViewById(R.id.bottomLayout);
+        bottomLayout.setVisibility(View.VISIBLE);
+
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
@@ -48,7 +58,7 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(requireActivity().getString(R.string.no_timeline),requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_timeline), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                     return;
                 }
 
@@ -82,7 +92,7 @@ SwipeRefreshLayout mSwipeRefreshLayout;
                         timelinePostContent = (String) jsonObject.get("content");
                         timelineILike = jsonObject.get("ilike").toString();
 
-                        timelinePost.add(new TimelineDataClass(timelinePostID,timelineUserID,timelinePostUsername,timelineAvatarLink,timelinePostDate,timelinePostContent,timelinePostCommentsCount,timelinePostLikes,timelineILike));
+                        timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
                     }
 
                     TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
@@ -138,18 +148,17 @@ SwipeRefreshLayout mSwipeRefreshLayout;
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = requireActivity().findViewById(R.id.postsRecyclerView);
+
         loadTimelinePosts();
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) requireView().findViewById(R.id.timelineSwipeToRefresh);
-
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            Toast.makeText(requireActivity().getApplicationContext(),getString(R.string.refreshing),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.refreshing), Toast.LENGTH_SHORT).show();
             loadTimelinePosts();
             mSwipeRefreshLayout.setRefreshing(false);
         });
     }
 
-    }
+}
 
 
 

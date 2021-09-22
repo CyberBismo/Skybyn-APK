@@ -4,31 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    android:background="@color/dark_gray_2"
     android:paddingTop="10dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/displayMessageCardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="409dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="1dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:background="@color/black">
 
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imgMessageProfilePicture"
-                android:layout_width="69dp"
-                android:layout_height="72dp"
+                android:layout_width="58dp"
+                android:layout_height="53dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/transparent_full"
                 app:civ_border_color="@color/white"
@@ -42,25 +41,25 @@
 
             <ImageView
                 android:id="@+id/imgMessageOnlineStatus"
-                android:layout_width="13dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="76dp"
+                android:layout_width="12dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="56dp"
                 android:background="@drawable/offline_icon"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="1dp"
                 app:civ_shadow_color="@color/white"
                 app:civ_shadow_radius="5dp"
                 app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
-                app:layout_constraintHorizontal_bias="0.857"
+                app:layout_constraintHorizontal_bias="0.814"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtMessageUsername"
-                android:layout_width="179dp"
-                android:layout_height="30dp"
+                android:layout_width="131dp"
+                android:layout_height="27dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="24dp"
                 android:fontFamily="@font/nexabold"
                 android:gravity="center_vertical"
                 android:singleLine="false"
@@ -75,8 +74,8 @@
                 android:id="@+id/txtMessageContent"
                 android:layout_width="303dp"
                 android:layout_height="27dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="28dp"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:singleLine="true"
@@ -88,14 +87,16 @@
 
             <TextView
                 android:id="@+id/txtMessageDate"
-                android:layout_width="101dp"
+                android:layout_width="153dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="Yesterday"
                 android:textColor="@color/white"
+                android:textSize="10sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -6,6 +6,17 @@
     android:orientation="vertical"
     tools:context=".Messages" >
 
+    <TextView
+        android:id="@+id/lblMessagesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/headerHeight"
+        android:background="@color/main_colour"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/messages"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecyclerView"
         android:layout_width="match_parent"

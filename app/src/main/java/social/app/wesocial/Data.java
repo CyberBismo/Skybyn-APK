@@ -31,6 +31,7 @@ public class Data {
 
     //Messages API
         public String showMessages_API = messageAPI+"messages.php";
+        public String showFullMessages_API = messageAPI+"chat.php";
         public String sendMessage_API = messageAPI+"add.php";
 
     // Timeline Api
