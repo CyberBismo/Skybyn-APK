@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ public class Messages extends Fragment {
     }
 
     private void loadMessages() {
+        functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
@@ -68,7 +70,7 @@ public class Messages extends Fragment {
                     @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
                     @Override
                     public void notifySuccess(String response) throws JSONException {
-                        //functions.hideProgress(lottie);
+                        functions.hideProgress(lottie);
                         Timber.i(response);
                         //functions.ShowToast(getActivity().getApplicationContext(),response);
                         if (functions.isJsonArray(response)) {
@@ -122,6 +124,7 @@ public class Messages extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
         loadMessages();
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         super.onViewCreated(view, savedInstanceState);
     }
 }

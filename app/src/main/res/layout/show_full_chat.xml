@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="3"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="411dp"
+                android:layout_height="50dp"
+                app:cardBackgroundColor="@color/light_main_colour"
+                app:layout_constraintBottom_toTopOf="@+id/chatRecyclerview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/imgChatHeaderProfilePicture"
+                    android:layout_width="32dp"
+                    android:layout_height="33dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="53dp"
+                    android:background="@color/transparent_full"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="1dp"
+                    app:civ_shadow_color="@color/white"
+                    app:civ_shadow_radius="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
+                    app:layout_constraintHorizontal_bias="0.571"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imgChatHeaderOnlineStatus"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="75dp"
+                    android:background="@drawable/offline_icon"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="1dp"
+                    app:civ_shadow_color="@color/white"
+                    app:civ_shadow_radius="5dp"
+                    app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
+                    app:layout_constraintHorizontal_bias="0.814"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/imgChatUsernameTitle"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="90dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/Cyberwizard"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/imgChatHeaderGoBack"
+                    android:layout_width="30dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    app:srcCompat="@drawable/arrow_back" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRecyclerview"
+                android:layout_width="411dp"
+                android:layout_height="516dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="5"
+                android:background="@color/dark_gray"
+                app:layout_constraintBottom_toTopOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/showChatProgressView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.7"
+                android:background="@color/black"
+                android:clickable="false"
+                android:elevation="1000dp"
+                android:filterTouchesWhenObscured="false"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:targetApi="lollipop" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:cardBackgroundColor="@color/dark"
+                app:cardElevation="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Button
+                    android:id="@+id/btnChatSendMessage"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="325dp"
+
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="7dp"
+                    android:background="@drawable/send_button_selector"
+                    android:fontFamily="@font/nexalight"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <EditText
+                    android:id="@+id/txtChatMessageContent"
+                    android:layout_width="301dp"
+                    android:layout_height="69dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/text_selector"
+                    android:ems="10"
+                    android:gravity="start"
+                    android:hint="@string/type_message"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:maxLines="20"
+                    android:minHeight="48dp"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_gray"
+                    android:textSize="14sp"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

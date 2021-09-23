@@ -66,7 +66,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     NavigationView sideNavView;
     TextView txtNavViewUsername;
     TextView txtNavViewUserEmail;
-    String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank, banned, banned_reason, visible, deactivated, deactivated_reason;
+
+    public static String loginUsername, loginPassword;
+    public static String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank, banned, banned_reason, visible, deactivated, deactivated_reason;
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -242,7 +244,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void showMessagesPage() {
         Fragment messagesFragment = Messages.newInstance();
-        functions.LoadFragment(messagesFragment, getString(string.messages), Frontpage.this, false);
+        functions.LoadFragment(messagesFragment, getString(string.messages), Frontpage.this, true);
     }
 
     @Override
@@ -436,14 +438,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void performLoginAuth() {
         functions.showProgress(lottie);
-        String username;
-        String password;
-        username = sharedpreferences.getString("username", "");
-        password = sharedpreferences.getString("password", "");
+
+        loginUsername = sharedpreferences.getString("username", "");
+        loginPassword = sharedpreferences.getString("password", "");
 
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("username", username);
-        postData.put("password", password);
+        postData.put("username", loginUsername);
+        postData.put("password", loginPassword);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override

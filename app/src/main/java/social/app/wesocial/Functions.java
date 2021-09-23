@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.Date;
 
 import kotlin.TypeCastException;
@@ -49,6 +50,7 @@ public class Functions {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.wesocialdot);
+        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(),R.color.black));
         lottieview.setAlpha(0.85f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
@@ -57,6 +59,21 @@ public class Functions {
         lottieview.playAnimation();
 
     }
+
+    public void showProgressNoBackground(LottieAnimationView lottieview) {
+        lottieview.setVisibility(LottieAnimationView.VISIBLE);
+        lottieview.bringToFront();
+        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(),R.color.transparent_full));
+        lottieview.setAnimation(R.raw.wesocialdot);
+        lottieview.setAlpha(0.85f);
+        lottieview.setRepeatMode(LottieDrawable.REVERSE);
+        lottieview.setRepeatCount(9999999);
+        lottieview.setEnabled(false);
+        lottieview.setClickable(false);
+        lottieview.playAnimation();
+
+    }
+
 
     public void ShowToast(Context context, Object string) {
         Toast.makeText(context, (String) string.toString(), Toast.LENGTH_LONG).show();
@@ -79,7 +96,7 @@ public class Functions {
 
     }
 
-    public void loadProfilePictureDrawableThumb(String thumbNailLink, View imv) {
+    public void loadProfilePictureDrawableThumb(Object thumbNailLink, View imv) {
         Glide.with(imv)
                 .load(thumbNailLink)
                 .placeholder(R.drawable.profile_gray)
@@ -154,7 +171,6 @@ public class Functions {
             Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
             @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
 
-
             return dateFormat.format(date);
         } catch (TypeCastException e) {
             return "Loading ...";
@@ -178,6 +194,7 @@ public class Functions {
         try {
             Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
             @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("E,dd-MMM-yyyy hh.mm aa"); // the format of your date
+
             return dateFormat.format(date);
         } catch (TypeCastException e) {
             return "Loading ...";

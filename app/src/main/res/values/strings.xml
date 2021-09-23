@@ -143,4 +143,9 @@
     <string name="friend_requests">Friend Requests</string>
     <string name="decline">Decline</string>
     <string name="unblock">Unblock</string>
+    <string name="type_message">Type a message</string>
+    <string name="Cyberwizard">Cyberwizard</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_message_content">Empty message content</string>
 </resources>

@@ -1,6 +1,8 @@
 package social.app.wesocial;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -54,31 +57,13 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 break;
         }
 
+            Drawable drawable = holder.imgMessageOnlineStatus.getDrawable();
 
-        holder.displayMsgCardView.setOnClickListener(view ->
-                {
-                    HashMap<String, String> postData = new HashMap<>();
-                    postData.put("userID", Frontpage.userID);
-                    postData.put("friendID", messageListDataClass.getFriendID());
+        holder.displayMsgCardView.setOnClickListener(view ->{
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID());
+            functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),true);
 
-                    NetworkController networkController = new NetworkController(holder.itemView.getContext(),
-                            new NetworkController.IResult() {
-                                @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
-                                @Override
-                                public void notifySuccess(String response) throws JSONException {
-                                    Timber.i(response);
-                                }
-
-                                @Override
-                                public void notifyError(VolleyError error) {
-
-                                }
-                            });
-
-                    networkController.PostMethod(data.showMessages_API, postData);
-                }
-
-        );
+    });
 
     }
     public MessageListAdapter(List<MessageListDataClass> MessageListDataClass) {
