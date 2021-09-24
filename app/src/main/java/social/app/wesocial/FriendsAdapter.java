@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -49,6 +50,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         //SAVE THE AVATAR LINK INSIDE VIEW'S Tag
         holder.imgFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
         functions.loadProfilePictureDrawableThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
+
+        holder.btnMessageFriend.setOnClickListener(view -> {
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), null,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID());
+            functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),true);
+        });
 
         //BUTTON TO REMOVE FRIEND
         holder.btnRemoveFriend.setOnClickListener(view -> {
@@ -157,7 +163,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         TextView txtFriendUsername, txtFriendNickname;
         ImageView imgFriendProfilePicture;
         CardView friendCardView;
-        Button btnBlockFriend , btnRemoveFriend;
+        Button btnBlockFriend , btnRemoveFriend,btnMessageFriend;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -166,6 +172,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             imgFriendProfilePicture = itemView.findViewById(R.id.imgFriendProfilePicture);
             btnRemoveFriend = itemView.findViewById(R.id.btnRemoveFriend);
             btnBlockFriend = itemView.findViewById(R.id.btnBlockFriend);
+            btnMessageFriend = itemView.findViewById(R.id.btnMessageFriend);
             friendCardView=itemView.findViewById(R.id.friendCardView);
         }
     }
