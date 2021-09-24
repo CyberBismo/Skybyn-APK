@@ -37,6 +37,7 @@ public class Messages extends Fragment {
     Data data = new Data();
     LottieAnimationView lottie;
     RecyclerView recyclerView;
+    String OldMessageJson = "";
 
 
     public Messages() {
@@ -60,10 +61,44 @@ public class Messages extends Fragment {
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
 
-    private void loadMessages() {
-        functions.showProgressNoBackground(lottie);
+    private void listMessages(String response) throws JSONException {
+        OldMessageJson = response;
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<MessageListDataClass> messages = new ArrayList<>();
+        JSONObject jsonObject;
+
+        String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            content = jsonObject.get("content").toString();
+            avatarlink = jsonObject.get("avatar").toString();
+            date = jsonObject.get("date").toString();
+            online = jsonObject.get("online").toString();
+            msgID = jsonObject.get("msgID").toString();
+            friendID = jsonObject.get("friendID").toString();
+            userID = jsonObject.get("userID").toString();
+            username = jsonObject.get("username").toString();
+            nickName = jsonObject.get("nickname").toString();
+
+            messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
+        }
+        MessageListAdapter messageListAdapter = new MessageListAdapter(messages);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(messageListAdapter);
+
+        messageListAdapter.notifyDataSetChanged();
+
+    }
+    private void loadMessagesFromFriends() throws JSONException {
+        if (!OldMessageJson.equals("")){
+            listMessages(OldMessageJson);
+        }
+        //functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
+
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(),
                 new NetworkController.IResult() {
@@ -75,32 +110,7 @@ public class Messages extends Fragment {
                         //functions.ShowToast(getActivity().getApplicationContext(),response);
                         if (functions.isJsonArray(response)) {
                             Timber.i(response);
-                            JSONArray jsonArray = new JSONArray(response);
-                             ArrayList<MessageListDataClass> messages = new ArrayList<>();
-                             JSONObject jsonObject;
-
-                             String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
-
-                             for (int i = 0; i < jsonArray.length(); i++) {
-                                 jsonObject = jsonArray.getJSONObject(i);
-                                 content = jsonObject.get("content").toString();
-                                 avatarlink = jsonObject.get("avatar").toString();
-                                 date = jsonObject.get("date").toString();
-                                 online = jsonObject.get("online").toString();
-                                 msgID = jsonObject.get("msgID").toString();
-                                 friendID = jsonObject.get("friendID").toString();
-                                 userID = jsonObject.get("userID").toString();
-                                 username = jsonObject.get("username").toString();
-                                 nickName = jsonObject.get("nickname").toString();
-
-                                 messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
-                             }
-                             MessageListAdapter messageListAdapter = new MessageListAdapter(messages);
-                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-                             recyclerView.setLayoutManager(mLayoutManager);
-                             recyclerView.setAdapter(messageListAdapter);
-
-                             messageListAdapter.notifyDataSetChanged();
+                            listMessages(response);
                              }
                              if (!functions.isJsonArray(response)) {
                              Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
@@ -123,7 +133,11 @@ public class Messages extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
-        loadMessages();
+        try {
+            loadMessagesFromFriends();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         super.onViewCreated(view, savedInstanceState);
     }
