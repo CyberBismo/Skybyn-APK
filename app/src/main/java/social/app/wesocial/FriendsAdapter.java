@@ -1,6 +1,7 @@
 package social.app.wesocial;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,8 +53,19 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.imgFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
         functions.loadProfilePictureDrawableThumb(holder.imgFriendProfilePicture.getTag().toString(), holder.imgFriendProfilePicture);
 
+        switch (friendsDataClass.getFriendOnline()) {
+            case "1":
+                holder.imgFriendOnlineStatus.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.online_icon));
+                break;
+            case "2":
+                holder.imgFriendOnlineStatus.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.offline_icon));
+                break;
+        }
+
+        Drawable drawable = holder.imgFriendOnlineStatus.getDrawable();
+
         holder.btnMessageFriend.setOnClickListener(view -> {
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), null,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID());
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID());
             functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),true);
         });
 
@@ -161,7 +174,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtFriendUsername, txtFriendNickname;
-        ImageView imgFriendProfilePicture;
+        ImageView imgFriendProfilePicture,imgFriendOnlineStatus;
         CardView friendCardView;
         Button btnBlockFriend , btnRemoveFriend,btnMessageFriend;
 
@@ -174,6 +187,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             btnBlockFriend = itemView.findViewById(R.id.btnBlockFriend);
             btnMessageFriend = itemView.findViewById(R.id.btnMessageFriend);
             friendCardView=itemView.findViewById(R.id.friendCardView);
+            imgFriendOnlineStatus= itemView.findViewById(R.id.imgFriendOnlineStatus);
         }
     }
 }

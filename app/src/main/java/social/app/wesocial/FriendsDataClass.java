@@ -6,6 +6,16 @@ public class FriendsDataClass {
     private String friendAvatarLink;
     private String friendNickname;
 
+    public String getFriendOnline() {
+        return friendOnline;
+    }
+
+    public void setFriendOnline(String friendOnline) {
+        this.friendOnline = friendOnline;
+    }
+
+    private String friendOnline;
+
     public String getFriendNickname() {
         return friendNickname;
     }
@@ -40,11 +50,13 @@ public class FriendsDataClass {
     }
 
 
-    public FriendsDataClass(String friendID,String friendAvatarLink, String friendNickname, String friendUsername) {
+    public FriendsDataClass(String friendID,String friendAvatarLink, String friendNickname, String friendUsername,String friendOnline) {
         this.friendID = friendID;
         this.friendAvatarLink = friendAvatarLink;
         this.friendUsername = friendUsername;
         this.friendNickname = friendNickname;
+        this.friendOnline = friendOnline;
+
 
 
     }

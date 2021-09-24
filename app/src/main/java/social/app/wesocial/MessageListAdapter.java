@@ -57,10 +57,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 break;
         }
 
-            Drawable drawable = holder.imgMessageOnlineStatus.getDrawable();
+        Drawable drawable = holder.imgMessageOnlineStatus.getDrawable();
 
         holder.displayMsgCardView.setOnClickListener(view ->{
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID());
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID());
             functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),true);
 
     });

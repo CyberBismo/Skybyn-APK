@@ -77,7 +77,6 @@ public class Friends extends Fragment {
 
         btnShowFriends.setOnClickListener(view1 -> loadFriends());
 
-
         btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
 
 
@@ -124,8 +123,9 @@ public class Friends extends Fragment {
                         friendAvatarLink = jsonObject.get("avatar").toString();
                         friendNickname = (String) jsonObject.get("nickname");
                         friendUsername = (String) jsonObject.get("username");
+                        String friendOnline = (String) jsonObject.get("online");
 
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,friendOnline));
                     }
 
                     FriendsAdapter friendsAdapter = new FriendsAdapter(friendsDataClass);
@@ -185,7 +185,7 @@ public class Friends extends Fragment {
                         friendNickname = (String) jsonObject.get("nickname");
                         friendUsername = (String) jsonObject.get("username");
 
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,""));
                     }
 
                     FriendsRequestsAdapter friendsRequestsAdapter = new FriendsRequestsAdapter(friendsDataClass);
@@ -242,8 +242,7 @@ public class Friends extends Fragment {
                         friendAvatarLink = jsonObject.get("avatar").toString();
                         friendNickname = (String) jsonObject.get("nickname");
                         friendUsername = (String) jsonObject.get("username");
-
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,""));
                     }
 
                     BlockedFriendsAdapter blockedFriendsAdapter = new BlockedFriendsAdapter(friendsDataClass);

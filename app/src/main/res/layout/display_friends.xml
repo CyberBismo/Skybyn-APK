@@ -43,6 +43,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <ImageView
+            android:id="@+id/imgFriendOnlineStatus"
+            android:layout_width="12dp"
+            android:layout_height="13dp"
+            android:layout_marginStart="56dp"
+            android:background="@drawable/offline_icon"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.655" />
+
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/imgFriendProfilePicture"
             android:layout_width="65dp"
