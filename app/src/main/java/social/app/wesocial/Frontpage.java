@@ -41,6 +41,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -54,6 +55,7 @@ import timber.log.Timber;
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedpreferences;
     DrawerLayout drawerLayout;
+    public static  Boolean gottenToken = false;
     Data data = new Data();
     Functions functions = new Functions();
     String loginAction;
@@ -78,11 +80,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     private String keyword;
     private Boolean onQuery;
     public static Boolean isTimeline = true;
+    public static String current_chat_user ;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //INIT FIREBASE
+        FirebaseApp.initializeApp(this);
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
@@ -347,6 +353,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", userID);
 
+
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
@@ -359,6 +366,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     String responseCode = jsonObject.get("responseCode").toString();
 
                     if (responseCode.equals("1")) {
+                        //Start the PUSH SERVICE after successful Login
+                        Intent intent = new Intent(Frontpage.this, PushNotificationService.class);
+                        startService(intent);
+
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance();

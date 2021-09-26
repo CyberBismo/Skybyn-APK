@@ -71,7 +71,6 @@ public class showFullChat extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBack);
         ImageView imgChatHeaderOnlineStatus = view.findViewById(R.id.imgChatHeaderOnlineStatus);
         ImageView imgChatHeaderProfilePicture = view.findViewById(R.id.imgChatHeaderProfilePicture);
@@ -83,22 +82,20 @@ public class showFullChat extends Fragment {
         txtChatHeaderUsername.setText(chat_username);
 
 
-
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
             requireActivity().onBackPressed();
         });
 
         btnChatSendMessage.setOnClickListener(view1 -> {
-
             if (txtChatMessageContent.getText().toString().equals("")){
                 txtChatMessageContent.setError(getString(R.string.empty_message_content));
                 return;
             }
-
             sendMessage(chat_friendID,txtChatMessageContent.getText().toString());
 
         });
 
+        loadAllMessages(chat_friendID);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -145,8 +142,6 @@ public class showFullChat extends Fragment {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
-
-
 
                     }
 

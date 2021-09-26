@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1049142542764",
+    "project_id": "we-social-android-app",
+    "storage_bucket": "we-social-android-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049142542764:android:1aa429491700d5b90afa09",
+        "android_client_info": {
+          "package_name": "social.app.wesocial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1049142542764-n099ogi4qd2ap2mgglpvh2ukm5351nlh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmANIqu9VC8xxSV-l3fhQZ-SJVdoyCUlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1049142542764-n099ogi4qd2ap2mgglpvh2ukm5351nlh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
