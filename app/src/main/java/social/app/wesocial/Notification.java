@@ -88,7 +88,7 @@ public class Notification extends Fragment {
             public void notifySuccess(String response) throws JSONException {
                 functions.hideProgress(lottie);
                 if (response.equals("You've got no new notifications.")){
-                    functions.showSnackBarError(response,requireView().findViewById(android.R.id.content),requireActivity().getApplicationContext());
+                    //functions.showSnackBarError(response,requireView().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                     return;
                 }
 
