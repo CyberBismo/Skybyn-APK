@@ -26,11 +26,7 @@ import java.util.HashMap;
 
 import timber.log.Timber;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Messages#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Messages extends Fragment {
 
     Functions functions = new Functions();
@@ -83,6 +79,7 @@ public class Messages extends Fragment {
 
             messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
         }
+
         MessageListAdapter messageListAdapter = new MessageListAdapter(messages);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -91,7 +88,7 @@ public class Messages extends Fragment {
 
 
     }
-    private void loadMessagesFromFriends() throws JSONException {
+    private void loadServerMessagesFromFriends() throws JSONException {
         if (!OldMessageJson.equals("")){
             listMessagesOnRecyclerView(OldMessageJson);
         }
@@ -106,8 +103,6 @@ public class Messages extends Fragment {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
                         functions.hideProgress(lottie);
-                        Timber.i(response);
-                        //functions.ShowToast(getActivity().getApplicationContext(),response);
                         if (functions.isJsonArray(response)) {
                             Timber.i(response);
                             listMessagesOnRecyclerView(response);
@@ -134,7 +129,7 @@ public class Messages extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
         try {
-            loadMessagesFromFriends();
+            loadServerMessagesFromFriends();
         } catch (JSONException e) {
             e.printStackTrace();
         }

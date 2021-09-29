@@ -20,7 +20,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public EmptyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.display_message, parent, false);
         return new ViewHolder(itemView);
@@ -29,7 +29,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> 
 
 
     @Override
-    public void onBindViewHolder(@NonNull EmptyAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MessageListDataClass messageListDataClass = MessageListDataClass.get(position);
 
     }

@@ -106,6 +106,7 @@ public class Functions {
     }
 
     public void showSnackBar(String msg, View view, Context context) {
+
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(context, R.color.main_colour))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -141,7 +142,6 @@ public class Functions {
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
-
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
 
@@ -151,17 +151,13 @@ public class Functions {
         } else {
             fragmentContainerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             bottomLayout.setVisibility(View.INVISIBLE);
-            Frontpage.isTimeline = false;
-        }
-
+            Frontpage.isTimeline = false; }
 
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
-
         transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
-
         transaction.commit();
 
     }

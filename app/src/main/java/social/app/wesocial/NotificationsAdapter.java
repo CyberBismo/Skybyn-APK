@@ -40,6 +40,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     public static final String notificationType_comment = "comment";
 
 
+    @Override
+    public int getItemViewType(int position) {
+        {
+        }
+        return super.getItemViewType(position);
+    }
+
     @NonNull
     @Override
     public NotificationsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

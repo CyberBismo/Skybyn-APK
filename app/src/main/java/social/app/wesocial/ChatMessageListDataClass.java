@@ -8,6 +8,16 @@ public class ChatMessageListDataClass {
     private String msgID;
     private String userID;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
+
     private String online;
 
     public String getMsgID() {
@@ -28,13 +38,14 @@ public class ChatMessageListDataClass {
 
     private String ID;
 
-    public ChatMessageListDataClass(String msgID, String Content, String avatarLink, String date, String friendID,  String userID) {
+    public ChatMessageListDataClass(String msgID, String Content, String avatarLink, String date, String friendID,  String userID,String username) {
         this.content = Content;
         this.avatarLink = avatarLink;
         this.date = date;
         this.friendID = friendID;
         this.userID = userID;
         this.msgID = msgID;
+        this.username = username;
 
     }
 

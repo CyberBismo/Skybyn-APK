@@ -7,10 +7,10 @@
     android:orientation="horizontal">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/imgMessageInProfilePicture"
-        android:layout_width="47dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="10dp"
+        android:id="@+id/imgChatMessageInProfilePicture"
+        android:layout_width="32dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:background="@color/transparent_full"
@@ -26,16 +26,17 @@
     <androidx.cardview.widget.CardView
         android:layout_width="324dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_weight="1"
-        app:cardBackgroundColor="@color/main_colour"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/main_colour"
+            android:foregroundGravity="fill">
 
             <TextView
                 android:id="@+id/txtChatMessageInDate"
@@ -43,9 +44,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:inputType="textImeMultiLine"
+                android:inputType="textImeMultiLine|textNoSuggestions"
                 android:text="TextView"
-                android:textColor="@color/white"
+                android:textColor="@color/light_gray"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,11 +54,11 @@
 
             <TextView
                 android:id="@+id/txtChatMessageIn"
-                android:layout_width="331dp"
+                android:layout_width="328dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:inputType="textImeMultiLine"
-                android:minLines="20"
+                android:inputType="textMultiLine|textImeMultiLine"
+                android:minLines="1"
                 android:text="TextView"
                 android:textColor="@color/white"
                 android:textSize="13sp"

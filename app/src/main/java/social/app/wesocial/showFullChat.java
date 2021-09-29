@@ -1,11 +1,14 @@
 package social.app.wesocial;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +18,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import timber.log.Timber;
@@ -36,6 +42,8 @@ public class showFullChat extends Fragment {
     public EditText txtChatMessageContent;
     Functions functions = new Functions();
     Data data = new Data();
+    private String OldMessageJson;
+    RecyclerView recyclerView;
 
     public showFullChat() {
         // Required empty public constructor
@@ -80,6 +88,7 @@ public class showFullChat extends Fragment {
         functions.loadProfilePictureDrawableThumb(chat_avatar,imgChatHeaderProfilePicture);
         imgChatHeaderOnlineStatus.setImageDrawable(online_status_drawable);
         txtChatHeaderUsername.setText(chat_username);
+        recyclerView = view.findViewById(R.id.chatRecyclerview);
 
 
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
@@ -132,6 +141,42 @@ public class showFullChat extends Fragment {
         networkController.PostMethod(data.sendMessage_API,postData);
 }
 
+
+    private void listChatMessagesOnRecyclerView(String response) throws JSONException {
+        OldMessageJson = response;
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
+        JSONObject jsonObject;
+
+        String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            content = jsonObject.get("content").toString();
+            avatarlink = jsonObject.get("avatar").toString();
+            date = jsonObject.get("date").toString();
+            msgID = jsonObject.get("msgID").toString();
+            friendID = jsonObject.get("friendID").toString();
+            userID = jsonObject.get("userID").toString();
+            username = jsonObject.get("username").toString();
+            nickName = jsonObject.get("nickname").toString();
+            username = jsonObject.get("username").toString();
+
+            chatMessageListData.add(new ChatMessageListDataClass(msgID,content,avatarlink,date,friendID,userID,username));
+        }
+
+        ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(chatMessageAdapter);
+        chatMessageAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(chatMessageAdapter.getItemCount());
+
+
+    }
+
+
     public void loadAllMessages(String friendID ) {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
@@ -142,7 +187,9 @@ public class showFullChat extends Fragment {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
-
+                        if (functions.isJsonArray(response)){
+                            listChatMessagesOnRecyclerView(response);
+                        }
                     }
 
                     @Override

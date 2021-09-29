@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,17 +53,17 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     }
 
 
-    public  String trimValue(String value) {
+    public String trimValue(String value) {
         if (value.length() == 4) {
             //It is one thousand
-            value = value.substring(0,1).concat(".").concat(value.substring(1,2).concat("k"));
-        }else if(value.length() == 5){
-            value = value.substring(0,2).concat(".").concat(value.substring(2,3).concat("k"));
-        }else if(value.length() == 6){
-            value = value.substring(0,3).concat(".").concat(value.substring(3,4)).concat("k");
-        } else if(value.length() == 7){
-        value = value.substring(0,1).concat(".").concat(value.substring(1,2)).concat("M");
-        } else if(value.length() == 8) {
+            value = value.substring(0, 1).concat(".").concat(value.substring(1, 2).concat("k"));
+        } else if (value.length() == 5) {
+            value = value.substring(0, 2).concat(".").concat(value.substring(2, 3).concat("k"));
+        } else if (value.length() == 6) {
+            value = value.substring(0, 3).concat(".").concat(value.substring(3, 4)).concat("k");
+        } else if (value.length() == 7) {
+            value = value.substring(0, 1).concat(".").concat(value.substring(1, 2)).concat("M");
+        } else if (value.length() == 8) {
             value = value.substring(0, 2).concat(".").concat(value.substring(2, 3)).concat("M");
         }
         return value;
@@ -78,10 +79,10 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineLikes.setText(trimValue(timelineDataClass.getLikes()));
         holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
 
-        if (timelineDataClass.getContent().length() > PostLength){
-            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"<font color=\"#005DC1\"> <u>View More</u></font>"));
-        }else{
-            holder.txtTimelineContent.setText( timelineDataClass.getContent());
+        if (timelineDataClass.getContent().length() > PostLength) {
+            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
+        } else {
+            holder.txtTimelineContent.setText(timelineDataClass.getContent());
         }
 
         holder.txtTimelineContent.setTag(timelineDataClass.getPostID());
@@ -89,20 +90,21 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
-        holder.txtTimelineContent.setOnClickListener(view -> {
-            Intent i = new Intent(holder.itemView.getContext(),showFullPost.class);
-            HashMap<String,Object> timeLinePostDetails= new HashMap<>();
+        holder.timelineMainLayout.setOnClickListener(view -> {
+            Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);
+            HashMap<String, Object> timeLinePostDetails = new HashMap<>();
 
-            timeLinePostDetails.put("content",holder.txtTimelineDate.getTag().toString());
-            timeLinePostDetails.put("likes",holder.txtTimelineLikes.getText().toString());
-            timeLinePostDetails.put("ilike",holder.imgTimelinePostLike.getTag().toString());
-            timeLinePostDetails.put("username",holder.txtUsername.getText().toString());
-            timeLinePostDetails.put("userID",holder.txtUsername.getTag().toString());
-            timeLinePostDetails.put("postID",holder.txtTimelineContent.getTag().toString());
-            timeLinePostDetails.put("date",holder.txtTimelineDate.getText().toString());
+            timeLinePostDetails.put("content", holder.txtTimelineDate.getTag().toString());
+            timeLinePostDetails.put("likes", holder.txtTimelineLikes.getText().toString());
+            timeLinePostDetails.put("ilike", holder.imgTimelinePostLike.getTag().toString());
+            timeLinePostDetails.put("username", holder.txtUsername.getText().toString());
+            timeLinePostDetails.put("userID", holder.txtUsername.getTag().toString());
+            timeLinePostDetails.put("postID", holder.txtTimelineContent.getTag().toString());
+            timeLinePostDetails.put("date", holder.txtTimelineDate.getText().toString());
             timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
             timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
-            i.putExtra("timeLinePostDetails",timeLinePostDetails);
+
+            i.putExtra("timeLinePostDetails", timeLinePostDetails);
             holder.itemView.getContext().startActivity(i);
 
         });
@@ -113,7 +115,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         //If the timeLine Post is by Me!
         if (holder.txtUsername.getTag().toString().equals(Frontpage.userID)) {
             holder.txtTimelinePostDelete.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.txtTimelinePostDelete.setVisibility(View.INVISIBLE);
         }
 
@@ -122,8 +124,8 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         //Timeline Delete Post
 
         holder.txtTimelinePostDelete.setOnClickListener(view -> {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(),R.style.AlertDialogCustom);
-            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(),R.drawable.warning));
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(), R.style.AlertDialogCustom);
+            alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.warning));
             alertDialogBuilder.setMessage(holder.itemView.getContext().getString(string.deletePOST));
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(R.string.deletePostTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
@@ -223,6 +225,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
             }
+
             @Override
             public void onClick(View view) {
                 //holder.imgTimelinePostLike.animate();
@@ -253,7 +256,8 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
         CardView cardView;
-        TextView  txtTimelinePostDelete;
+        TextView txtTimelinePostDelete;
+        ConstraintLayout timelineMainLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -267,6 +271,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             txtTimelinePostDelete = itemView.findViewById(id.txtTimelinePostDelete);
             imgTimelinePostLike = itemView.findViewById(id.imgShowTimelinePostLike);
             imgTimelinePostComment = itemView.findViewById(id.imgShowTimelinePostComment);
+            timelineMainLayout = itemView.findViewById(id.timelineMainConstraintLayout);
 
 
         }

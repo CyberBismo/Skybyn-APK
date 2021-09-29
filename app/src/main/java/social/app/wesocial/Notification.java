@@ -28,11 +28,7 @@ import java.util.Objects;
 
 import timber.log.Timber;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Notification#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Notification extends Fragment {
 
     Functions functions = new Functions();
@@ -40,6 +36,8 @@ public class Notification extends Fragment {
     RecyclerView recyclerView;
     TextView lblNotificationsTitle;
     LottieAnimationView lottie;
+    String oldNotificationJson = "";
+
 
 
     public Notification() {
@@ -73,12 +71,53 @@ public class Notification extends Fragment {
         recyclerView = requireView().findViewById(R.id.notificationsRecyclerView);
         lblNotificationsTitle = requireView().findViewById(R.id.lblNotificationsTitle);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
-        loadNotification();
+        try {
+            loadNotification();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private void loadNotification() {
-        functions.showProgress(lottie);
+    public void displayInRecyclerView(String response) throws JSONException{
+        String notificationContent;
+        String notificationTitle;
+        String notificationDate;
+        String notificationID;
+        String notificationAvatarLink;
+        String notificationType;
+        String notificationRead;
+
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<NotificationDataClass> notifications = new ArrayList<>();
+        JSONObject jsonObject;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            notificationContent = (String) jsonObject.get("content");
+            notificationAvatarLink = (String) jsonObject.get("avatar");
+            notificationDate = (String) jsonObject.get("date").toString();
+            notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
+            notificationTitle = (String) jsonObject.get("title");
+            notificationID = (String) jsonObject.get("notiID");
+            notificationRead = (String) jsonObject.get("read");
+            notificationType = (String) jsonObject.get("type");
+            notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead)); }
+        NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(notificationsAdapter);
+        lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+ Objects.requireNonNull(recyclerView.getAdapter()).getItemCount()+")");
+        notificationsAdapter.notifyDataSetChanged();
+
+    }
+    private void loadNotification() throws JSONException {
+        if(functions.isJsonArray(oldNotificationJson)){
+            displayInRecyclerView(oldNotificationJson);
+        }else{
+            functions.showProgress(lottie);
+        }
+
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
@@ -88,45 +127,15 @@ public class Notification extends Fragment {
             public void notifySuccess(String response) throws JSONException {
                 functions.hideProgress(lottie);
                 if (response.equals("You've got no new notifications.")){
-                    functions.showSnackBarError(response,requireView().findViewById(android.R.id.content),requireActivity().getApplicationContext());
+                    functions.showSnackBarError(response,requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                     return;
                 }
 
                 if (functions.isJsonArray(response)) {
                     Timber.i(response);
-                    String notificationContent;
-                    String notificationTitle;
-                    String notificationDate;
-                    String notificationID;
-                    String notificationAvatarLink;
-                    String notificationType;
-                    String notificationRead;
-
-                    JSONArray jsonArray = new JSONArray(response);
-
-                    ArrayList<NotificationDataClass> notifications = new ArrayList<>();
-                    JSONObject jsonObject;
-
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
-                        notificationContent = (String) jsonObject.get("content");
-                        notificationAvatarLink = (String) jsonObject.get("avatar");
-                        notificationDate = (String) jsonObject.get("date").toString();
-                        notificationDate = functions.convertUnixToDateAndTime(Long.valueOf(notificationDate));
-                        notificationTitle = (String) jsonObject.get("title");
-                        notificationID = (String) jsonObject.get("notiID");
-                        notificationRead = (String) jsonObject.get("read");
-                        notificationType = (String) jsonObject.get("type");
-
-                        notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead));
-                        }
-                    NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(notificationsAdapter);
-                    lblNotificationsTitle.setText(getString(R.string.notifications)+" ("+ Objects.requireNonNull(recyclerView.getAdapter()).getItemCount()+")");
-                    notificationsAdapter.notifyDataSetChanged();
+                     oldNotificationJson = response;
+                    displayInRecyclerView(response);
+                    
                 }
                 if (!functions.isJsonArray(response)) {
                     Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
