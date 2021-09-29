@@ -38,15 +38,63 @@ public class Timeline extends Fragment {
     LottieAnimationView lottie;
     RecyclerView recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    public String timelinePostsJson = "";
+
+    private void displayTimelinePosts(String response) throws JSONException {
+    String timelinePostContent;
+    String timelinePostUsername;
+    String timelinePostDate;
+    String timelineUserID;
+    String timelinePostID;
+    String timelineILike;
+
+    String timelineAvatarLink;
+    String timelinePostLikes;
+    String timelinePostCommentsCount;
+
+    JSONArray jsonArray = new JSONArray(response);
+    ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
+    JSONObject jsonObject;
 
 
-    private void loadTimelinePosts() {
+    for (int i = 0; i < jsonArray.length(); i++) {
+        jsonObject = jsonArray.getJSONObject(i);
+        timelineAvatarLink = (String) jsonObject.get("avatar");
+        timelinePostDate = jsonObject.get("date").toString();
+        timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
+        timelinePostUsername = (String) jsonObject.get("username");
+        timelineUserID = (String) jsonObject.get("userID");
+        timelinePostID = (String) jsonObject.get("postID");
+        timelinePostLikes = jsonObject.get("likes").toString();
+        timelinePostCommentsCount = jsonObject.get("comments_count").toString();
+        timelinePostContent = (String) jsonObject.get("content");
+        timelineILike = jsonObject.get("ilike").toString();
+
+        timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
+    }
+
+    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
+    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+    recyclerView.setLayoutManager(mLayoutManager);
+    recyclerView.setAdapter(timelinepostsAdapter);
+    timelinepostsAdapter.notifyDataSetChanged();
+
+}
+
+    private void loadTimelinePosts() throws JSONException {
+        if (functions.isJsonArray(timelinePostsJson)) {
+            displayTimelinePosts(timelinePostsJson);
+            Timber.i("True");
+        }else{
+            functions.showProgress(lottie);
+            Timber.i("false");
+        }
+
         Frontpage.isTimeline = true;
         fragmentContainerView = requireActivity().findViewById(R.id.fragmentContainerView);
         CoordinatorLayout bottomLayout = requireActivity().findViewById(R.id.bottomLayout);
         bottomLayout.setVisibility(View.VISIBLE);
 
-        functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
@@ -54,7 +102,6 @@ public class Timeline extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
@@ -63,43 +110,8 @@ public class Timeline extends Fragment {
                 }
 
                 if (functions.isJsonArray(response)) {
-                    String timelinePostContent;
-                    String timelinePostUsername;
-                    String timelinePostDate;
-                    String timelineUserID;
-                    String timelinePostID;
-                    String timelineILike;
-
-                    String timelineAvatarLink;
-                    String timelinePostLikes;
-                    String timelinePostCommentsCount;
-
-                    JSONArray jsonArray = new JSONArray(response);
-                    ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
-                    JSONObject jsonObject;
-
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
-                        timelineAvatarLink = (String) jsonObject.get("avatar");
-                        timelinePostDate = jsonObject.get("date").toString();
-                        timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
-                        timelinePostUsername = (String) jsonObject.get("username");
-                        timelineUserID = (String) jsonObject.get("userID");
-                        timelinePostID = (String) jsonObject.get("postID");
-                        timelinePostLikes = jsonObject.get("likes").toString();
-                        timelinePostCommentsCount = jsonObject.get("comments_count").toString();
-                        timelinePostContent = (String) jsonObject.get("content");
-                        timelineILike = jsonObject.get("ilike").toString();
-
-                        timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
-                    }
-
-                    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-                    recyclerView.setLayoutManager(mLayoutManager);
-                    recyclerView.setAdapter(timelinepostsAdapter);
-                    timelinepostsAdapter.notifyDataSetChanged();
+                    timelinePostsJson = response;
+                    displayTimelinePosts(response);
 
                 }
 
@@ -140,7 +152,11 @@ public class Timeline extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadTimelinePosts();
+        try {
+            loadTimelinePosts();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -149,11 +165,19 @@ public class Timeline extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = requireActivity().findViewById(R.id.postsRecyclerView);
 
-        loadTimelinePosts();
+        try {
+            loadTimelinePosts();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         mSwipeRefreshLayout = (SwipeRefreshLayout) requireView().findViewById(R.id.timelineSwipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.refreshing), Toast.LENGTH_SHORT).show();
-            loadTimelinePosts();
+            try {
+                loadTimelinePosts();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             mSwipeRefreshLayout.setRefreshing(false);
         });
     }

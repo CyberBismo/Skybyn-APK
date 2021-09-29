@@ -67,6 +67,7 @@ public class Data {
 
 
     public String forgotPassword_Api = API+"forgot.php";
+    public String updateToken_Api = API+"token.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
     public Integer maxPostDisplayLength = 700;

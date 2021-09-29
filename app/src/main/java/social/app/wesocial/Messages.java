@@ -61,7 +61,7 @@ public class Messages extends Fragment {
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
 
-    private void listMessages(String response) throws JSONException {
+    private void listMessagesOnRecyclerView(String response) throws JSONException {
         OldMessageJson = response;
         JSONArray jsonArray = new JSONArray(response);
         ArrayList<MessageListDataClass> messages = new ArrayList<>();
@@ -87,13 +87,13 @@ public class Messages extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(messageListAdapter);
-
         messageListAdapter.notifyDataSetChanged();
+
 
     }
     private void loadMessagesFromFriends() throws JSONException {
         if (!OldMessageJson.equals("")){
-            listMessages(OldMessageJson);
+            listMessagesOnRecyclerView(OldMessageJson);
         }
         //functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -110,7 +110,7 @@ public class Messages extends Fragment {
                         //functions.ShowToast(getActivity().getApplicationContext(),response);
                         if (functions.isJsonArray(response)) {
                             Timber.i(response);
-                            listMessages(response);
+                            listMessagesOnRecyclerView(response);
                              }
                              if (!functions.isJsonArray(response)) {
                              Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();

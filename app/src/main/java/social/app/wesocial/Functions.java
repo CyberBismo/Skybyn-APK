@@ -39,7 +39,7 @@ public class Functions {
     }
 
     public Boolean isJsonArray(String json) {
-        return json.startsWith("[");
+        return json.startsWith("[") && json.endsWith("]");
     }
 
     public Boolean validateEmail(String email) {

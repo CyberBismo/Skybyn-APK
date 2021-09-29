@@ -449,7 +449,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void performLoginAuth() {
         functions.showProgress(lottie);
-
         loginUsername = sharedpreferences.getString("username", "");
         loginPassword = sharedpreferences.getString("password", "");
 
