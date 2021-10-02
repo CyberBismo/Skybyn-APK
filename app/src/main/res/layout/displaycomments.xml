@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -29,34 +30,33 @@
                 android:id="@+id/imgCommentProfilePicture"
                 android:layout_width="39dp"
                 android:layout_height="35dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="4dp"
                 android:background="@color/transparent_full"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="1dp"
                 app:civ_shadow_color="@color/white"
                 app:civ_shadow_radius="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtCommentUsername"
-                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintHorizontal_bias="0.066"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.112" />
 
             <TextView
                 android:id="@+id/txtCommentUsername"
-                android:layout_width="200dp"
-                android:layout_height="27dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="128dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="169dp"
+                android:layout_height="58dp"
+                android:layout_marginEnd="80dp"
                 android:fontFamily="@font/nexabold"
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="@string/app_name"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/txtCommentContent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtCommentEdit"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/txtCommentLikes"
@@ -122,7 +122,7 @@
                 android:layout_width="39dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center_horizontal"
                 android:text="@string/Delete"
                 android:textColor="@color/red"

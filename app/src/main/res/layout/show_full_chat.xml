@@ -31,7 +31,7 @@
             android:layout_height="28dp"
 
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="325dp"
+            android:layout_marginStart="340dp"
             android:background="@drawable/send_button_selector"
             android:fontFamily="@font/nexalight"
             android:paddingTop="10dp"
@@ -44,8 +44,8 @@
             android:id="@+id/txtChatMessageContent"
             android:layout_width="301dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="5dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="20dp"
             android:background="@drawable/textview_rounded_corner_gray"
             android:ems="10"
             android:gravity="start"
@@ -54,7 +54,7 @@
             android:lines="5"
             android:maxLines="20"
             android:minLines="3"
-            android:paddingTop="10dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textColorHint="@color/light_gray"
             android:textSize="14sp"
@@ -64,8 +64,8 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="409dp"
-        android:layout_height="580dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/sendMessageCardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

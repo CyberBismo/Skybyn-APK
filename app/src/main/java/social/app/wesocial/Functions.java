@@ -3,6 +3,7 @@ package social.app.wesocial;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -30,6 +31,7 @@ import kotlin.TypeCastException;
 public class Functions {
     Integer initial_height = null;
     public static FragmentContainerView fragmentContainerView;
+    private View t_View;
 
     public Boolean isJsonObject(String json) {
         return json.startsWith("{");
@@ -43,10 +45,12 @@ public class Functions {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    void loadTimeLineUserProfile(String userID, View view) {
-        Fragment userTimeline = social.app.wesocial.userTimeline.newInstance(userID, "");
-        LoadFragment(userTimeline, "", (Activity) view.getContext(), false);
+    void loadTimeLineUserProfile(String userID, Activity activity, Context context) {
+        Intent i = new Intent(context,userTimelineActivity.class);
+        i.putExtra("userID",userID);
+        activity.startActivity(i);
     }
+
 
     public void showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
@@ -166,7 +170,6 @@ public class Functions {
 
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-
         transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();

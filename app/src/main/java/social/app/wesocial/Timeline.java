@@ -41,7 +41,7 @@ public class Timeline extends Fragment {
     String timelinePostContent;
     String timelinePostUsername;
     String timelinePostDate;
-    String timelineUserID;
+    String timelineUserID = null;
     String timelinePostID;
     String timelineILike;
 
@@ -70,7 +70,7 @@ public class Timeline extends Fragment {
         timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
     }
 
-    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost);
+    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost,false,timelineUserID,getActivity());
     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
     recyclerView.setLayoutManager(mLayoutManager);
     recyclerView.setAdapter(timelinepostsAdapter);
@@ -78,7 +78,8 @@ public class Timeline extends Fragment {
 
 }
 
-    private void loadTimelinePosts() throws JSONException {
+    private void loadTimelinePosts() throws JSONException
+    {
         if (functions.isJsonArray(timelinePostsJson)) {
             displayTimelinePosts(timelinePostsJson);
             Timber.i("True");

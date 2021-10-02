@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dark_gray_2"
+    android:background="@color/transparent_full"
     android:paddingTop="10dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/displayMessageCardView"
-        android:layout_width="409dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="5dp"
@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black">
+            android:background="@color/white">
 
 
             <com.mikhaellopez.circularimageview.CircularImageView
@@ -63,8 +63,7 @@
                 android:fontFamily="@font/nexabold"
                 android:gravity="center_vertical"
                 android:singleLine="false"
-                android:text="Cyberwizard"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/txtMessageContent"
                 app:layout_constraintEnd_toStartOf="@+id/txtMessageDate"
                 app:layout_constraintTop_toTopOf="parent"
@@ -79,8 +78,7 @@
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="Hello there, my name is Cyberwizard , How about we move to this plac.."
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -94,8 +92,7 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="Yesterday"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="10sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"

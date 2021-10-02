@@ -32,10 +32,10 @@ import timber.log.Timber;
 public class showFullChat extends Fragment {
 
 
-    private static  String chat_username = "";
-    private static  String chat_avatar= "";
-    private static  String chat_friendID = "";
-    private static  Drawable online_status_drawable = null;
+    private static String chat_username = "";
+    private static String chat_avatar = "";
+    private static String chat_friendID = "";
+    private static Drawable online_status_drawable = null;
     public EditText txtChatMessageContent;
     Functions functions = new Functions();
     Data data = new Data();
@@ -48,7 +48,7 @@ public class showFullChat extends Fragment {
     }
 
 
-    public static showFullChat newInstance(String param1, Drawable drawable, String param3,String friendID) {
+    public static showFullChat newInstance(String param1, Drawable drawable, String param3, String friendID) {
         showFullChat fragment = new showFullChat();
 
         chat_username = param1;
@@ -74,27 +74,36 @@ public class showFullChat extends Fragment {
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBack);
         ImageView imgChatHeaderOnlineStatus = view.findViewById(R.id.imgChatHeaderOnlineStatus);
         ImageView imgChatHeaderProfilePicture = view.findViewById(R.id.imgChatHeaderProfilePicture);
         TextView txtChatHeaderUsername = view.findViewById(R.id.imgChatUsernameTitle);
-         txtChatMessageContent = view.findViewById(R.id.txtChatMessageContent);
+        txtChatMessageContent = view.findViewById(R.id.txtChatMessageContent);
         Button btnChatSendMessage = view.findViewById(R.id.btnChatSendMessage);
-        functions.loadProfilePictureDrawableThumb(chat_avatar,imgChatHeaderProfilePicture);
+        functions.loadProfilePictureDrawableThumb(chat_avatar, imgChatHeaderProfilePicture);
         imgChatHeaderOnlineStatus.setImageDrawable(online_status_drawable);
         txtChatHeaderUsername.setText(chat_username);
         recyclerView = view.findViewById(R.id.chatRecyclerview);
 
+        view.setOnFocusChangeListener((view12, b) -> {
+            if (view12 == txtChatMessageContent) {
+                if (b) {
+                    if (recyclerView.getAdapter().getItemCount() > 0) {
+                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                    }
+                }
+            }
+
+        });
 
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
             requireActivity().onBackPressed();
         });
 
         btnChatSendMessage.setOnClickListener(view1 -> {
-            if (txtChatMessageContent.getText().toString().equals("")){
+            if (txtChatMessageContent.getText().toString().equals("")) {
                 txtChatMessageContent.setError(getString(R.string.empty_message_content));
                 return;
             }
@@ -114,7 +123,8 @@ public class showFullChat extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
         chatMessageAdapter.notifyDataSetChanged();
-        //recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+
 
     }
 
@@ -151,10 +161,10 @@ public class showFullChat extends Fragment {
                     public void notifyError(VolleyError error) {
 
                     }
-                  });
+                });
 
-        networkController.PostMethod(data.sendMessage_API,postData);
-}
+        networkController.PostMethod(data.sendMessage_API, postData);
+    }
 
 
     private void listChatMessagesOnRecyclerView(String response) throws JSONException {
@@ -162,7 +172,7 @@ public class showFullChat extends Fragment {
         JSONArray jsonArray = new JSONArray(response);
         JSONObject jsonObject;
 
-        String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
+        String content, date, username, online, avatarlink, msgID, friendID, userID, nickName;
 
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
@@ -176,7 +186,7 @@ public class showFullChat extends Fragment {
             nickName = jsonObject.get("nickname").toString();
             username = jsonObject.get("username").toString();
 
-            chatMessageListData.add(new ChatMessageListDataClass(msgID,content,avatarlink,date,friendID,userID,username));
+            chatMessageListData.add(new ChatMessageListDataClass(msgID, content, avatarlink, date, friendID, userID, username));
         }
 
         updateChatRecyclerMessages();
@@ -184,7 +194,7 @@ public class showFullChat extends Fragment {
 
     }
 
-    public void loadAllMessages(String friendID ) {
+    public void loadAllMessages(String friendID) {
 
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
@@ -195,7 +205,7 @@ public class showFullChat extends Fragment {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
-                        if (functions.isJsonArray(response)){
+                        if (functions.isJsonArray(response)) {
                             listChatMessagesOnRecyclerView(response);
                         }
                     }
@@ -206,6 +216,6 @@ public class showFullChat extends Fragment {
                     }
                 });
 
-        networkController.PostMethod(data.showFullMessages_API,postData);
+        networkController.PostMethod(data.showFullMessages_API, postData);
     }
 }

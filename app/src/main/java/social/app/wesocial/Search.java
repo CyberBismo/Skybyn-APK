@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Search#newInstance} factory method to
@@ -69,6 +71,7 @@ public static RecyclerView recyclerView;
 
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     public void showSearchResults(String response) throws JSONException {
+        Timber.i(response);
         String searchUsername;
         String searchUserNickname;
         String searchUserID;

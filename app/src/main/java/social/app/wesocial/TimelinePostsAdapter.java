@@ -4,6 +4,7 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -39,10 +41,16 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Data data = new Data();
     String postID;
     Integer PostLength = data.maxPostDisplayLength;
+    public boolean isUserTimeline = false;
+    String userID;
+    Activity activity;
 
 
-    public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
+    public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass,Boolean isUserTimeline,String userID,Activity activity) {
         TimelineDataClass = timelineDataClass;
+        this.isUserTimeline = isUserTimeline;
+        this.activity = activity;
+        this.userID = userID;
     }
 
     @NonNull
@@ -113,8 +121,10 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
 
         //Profile PICTURE click
-        holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtUsername.getTag().toString(), holder.itemView));
-        holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
+        if (!this.isUserTimeline) {
+            holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtUsername.getTag().toString(),activity,holder.itemView.getContext().getApplicationContext()));
+            holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
+        }
 
         holder.imgTimelinePostLike.setLiked(!holder.imgTimelinePostLike.getTag().toString().equals("0"));
 
@@ -143,7 +153,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
                         postID = holder.txtTimelineContent.getTag().toString();
                         HashMap<String, String> postData = new HashMap<>();
-                        postData.put("userID", Frontpage.userID);
+                        postData.put("userID", userID);
                         postData.put("postID", postID);
                         NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                             @Override
@@ -189,7 +199,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
                 HashMap<String, String> postData = new HashMap<>();
                 postID = holder.txtTimelineContent.getTag().toString();
-                postData.put("userID", Frontpage.userID);
+                postData.put("userID", userID);
                 postData.put("postID", postID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
@@ -250,6 +260,12 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                 sendLike();
             }
         });
+    }
+
+    private void loadTimeLineUserProfile(String userID) {
+        Intent i = new Intent(activity.getApplicationContext(),userTimelineActivity.class);
+        i.putExtra("userID",userID);
+        activity.startActivity(i);
     }
 
 

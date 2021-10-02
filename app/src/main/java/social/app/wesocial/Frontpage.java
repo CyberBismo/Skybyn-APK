@@ -75,7 +75,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
 
-    public Activity frontpageActivity;
+    public static Activity frontpageActivity;
     public static SearchView searchView;
     private String keyword;
     private Boolean onQuery;
@@ -85,8 +85,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         //INIT FIREBASE
         FirebaseApp.initializeApp(this);
 
@@ -96,8 +96,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
 
-        //GETTING REFERENCe To the activity
-        frontpageActivity = this;
+
         configureToolbarAndDrawer();
         checkAppUpdate();
 
@@ -146,6 +145,10 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 return false;
             }
         });
+
+        //GETTING REFERENCe To the activity
+        frontpageActivity = Frontpage.this;
+
     }
 
     public void performSearch(String userID, String keyword, Boolean onQuery) {

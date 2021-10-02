@@ -2,6 +2,8 @@ package social.app.wesocial;
 
 import android.annotation.SuppressLint;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +21,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -192,14 +195,13 @@ public class showFullPost extends AppCompatActivity {
                         commentData.add(new CommentDataClass(commentID, commentUserID, commentUsername, commentAvatarLink, commentDate, commentContent, commentLikes, commentILike, commentPostID));
                     }
 
-                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData);
+                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData,Frontpage.userID);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
                     txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
-
-                    recyclerView.scrollToPosition(commentsAdapter.getItemCount());
+                    recyclerView.smoothScrollToPosition(commentsAdapter.getItemCount() -1);
 
 
                 }
@@ -244,11 +246,15 @@ public class showFullPost extends AppCompatActivity {
 
         functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
         txtShowTimelinePostUsername.setText(postUsername);
+        txtShowTimelinePostUsername.setTag(posterUserID);
         txtShowTimelinePostDate.setText(postDate);
         txtShowTimelinePostContent.setText(postContent);
         txtShowTimelinePostLikes.setText(postLikes);
         txtShowTimelinePostComments.setText(postCommentsCount);
         btnShowtimePostLike.setTag(userLikedPost);
+
+
+
 
 
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
@@ -282,7 +288,7 @@ public class showFullPost extends AppCompatActivity {
                 // set alert_dialog.xml to alertdialog builder
                 alertDialogBuilder.setView(editLayout);
 
-                final EditText txtContent = (EditText) editLayout.findViewById(R.id.etUserInput);
+                final EditText txtContent = editLayout.findViewById(R.id.etUserInput);
                 txtContent.setText(txtShowTimelinePostContent.getText().toString());
                 txtContent.setSelection(txtContent.length());
 
@@ -345,8 +351,6 @@ public class showFullPost extends AppCompatActivity {
                 alertDialog.show();
 
         });
-
-
 
 
         txtShowTimelinePostDelete.setOnClickListener(view -> {
@@ -454,9 +458,17 @@ public class showFullPost extends AppCompatActivity {
             btnSendTimelineComment.setEnabled(false);
         });
 
+        //Profile picture and name click
+        imgShowTimelinePostProfilePicture.setOnClickListener(view -> {
+            functions.loadTimeLineUserProfile(posterUserID,showFullPost.this,getApplicationContext()); });
+        txtShowTimelinePostUsername.setOnClickListener(view -> imgShowTimelinePostProfilePicture.callOnClick());
+
 
         //END OF ON CREATE
     }
+
+
+
 
 
     @Override

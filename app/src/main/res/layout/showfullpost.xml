@@ -243,6 +243,7 @@
                 android:singleLine="true"
                 android:text="@string/comments"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostDate"
                 app:layout_constraintEnd_toStartOf="@+id/txtCommentDelete"
                 app:layout_constraintTop_toTopOf="parent"

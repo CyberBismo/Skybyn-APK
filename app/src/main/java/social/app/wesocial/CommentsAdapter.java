@@ -37,9 +37,11 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
+    String userID;
 
-    public CommentsAdapter(List<CommentDataClass> commentDataClass) {
+    public CommentsAdapter(List<CommentDataClass> commentDataClass,String userID) {
         CommentDataClass = commentDataClass;
+        this.userID = userID;
     }
 
     @NonNull
@@ -85,7 +87,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         holder.txtCommentUsername.setOnClickListener(view -> Timber.i(commentDataClass.getUserID()));
         //If the timeLine Post is by Me!
-        if (commentDataClass.getUserID().equals(Frontpage.userID)) {
+        if (commentDataClass.getUserID().equals(userID)) {
             holder.txtCommentDelete.setVisibility(View.VISIBLE);
             holder.txtCommentEdit.setVisibility(View.VISIBLE);
         }else{
@@ -112,7 +114,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                     (dialog, id) -> {
 
                         HashMap<String, String> postData = new HashMap<>();
-                        postData.put("userID", Frontpage.userID);
+                        postData.put("userID", userID);
                         postData.put("postID", holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString());
                         postData.put("commentID", holder.txtCommentContent.getTag(R.integer.commentIDTag).toString());
                         postData.put("content", txtContent.getText().toString());
@@ -185,7 +187,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(R.string.yes_delete),
                     (dialog, arg1) -> {
                         HashMap<String, String> postData = new HashMap<>();
-                        postData.put("userID", Frontpage.userID);
+                        postData.put("userID", userID);
                         postData.put("postID", holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString());
                         postData.put("commentID", holder.txtCommentContent.getTag(R.integer.commentIDTag).toString());
 
@@ -232,7 +234,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                 HashMap<String, String> postData = new HashMap<>();
                 String commentID = holder.txtCommentContent.getTag(R.integer.commentIDTag).toString();
                 postID = holder.txtCommentContent.getTag(R.integer.commentsPostIDTag).toString();
-                postData.put("userID", Frontpage.userID);
+                postData.put("userID", userID);
                 postData.put("commentID", commentID);
 
                 NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
