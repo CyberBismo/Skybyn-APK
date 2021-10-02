@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".SharePost">
 
     <LinearLayout
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="151dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/text_selector"
+            android:background="@drawable/textview_rounded_corner_gray"
             android:ems="10"
             android:foregroundGravity="center_horizontal"
             android:gravity="start|center_horizontal|top"
@@ -53,7 +53,7 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textColorHint="@color/white" />
 
         <Button

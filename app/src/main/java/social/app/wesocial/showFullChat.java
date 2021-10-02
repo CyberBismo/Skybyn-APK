@@ -1,15 +1,7 @@
 package social.app.wesocial;
 
-import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
@@ -43,6 +40,7 @@ public class showFullChat extends Fragment {
     Functions functions = new Functions();
     Data data = new Data();
     private String OldMessageJson;
+    ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
     RecyclerView recyclerView;
 
     public showFullChat() {
@@ -100,7 +98,7 @@ public class showFullChat extends Fragment {
                 txtChatMessageContent.setError(getString(R.string.empty_message_content));
                 return;
             }
-            sendMessage(chat_friendID,txtChatMessageContent.getText().toString());
+            sendMessage(chat_friendID, txtChatMessageContent.getText().toString());
 
         });
 
@@ -109,22 +107,39 @@ public class showFullChat extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void sendMessage(String friendID,String message) {
+
+    public void updateChatRecyclerMessages() {
+        ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(chatMessageAdapter);
+        chatMessageAdapter.notifyDataSetChanged();
+        //recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+
+    }
+
+    public void sendMessage(String friendID, String message) {
+        txtChatMessageContent.setText("");
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
         postData.put("friendID", friendID);
         postData.put("content", message);
+
+        //ADD MESSAGE TO VIEW WHILE WAITING FOR SEND
+
+        chatMessageListData.add(chatMessageListData.size(), new ChatMessageListDataClass("", message, Frontpage.avatarLink, "sending", friendID, Frontpage.userID, Frontpage.loginUsername));
+        updateChatRecyclerMessages();
+        //END
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(),
                 new NetworkController.IResult() {
                     @Override
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
-                        if (functions.isJsonObject(response)){
+                        if (functions.isJsonObject(response)) {
                             JSONObject jsonObject = new JSONObject(response);
                             String responseCode = jsonObject.get("responseCode").toString();
-                            if(responseCode.equals("1")){
-                                txtChatMessageContent.setText("");
+                            if (responseCode.equals("1")) {
                                 loadAllMessages(friendID);
                             }
 
@@ -145,7 +160,6 @@ public class showFullChat extends Fragment {
     private void listChatMessagesOnRecyclerView(String response) throws JSONException {
         OldMessageJson = response;
         JSONArray jsonArray = new JSONArray(response);
-        ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
         JSONObject jsonObject;
 
         String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
@@ -165,19 +179,13 @@ public class showFullChat extends Fragment {
             chatMessageListData.add(new ChatMessageListDataClass(msgID,content,avatarlink,date,friendID,userID,username));
         }
 
-        ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(chatMessageAdapter);
-        chatMessageAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(chatMessageAdapter.getItemCount());
+        updateChatRecyclerMessages();
 
 
     }
 
-
     public void loadAllMessages(String friendID ) {
+
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
         postData.put("friendID", friendID);

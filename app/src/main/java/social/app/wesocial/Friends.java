@@ -44,7 +44,6 @@ public class Friends extends Fragment {
         Friends fragment = new Friends();
         action = "";
         action = param1;
-
         return fragment;
 
     }

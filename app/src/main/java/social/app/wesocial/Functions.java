@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Patterns;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,13 +23,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.Date;
 
 import kotlin.TypeCastException;
 
 public class Functions {
-
+    Integer initial_height = null;
     public static FragmentContainerView fragmentContainerView;
 
     public Boolean isJsonObject(String json) {
@@ -46,11 +43,16 @@ public class Functions {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    void loadTimeLineUserProfile(String userID, View view) {
+        Fragment userTimeline = social.app.wesocial.userTimeline.newInstance(userID, "");
+        LoadFragment(userTimeline, "", (Activity) view.getContext(), false);
+    }
+
     public void showProgress(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.wesocialdot);
-        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(),R.color.black));
+        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.black));
         lottieview.setAlpha(0.85f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
@@ -76,7 +78,7 @@ public class Functions {
 
 
     public void ShowToast(Context context, Object string) {
-        Toast.makeText(context, (String) string.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, string.toString(), Toast.LENGTH_LONG).show();
     }
 
     public void showFingerPrintPrompt(LottieAnimationView lottieview) {
@@ -143,15 +145,24 @@ public class Functions {
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
+        fragmentContainerView.requestLayout();
         CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
+
+        if (initial_height == null) {
+            initial_height = fragmentContainerView.getLayoutParams().height;
+        }
 
         if (isTimeline) {
             bottomLayout.setVisibility(View.VISIBLE);
             Frontpage.isTimeline = true;
+            fragmentContainerView.getLayoutParams().height = initial_height;
+
         } else {
-            fragmentContainerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             bottomLayout.setVisibility(View.INVISIBLE);
-            Frontpage.isTimeline = false; }
+            Frontpage.isTimeline = false;
+            //fragmentContainerView.getLayoutParams().height  = fragmentContainerView.getLayoutParams().height + 20;
+
+        }
 
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import static social.app.wesocial.Frontpage.isTimeline;
 import static social.app.wesocial.Functions.fragmentContainerView;
 
 import android.annotation.SuppressLint;
@@ -12,10 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -103,6 +100,7 @@ public class Timeline extends Fragment {
             @Override
             public void notifySuccess(String response) throws JSONException {
                 functions.hideProgress(lottie);
+                Timber.i(response);
 
                 if (!functions.isJsonArray(response)) {
                     functions.showSnackBarError(requireActivity().getString(R.string.no_timeline), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
@@ -170,7 +168,7 @@ public class Timeline extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mSwipeRefreshLayout = (SwipeRefreshLayout) requireView().findViewById(R.id.timelineSwipeToRefresh);
+        mSwipeRefreshLayout = requireView().findViewById(R.id.timelineSwipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.refreshing), Toast.LENGTH_SHORT).show();
             try {

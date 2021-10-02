@@ -8,8 +8,8 @@
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imgChatMessageInProfilePicture"
-        android:layout_width="32dp"
-        android:layout_height="29dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="7dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
@@ -24,18 +24,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="324dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_weight="1"
+        app:cardBackgroundColor="@color/transparent_full"
         app:cardCornerRadius="4dp"
-        app:cardElevation="4dp">
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/IncomingchatConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/main_colour"
+            android:background="@drawable/incoming_chat_bubble"
             android:foregroundGravity="fill">
 
             <TextView
@@ -44,27 +46,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:inputType="textImeMultiLine|textNoSuggestions"
+                android:inputType="textNoSuggestions"
+                android:paddingEnd="5dp"
                 android:text="TextView"
                 android:textColor="@color/light_gray"
                 android:textSize="11sp"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/txtChatMessageIn"
-                android:layout_width="328dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:inputType="textMultiLine|textImeMultiLine"
+                android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
                 android:minLines="1"
+                android:paddingStart="12dp"
+                android:paddingEnd="10dp"
                 android:text="TextView"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@+id/txtChatMessageInDate"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"

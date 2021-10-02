@@ -34,7 +34,6 @@ public class PushNotificationService extends FirebaseMessagingService {
                     if (task.isSuccessful()) {
                         String token = task.getResult();
                         Timber.i("token ---->>%s", token);
-                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG).show();
                         Frontpage.gottenToken = true;
                         FirebaseMessaging.getInstance().subscribeToTopic(weSocial_Topic);
                         userNotificationtoken = token;

@@ -40,6 +40,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     String postID;
     Integer PostLength = data.maxPostDisplayLength;
 
+
     public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass) {
         TimelineDataClass = timelineDataClass;
     }
@@ -68,6 +69,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         }
         return value;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
@@ -108,6 +110,11 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             holder.itemView.getContext().startActivity(i);
 
         });
+
+
+        //Profile PICTURE click
+        holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtUsername.getTag().toString(), holder.itemView));
+        holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
 
         holder.imgTimelinePostLike.setLiked(!holder.imgTimelinePostLike.getTag().toString().equals("0"));
 
@@ -261,7 +268,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(id.displayTimelineCardView);
+            cardView = itemView.findViewById(id.postTimelineCardView);
             txtTimelineContent = itemView.findViewById(id.txtShowTimelinePostContent);
             txtUsername = itemView.findViewById(id.txtShowTimelinePostUsername);
             txtTimelineDate = itemView.findViewById(id.txtShowTimelinePostDate);

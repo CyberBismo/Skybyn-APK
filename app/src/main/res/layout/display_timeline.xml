@@ -5,11 +5,11 @@
     android:id="@+id/timelineMainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/black"
+    android:background="@color/white"
     android:paddingTop="10dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/displayTimelineCardView"
+        android:id="@+id/postTimelineCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/black"
@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black">
+            android:background="@color/white">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imgShowTimelinePostProfilePicture"
@@ -50,7 +50,7 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="@string/app_name"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostDate"
                 app:layout_constraintEnd_toStartOf="@+id/txtTimelinePostDelete"
                 app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +66,7 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="0"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,7 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="0"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -101,7 +101,7 @@
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:text="@string/app_name"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostContent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="112dp"
                 android:fontFamily="sans-serif"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.619"
@@ -132,6 +132,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
                 app:layout_constraintVertical_bias="0.434"
                 app:srcCompat="@drawable/comment"
+                app:tint="@color/black"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView

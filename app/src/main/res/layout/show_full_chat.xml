@@ -1,27 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="3"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
     android:visibility="visible">
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sendMessageCardView"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:cardBackgroundColor="@color/transparent_full"
+        app:cardElevation="1dp"
+        app:contentPaddingBottom="10dp"
+        app:contentPaddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnChatSendMessage"
+            android:layout_width="34dp"
+            android:layout_height="28dp"
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="325dp"
+            android:background="@drawable/send_button_selector"
+            android:fontFamily="@font/nexalight"
+            android:paddingTop="10dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/txtChatMessageContent"
+            android:layout_width="301dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/textview_rounded_corner_gray"
+            android:ems="10"
+            android:gravity="start"
+            android:hint="@string/type_message"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxLines="20"
+            android:minLines="3"
+            android:paddingTop="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:textSize="14sp"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="409dp"
+        android:layout_height="580dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageCardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteY="1dp">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="66dp"
+                android:id="@+id/chatHeaderCardView"
+                android:layout_width="411dp"
+                android:layout_height="57dp"
                 app:cardBackgroundColor="@color/main_colour"
                 app:cardElevation="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/chatRecyclerview"
@@ -87,15 +145,14 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatRecyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="460dp"
+                android:layout_width="409dp"
+                android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="5"
-                android:background="@color/dark"
-                app:layout_constraintBottom_toTopOf="@+id/cardView"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.airbnb.lottie.LottieAnimationView
@@ -114,56 +171,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:targetApi="lollipop" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:cardBackgroundColor="@color/dark"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <Button
-                    android:id="@+id/btnChatSendMessage"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="325dp"
-
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="7dp"
-                    android:background="@drawable/send_button_selector"
-                    android:fontFamily="@font/nexalight"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-                <EditText
-                    android:id="@+id/txtChatMessageContent"
-                    android:layout_width="301dp"
-                    android:layout_height="69dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/text_selector"
-                    android:ems="10"
-                    android:gravity="start"
-                    android:hint="@string/type_message"
-                    android:inputType="textMultiLine"
-                    android:lines="5"
-                    android:maxLines="20"
-                    android:minHeight="48dp"
-                    android:paddingStart="5dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/light_gray"
-                    android:textSize="14sp"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
