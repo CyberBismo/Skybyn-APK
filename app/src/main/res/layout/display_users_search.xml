@@ -5,7 +5,7 @@
     android:id="@+id/userSearchCardView"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    app:cardBackgroundColor="@color/black"
+    app:cardBackgroundColor="@color/white"
     app:cardElevation="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/Nickname"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnBlockFriend" />
@@ -37,7 +37,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/username"
-            android:textColor="@color/light_main_colour"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/txtFriendNickname"
             app:layout_constraintEnd_toStartOf="@+id/txtFriendOnline"

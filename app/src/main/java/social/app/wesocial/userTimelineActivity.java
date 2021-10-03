@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +40,7 @@ public class userTimelineActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
     public String timelinePostsJson = "";
+    TimelinePostsAdapter timelinepostsAdapter;
 
     private static String userID = "";
     //public static LottieAnimationView lottie;
@@ -44,11 +48,35 @@ public class userTimelineActivity extends AppCompatActivity {
     public TextView txtUserProfileFullname, txtUserProfileUsername;
 
 
+     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                finish();
+                break;
+
+            default:
+                break;
+
+        }
+         return super.onOptionsItemSelected(item);
+     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        recyclerView.invalidate();
+     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_timeline);
          lottie = findViewById(R.id.userTimelineProfileProgressView);
+
+         ActionBar actionBar = getSupportActionBar();
+         actionBar.setDisplayHomeAsUpEnabled(true);
 
         imgUserProfilePhoto = findViewById(R.id.userProfilePhoto);
         imgUserCoverPhoto = findViewById(R.id.userProfileCoverPhoto);
@@ -57,6 +85,8 @@ public class userTimelineActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         userID = i.getStringExtra("userID");
+
+
 
         recyclerView = findViewById(R.id.userTimelinepostsRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.userTimelineSwipeToRefresh);
@@ -71,6 +101,8 @@ public class userTimelineActivity extends AppCompatActivity {
             mSwipeRefreshLayout.setRefreshing(false);
         });
         loadUserProfile(userID);
+
+
 
     }
 
@@ -108,7 +140,10 @@ public class userTimelineActivity extends AppCompatActivity {
                         String userRank = jsonObject.get("rank").toString();
                         String userTitle = jsonObject.get("title").toString();
                         String deactivated = jsonObject.get("deactivated").toString();
+
                         txtUserProfileUsername.setText(username);
+
+                        getSupportActionBar().setTitle(username.concat("'s").concat(" ").concat(getString(R.string.timeline)));
 
                         if (firstName.equals("") || lastName.equals("")) {
                             txtUserProfileFullname.setText("------");
@@ -168,7 +203,7 @@ public class userTimelineActivity extends AppCompatActivity {
             timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
         }
 
-        TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, true, userID, userTimelineActivity.this);
+         timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, true, userID, userTimelineActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(timelinepostsAdapter);

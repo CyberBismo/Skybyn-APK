@@ -27,6 +27,7 @@ import timber.log.Timber;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
     private final List<MessageListDataClass> MessageListDataClass;
+    private final Activity activity;
     Functions functions = new Functions();
     Data data = new Data();
 
@@ -59,6 +60,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         Drawable drawable = holder.imgMessageOnlineStatus.getDrawable();
 
+        holder.imgMessageProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(messageListDataClass.getFriendID(),activity,holder.itemView.getContext()));
+
+
         holder.displayMsgCardView.setOnClickListener(view ->{
             //Global reference to current chat user ID
              Frontpage.current_chat_user = messageListDataClass.getFriendID();
@@ -69,8 +73,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     });
 
     }
-    public MessageListAdapter(List<MessageListDataClass> MessageListDataClass) {
+    public MessageListAdapter(List<MessageListDataClass> MessageListDataClass,Activity activity) {
         this.MessageListDataClass = MessageListDataClass;
+        this.activity = activity;
 
     }
 
@@ -88,6 +93,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
 
             username = itemView.findViewById(R.id.txtMessageUsername);
             content = itemView.findViewById(R.id.txtMessageContent);

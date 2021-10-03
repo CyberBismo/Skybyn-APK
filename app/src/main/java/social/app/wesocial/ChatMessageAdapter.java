@@ -59,15 +59,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
 
 
+
         if (holder.getItemViewType() == viewTypeMe) {
             //REPLACE ::like with image
-            if (chatMessageListDataClass.getContent().equals("::like")) {
-                holder.myMessage.setBackgroundResource(R.drawable.thumbs_up);
-                holder.myMessage.setHeight(550);
-                holder.myMessage.setText("");
-            } else {
-                holder.myMessage.setText(chatMessageListDataClass.getContent());
-            }
+
+            holder.myMessage.setText(chatMessageListDataClass.getContent());
 
             //CHECK POSITION TO SET SPEECH BUBBLE
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
@@ -104,6 +100,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.incomingChatConstraintLayout.setBackgroundResource(R.color.dark_gray_2);
             }
 
+
+
             //IF SENDING , DONT SHOW DATE  YET
             if (chatMessageListDataClass.getDate().equals("sending")) {
                 holder.otherUserDate.setText(chatMessageListDataClass.getDate());
@@ -111,7 +109,18 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
             }
 
+            /**if (chatMessageListDataClass.getContent().equals("::like")) {
+                holder.otherUserMessage.setBackgroundResource(R.drawable.thumbs_up);
+                //holder.otherUserMessage.setHeight(550);
+                holder.otherUserMessage.setText("");
+            } else {
+
+             holder.otherUserMessage.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+             **/
             holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
+
+
             holder.otherUserDate.setTextSize(datetextSize);
 
         }

@@ -12,6 +12,71 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/chatHeaderCardView"
+        android:layout_width="411dp"
+        android:layout_height="57dp"
+        app:cardBackgroundColor="@color/main_colour"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/imgChatHeaderProfilePicture"
+            android:layout_width="32dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="53dp"
+            android:background="@color/transparent_full"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgChatHeaderOnlineStatus"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/offline_icon"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:civ_shadow_color="@color/white"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/imgChatUsernameTitle"
+            android:layout_width="164dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="90dp"
+            android:gravity="center_vertical"
+            android:text="@string/Cyberwizard"
+
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgChatHeaderGoBack"
+            android:layout_width="30dp"
+            android:layout_height="29dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/arrow_back" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/sendMessageCardView"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
@@ -64,11 +129,11 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/sendMessageCardView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/chatHeaderCardView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -76,77 +141,10 @@
             android:orientation="vertical"
             tools:layout_editor_absoluteY="1dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/chatHeaderCardView"
-                android:layout_width="411dp"
-                android:layout_height="57dp"
-                app:cardBackgroundColor="@color/main_colour"
-                app:cardElevation="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/chatRecyclerview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/imgChatHeaderProfilePicture"
-                    android:layout_width="32dp"
-                    android:layout_height="33dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="53dp"
-                    android:background="@color/transparent_full"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="1dp"
-                    app:civ_shadow_color="@color/white"
-                    app:civ_shadow_radius="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
-                    app:layout_constraintHorizontal_bias="0.571"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imgChatHeaderOnlineStatus"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="75dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/offline_icon"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="1dp"
-                    app:civ_shadow_color="@color/white"
-                    app:civ_shadow_radius="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
-                    app:layout_constraintHorizontal_bias="0.814"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/imgChatUsernameTitle"
-                    android:layout_width="164dp"
-                    android:layout_height="31dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="90dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/Cyberwizard"
-
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/imgChatHeaderGoBack"
-                    android:layout_width="30dp"
-                    android:layout_height="29dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    app:srcCompat="@drawable/arrow_back" />
-            </androidx.cardview.widget.CardView>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatRecyclerview"
-                android:layout_width="409dp"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="5"
                 android:background="@color/white"

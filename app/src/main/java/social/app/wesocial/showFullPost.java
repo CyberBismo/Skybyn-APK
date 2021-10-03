@@ -1,12 +1,8 @@
 package social.app.wesocial;
 
 import android.annotation.SuppressLint;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +17,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -166,7 +161,7 @@ public class showFullPost extends AppCompatActivity {
                     String commentContent;
                     String commentUsername;
                     String commentDate;
-                    String commentUserID;
+                    String commentUserID = "";
                     String commentID;
                     String commentILike;
                     String commentAvatarLink;
@@ -195,7 +190,7 @@ public class showFullPost extends AppCompatActivity {
                         commentData.add(new CommentDataClass(commentID, commentUserID, commentUsername, commentAvatarLink, commentDate, commentContent, commentLikes, commentILike, commentPostID));
                     }
 
-                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData,Frontpage.userID);
+                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData,commentUserID,showFullPost.this);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(commentsAdapter);

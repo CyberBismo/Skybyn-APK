@@ -91,7 +91,7 @@ public class showFullChat extends Fragment {
             if (view12 == txtChatMessageContent) {
                 if (b) {
                     if (recyclerView.getAdapter().getItemCount() > 0) {
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
                     }
                 }
             }
@@ -122,8 +122,10 @@ public class showFullChat extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
+        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+        Timber.i("CHAT MESSAGE ADAPTER"+    String.valueOf(chatMessageAdapter.getItemCount()));
         chatMessageAdapter.notifyDataSetChanged();
-        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+
 
 
     }

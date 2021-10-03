@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/transparent_full"
+        android:background="@color/white"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
@@ -56,13 +56,10 @@
                 android:id="@+id/fragmentContainerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/transparent_full"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout="@layout/fragment_timeline" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -133,11 +130,11 @@
 
         android:layout_gravity="start"
 
-        android:background="@color/black"
+        android:background="@color/white"
         app:headerLayout="@layout/nav_header"
-        app:insetForeground="@color/white"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:insetForeground="@color/black"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/side_nav_menu">
 
     </com.google.android.material.navigation.NavigationView>

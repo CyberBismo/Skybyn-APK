@@ -30,7 +30,9 @@
         android:theme="@style/Theme.WeSocial">
         <activity
             android:name=".userTimelineActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.WeSocial.ActionBar"
+            android:label="@string/Timeline" />
 
         <service
             android:name=".PushNotificationService"

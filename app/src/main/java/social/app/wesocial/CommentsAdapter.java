@@ -4,6 +4,7 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
+import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,14 +35,16 @@ import timber.log.Timber;
 class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     private final List<CommentDataClass> CommentDataClass;
+    private final Activity activity;
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
     String userID;
 
-    public CommentsAdapter(List<CommentDataClass> commentDataClass,String userID) {
+    public CommentsAdapter(List<CommentDataClass> commentDataClass, String userID, Activity activity) {
         CommentDataClass = commentDataClass;
         this.userID = userID;
+        this.activity = activity;
     }
 
     @NonNull
@@ -95,6 +98,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             holder.txtCommentEdit.setVisibility(View.INVISIBLE);
         }
 
+        holder.imgCommentPicture.setOnClickListener(view ->  functions.loadTimeLineUserProfile(commentDataClass.getUserID(),activity,holder.itemView.getContext()));
 
         holder.txtCommentEdit.setOnClickListener(view -> {
             LayoutInflater li = LayoutInflater.from(holder.itemView.getContext());
