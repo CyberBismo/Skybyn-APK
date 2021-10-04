@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/main_colour">
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/light_gray">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/displayCommentCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/transparent_full"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="5dp"
-        app:cardElevation="5dp"
+        app:cardElevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +27,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
+            android:background="@color/white"
             android:visibility="visible">
 
             <com.mikhaellopez.circularimageview.CircularImageView
