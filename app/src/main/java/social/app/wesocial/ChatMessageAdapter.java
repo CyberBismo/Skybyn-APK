@@ -57,14 +57,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
-
-
-
         if (holder.getItemViewType() == viewTypeMe) {
             //REPLACE ::like with image
-
             holder.myMessage.setText(chatMessageListDataClass.getContent());
-
             //CHECK POSITION TO SET SPEECH BUBBLE
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                 holder.myMessageImageView.setVisibility(View.VISIBLE);
