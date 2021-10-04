@@ -47,7 +47,7 @@
             android:weightSum="20">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/postTimelineCardView"
+                android:id="@+id/showFullpostTimelineCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -58,179 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.028">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/postConstraintLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/imgShowTimelinePostProfilePicture"
-                        android:layout_width="39dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/transparent_full"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="1dp"
-                        app:civ_shadow_color="@color/white"
-                        app:civ_shadow_radius="5dp"
-                        app:layout_constraintEnd_toStartOf="@+id/txtShowTimelinePostUsername"
-                        app:layout_constraintHorizontal_bias="0.246"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostUsername"
-                        android:layout_width="200dp"
-                        android:layout_height="27dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="132dp"
-                        android:fontFamily="@font/nexabold"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/app_name"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostDate"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostLikes"
-                        android:layout_width="93dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="108dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/nexalight"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imgShowTimelinePostComment"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
-                        app:layout_constraintVertical_bias="0.434" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostComments"
-                        android:layout_width="80dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="52dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/nexalight"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostDate"
-                        android:layout_width="261dp"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/nexalight"
-                        android:gravity="center_vertical"
-                        android:text="@string/app_name"
-                        android:textColor="@color/black"
-                        android:textSize="11sp"
-                        app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostContent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.507"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostContent"
-                        android:layout_width="351dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="100dp"
-                        android:enabled="false"
-                        android:fontFamily="sans-serif"
-                        android:minHeight="48dp"
-                        android:textColor="@color/black"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.619"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:ignore="SpeakableTextPresentCheck" />
-
-                    <ImageView
-                        android:id="@+id/imgShowTimelinePostComment"
-                        android:layout_width="25dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="12dp"
-                        android:minWidth="48dp"
-                        android:minHeight="48dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtShowTimelinePostComments"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
-                        app:layout_constraintVertical_bias="0.35"
-                        app:srcCompat="@drawable/comment"
-                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-                    <TextView
-                        android:id="@+id/txtShowTimelinePostEdit"
-                        android:layout_width="40dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/Edit"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/txtCommentDelete"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostComments"
-                        app:layout_constraintVertical_bias="0.857" />
-
-                    <TextView
-                        android:id="@+id/txtCommentDelete"
-                        android:layout_width="40dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="12dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/Delete"
-                        android:textColor="@color/red"
-                        android:textSize="12sp"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostComments"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <com.like.LikeButton
-                        android:id="@+id/btnCommentLike"
-                        android:layout_width="25dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="24dp"
-                        app:anim_scale_factor="2"
-                        app:circle_end_color="@color/light_main_colour"
-                        app:circle_start_color="@color/red"
-                        app:icon_size="25dp"
-                        app:icon_type="thumb"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtShowTimelinePostContent"
-                        app:layout_constraintVertical_bias="0.434"
-                        app:like_drawable="@drawable/liked"
-                        app:unlike_drawable="@drawable/like" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintVertical_bias="0.028" />
 
             <TextView
                 android:id="@+id/txtCommentsCount"
@@ -251,7 +79,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentsRecyclerview"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
@@ -263,11 +91,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/sendMessageCardView"
-        android:layout_width="406dp"
+        android:layout_width="0dp"
         android:layout_height="82dp"
-        android:layout_marginBottom="32dp"
         android:visibility="visible"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/light_main_colour"
         app:cardElevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

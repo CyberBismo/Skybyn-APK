@@ -88,8 +88,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.btnNotiAcceptFriendRequest.setOnClickListener(view -> {
             Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
             functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(),false);
-            holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
-            holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
             updateNotificationReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
 
         });
@@ -140,11 +138,10 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         if (notificationDataClass.getRead().equals("0")) {
             Typeface typeface = ResourcesCompat.getFont(holder.Title.getContext(), R.font.nexabold);
             holder.Content.setTypeface(typeface);
-            holder.notificationCardView.setCardBackgroundColor(ContextCompat.getColor(holder.notificationCardView.getContext(), R.color.dark_gray_2));
             holder.Title.setTypeface(typeface);
         } else {
-            holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
-            holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.light_gray));
+            holder.Content.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.black));
+            holder.Title.setTextColor(ContextCompat.getColor(holder.Content.getContext(), R.color.black));
         }
 
 

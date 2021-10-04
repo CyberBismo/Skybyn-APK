@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,18 +46,21 @@ public class showFullPost extends AppCompatActivity {
     Data data = new Data();
     Button btnSendTimelineComment;
     TextView txtPostComment, txtShowTimelinePostEdit, txtShowTimelinePostDelete;
+    CardView postTimelineCardView;
     LottieAnimationView lottie;
     NetworkController networkController;
     LikeButton btnShowtimePostLike;
     RecyclerView recyclerView;
     TextView txtCommentsCount;
+
     String postID, postAvatarlink, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
     HashMap<String, Object> timelinePostDetails = new HashMap<>();
     ActionBar actionBar;
 
+    //timeline adapter
+
 
     private void sendLike() {
-
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
         postData.put("postID", postID);
@@ -101,20 +105,34 @@ public class showFullPost extends AppCompatActivity {
     }
 
     private void getAllViewsbyID() {
-        txtShowTimelinePostUsername = findViewById(R.id.txtShowTimelinePostUsername);
+        postTimelineCardView = findViewById(R.id.showFullpostTimelineCardView);
+        View child1 = LayoutInflater.from(this).inflate( R.layout.display_timeline, null);
+        postTimelineCardView.removeAllViews();
+        postTimelineCardView.addView(child1);
+
+        btnShowtimePostLike = postTimelineCardView.findViewById(R.id.btnShowTimelinePostLike);
+        txtShowTimelinePostUsername = postTimelineCardView.findViewById(R.id.txtShowTimelinePostUsername);
+        txtShowTimelinePostDate = postTimelineCardView.findViewById(R.id.txtShowTimelinePostDate);
+        imgShowTimelinePostProfilePicture = postTimelineCardView.findViewById(R.id.imgShowTimelinePostProfilePicture);
+        txtShowTimelinePostContent = postTimelineCardView.findViewById(R.id.txtShowTimelinePostContent);
+        txtShowTimelinePostLikes = postTimelineCardView.findViewById(R.id.txtShowTimelinePostLikes);
+        txtShowTimelinePostComments = postTimelineCardView.findViewById(R.id.txtShowTimelinePostComments);
+        txtShowTimelinePostDelete = postTimelineCardView.findViewById(R.id.txtTimelinePostDelete);
+        txtShowTimelinePostEdit = postTimelineCardView.findViewById(R.id.txtShowTimelinePostEdit);
+
         txtCommentsCount = findViewById(R.id.txtCommentsCount);
-        txtShowTimelinePostDate = findViewById(R.id.txtShowTimelinePostDate);
-        imgShowTimelinePostProfilePicture = findViewById(R.id.imgShowTimelinePostProfilePicture);
-        txtShowTimelinePostContent = findViewById(R.id.txtShowTimelinePostContent);
-        txtShowTimelinePostLikes = findViewById(R.id.txtShowTimelinePostLikes);
-        txtShowTimelinePostComments = findViewById(R.id.txtShowTimelinePostComments);
-        txtShowTimelinePostDelete = findViewById(R.id.txtCommentDelete);
-        txtShowTimelinePostEdit = findViewById(R.id.txtShowTimelinePostEdit);
         btnSendTimelineComment = findViewById(R.id.btnSendTimelineComment);
         txtPostComment = findViewById(R.id.txtShowPostComment);
         lottie = findViewById(R.id.showTimelinePostProgressView);
         recyclerView = findViewById(R.id.commentsRecyclerview);
-        btnShowtimePostLike = findViewById(R.id.btnCommentLike);
+
+
+
+        //FROM ADAPTER
+
+
+
+
     }
 
     void verifyIfIamPoster() {
@@ -142,6 +160,8 @@ public class showFullPost extends AppCompatActivity {
         postCommentsCount = Objects.requireNonNull(timelinePostDetails.get("comments_count")).toString();
         userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
         actionBar.setTitle("Comments:" + " " + postContent);
+
+        btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
     }
 
     private void loadComments() {
@@ -222,8 +242,7 @@ public class showFullPost extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-             super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
@@ -238,8 +257,8 @@ public class showFullPost extends AppCompatActivity {
         verifyIfIamPoster();
         loadComments();
 
-
         functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
+
         txtShowTimelinePostUsername.setText(postUsername);
         txtShowTimelinePostUsername.setTag(posterUserID);
         txtShowTimelinePostDate.setText(postDate);
@@ -250,14 +269,9 @@ public class showFullPost extends AppCompatActivity {
 
 
 
-
-
-        btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
         //LIKE BUTTON
         btnShowtimePostLike.setOnClickListener(view -> {
-
             int postLikes = Integer.parseInt(txtShowTimelinePostLikes.getText().toString());
-
             //If user has not liked the post before...
             if (userLikedPost.equals("0")) {
                 btnShowtimePostLike.setLiked(true);
@@ -270,10 +284,8 @@ public class showFullPost extends AppCompatActivity {
             sendLike();
         });
 
-
         txtShowTimelinePostEdit.setOnClickListener(view -> {
-
-                // get alert_dialog.xml view
+             // get alert_dialog.xml view
                 LayoutInflater li = LayoutInflater.from(getApplicationContext());
                 View editLayout = li.inflate(R.layout.editdialog, null);
 
@@ -332,9 +344,6 @@ public class showFullPost extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), getString(R.string.updating_post),Toast.LENGTH_SHORT).show();
                             networkController.PostMethod(data.editPost_Api, postData);
-
-
-
                         })
                         .setNegativeButton("Cancel",
                                 (dialog, id) -> dialog.dismiss());
@@ -346,7 +355,6 @@ public class showFullPost extends AppCompatActivity {
                 alertDialog.show();
 
         });
-
 
         txtShowTimelinePostDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
@@ -394,7 +402,6 @@ public class showFullPost extends AppCompatActivity {
             //alertDialog.show();
         });
 
-
         //Send Comment
         btnSendTimelineComment.setOnClickListener(view -> {
             functions.hideSoftKeyboard(showFullPost.this);
@@ -403,7 +410,6 @@ public class showFullPost extends AppCompatActivity {
                 functions.showSnackBarError(getString(R.string.comment_too_short), findViewById(android.R.id.content), getApplicationContext());
                 return;
             }
-
 
             if (content.length() > data.maxCommentPostLength) {
                 functions.showSnackBarError(getString(R.string.comment_longer_than).concat(" ".concat(data.maxCommentPostLength.toString())), findViewById(android.R.id.content), getApplicationContext());
@@ -454,16 +460,13 @@ public class showFullPost extends AppCompatActivity {
         });
 
         //Profile picture and name click
-        imgShowTimelinePostProfilePicture.setOnClickListener(view -> {
-            functions.loadTimeLineUserProfile(posterUserID,showFullPost.this,getApplicationContext()); });
+        imgShowTimelinePostProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(posterUserID,showFullPost.this,getApplicationContext()));
         txtShowTimelinePostUsername.setOnClickListener(view -> imgShowTimelinePostProfilePicture.callOnClick());
 
 
         //END OF ON CREATE
+
     }
-
-
-
 
 
     @Override

@@ -122,11 +122,9 @@ public class showFullChat extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
-        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
         Timber.i("CHAT MESSAGE ADAPTER"+    String.valueOf(chatMessageAdapter.getItemCount()));
         chatMessageAdapter.notifyDataSetChanged();
-
-
+        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
 
     }
 

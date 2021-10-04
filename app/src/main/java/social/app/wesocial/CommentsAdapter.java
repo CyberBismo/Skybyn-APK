@@ -1,9 +1,9 @@
 package social.app.wesocial;
 
+
 import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
-
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,33 +13,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.VolleyError;
 import com.like.LikeButton;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
-
 import timber.log.Timber;
 
 
 class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
-
     private final List<CommentDataClass> CommentDataClass;
     private final Activity activity;
     Functions functions = new Functions();
     Data data = new Data();
     String postID;
     String userID;
+
 
     public CommentsAdapter(List<CommentDataClass> commentDataClass, String userID, Activity activity) {
         CommentDataClass = commentDataClass;
@@ -53,7 +48,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(layout.displaycomments, parent, false);
         return new ViewHolder(itemView);
     }
-
 
     public String trimValue(String value) {
         if (value.length() == 4 || value.length() == 7) {
@@ -71,7 +65,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         }
         return value;
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder holder, int position) {
@@ -173,15 +166,12 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         });// get alert_dialog.xml view
 
-        holder.txtCommentContent.setOnClickListener(view -> {
-
-        });
+        holder.txtCommentContent.setOnClickListener(view -> { });
 
         holder.btnCommentLike.setLiked(!holder.btnCommentLike.getTag().toString().equals("0"));
 
-
-
         functions.loadProfilePictureDrawableThumb(commentDataClass.getAvatarLink(), holder.imgCommentPicture);
+
         holder.txtCommentDelete.setOnClickListener(view -> {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext(), R.style.AlertDialogCustom);
             alertDialogBuilder.setIcon(ContextCompat.getDrawable(holder.txtCommentContent.getContext(), R.drawable.warning));
@@ -231,7 +221,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             alertDialogBuilder.show();
 
         });
-        //like post
+
+        ////like post///
         holder.btnCommentLike.setOnClickListener(new View.OnClickListener() {
 
             public void sendLike() {
@@ -294,7 +285,6 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         });
     }
 
-
     @Override
     public int getItemCount() {
         return CommentDataClass.size();
@@ -322,6 +312,5 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         }
     }
-
 
 }

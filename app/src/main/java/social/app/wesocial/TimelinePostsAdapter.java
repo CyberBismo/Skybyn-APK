@@ -19,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -41,7 +40,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Data data = new Data();
     String postID;
     Integer PostLength = data.maxPostDisplayLength;
-    public boolean isUserTimeline = false;
+    public boolean isUserTimeline;
     String userID;
     Activity activity;
 
@@ -82,7 +81,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
-
         holder.txtUsername.setText(timelineDataClass.getUsername());
         holder.txtUsername.setTag(timelineDataClass.getUserID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
@@ -90,8 +88,13 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
 
         if (timelineDataClass.getContent().length() > PostLength) {
-            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
+            //holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
+            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"..."));
+            holder.txtTimelineShowMore.setVisibility(View.VISIBLE);
+            String showMore = "Show More\n"+"_____________________________";
+            holder.txtTimelineShowMore.setText(showMore);
         } else {
+            holder.txtTimelineShowMore.setVisibility(View.INVISIBLE);
             holder.txtTimelineContent.setText(timelineDataClass.getContent());
         }
 
@@ -100,10 +103,11 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
+        holder.txtTimelineShowMore.setOnClickListener(view -> holder.timelineMainLayout.callOnClick());
+
         holder.timelineMainLayout.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);
             HashMap<String, Object> timeLinePostDetails = new HashMap<>();
-
             timeLinePostDetails.put("content", holder.txtTimelineDate.getTag().toString());
             timeLinePostDetails.put("likes", holder.txtTimelineLikes.getText().toString());
             timeLinePostDetails.put("ilike", holder.imgTimelinePostLike.getTag().toString());
@@ -126,7 +130,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
         }
 
-        holder.imgTimelinePostLike.setLiked(!holder.imgTimelinePostLike.getTag().toString().equals("0"));
+        holder.imgTimelinePostLike.setLiked(holder.imgTimelinePostLike.getTag().toString().equals("1"));
 
 
         //If the timeLine Post is by Me!
@@ -262,12 +266,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         });
     }
 
-    private void loadTimeLineUserProfile(String userID) {
-        Intent i = new Intent(activity.getApplicationContext(),userTimelineActivity.class);
-        i.putExtra("userID",userID);
-        activity.startActivity(i);
-    }
-
 
     @Override
     public int getItemCount() {
@@ -279,8 +277,9 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
         CardView cardView;
-        TextView txtTimelinePostDelete;
+        TextView txtTimelinePostDelete,txtTimelineShowMore;
         ConstraintLayout timelineMainLayout;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -292,9 +291,10 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             txtTimelineCommentsCount = itemView.findViewById(id.txtShowTimelinePostComments);
             imgTimelinePostPicture = itemView.findViewById(id.imgShowTimelinePostProfilePicture);
             txtTimelinePostDelete = itemView.findViewById(id.txtTimelinePostDelete);
-            imgTimelinePostLike = itemView.findViewById(id.imgShowTimelinePostLike);
+            imgTimelinePostLike = itemView.findViewById(id.btnShowTimelinePostLike);
             imgTimelinePostComment = itemView.findViewById(id.imgShowTimelinePostComment);
             timelineMainLayout = itemView.findViewById(id.timelineMainConstraintLayout);
+            txtTimelineShowMore = itemView.findViewById(id.txtShowTimelineMore);
 
 
         }

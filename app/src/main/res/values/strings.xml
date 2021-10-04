@@ -85,7 +85,7 @@
     <string name="refreshing">Updating timeline…</string>
 
     <string name="biometric_prompt_key">Biometric Prompt</string>
-    <string name="biometric_prompt_message">Biometric Prompt on startup </string>
+    <string name="biometric_prompt_message">Show  Prompt on startup?</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
@@ -148,4 +148,5 @@
     <string name="empty_message_content">Empty message content</string>
     <string name="message">Message</string>
     <string name="timeline">Timeline</string>
+    <string name="pick_theme">Customize your theme</string>
 </resources>
