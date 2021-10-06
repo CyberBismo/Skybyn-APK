@@ -154,7 +154,7 @@ public class Functions {
         //INCREASE THE HEIGHt
         bottomLayout.setVisibility(View.INVISIBLE);
         Frontpage.isTimeline = false;
-        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+        fragmentConstraintLayout.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT;
 
     }
 
@@ -164,7 +164,7 @@ public class Functions {
         bottomLayout.setVisibility(View.VISIBLE);
         bottomLayout.bringToFront();
         Frontpage.isTimeline = true;
-        fragmentContainerView.getLayoutParams().height = initial_height;
+        fragmentConstraintLayout.getLayoutParams().height = initial_height;
     }
 
 
@@ -177,9 +177,8 @@ public class Functions {
         bottomLayout = activity.findViewById(R.id.bottomLayout);
 
         if (initial_height == null) {
-            initial_height = fragmentContainerView.getLayoutParams().height;
+            initial_height = fragmentConstraintLayout.getLayoutParams().height;
         }
-
 
         if (isTimeline) {
             setTimelineFragmentHeight();

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class showFullPost extends AppCompatActivity {
     NetworkController networkController;
     LikeButton btnShowtimePostLike;
     RecyclerView recyclerView;
+    ScrollView showFullpostScrollView;
     TextView txtCommentsCount;
 
     String postID, postAvatarlink, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
@@ -106,6 +108,7 @@ public class showFullPost extends AppCompatActivity {
 
     private void getAllViewsbyID() {
         postTimelineCardView = findViewById(R.id.showFullpostTimelineCardView);
+        showFullpostScrollView =findViewById(R.id.showFullpostScrollView);
         View child1 = LayoutInflater.from(this).inflate( R.layout.display_timeline, null);
         postTimelineCardView.removeAllViews();
         postTimelineCardView.addView(child1);
@@ -216,9 +219,12 @@ public class showFullPost extends AppCompatActivity {
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
                     txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
-
                     if(iJustCommented){
-                        recyclerView.scrollToPosition(commentData.size()-1);
+                        int scrollTo  = commentData.size()-1;
+                        recyclerView.scrollToPosition(scrollTo);
+                        showFullpostScrollView.post((Runnable) () -> showFullpostScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+
+
                     }
 
 

@@ -3,6 +3,7 @@ package social.app.wesocial;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -76,6 +77,7 @@ public class showFullChat extends Fragment {
     }
 
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBack);
@@ -89,14 +91,12 @@ public class showFullChat extends Fragment {
         imgChatHeaderOnlineStatus.setImageDrawable(online_status_drawable);
         txtChatHeaderUsername.setText(chat_username);
         recyclerView = view.findViewById(R.id.chatRecyclerview);
+        
 
-        txtChatMessageContent.setOnFocusChangeListener((view1, b) -> {
-            if (b){
-                recyclerView.scrollToPosition(chatMessageListData.size() - 1);
-            }
-        });
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(requireActivity());
             requireActivity().onBackPressed();
+
         });
 
         btnChatSendMessage.setOnClickListener(view1 -> {
@@ -113,15 +113,17 @@ public class showFullChat extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-
+    public void scrollDown(){
+        recyclerView.scrollToPosition(chatMessageListData.size()-1);
+        chatScrollView.post((Runnable) () -> chatScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+    }
     public void updateChatRecyclerMessages() {
         ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
         chatMessageAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(chatMessageListData.size()-1);
-        chatScrollView.scrollTo(0, chatMessageListData.size()-1);
+       scrollDown();
 
     }
 

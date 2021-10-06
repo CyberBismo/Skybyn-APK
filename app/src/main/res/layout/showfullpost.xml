@@ -24,7 +24,7 @@
         tools:targetApi="lollipop" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/showFullpostScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/transparent_full"
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="5"
                 android:background="@color/white" />
 
