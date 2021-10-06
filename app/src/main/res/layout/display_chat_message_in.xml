@@ -1,82 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imgChatMessageInProfilePicture"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
         android:layout_weight="1"
         android:background="@color/transparent_full"
         app:civ_border_color="@color/white"
         app:civ_border_width="1dp"
         app:civ_shadow_color="@color/white"
         app:civ_shadow_radius="5dp"
-        app:layout_constraintEnd_toStartOf="@+id/txtMessageUsername"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
+    <TextView
+        android:id="@+id/txtChatMessageInDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        app:cardBackgroundColor="@color/transparent_full"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="0dp">
+        android:inputType="textNoSuggestions"
+        android:paddingStart="0dp"
+        android:paddingEnd="5dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/IncomingchatConstraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/incoming_chat_bubble"
-            android:foregroundGravity="fill">
-
-            <TextView
-                android:id="@+id/txtChatMessageInDate"
-                android:layout_width="153dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:inputType="textNoSuggestions"
-                android:paddingEnd="5dp"
-                android:text="TextView"
-                android:textColor="@color/light_gray"
-                android:textSize="11sp"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <TextView
-                android:id="@+id/txtChatMessageIn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
-                android:minLines="1"
-                android:paddingStart="12dp"
-                android:paddingEnd="10dp"
-                android:text="TextView"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toTopOf="@+id/txtChatMessageInDate"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.52"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="TouchTargetSizeCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/txtChatMessageIn"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/incoming_chat_bubble"
+        android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
+        android:padding="13dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtChatMessageInDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.018"
+        app:layout_constraintStart_toEndOf="@+id/imgChatMessageInProfilePicture"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+</androidx.constraintlayout.widget.ConstraintLayout>

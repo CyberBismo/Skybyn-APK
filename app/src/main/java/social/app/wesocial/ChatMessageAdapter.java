@@ -58,16 +58,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
         if (holder.getItemViewType() == viewTypeMe) {
-            //REPLACE ::like with image
-            holder.myMessage.setText(chatMessageListDataClass.getContent());
             //CHECK POSITION TO SET SPEECH BUBBLE
+            holder.myMessage.setText(chatMessageListDataClass.getContent());
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                 holder.myMessageImageView.setVisibility(View.VISIBLE);
                 functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.myMessageImageView);
-                holder.outgoingChatConstraintLayout.setBackgroundResource(R.drawable.outgoing_chat_bubble);
             } else {
                 holder.myMessageImageView.setVisibility(View.INVISIBLE);
-                holder.outgoingChatConstraintLayout.setBackgroundResource(R.color.main_colour);
+                holder.myMessage.setBackgroundResource(R.drawable.rounded_corner_main);
             }
 
 
@@ -84,16 +82,14 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
         //IF CHAT IS FROM OTHER USER
         if (holder.getItemViewType() == viewTypeUser) {
+            holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                 holder.otherUserImageView.setVisibility(View.VISIBLE);
                 functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.otherUserImageView);
-                holder.incomingChatConstraintLayout.setBackgroundResource(R.drawable.incoming_chat_bubble);
             } else {
                 holder.otherUserImageView.setVisibility(View.INVISIBLE);
-                holder.incomingChatConstraintLayout.setBackgroundResource(R.color.dark_gray_2);
+                holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);
             }
-
-
 
             //IF SENDING , DONT SHOW DATE  YET
             if (chatMessageListDataClass.getDate().equals("sending")) {
@@ -102,16 +98,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
             }
 
-            /**if (chatMessageListDataClass.getContent().equals("::like")) {
-                holder.otherUserMessage.setBackgroundResource(R.drawable.thumbs_up);
-                //holder.otherUserMessage.setHeight(550);
-                holder.otherUserMessage.setText("");
-            } else {
-
-             holder.otherUserMessage.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            }
-             **/
-            holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
 
 
             holder.otherUserDate.setTextSize(datetextSize);
@@ -136,8 +122,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             myMessage = itemView.findViewById(R.id.txtChatMessageOut);
             myMessageDate = itemView.findViewById(R.id.txtChatMessageOutDate);
             myMessageImageView = itemView.findViewById(R.id.imgChatMessageOutProfilePicture);
-            incomingChatConstraintLayout = itemView.findViewById(R.id.IncomingchatConstraintLayout);
-            outgoingChatConstraintLayout = itemView.findViewById(R.id.outgoingChatConstraintLayout);
 
             otherUserMessage = itemView.findViewById(R.id.txtChatMessageIn);
             otherUserDate = itemView.findViewById(R.id.txtChatMessageInDate);

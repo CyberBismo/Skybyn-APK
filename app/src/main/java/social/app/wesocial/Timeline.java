@@ -89,7 +89,6 @@ public class Timeline extends Fragment {
         }
 
         Frontpage.isTimeline = true;
-        fragmentContainerView = requireActivity().findViewById(R.id.fragmentContainerView);
         CoordinatorLayout bottomLayout = requireActivity().findViewById(R.id.bottomLayout);
         bottomLayout.setVisibility(View.VISIBLE);
 

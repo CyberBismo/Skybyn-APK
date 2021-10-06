@@ -164,7 +164,7 @@ public class showFullPost extends AppCompatActivity {
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
     }
 
-    private void loadComments() {
+    private void loadComments(Boolean iJustCommented) {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
@@ -216,7 +216,11 @@ public class showFullPost extends AppCompatActivity {
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
                     txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
-                    recyclerView.smoothScrollToPosition(commentsAdapter.getItemCount() -1);
+
+                    if(iJustCommented){
+                        recyclerView.scrollToPosition(commentData.size()-1);
+                    }
+
 
 
                 }
@@ -255,7 +259,7 @@ public class showFullPost extends AppCompatActivity {
         getAllViewsbyID();
         getPostIntentContent();
         verifyIfIamPoster();
-        loadComments();
+        loadComments(false);
 
         functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
 
@@ -435,7 +439,7 @@ public class showFullPost extends AppCompatActivity {
                         if (responseCode.equals("1")) {
                             functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
                             txtPostComment.setText("");
-                            loadComments();
+                            loadComments(true);
                         }
 
                         if (responseCode.equals("0")) {

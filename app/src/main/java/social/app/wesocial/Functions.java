@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,9 @@ public class Functions {
     Integer initial_height = null;
     public static FragmentContainerView fragmentContainerView;
     private View t_View;
+    CoordinatorLayout bottomLayout;
+    ConstraintLayout fragmentConstraintLayout;
+    ConstraintLayout outerfragmentConstraintLayout;
 
     public Boolean isJsonObject(String json) {
         return json.startsWith("{");
@@ -46,8 +50,8 @@ public class Functions {
     }
 
     void loadTimeLineUserProfile(String userID, Activity activity, Context context) {
-        Intent i = new Intent(context,userTimelineActivity.class);
-        i.putExtra("userID",userID);
+        Intent i = new Intent(context, userTimelineActivity.class);
+        i.putExtra("userID", userID);
         activity.startActivity(i);
     }
 
@@ -69,7 +73,7 @@ public class Functions {
     public void showProgressNoBackground(LottieAnimationView lottieview) {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
-        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(),R.color.transparent_full));
+        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.transparent_full));
         lottieview.setAnimation(R.raw.wesocialdot);
         lottieview.setAlpha(0.85f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
@@ -146,27 +150,43 @@ public class Functions {
         }
     }
 
-    public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline) {
+    public void setOtherFragmentHeight() {
+        //INCREASE THE HEIGHt
+        bottomLayout.setVisibility(View.INVISIBLE);
+        Frontpage.isTimeline = false;
+        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+
+    }
+
+
+    public void setTimelineFragmentHeight() {
+        //MAINTAIN CURRENT HEIGHT
+        bottomLayout.setVisibility(View.VISIBLE);
+        bottomLayout.bringToFront();
+        Frontpage.isTimeline = true;
+        fragmentContainerView.getLayoutParams().height = initial_height;
+    }
+
+
+    public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline, Boolean isFullChat) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
-        fragmentContainerView.requestLayout();
-        CoordinatorLayout bottomLayout = activity.findViewById(R.id.bottomLayout);
+        fragmentConstraintLayout = activity.findViewById(R.id.fragmentConstraintLayout);
+        outerfragmentConstraintLayout = activity.findViewById(R.id.outerFragmentConstraintLayout);
+        fragmentConstraintLayout.requestLayout();
+        bottomLayout = activity.findViewById(R.id.bottomLayout);
 
         if (initial_height == null) {
             initial_height = fragmentContainerView.getLayoutParams().height;
         }
 
+
         if (isTimeline) {
-            bottomLayout.setVisibility(View.VISIBLE);
-            Frontpage.isTimeline = true;
-            fragmentContainerView.getLayoutParams().height = initial_height;
-
-        } else {
-            bottomLayout.setVisibility(View.INVISIBLE);
-            Frontpage.isTimeline = false;
-            //fragmentContainerView.getLayoutParams().height  = fragmentContainerView.getLayoutParams().height + 20;
-
+            setTimelineFragmentHeight();
+        }else{
+            setOtherFragmentHeight();
         }
+
 
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

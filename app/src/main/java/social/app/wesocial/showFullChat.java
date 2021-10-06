@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class showFullChat extends Fragment {
     Data data = new Data();
     private String OldMessageJson;
     ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
+    ScrollView chatScrollView;
     RecyclerView recyclerView;
 
     public showFullChat() {
@@ -80,6 +82,7 @@ public class showFullChat extends Fragment {
         ImageView imgChatHeaderOnlineStatus = view.findViewById(R.id.imgChatHeaderOnlineStatus);
         ImageView imgChatHeaderProfilePicture = view.findViewById(R.id.imgChatHeaderProfilePicture);
         TextView txtChatHeaderUsername = view.findViewById(R.id.imgChatUsernameTitle);
+        chatScrollView = view.findViewById(R.id.chatScrollView);
         txtChatMessageContent = view.findViewById(R.id.txtChatMessageContent);
         Button btnChatSendMessage = view.findViewById(R.id.btnChatSendMessage);
         functions.loadProfilePictureDrawableThumb(chat_avatar, imgChatHeaderProfilePicture);
@@ -87,17 +90,11 @@ public class showFullChat extends Fragment {
         txtChatHeaderUsername.setText(chat_username);
         recyclerView = view.findViewById(R.id.chatRecyclerview);
 
-        view.setOnFocusChangeListener((view12, b) -> {
-            if (view12 == txtChatMessageContent) {
-                if (b) {
-                    if (recyclerView.getAdapter().getItemCount() > 0) {
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
-                    }
-                }
+        txtChatMessageContent.setOnFocusChangeListener((view1, b) -> {
+            if (b){
+                recyclerView.scrollToPosition(chatMessageListData.size() - 1);
             }
-
         });
-
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
             requireActivity().onBackPressed();
         });
@@ -122,9 +119,9 @@ public class showFullChat extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
-        Timber.i("CHAT MESSAGE ADAPTER"+    String.valueOf(chatMessageAdapter.getItemCount()));
         chatMessageAdapter.notifyDataSetChanged();
-        recyclerView.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+        recyclerView.scrollToPosition(chatMessageListData.size()-1);
+        chatScrollView.scrollTo(0, chatMessageListData.size()-1);
 
     }
 

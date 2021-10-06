@@ -68,7 +68,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
              Frontpage.current_chat_user = messageListDataClass.getFriendID();
              //
             Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID());
-            functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),false);
+            functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),false,true);
 
     });
 
