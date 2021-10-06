@@ -17,23 +17,11 @@
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/notifications"
         android:textColor="@color/white"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/lblnotificationMarkAllAsRead"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:fontFamily="@font/nexalight"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/mark_all_As_Read"
-        android:textColor="@color/white"
         android:textSize="12sp"
-        android:textStyle="bold" />
+        tools:ignore="TextContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

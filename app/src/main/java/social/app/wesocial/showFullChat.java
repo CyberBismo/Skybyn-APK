@@ -91,7 +91,7 @@ public class showFullChat extends Fragment {
         imgChatHeaderOnlineStatus.setImageDrawable(online_status_drawable);
         txtChatHeaderUsername.setText(chat_username);
         recyclerView = view.findViewById(R.id.chatRecyclerview);
-        
+
 
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
             functions.hideSoftKeyboard(requireActivity());

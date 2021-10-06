@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -154,7 +155,7 @@ public class Functions {
         //INCREASE THE HEIGHt
         bottomLayout.setVisibility(View.INVISIBLE);
         Frontpage.isTimeline = false;
-        fragmentConstraintLayout.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT;
 
     }
 
@@ -164,7 +165,7 @@ public class Functions {
         bottomLayout.setVisibility(View.VISIBLE);
         bottomLayout.bringToFront();
         Frontpage.isTimeline = true;
-        fragmentConstraintLayout.getLayoutParams().height = initial_height;
+        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
     }
 
 
@@ -172,7 +173,6 @@ public class Functions {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         fragmentConstraintLayout = activity.findViewById(R.id.fragmentConstraintLayout);
-        outerfragmentConstraintLayout = activity.findViewById(R.id.outerFragmentConstraintLayout);
         fragmentConstraintLayout.requestLayout();
         bottomLayout = activity.findViewById(R.id.bottomLayout);
 

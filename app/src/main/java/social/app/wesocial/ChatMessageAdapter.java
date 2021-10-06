@@ -86,6 +86,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                 holder.otherUserImageView.setVisibility(View.VISIBLE);
                 functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.otherUserImageView);
+                //holder.otherUserMessage.setBackgroundResource(R.drawable.incoming_chat_bubble);
             } else {
                 holder.otherUserImageView.setVisibility(View.INVISIBLE);
                 holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);

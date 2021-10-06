@@ -26,6 +26,86 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragmentConstraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent_full"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentContainerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottomLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="0dp"
+                android:layout_height="98dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:context=".MainActivity">
+
+                <com.google.android.material.bottomappbar.BottomAppBar
+                    android:id="@+id/bottomAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/main_colour"
+                    app:fabAlignmentMode="center"
+                    app:fabAnimationMode="slide"
+                    app:fabCradleMargin="10dp"
+                    app:fabCradleRoundedCornerRadius="10dp"
+                    app:fabCradleVerticalOffset="10dp"
+                    app:layout_anchor="@+id/bottomAppBar"
+                    app:layout_anchorGravity="bottom|center">
+
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottomNavigationView"
+                        style="@style/ShapeAppearance.MaterialComponents.MediumComponent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent_full"
+                        android:theme="@style/Theme.WeSocial"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/main_colour"
+                        app:elevation="0dp"
+                        app:itemIconTint="@color/white"
+                        app:itemTextColor="@color/white"
+                        app:menu="@menu/bottom_nav_menu" />
+
+                </com.google.android.material.bottomappbar.BottomAppBar>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/post"
+                    android:contentDescription="@string/app_name"
+                    android:theme="@style/Theme.WeSocial"
+                    android:tint="@color/white"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/main_colour"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/bottomAppBar"
+                    app:layout_anchorGravity="center"
+                    app:srcCompat="@drawable/post" />
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/frontpageProgressView"
             android:layout_width="match_parent"
@@ -42,95 +122,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:targetApi="lollipop" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/outerFragmentConstraintLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/bottomLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragmentConstraintLayout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/transparent_full"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/fragmentContainerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/bottomLayout"
-            android:layout_width="match_parent"
-            android:layout_height="98dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:context=".MainActivity">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:visibility="visible"
-                app:backgroundTint="@color/main_colour"
-                app:fabAlignmentMode="center"
-                app:fabAnimationMode="slide"
-                app:fabCradleMargin="10dp"
-                app:fabCradleRoundedCornerRadius="10dp"
-                app:fabCradleVerticalOffset="10dp"
-                app:layout_anchor="@+id/bottomAppBar"
-                app:layout_anchorGravity="bottom|center">
-
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottomNavigationView"
-                    style="@style/ShapeAppearance.MaterialComponents.MediumComponent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent_full"
-                    android:theme="@style/Theme.WeSocial"
-                    android:visibility="visible"
-                    app:backgroundTint="@color/main_colour"
-                    app:elevation="0dp"
-                    app:itemIconTint="@color/white"
-                    app:itemTextColor="@color/white"
-                    app:menu="@menu/bottom_nav_menu" />
-
-            </com.google.android.material.bottomappbar.BottomAppBar>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/post"
-                android:contentDescription="@string/app_name"
-                android:theme="@style/Theme.WeSocial"
-                android:tint="@color/white"
-                android:visibility="visible"
-                app:backgroundTint="@color/main_colour"
-                app:fabSize="normal"
-                app:layout_anchor="@id/bottomAppBar"
-                app:layout_anchorGravity="center"
-                app:srcCompat="@drawable/post" />
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
