@@ -77,8 +77,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             } else {
                 holder.myMessageDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
             }
-
-
             holder.myMessageDate.setTextSize(datetextSize);
 
         }

@@ -12,7 +12,6 @@
         android:id="@+id/postTimelineCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,8 +21,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtShowTimelinePostEdit"
@@ -59,6 +57,7 @@
                 android:layout_width="150dp"
                 android:layout_height="27dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="2dp"
                 android:fontFamily="@font/nexabold"
                 android:gravity="center_vertical"
                 android:singleLine="true"
@@ -76,7 +75,7 @@
                 android:layout_width="150dp"
                 android:layout_height="19dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
                 android:text="@string/app_name"
@@ -92,7 +91,7 @@
                 android:layout_width="54dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
@@ -109,7 +108,7 @@
                 android:layout_width="47dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/nexalight"
                 android:gravity="center_vertical"
@@ -125,14 +124,14 @@
                 android:id="@+id/txtShowTimelinePostContent"
                 android:layout_width="384dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
+                android:layout_marginBottom="40dp"
                 android:fontFamily="sans-serif"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toTopOf="@+id/txtShowTimelineMore"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.592"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
@@ -140,7 +139,7 @@
                 android:layout_width="29dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="10dp"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -163,36 +162,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txtShowTimelineMore"
-                android:layout_width="408dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@color/main_colour"
-                android:ellipsize="end"
-                android:fontFamily="@font/nexalight"
-                android:foregroundGravity="center_horizontal"
-                android:gravity="center_horizontal|center_vertical"
-                android:inputType="textMultiLine|textImeMultiLine"
-                android:minHeight="48dp"
-                android:minLines="3"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.333"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
-
             <com.like.LikeButton
                 android:id="@+id/btnShowTimelinePostLike"
                 android:layout_width="25dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginBottom="10dp"
                 app:anim_scale_factor="2"
                 app:circle_end_color="@color/light_main_colour"
                 app:circle_start_color="@color/red"

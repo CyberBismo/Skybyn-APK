@@ -88,13 +88,10 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
 
         if (timelineDataClass.getContent().length() > PostLength) {
-            //holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
-            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"..."));
-            holder.txtTimelineShowMore.setVisibility(View.VISIBLE);
-            String showMore = "Show More\n"+"_____________________________";
-            holder.txtTimelineShowMore.setText(showMore);
+            holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
+            //holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength)+"..."));
         } else {
-            holder.txtTimelineShowMore.setVisibility(View.INVISIBLE);
+
             holder.txtTimelineContent.setText(timelineDataClass.getContent());
         }
 
@@ -103,7 +100,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
-        holder.txtTimelineShowMore.setOnClickListener(view -> holder.timelineMainLayout.callOnClick());
 
         holder.timelineMainLayout.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);
@@ -294,7 +290,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             imgTimelinePostLike = itemView.findViewById(id.btnShowTimelinePostLike);
             imgTimelinePostComment = itemView.findViewById(id.imgShowTimelinePostComment);
             timelineMainLayout = itemView.findViewById(id.timelineMainConstraintLayout);
-            txtTimelineShowMore = itemView.findViewById(id.txtShowTimelineMore);
+
 
 
         }
