@@ -119,7 +119,7 @@ public class Functions {
     public void showSnackBar(String msg, View view, Context context) {
 
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-                .setBackgroundTint(ContextCompat.getColor(context, R.color.main_colour))
+                .setBackgroundTint(ContextCompat.getColor(context, R.color.dark_gray_2))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))
                 .show();
     }
