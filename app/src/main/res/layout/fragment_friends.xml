@@ -18,7 +18,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/Friends"
-        android:textColor="@color/white"
+        android:textColor="@color/main_colour"
         android:textSize="16sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
