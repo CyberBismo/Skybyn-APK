@@ -7,8 +7,7 @@
     <color name="teal_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="main_colour">#2196F3</color>
-    <color name="original_main_colour">#005DC1</color>
+    <color name="main_colour">#005DC1</color>
     <color name="light_main_colour">#3B83CF</color>
     <color name="red">#C10000</color>
     <color name="green">#4CAF50</color>
@@ -19,3 +18,4 @@
     <color name="dark_gray">#221E1E</color>
     <color name="dark_gray_2">#151313</color>
 </resources>
+    <!--<color name="main_colour">#2196F3</color>->

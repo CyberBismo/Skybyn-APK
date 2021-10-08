@@ -32,17 +32,16 @@ import timber.log.Timber;
 
 
 class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolder> {
-
     private final List<UserDataClass> UserDataClass;
     Functions functions = new Functions();
     Data data = new Data();
+
     userStatusEnum userStatus;
 
     enum userStatusEnum {friend, received, sent, iam_blocked, notFriends, iBlockedUser}
 
     public userSearchAdapter(List<UserDataClass> userDataClass) {
         UserDataClass = userDataClass;
-
     }
 
     @NonNull
@@ -53,7 +52,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
         return new ViewHolder(itemView);
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull userSearchAdapter.ViewHolder holder, int position) {
@@ -63,8 +61,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
         holder.txtUserSearchNickname.setText(userDataClass.getUserNickname());
 
         functions.loadProfilePictureDrawableThumb(userDataClass.getUserAvatarLink(), holder.imgUserSearchProfilePicture);
-
-
         switch (userDataClass.getIsFriend()) {
             case "1":
                 holder.btnUserSearchAddFriend.setText(holder.itemView.getContext().getString(R.string.message));
@@ -100,7 +96,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                     Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(userDataClass.getUsername(), null, userDataClass.getUserAvatarLink(), userDataClass.getUserID());
                     functions.LoadFragment(fragmentShowFullChat, "", (Activity) holder.itemView.getContext(), false, false);
                     break;
-
                 case received:
                     Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
                     functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(), false, false);
@@ -116,7 +111,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                 case iBlockedUser:
                     link = data.unblock_friend_Api;
                     break;
-
             }
 
             HashMap<String, String> postData = new HashMap<>();
@@ -142,7 +136,7 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                                 (dialog, which) -> dialog.dismiss());
                         alertDialog.show();
 
-                    }else{
+                    } else {
                         Timber.i(response);
                     }
                 }
@@ -154,7 +148,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
             });
             //functions.showProgress(lottie);
             networkController.PostMethod(link, postData);
-
         });
 
         if (userDataClass.getUserID().equals(Frontpage.userID)) {
@@ -169,7 +162,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
             holder.txtUserSearchOnline.setBackgroundResource(R.drawable.online_status);
         }
 
-
     }
 
     @Override
@@ -183,7 +175,6 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
         Button btnUserSearchAddFriend;
         TextView txtUserSearchOnline;
         CircularImageView imgUserSearchProfilePicture;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
