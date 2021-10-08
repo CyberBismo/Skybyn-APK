@@ -123,7 +123,9 @@ public class showFullChat extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
         chatMessageAdapter.notifyDataSetChanged();
-       scrollDown();
+        recyclerView.setItemViewCacheSize(chatMessageListData.size());
+
+        scrollDown();
 
     }
 
@@ -135,7 +137,6 @@ public class showFullChat extends Fragment {
         postData.put("content", message);
 
         //ADD MESSAGE TO VIEW WHILE WAITING FOR SEND
-
         chatMessageListData.add(chatMessageListData.size(), new ChatMessageListDataClass("", message, Frontpage.avatarLink, "sending", friendID, Frontpage.userID, Frontpage.loginUsername));
         updateChatRecyclerMessages();
         //END

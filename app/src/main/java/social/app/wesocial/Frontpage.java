@@ -83,6 +83,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     private Boolean onQuery;
     public static String current_chat_user ;
     public static Boolean isTimeline;
+    public static  String username = "",email = "";
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
 
@@ -380,8 +381,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         Fragment timelineFragment = Timeline.newInstance();
                         functions.LoadFragment(timelineFragment, "posts", Frontpage.this,true ,false);
 
-                        String username = jsonObject.getString("username").toString();
-                        String email = jsonObject.getString("email").toString();
+
+                         username = jsonObject.getString("username").toString();
+                         email = jsonObject.getString("email").toString();
                         avatarLink = jsonObject.getString("avatar").toString();
                         firstName = jsonObject.get("fname").toString();
                         lastName = jsonObject.get("lname").toString();

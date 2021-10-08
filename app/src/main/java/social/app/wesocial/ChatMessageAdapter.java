@@ -7,15 +7,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
-    public static Integer messageSenderMe = 0;
-    public static Integer messageSenderUser = 1;
+    public static final int messageSenderMe = 0;
+    public  static final int messageSenderUser = 1;
+    View itemView;
     public static Float datetextSize = 9f;
     public static Boolean iSentThisMessage;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
@@ -29,77 +31,83 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @NonNull
     @Override
     public ChatMessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = null;
-        if (viewType == messageSenderMe) {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
-        } else if (viewType == messageSenderUser) {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
+        switch (viewType){
+            case messageSenderMe:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
+                Timber.i("messageSENDERME");
+                break;
+            case  messageSenderUser:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
+                Timber.i("messageSENDERUser");
+                break;
         }
-        assert itemView != null;
         return new ViewHolder(itemView);
     }
 
+
     @Override
     public int getItemViewType(int position) {
-
-        if (ChatMessageListDataClass.get(position).getUserID().equalsIgnoreCase(Frontpage.userID)) {
+        Boolean messageSender = ChatMessageListDataClass.get(position).getUsername().equalsIgnoreCase(Frontpage.username);
+        if (messageSender) {
+            Timber.i("SENDER::"+messageSender.toString());
             return messageSenderMe;
         } else {
+            Timber.i("SENDER::"+messageSender.toString());
             return messageSenderUser;
         }
 
+        //return position;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
-        if (holder.getItemViewType() == messageSenderMe) {
-            //CHECK POSITION TO SET SPEECH BUBBLE
-            holder.myMessage.setText(chatMessageListDataClass.getContent());
-            if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
-                holder.myMessageImageView.setVisibility(View.VISIBLE);
-                functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.myMessageImageView);
-            } else {
-                holder.myMessageImageView.setVisibility(View.INVISIBLE);
-                holder.myMessage.setBackgroundResource(R.drawable.rounded_corner_main);
-            }
+        switch (holder.getItemViewType()) {
+            case messageSenderMe:
+                holder.myMessage.setText(chatMessageListDataClass.getContent());
+                if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
+                    holder.myMessageProfilePicture.setVisibility(View.VISIBLE);
+                    functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.myMessageProfilePicture);
+                } else {
+                    holder.myMessageProfilePicture.setVisibility(View.INVISIBLE);
+                    holder.myMessage.setBackgroundResource(R.drawable.rounded_corner_main);
+                }
 
 
-            //IF SENDING , DONT SHOW DATE  YET
-            if (chatMessageListDataClass.getDate().equals("sending")) {
-                holder.myMessageDate.setText(chatMessageListDataClass.getDate());
-            } else {
-                holder.myMessageDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
-            }
-            holder.myMessageDate.setTextSize(datetextSize);
+                //IF SENDING , DONT SHOW DATE  YET
+                if (chatMessageListDataClass.getDate().equals("sending")) {
+                    holder.myMessageDate.setText(chatMessageListDataClass.getDate());
+                } else {
+                    holder.myMessageDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
+                }
+                holder.myMessageDate.setTextSize(datetextSize);
+                break;
 
+            case messageSenderUser:
+                holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
+                if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
+                    holder.otherUserProfilePicture.setVisibility(View.VISIBLE);
+                    functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.otherUserProfilePicture);
+                } else {
+                    holder.otherUserProfilePicture.setVisibility(View.INVISIBLE);
+                    holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);
+                }
+
+                //IF SENDING , DON'T SHOW DATE  YET
+                if (chatMessageListDataClass.getDate().equals("sending")) {
+                    holder.otherUserDate.setText(chatMessageListDataClass.getDate());
+                } else {
+                    holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
+                }
+                holder.otherUserDate.setTextSize(datetextSize);
+                break;
         }
 
 
-        //IF CHAT IS FROM OTHER USER
-        if (holder.getItemViewType() == messageSenderUser) {
-            holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
-            if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
-                holder.otherUserImageView.setVisibility(View.VISIBLE);
-                functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.otherUserImageView);
-                //holder.otherUserMessage.setBackgroundResource(R.drawable.incoming_chat_bubble);
-            } else {
-                holder.otherUserImageView.setVisibility(View.INVISIBLE);
-                holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);
-            }
-
-            //IF SENDING , DONT SHOW DATE  YET
-            if (chatMessageListDataClass.getDate().equals("sending")) {
-                holder.otherUserDate.setText(chatMessageListDataClass.getDate());
-            } else {
-                holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
-            }
 
 
-            holder.otherUserDate.setTextSize(datetextSize);
-
-        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -110,18 +118,18 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView myMessage, myMessageDate;
         TextView otherUserMessage, otherUserDate;
-        ImageView myMessageImageView, otherUserImageView;
-        ConstraintLayout incomingChatConstraintLayout, outgoingChatConstraintLayout;
+        ImageView myMessageProfilePicture, otherUserProfilePicture;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             myMessage = itemView.findViewById(R.id.txtChatMessageOut);
             myMessageDate = itemView.findViewById(R.id.txtChatMessageOutDate);
-            myMessageImageView = itemView.findViewById(R.id.imgChatMessageOutProfilePicture);
+            myMessageProfilePicture = itemView.findViewById(R.id.imgChatMessageOutProfilePicture);
 
             otherUserMessage = itemView.findViewById(R.id.txtChatMessageIn);
             otherUserDate = itemView.findViewById(R.id.txtChatMessageInDate);
-            otherUserImageView = itemView.findViewById(R.id.imgChatMessageInProfilePicture);
+            otherUserProfilePicture = itemView.findViewById(R.id.imgChatMessageInProfilePicture);
         }
     }
 }
