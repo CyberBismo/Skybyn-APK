@@ -47,6 +47,7 @@
             android:id="@+id/verify_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:visibility="invisible">
 
             <TextView
@@ -104,6 +105,7 @@
             android:id="@+id/signin_form"
             android:layout_width="294dp"
             android:layout_height="355dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
             android:visibility="visible">
 
@@ -189,6 +191,7 @@
             android:id="@+id/signup_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
             android:visibility="invisible">
 
@@ -304,6 +307,7 @@
             android:id="@+id/email_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
             android:visibility="invisible">
 
@@ -356,6 +360,7 @@
             android:id="@+id/forgot_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
             android:visibility="invisible">
 
