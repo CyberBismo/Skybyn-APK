@@ -136,7 +136,6 @@
 
         android:background="@color/white"
         app:headerLayout="@layout/nav_header"
-        app:insetForeground="@color/black"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
         app:menu="@menu/side_nav_menu">
