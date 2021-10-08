@@ -14,13 +14,13 @@ import java.util.List;
 
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
+    public static Integer messageSenderMe = 0;
+    public static Integer messageSenderUser = 1;
+    public static Float datetextSize = 9f;
+    public static Boolean iSentThisMessage;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
-
     Functions functions = new Functions();
 
-    public static Integer viewTypeMe = 0;
-    public static Float datetextSize = 9f;
-    public static Integer viewTypeUser = 1;
 
     public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass) {
         this.ChatMessageListDataClass = ChatMessageListDataClass;
@@ -30,10 +30,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public ChatMessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = null;
-        if (viewType == viewTypeMe) {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_chat_message_out, parent, false);
-        } else if (viewType == viewTypeUser) {
-            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_chat_message_in, parent, false);
+        if (viewType == messageSenderMe) {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
+        } else if (viewType == messageSenderUser) {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
         }
         assert itemView != null;
         return new ViewHolder(itemView);
@@ -41,23 +41,19 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        boolean iSentThisMessage = ChatMessageListDataClass.get(position).getUsername().equalsIgnoreCase(Frontpage.loginUsername);
-        Integer type;
-        if (iSentThisMessage) {
-            type = viewTypeMe;
+
+        if (ChatMessageListDataClass.get(position).getUserID().equalsIgnoreCase(Frontpage.userID)) {
+            return messageSenderMe;
         } else {
-            type = viewTypeUser;
-
+            return messageSenderUser;
         }
-
-        return type;
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
-        if (holder.getItemViewType() == viewTypeMe) {
+        if (holder.getItemViewType() == messageSenderMe) {
             //CHECK POSITION TO SET SPEECH BUBBLE
             holder.myMessage.setText(chatMessageListDataClass.getContent());
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
@@ -81,7 +77,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
 
         //IF CHAT IS FROM OTHER USER
-        if (holder.getItemViewType() == viewTypeUser) {
+        if (holder.getItemViewType() == messageSenderUser) {
             holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
             if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                 holder.otherUserImageView.setVisibility(View.VISIBLE);
@@ -98,7 +94,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             } else {
                 holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
             }
-
 
 
             holder.otherUserDate.setTextSize(datetextSize);

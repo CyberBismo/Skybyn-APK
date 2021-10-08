@@ -28,10 +28,6 @@ public class ChatMessageListDataClass {
         this.msgID = msgID;
     }
 
-    public String getID() {
-        return ID;
-    }
-
     public void setID(String ID) {
         this.ID = ID;
     }
