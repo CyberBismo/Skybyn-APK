@@ -34,14 +34,14 @@ public class Data {
         public String showFullMessages_API = messageAPI+"chat.php";
         public String sendMessage_API = messageAPI+"add.php";
 
-    // Timeline Api
+    //Timeline Api
     public String addPost_Api = postAPI+"add.php";
     public String timeline_Api = postAPI+"timeline.php";
     public String user_timeline_Api = postAPI+"user-timeline.php";
     public String deletePost_Api = postAPI+"delete.php";
     public String editPost_Api = API+"edit.php";
 
-    //  FRIENDS Api
+    //FRIENDS Api
     public String add_friend_action = "add";
     public String block_friend_action = "block";
     public String unblock_friend_action = "unblock";

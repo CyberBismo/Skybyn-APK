@@ -149,4 +149,6 @@
     <string name="message">Message</string>
     <string name="timeline">Timeline</string>
     <string name="pick_theme">Customize your theme</string>
+    <string name="channel_name">push_channel_name</string>
+    <string name="channel_description">push_channel_description</string>
 </resources>
