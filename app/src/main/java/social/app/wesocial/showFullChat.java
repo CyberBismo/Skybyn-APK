@@ -146,6 +146,10 @@ public class showFullChat extends Fragment {
                             String responseCode = jsonObject.get("responseCode").toString();
                             if (responseCode.equals("1")) {
                                 loadAllMessages(friendID);
+                                return;
+                            }
+                            if (!responseCode.equals("1")) {
+                                functions.showSnackBar(getString(R.string.no_message),requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
                             }
 
                         }

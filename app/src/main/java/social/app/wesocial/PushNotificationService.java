@@ -92,8 +92,11 @@ public class PushNotificationService extends FirebaseMessagingService {
         }else{
             notificationId = 0;
         }
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, builder.build());
+
+      //  if (!Frontpage.isVisible) {
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(notificationId, builder.build());
+     //   }
 
 
     }

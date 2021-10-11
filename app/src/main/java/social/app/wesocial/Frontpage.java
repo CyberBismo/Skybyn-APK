@@ -85,8 +85,23 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public static Boolean isTimeline;
     public static  String username = "",email = "";
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    @Override
 
+    protected static boolean isVisible = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setVisible(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        setVisible(false);
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
