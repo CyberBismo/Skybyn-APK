@@ -38,10 +38,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                         Frontpage.gottenToken = true;
                         FirebaseMessaging.getInstance().subscribeToTopic(Frontpage.username.toLowerCase(Locale.ROOT));
                         userNotificationtoken = token;
-
                         //UPDATE TO DATABASE
-
-
                         HashMap<String, String> postData = new HashMap<>();
                         postData.put("userID", userID);
                         postData.put("token", userNotificationtoken);
