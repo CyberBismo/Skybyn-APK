@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.WeSocial" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="android:forceDarkAllowed">false</item>
         <item name="colorPrimary">@color/main_colour</item> <!-- Content background -->
         <item name="colorPrimaryVariant">@color/black</item> <!-- Notification bar -->
         <item name="colorOnPrimary">@color/white</item>

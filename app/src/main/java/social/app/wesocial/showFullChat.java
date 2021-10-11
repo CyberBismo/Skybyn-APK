@@ -30,10 +30,7 @@ import java.util.HashMap;
 
 import timber.log.Timber;
 
-
 public class showFullChat extends Fragment {
-
-
     private static String chat_username = "";
     private static String chat_avatar = "";
     private static String chat_friendID = "";
@@ -53,7 +50,6 @@ public class showFullChat extends Fragment {
 
     public static showFullChat newInstance(String param1, Drawable drawable, String param3, String friendID) {
         showFullChat fragment = new showFullChat();
-
         chat_username = param1;
         online_status_drawable = drawable;
         chat_avatar = param3;
@@ -105,7 +101,6 @@ public class showFullChat extends Fragment {
                 return;
             }
             sendMessage(chat_friendID, txtChatMessageContent.getText().toString());
-
         });
 
         loadAllMessages(chat_friendID);

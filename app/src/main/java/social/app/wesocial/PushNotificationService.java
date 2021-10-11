@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -35,7 +36,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                         String token = task.getResult();
                         Timber.i("token ---->>%s", token);
                         Frontpage.gottenToken = true;
-                        FirebaseMessaging.getInstance().subscribeToTopic(weSocial_Topic);
+                        FirebaseMessaging.getInstance().subscribeToTopic(Frontpage.username.toLowerCase(Locale.ROOT));
                         userNotificationtoken = token;
 
                         //UPDATE TO DATABASE
