@@ -103,7 +103,7 @@
 
         <FrameLayout
             android:id="@+id/signin_form"
-            android:layout_width="294dp"
+            android:layout_width="match_parent"
             android:layout_height="355dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
@@ -118,7 +118,7 @@
                 android:lineHeight="24dp"
                 android:text="@string/sign_in"
                 android:textColor="@color/main_colour"
-                android:textSize="20sp" />
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/txtUsername"
