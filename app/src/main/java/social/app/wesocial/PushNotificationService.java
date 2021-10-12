@@ -49,6 +49,8 @@ public class PushNotificationService extends FirebaseMessagingService {
                     });
                     HashMap<String, String> postData = new HashMap<>();
                     postData.put("token", token);
+                    postData.put("userID", Frontpage.userID);
+
                     networkController.PostMethod(data.updateToken_Api, postData);
 
 
