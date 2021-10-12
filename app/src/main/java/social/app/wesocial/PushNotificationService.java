@@ -4,15 +4,19 @@ import static social.app.wesocial.Frontpage.userID;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -34,33 +38,36 @@ public class PushNotificationService extends FirebaseMessagingService {
 
 
     public PushNotificationService() {
-        FirebaseInstallations.getInstance().getId().addOnCompleteListener(
-                task -> {
-                    if (task.isSuccessful()) {
-                        String token = task.getResult();
-                        Timber.i("token ---->>%s", token);
-                        Frontpage.gottenToken = true;
-                        FirebaseMessaging.getInstance().subscribeToTopic(Frontpage.username.toLowerCase(Locale.ROOT));
-                        userNotificationtoken = token;
-                        //UPDATE TO DATABASE
-                        HashMap<String, String> postData = new HashMap<>();
-                        postData.put("userID", userID);
-                        postData.put("token", userNotificationtoken);
-
-                        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
-                            @Override
-                            public void notifySuccess(String response) {
-                                Timber.i(response);
-                            }
-
-                            @Override
-                            public void notifyError(VolleyError error) {
-
-                            }
-
-                        });
-                        networkController.PostMethod(data.updateToken_Api, postData);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
                     }
+
+                    // Get new FCM registration token
+                    String token = task.getResult();
+                    Timber.i("TOKEN"+token);
+                    NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+                        @Override
+                        public void notifySuccess(String response) {
+                            Timber.i(response);
+                        }
+
+                        @Override
+                        public void notifyError(VolleyError error) {
+
+                        }
+
+                    });
+                    HashMap<String, String> postData = new HashMap<>();
+                    postData.put("token",token);
+                    networkController.PostMethod(data.updateToken_Api, postData);
+
+
+
+
+
                 });
 
 
@@ -77,25 +84,29 @@ public class PushNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.notifications_coloured)
                 .setContentTitle(remoteMessage.getData().get("title"))
                 .setContentText(remoteMessage.getData().get("body"))
-                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL   )
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
         if (remoteMessage.getData().containsKey("type")) {
             switch (remoteMessage.getData().get("type")) {
                 case "chat":
+                    String fromID = remoteMessage.getData().get("from");
                     notificationId = 1;
             }
         }else{
-            notificationId = 0;
+            notificationId = 999;
         }
 
       //  if (!Frontpage.isVisible) {
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(notificationId, builder.build());
+        
      //   }
 
 

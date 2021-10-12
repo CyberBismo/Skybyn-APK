@@ -73,6 +73,11 @@ public class showFullChat extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadAllMessages(chat_friendID);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

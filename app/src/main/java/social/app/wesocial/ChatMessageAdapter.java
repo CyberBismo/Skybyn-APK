@@ -34,11 +34,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         switch (viewType){
             case messageSenderMe:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
-                Timber.i("messageSENDERME");
                 break;
             case  messageSenderUser:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
-                Timber.i("messageSENDERUser");
                 break;
         }
         return new ViewHolder(itemView);
@@ -49,10 +47,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public int getItemViewType(int position) {
         Boolean messageSender = ChatMessageListDataClass.get(position).getUsername().equalsIgnoreCase(Frontpage.username);
         if (messageSender) {
-            Timber.i("SENDER::"+messageSender.toString());
             return messageSenderMe;
         } else {
-            Timber.i("SENDER::"+messageSender.toString());
             return messageSenderUser;
         }
 
