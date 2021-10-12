@@ -35,7 +35,6 @@ public class PushNotificationService extends FirebaseMessagingService {
                     // Get new FCM registration token
                     String token = task.getResult();
                     Frontpage.notificationToken = token;
-                    //Timber.i("TOKEN" + token);
                     NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
                         @Override
                         public void notifySuccess(String response) {
