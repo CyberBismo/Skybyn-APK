@@ -3,6 +3,7 @@ package social.app.wesocial;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -28,11 +29,12 @@ public class PushNotificationService extends FirebaseMessagingService {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
-                        //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        Timber.i("Fetching FCM registration token failed"+" "+task.getException());
                         return;
                     }
                     // Get new FCM registration token
                     String token = task.getResult();
+                    Frontpage.notificationToken = token;
                     //Timber.i("TOKEN" + token);
                     NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
                         @Override
@@ -72,8 +74,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                 case "chat":
                     String fromID = remoteMessage.getData().get("from");
                     builder.setSmallIcon(R.drawable.chat);
-
-                default:
+                    default:
                     break;
 
             }

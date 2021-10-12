@@ -84,6 +84,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public static String current_chat_user ;
     public static Boolean isTimeline;
     public static  String username = "",email = "";
+    public static  String notificationToken = "";
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 
     protected static boolean isVisible = false;
