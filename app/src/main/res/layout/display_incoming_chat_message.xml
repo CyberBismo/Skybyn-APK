@@ -4,13 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/txtChatMessageInDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:inputType="textNoSuggestions"
+        android:paddingStart="0dp"
+        android:paddingEnd="5dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/txtChatMessageIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/imgChatMessageInProfilePicture"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:background="@color/transparent_full"
         app:civ_border_color="@color/white"
@@ -23,29 +44,11 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/txtChatMessageInDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        android:inputType="textNoSuggestions"
-        android:paddingStart="0dp"
-        android:paddingEnd="5dp"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <TextView
         android:id="@+id/txtChatMessageIn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:background="@drawable/incoming_chat_bubble"
         android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
@@ -53,8 +56,8 @@
         android:textAlignment="textStart"
         android:textColor="@color/white"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtChatMessageInDate"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.018"
         app:layout_constraintStart_toEndOf="@+id/imgChatMessageInProfilePicture"
         app:layout_constraintTop_toTopOf="parent"

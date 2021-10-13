@@ -4,7 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/txtChatMessageOutDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
+        android:text="TextView"
+        android:textColor="@color/dark"
+        android:textDirection="ltr"
+        android:textSize="11sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/txtChatMessageOut"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/txtChatMessageOut"
@@ -12,6 +31,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:width="250dp"
@@ -22,7 +42,6 @@
         android:textColor="@color/white"
         android:textDirection="anyRtl"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtChatMessageOutDate"
         app:layout_constraintEnd_toStartOf="@+id/imgChatMessageOutProfilePicture"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +54,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
         android:background="@color/transparent_full"
         app:civ_border_color="@color/white"
@@ -43,22 +63,5 @@
         app:civ_shadow_radius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtChatMessageOutDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="1"
-        android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
-        android:text="TextView"
-        android:textColor="@color/dark"
-        android:textDirection="ltr"
-        android:textSize="11sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
