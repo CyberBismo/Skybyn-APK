@@ -1,9 +1,7 @@
 package social.app.wesocial;
-
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -12,22 +10,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.VolleyError;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import timber.log.Timber;
 
 public class showFullChat extends Fragment {
@@ -42,7 +35,7 @@ public class showFullChat extends Fragment {
     ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
     ScrollView chatScrollView;
     RecyclerView recyclerView;
-
+    ChatMessageAdapter chatMessageAdapter;
     public showFullChat() {
         // Required empty public constructor
     }
@@ -54,7 +47,6 @@ public class showFullChat extends Fragment {
         online_status_drawable = drawable;
         chat_avatar = param3;
         chat_friendID = friendID;
-
         return fragment;
     }
 
@@ -109,24 +101,25 @@ public class showFullChat extends Fragment {
         });
 
         loadAllMessages(chat_friendID);
-
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void scrollDown(){
-        recyclerView.scrollToPosition(chatMessageListData.size()-1);
+    public void scrollDown() {
+        recyclerView.scrollToPosition(chatMessageListData.size() - 1);
         chatScrollView.post((Runnable) () -> chatScrollView.fullScroll(ScrollView.FOCUS_DOWN));
     }
-    public void updateChatRecyclerMessages() {
-        ChatMessageAdapter chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
+
+    public void updateChatRecyclerMessages(Boolean iamsender) {
+         chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
+        if(iamsender){
+            //
+        }
         chatMessageAdapter.notifyDataSetChanged();
         recyclerView.setItemViewCacheSize(chatMessageListData.size());
-
         scrollDown();
-
     }
 
     public void sendMessage(String friendID, String message) {
@@ -137,8 +130,8 @@ public class showFullChat extends Fragment {
         postData.put("content", message);
 
         //ADD MESSAGE TO VIEW WHILE WAITING FOR SEND
-        chatMessageListData.add(chatMessageListData.size(), new ChatMessageListDataClass("", message, Frontpage.avatarLink, "sending", friendID, Frontpage.userID, Frontpage.loginUsername));
-        updateChatRecyclerMessages();
+        chatMessageListData.add(chatMessageListData.size(), new ChatMessageListDataClass("", message, Frontpage.avatarLink, "sending", Frontpage.userID, Frontpage.userID, Frontpage.loginUsername));
+        updateChatRecyclerMessages(true);
         //END
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(),
@@ -154,7 +147,7 @@ public class showFullChat extends Fragment {
                                 return;
                             }
                             if (!responseCode.equals("1")) {
-                                functions.showSnackBar(getString(R.string.no_message),requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
+                                functions.showSnackBar(getString(R.string.no_message), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                             }
 
                         }
@@ -189,11 +182,10 @@ public class showFullChat extends Fragment {
             username = jsonObject.get("username").toString();
             nickName = jsonObject.get("nickname").toString();
             username = jsonObject.get("username").toString();
-
             chatMessageListData.add(new ChatMessageListDataClass(msgID, content, avatarlink, date, friendID, userID, username));
         }
 
-        updateChatRecyclerMessages();
+        updateChatRecyclerMessages(false);
 
 
     }

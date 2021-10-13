@@ -152,4 +152,5 @@
     <string name="channel_name">push_channel_name</string>
     <string name="channel_description">push_channel_description</string>
     <string name="no_message">No messages yet!</string>
+    <string name="about_me">About Me</string>
 </resources>

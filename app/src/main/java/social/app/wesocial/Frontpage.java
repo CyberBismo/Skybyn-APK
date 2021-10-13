@@ -1,5 +1,4 @@
 package social.app.wesocial;
-
 import static social.app.wesocial.R.drawable;
 import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
@@ -35,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.multidex.BuildConfig;
 import androidx.preference.PreferenceManager;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -55,6 +55,7 @@ import timber.log.Timber;
 
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     SharedPreferences sharedpreferences;
     DrawerLayout drawerLayout;
     public static  Boolean gottenToken = false;
@@ -85,8 +86,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public static Boolean isTimeline;
     public static  String username = "",email = "";
     public static  String notificationToken = "";
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     protected static boolean isVisible = false;
 
     @Override
@@ -115,9 +116,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-
         configureToolbarAndDrawer();
         checkAppUpdate();
+
 
         Intent intent = getIntent();
         loginAction = intent.getStringExtra("loginAction");
@@ -175,8 +176,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         this.keyword = keyword;
         this.onQuery = onQuery;
         if (!onQuery) {
-            functions.showProgress(lottie);
-        }
+            functions.showProgress(lottie); }
 
         HashMap<String, String> postData = new HashMap<>();
         postData.put("keyword", keyword);

@@ -1,17 +1,12 @@
 package social.app.wesocial;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
-import timber.log.Timber;
 
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
@@ -19,10 +14,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public  static final int messageSenderUser = 1;
     View itemView;
     public static Float datetextSize = 9f;
-    public static Boolean iSentThisMessage;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
     Functions functions = new Functions();
-
 
     public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass) {
         this.ChatMessageListDataClass = ChatMessageListDataClass;
@@ -32,11 +25,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @Override
     public ChatMessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType){
-            case messageSenderMe:
-                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
-                break;
             case  messageSenderUser:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
+                break;
+            default:
+                itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_outgoing_chat_message, parent, false);
                 break;
         }
         return new ViewHolder(itemView);
@@ -51,7 +44,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         } else {
             return messageSenderUser;
         }
-
         //return position;
     }
 
@@ -99,23 +91,18 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 break;
         }
 
-
-
-
     }
 
 
     @Override
     public int getItemCount() {
         return ChatMessageListDataClass.size();
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView myMessage, myMessageDate;
         TextView otherUserMessage, otherUserDate;
         ImageView myMessageProfilePicture, otherUserProfilePicture;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

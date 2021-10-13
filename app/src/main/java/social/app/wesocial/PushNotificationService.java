@@ -62,41 +62,33 @@ public class PushNotificationService extends FirebaseMessagingService {
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
-
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-
         if (remoteMessage.getData().containsKey("type")) {
             switch (remoteMessage.getData().get("type")) {
                 case "chat":
-                    String fromID = remoteMessage.getData().get("from");
+                    String friendID = remoteMessage.getData().get("from");
                     builder.setSmallIcon(R.drawable.chat);
                     default:
                     break;
-
             }
-
 
             builder.setContentTitle(remoteMessage.getData().get("title"))
                     .setContentText(remoteMessage.getData().get("body"))
-                    .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                    .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-
             //  if (!Frontpage.isVisible) {
             // notificationId is a unique int for each notification that you must define
             notificationId = 9999;
             notificationManager.notify(notificationId, builder.build());
 
             //   }
-
-
         }
     }
 
