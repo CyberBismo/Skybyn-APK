@@ -68,7 +68,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         holder.btnMessageFriend.setOnClickListener(view -> {
             Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID());
-            functions.LoadFragment(fragmentShowFullChat,"",(Activity) holder.itemView.getContext(),false,false);
+            functions.LoadFragment(fragmentShowFullChat,"fullchat",(Activity) holder.itemView.getContext(),false,false);
         });
 
         //BUTTON TO REMOVE FRIEND

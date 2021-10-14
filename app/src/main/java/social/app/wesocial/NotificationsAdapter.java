@@ -87,7 +87,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
         holder.btnNotiAcceptFriendRequest.setOnClickListener(view -> {
             Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
-            functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(),false,false);
+            functions.LoadFragment(friendFragment,"friends", (Activity) holder.itemView.getContext(),false,false);
             updateNotificationReadStatus(notificationDataClass.getID(),holder.itemView.getContext());
 
         });

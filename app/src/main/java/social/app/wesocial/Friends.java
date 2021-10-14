@@ -35,6 +35,9 @@ public class Friends extends Fragment {
     static Functions functions = new Functions();
     Data data = new Data();
     static String action;
+    Button btnShowFriends ;
+    Button btnShowBlockedFriends;
+    Button btnShowFriendsRequests;
 
     public Friends() {
         // Required empty public constructor
@@ -67,16 +70,9 @@ public class Friends extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclerView);
         txtFriendsTitle = requireActivity().findViewById(R.id.txtFriendsTitle);
-        Button btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
-        Button btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);
-        Button btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
-
-
-        btnShowBlockedFriends.setOnClickListener(view1 -> loadBlockedFriends());
-
-        btnShowFriends.setOnClickListener(view1 -> loadFriends());
-
-        btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
+         btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
+        btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);
+         btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
 
 
         if (action.equals(data.accept_friend_action)) {
@@ -84,6 +80,13 @@ public class Friends extends Fragment {
         } else {
             loadFriends();
         }
+        btnShowBlockedFriends.setOnClickListener(view1 -> loadBlockedFriends());
+
+        btnShowFriends.setOnClickListener(view1 -> loadFriends());
+
+        btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
+
+
 
 
     }

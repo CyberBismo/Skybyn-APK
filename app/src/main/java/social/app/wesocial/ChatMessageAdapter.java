@@ -58,7 +58,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.myMessageProfilePicture);
                 } else {
                     holder.myMessageProfilePicture.setVisibility(View.INVISIBLE);
-                    holder.myMessage.setBackgroundResource(R.drawable.rounded_corner_main);
+                    //holder.myMessage.setBackgroundResource(R.drawable.rounded_corner_main);
                 }
 
 
@@ -78,7 +78,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     functions.loadProfilePictureDrawableThumb(chatMessageListDataClass.getAvatarLink(), holder.otherUserProfilePicture);
                 } else {
                     holder.otherUserProfilePicture.setVisibility(View.INVISIBLE);
-                    holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);
+                    //holder.otherUserMessage.setBackgroundResource(R.drawable.rounded_corner_dark);
                 }
 
                 //IF SENDING , DON'T SHOW DATE  YET

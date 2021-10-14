@@ -33,7 +33,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:layout_weight="1"
-        android:background="@drawable/outgoing_chat_bubble"
+        android:background="@drawable/rounded_corner_main"
         android:gravity="end"
         android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
         android:padding="13dp"

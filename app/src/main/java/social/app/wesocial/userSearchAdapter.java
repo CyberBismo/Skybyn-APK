@@ -94,11 +94,11 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
             switch (userStatus) {
                 case friend:
                     Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(userDataClass.getUsername(), null, userDataClass.getUserAvatarLink(), userDataClass.getUserID());
-                    functions.LoadFragment(fragmentShowFullChat, "", (Activity) holder.itemView.getContext(), false, false);
+                    functions.LoadFragment(fragmentShowFullChat, "fullchat", (Activity) holder.itemView.getContext(), false, false);
                     break;
                 case received:
                     Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
-                    functions.LoadFragment(friendFragment, data.accept_friend_action, (Activity) holder.itemView.getContext(), false, false);
+                    functions.LoadFragment(friendFragment,"friends", (Activity) holder.itemView.getContext(), false, false);
                     break;
                 case sent:
                     link = data.cancel_friend_Api;

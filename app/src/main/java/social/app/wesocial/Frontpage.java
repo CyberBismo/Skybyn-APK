@@ -136,7 +136,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance();
-            functions.LoadFragment(sharePostFragment, "", Frontpage.this, false,false);
+            functions.LoadFragment(sharePostFragment, "sharepost", Frontpage.this, false,false);
         });
 
 
@@ -155,7 +155,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 switch (item.getItemId()) {
                     case id.timeline:
                         Fragment timelineFragment = Timeline.newInstance();
-                        functions.LoadFragment(timelineFragment, getString(string.Timeline), Frontpage.this, true,false);
+                        functions.LoadFragment(timelineFragment,"timeline", Frontpage.this, true,false);
                         return true;
 
                     case id.messages:
@@ -196,7 +196,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 if (functions.isJsonArray(response)) {
                     Log.i("response", response);
                     Fragment searchFragment = Search.newInstance(keyword, response);
-                    functions.LoadFragment(searchFragment, getString(string.search), Frontpage.this, false,false);
+                    functions.LoadFragment(searchFragment,"search", Frontpage.this, false,false);
                     functions.showSnackBar(getString(R.string.we_found_result) + keyword, findViewById(android.R.id.content), getApplicationContext());
 
                 }
@@ -225,7 +225,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
                 Fragment searchFragment = Search.newInstance("", "");
-                functions.LoadFragment(searchFragment, getString(string.search), Frontpage.this, false,false);
+                functions.LoadFragment(searchFragment, "search", Frontpage.this, false,false);
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -256,23 +256,23 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void showNotifications() {
         Fragment notificationFragment = Notification.newInstance();
-        functions.LoadFragment(notificationFragment, "Notification", Frontpage.this, false,false);
+        functions.LoadFragment(notificationFragment, "notification", Frontpage.this, false,false);
     }
 
 
     public void showFriendsPage() {
         Fragment friendsFragment = Friends.newInstance(userID);
-        functions.LoadFragment(friendsFragment, getString(string.Friends), Frontpage.this, false,false);
+        functions.LoadFragment(friendsFragment, "friends", Frontpage.this, false,false);
     }
 
     public void showProfilePage() {
         Fragment profileFragment = Profile.newInstance(userID, "");
-        functions.LoadFragment(profileFragment, getString(string.profile), Frontpage.this, false,false);
+        functions.LoadFragment(profileFragment, "profile", Frontpage.this, false,false);
     }
 
     public void showMessagesPage() {
         Fragment messagesFragment = Messages.newInstance();
-        functions.LoadFragment(messagesFragment, getString(string.messages), Frontpage.this, false,false);
+        functions.LoadFragment(messagesFragment,"messages", Frontpage.this, false,false);
     }
 
     @Override
@@ -395,7 +395,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         userLoggedIn = true;
 
                         Fragment timelineFragment = Timeline.newInstance();
-                        functions.LoadFragment(timelineFragment, "posts", Frontpage.this,true ,false);
+                        functions.LoadFragment(timelineFragment, "timeline", Frontpage.this,true ,false);
 
 
                          username = jsonObject.getString("username").toString();
@@ -535,7 +535,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 break;
             case id.settings:
                 Settings settings = new Settings();
-                functions.LoadFragment(settings, "", Frontpage.this, false,false);
+                functions.LoadFragment(settings, "settings", Frontpage.this, false,false);
                 break;
 
             case id.myNotifications:
@@ -549,7 +549,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             case id.timeline:
                 if (userLoggedIn) {
                     Fragment timelineFragment = Timeline.newInstance();
-                    functions.LoadFragment(timelineFragment, "timelinePosts", Frontpage.this, true,false);
+                    functions.LoadFragment(timelineFragment, "timeline", Frontpage.this, true,false);
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
                 }

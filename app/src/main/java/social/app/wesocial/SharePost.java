@@ -97,7 +97,7 @@ public class SharePost extends Fragment {
                                 txtPostContent.setText("");
                                 functions.showSnackBar(message, requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                                 Fragment timelineFragment = Timeline.newInstance();
-                                functions.LoadFragment(timelineFragment, "timelinePosts", requireActivity(), true,false);
+                                functions.LoadFragment(timelineFragment, "timeline", requireActivity(), true,false);
                                 break;
 
                             case "0":

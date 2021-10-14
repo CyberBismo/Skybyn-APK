@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -31,12 +30,12 @@ import java.util.Date;
 import kotlin.TypeCastException;
 
 public class Functions {
-    Integer initial_height = null;
     public static FragmentContainerView fragmentContainerView;
-    private View t_View;
+    Integer initial_height = null;
     CoordinatorLayout bottomLayout;
     ConstraintLayout fragmentConstraintLayout;
-    ConstraintLayout outerfragmentConstraintLayout;
+    String oldFragString;
+    private View t_View;
 
     public Boolean isJsonObject(String json) {
         return json.startsWith("{");
@@ -171,10 +170,15 @@ public class Functions {
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline, Boolean isFullChat) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
+        FragmentManager manager = fragActivity.getSupportFragmentManager();
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         fragmentConstraintLayout = activity.findViewById(R.id.fragmentConstraintLayout);
         fragmentConstraintLayout.requestLayout();
         bottomLayout = activity.findViewById(R.id.bottomLayout);
+
+        if (fragString.equalsIgnoreCase(oldFragString)){
+        return;
+        }
 
         if (initial_height == null) {
             initial_height = fragmentConstraintLayout.getLayoutParams().height;
@@ -182,18 +186,17 @@ public class Functions {
 
         if (isTimeline) {
             setTimelineFragmentHeight();
-        }else{
+        } else {
             setOtherFragmentHeight();
         }
-
-
-        FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();
 
+        oldFragString = fragString;
     }
+
 
     public String convertUnixToDateAndTime(Long UnixDateLong) {
         try {
