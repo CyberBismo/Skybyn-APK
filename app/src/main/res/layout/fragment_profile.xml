@@ -39,6 +39,41 @@
                 tools:ignore="TextContrastCheck" />
 
             <EditText
+                android:id="@+id/txtProfileEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profileUpdateViewsHeight"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="12dp"
+                android:width="100dp"
+                android:background="@drawable/textview_rounded_corner_gray"
+                android:enabled="true"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:hint="@string/email"
+                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/dark_gray"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btnSaveProfileEmail"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="12dp"
+                android:width="50dp"
+                android:height="30dp"
+                android:background="@drawable/button_selector"
+                android:text="@string/update"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/txtProfileOldPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
                 android:id="@+id/txtProfileFirstname"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/profileUpdateViewsHeight"
