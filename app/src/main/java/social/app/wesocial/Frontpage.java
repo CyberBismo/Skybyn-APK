@@ -1,4 +1,5 @@
 package social.app.wesocial;
+
 import static social.app.wesocial.R.drawable;
 import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
@@ -35,11 +36,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.multidex.BuildConfig;
-import androidx.preference.PreferenceManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
-import com.ftinc.scoop.Scoop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;

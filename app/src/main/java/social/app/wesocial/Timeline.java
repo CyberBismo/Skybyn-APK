@@ -1,7 +1,5 @@
 package social.app.wesocial;
 
-import static social.app.wesocial.Functions.fragmentContainerView;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,60 +29,67 @@ import java.util.HashMap;
 import timber.log.Timber;
 
 public class Timeline extends Fragment {
+    public String timelinePostsJson = "";
     Functions functions = new Functions();
     Data data = new Data();
     LottieAnimationView lottie;
     RecyclerView recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    public String timelinePostsJson = "";
 
-    private void displayTimelinePosts(String response) throws JSONException {
-    String timelinePostContent;
-    String timelinePostUsername;
-    String timelinePostDate;
-    String timelineUserID = null;
-    String timelinePostID;
-    String timelineILike;
-
-    String timelineAvatarLink;
-    String timelinePostLikes;
-    String timelinePostCommentsCount;
-
-    JSONArray jsonArray = new JSONArray(response);
-    ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
-    JSONObject jsonObject;
-
-
-    for (int i = 0; i < jsonArray.length(); i++) {
-        jsonObject = jsonArray.getJSONObject(i);
-        timelineAvatarLink = (String) jsonObject.get("avatar");
-        timelinePostDate = jsonObject.get("date").toString();
-        timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
-        timelinePostUsername = (String) jsonObject.get("username");
-        timelineUserID = (String) jsonObject.get("userID");
-        timelinePostID = (String) jsonObject.get("postID");
-        timelinePostLikes = jsonObject.get("likes").toString();
-        timelinePostCommentsCount = jsonObject.get("comments_count").toString();
-        timelinePostContent = (String) jsonObject.get("content");
-        timelineILike = jsonObject.get("ilike").toString();
-
-        timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
+    public Timeline() {
+        // Required empty public constructor
     }
 
-    TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost,false,timelineUserID,getActivity());
-    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-    recyclerView.setLayoutManager(mLayoutManager);
-    recyclerView.setAdapter(timelinepostsAdapter);
-    timelinepostsAdapter.notifyDataSetChanged();
+    public static Timeline newInstance() {
+        return new Timeline();
+    }
 
-}
+    private void displayTimelinePosts(String response) throws JSONException {
+        String timelinePostContent;
+        String timelinePostUsername;
+        String timelinePostDate;
+        String timelineUserID = null;
+        String timelinePostID;
+        String timelineILike;
 
-    private void loadTimelinePosts() throws JSONException
-    {
+        String timelineAvatarLink;
+        String timelinePostLikes;
+        String timelinePostCommentsCount;
+
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
+        JSONObject jsonObject;
+
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+            timelineAvatarLink = (String) jsonObject.get("avatar");
+            timelinePostDate = jsonObject.get("date").toString();
+            timelinePostDate = functions.convertUnixToDateAndTime(Long.valueOf(timelinePostDate));
+            timelinePostUsername = (String) jsonObject.get("username");
+            timelineUserID = (String) jsonObject.get("userID");
+            timelinePostID = (String) jsonObject.get("postID");
+            timelinePostLikes = jsonObject.get("likes").toString();
+            timelinePostCommentsCount = jsonObject.get("comments_count").toString();
+            timelinePostContent = (String) jsonObject.get("content");
+            timelineILike = jsonObject.get("ilike").toString();
+
+            timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
+        }
+
+        TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, false, timelineUserID, getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(timelinepostsAdapter);
+        timelinepostsAdapter.notifyDataSetChanged();
+
+    }
+
+    private void loadTimelinePosts() throws JSONException {
         if (functions.isJsonArray(timelinePostsJson)) {
             displayTimelinePosts(timelinePostsJson);
             Timber.i("True");
-        }else{
+        } else {
             functions.showProgress(lottie);
             Timber.i("false");
         }
@@ -135,16 +140,6 @@ public class Timeline extends Fragment {
 
         networkController.PostMethod(data.timeline_Api, postData);
     }
-
-
-    public Timeline() {
-        // Required empty public constructor
-    }
-
-    public static Timeline newInstance() {
-        return new Timeline();
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
