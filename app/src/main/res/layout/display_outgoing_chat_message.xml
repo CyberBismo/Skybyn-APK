@@ -36,7 +36,7 @@
         android:background="@drawable/rounded_corner_main"
         android:gravity="end"
         android:inputType="textMultiLine|textImeMultiLine|textNoSuggestions"
-        android:padding="13dp"
+        android:padding="8dp"
         android:textColor="@color/white"
         android:textDirection="anyRtl"
         android:textSize="13sp"
