@@ -129,7 +129,6 @@ public class userTimelineActivity extends AppCompatActivity {
                         }
 
 
-                        //Start the PUSH SERVICE after successful Login
                         String username = jsonObject.getString("username");
                         String email = jsonObject.getString("email");
                         String avatarLink = jsonObject.getString("avatar");
@@ -153,7 +152,7 @@ public class userTimelineActivity extends AppCompatActivity {
 
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgUserProfilePhoto);
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgUserCoverPhoto);
-                        imgUserCoverPhoto.setColorFilter(R.color.dark_gray, PorterDuff.Mode.OVERLAY);
+                        imgUserCoverPhoto.setColorFilter(R.color.dark_gray, PorterDuff.Mode.DARKEN);
                         imgUserProfilePhoto.bringToFront();
 
 

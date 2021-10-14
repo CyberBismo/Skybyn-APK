@@ -3,7 +3,6 @@ package social.app.wesocial;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -25,11 +24,12 @@ public class PushNotificationService extends FirebaseMessagingService {
     int notificationId;
 
     Boolean gottenToken = false;
+
     public PushNotificationService() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
-                        Timber.i("Fetching FCM registration token failed"+" "+task.getException());
+                        Timber.i("Fetching FCM registration token failed" + " " + task.getException());
                         return;
                     }
                     // Get new FCM registration token
@@ -73,7 +73,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                 case "chat":
                     String friendID = remoteMessage.getData().get("from");
                     builder.setSmallIcon(R.drawable.chat);
-                    default:
+                default:
                     break;
             }
 
