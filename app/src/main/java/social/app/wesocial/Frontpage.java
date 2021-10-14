@@ -43,6 +43,7 @@ import com.ftinc.scoop.Scoop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseApp;
 
 import org.jetbrains.annotations.NotNull;
@@ -371,9 +372,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    public void loadUserProfile(String userID) {
+    public void loadUserProfile(String myUserID) {
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("userID", userID);
+        postData.put("userID", myUserID);
 
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
@@ -445,8 +446,16 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
-                logOut();
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(android.R.id.content), getString(string.network_something_wrong), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.retry), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                loadUserProfile(myUserID);
+                            }
+                        });
+
+                snackbar.show();
 
             }
         });

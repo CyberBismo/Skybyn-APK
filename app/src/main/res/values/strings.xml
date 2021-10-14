@@ -23,7 +23,7 @@
     <string name="verified">Account Verified!</string>
     <string name="awaiting_verification">Awaiting verification!</string>
     <string name="something_wrong">Something went wrong!</string>
-    <string name="network_something_wrong">Network error, Something went wrong!</string>
+    <string name="network_something_wrong">Network error!</string>
     <string name="wrong_credentials">Wrong credentials!</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="biometrics_required">We Social</string>
@@ -153,4 +153,5 @@
     <string name="channel_description">push_channel_description</string>
     <string name="no_message">No messages yet!</string>
     <string name="about_me">About Me</string>
+    <string name="retry">Retry!</string>
 </resources>

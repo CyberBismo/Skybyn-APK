@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,7 +119,17 @@ public class Timeline extends Fragment {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(requireActivity().findViewById(android.R.id.content), getString(R.string.network_something_wrong), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.retry), view -> {
+                            try {
+                                loadTimelinePosts();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                snackbar.show();
             }
         });
 
