@@ -123,7 +123,7 @@ public class showFullPost extends AppCompatActivity {
         txtShowTimelinePostDelete = postTimelineCardView.findViewById(R.id.txtTimelinePostDelete);
         txtShowTimelinePostEdit = postTimelineCardView.findViewById(R.id.txtShowTimelinePostEdit);
 
-        txtCommentsCount = findViewById(R.id.txtCommentsCount);
+        //txtCommentsCount = findViewById(R.id.txtCommentsCount);
         btnSendTimelineComment = findViewById(R.id.btnSendTimelineComment);
         txtPostComment = findViewById(R.id.txtShowPostComment);
         lottie = findViewById(R.id.showTimelinePostProgressView);
@@ -162,7 +162,7 @@ public class showFullPost extends AppCompatActivity {
         postAvatarlink = Objects.requireNonNull(timelinePostDetails.get("avatarLink")).toString();
         postCommentsCount = Objects.requireNonNull(timelinePostDetails.get("comments_count")).toString();
         userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
-        actionBar.setTitle("Comments:" + " " + postContent);
+        actionBar.setTitle(" " + postContent);
 
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
     }
@@ -218,7 +218,7 @@ public class showFullPost extends AppCompatActivity {
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
-                    txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
+                    //txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
                     if(iJustCommented){
                         int scrollTo  = commentData.size()-1;
                         recyclerView.scrollToPosition(scrollTo);

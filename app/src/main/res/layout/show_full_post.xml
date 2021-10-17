@@ -60,23 +60,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.028" />
 
-            <TextView
-                android:id="@+id/txtCommentsCount"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/transparent_full"
-                android:fontFamily="@font/nexabold"
-                android:gravity="center_horizontal|center_vertical"
-                android:singleLine="true"
-                android:text="@string/comments"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@+id/txtShowTimelinePostDate"
-                app:layout_constraintEnd_toStartOf="@+id/txtCommentDelete"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/commentsRecyclerview"
                 android:layout_width="match_parent"
