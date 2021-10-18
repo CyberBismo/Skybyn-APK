@@ -36,7 +36,7 @@ import timber.log.Timber;
 class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
 
     private final List<TimelineDataClass> TimelineDataClass;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     String postID;
     Integer PostLength = data.maxPostDisplayLength;
@@ -80,12 +80,14 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
     @Override
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
+        functions = new Functions(holder.itemView.getContext());
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
         holder.txtUsername.setText(timelineDataClass.getUsername());
         holder.txtUsername.setTag(timelineDataClass.getUserID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
         holder.txtTimelineLikes.setText(trimValue(timelineDataClass.getLikes()));
         holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
+        functions.loadProfilePictureDrawableThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
 
         if (timelineDataClass.getContent().length() > PostLength) {
             holder.txtTimelineContent.setText(Html.fromHtml(timelineDataClass.getContent().substring(0, PostLength) + "<font color=\"#005DC1\"> <u>View More</u></font>"));
@@ -114,7 +116,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
             timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
 
-            i.putExtra("timeLinePostDetails", timeLinePostDetails);
+            i.putExtra( "timeLinePostDetails", timeLinePostDetails);
             holder.itemView.getContext().startActivity(i);
 
         });
@@ -136,7 +138,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             holder.txtTimelinePostDelete.setVisibility(View.INVISIBLE);
         }
 
-        functions.loadProfilePictureDrawableThumb(timelineDataClass.getAvatarLink(), holder.imgTimelinePostPicture);
+
 
         //Timeline Delete Post
 

@@ -32,7 +32,7 @@ public class Friends extends Fragment {
     static LottieAnimationView lottie;
     RecyclerView friendsRecyclerView;
     TextView txtFriendsTitle;
-    static Functions functions = new Functions();
+    static Functions functions;
     Data data = new Data();
     static String action;
     Button btnShowFriends ;
@@ -47,6 +47,7 @@ public class Friends extends Fragment {
         Friends fragment = new Friends();
         action = "";
         action = param1;
+         functions= new Functions(fragment.requireContext());
         return fragment;
 
     }

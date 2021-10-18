@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> {
     private final List<MessageListDataClass> MessageListDataClass;
-    Functions functions = new Functions();
+
     Data data = new Data();
 
 

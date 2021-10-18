@@ -31,7 +31,7 @@ import timber.log.Timber;
 
 public class Notification extends Fragment {
 
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     RecyclerView recyclerView;
     TextView lblNotificationsTitle;
@@ -71,6 +71,7 @@ public class Notification extends Fragment {
         recyclerView = requireView().findViewById(R.id.notificationsRecyclerView);
         lblNotificationsTitle = requireView().findViewById(R.id.lblNotificationsTitle);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        functions= new Functions(requireContext());
         try {
             loadNotification();
         } catch (JSONException e) {

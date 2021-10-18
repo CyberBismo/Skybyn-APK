@@ -1,6 +1,7 @@
 package social.app.wesocial;
 
 
+//import android.content.Context;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
@@ -31,52 +31,66 @@ import java.util.concurrent.Executor;
 
 
 public class LoginRegisterForgot extends AppCompatActivity {
+    public EditText txtforgot_email;
+    public String ErrorMessage = "";
+    public SharedPreferences sharedpreferences;
+    public Functions functions;
+    public LottieAnimationView lottieview;
     Data data = new Data();
     FrameLayout verify_form;
     String oneTimetoken;
     Executor executor;
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
+    EditText txtOneTimeCode;
+    FrameLayout signup_form;
+    FrameLayout forgot_form;
+    FrameLayout Signin_form;
+    private Button login_btnShowForgotForm;
 
-    private Button forgot_si;
-    private Button signup_si;
-    private Button forgot_su;
-    private Button signin_su;
-    private Button signin_f;
-    private Button signup_f;
+
     private EditText txtLoginUserName;
     private EditText txtLoginPassWord;
     private EditText txtUsername;
     private EditText txtPassword;
     private EditText txtConfirmPassword;
     private EditText txtEmail;
-    EditText txtOneTimeCode;
     private TextView txtVerify;
     private Button BtnVerify_email;
-    public EditText forgot_email;
-    public String ErrorMessage = "";
-    public SharedPreferences sharedpreferences;
-    public Functions functions = new Functions();
-    public LottieAnimationView lottieview;
+    private Button login_btnShowSignupForm, login_btnShowLoginForm;
 
-    FrameLayout signup_form;
-    FrameLayout forgot_form;
-    FrameLayout signin_form;
+    public void setFrameLayoutVisibility(FrameLayout frameLayout) {
+        FrameLayout layout = findViewById(R.id.mainFrameLayout);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof FrameLayout) {
+                if (v == frameLayout) {
+                    v.setVisibility(View.VISIBLE);
+                    v.bringToFront();
+                } else {
+                    v.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        }
+
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Functions functions = new Functions();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        //FindView by ID, shoul have used DataBinding from the start
-        lottieview = findViewById(R.id.loginProgressView);
-        signin_su = findViewById(R.id.signin_su);
-        signin_f = findViewById(R.id.signin_f);
-        signup_si = findViewById(R.id.signup_si);
-        signup_f = findViewById(R.id.signup_f);
-        forgot_si = findViewById(R.id.forgot_si);
-        forgot_su = findViewById(R.id.forgot_su);
+
+        functions = new Functions(this);
+
+        LottieAnimationView lottieview = findViewById(R.id.loginProgressView);
+
+        login_btnShowForgotForm = findViewById(R.id.login_btnShowForgotForm);
+        login_btnShowSignupForm = findViewById(R.id.login_btnShowSignupForm);
+         login_btnShowLoginForm = findViewById(R.id.login_btnShowLoginForm);
+
         txtVerify = findViewById(R.id.verify_email_check);
         txtLoginUserName = findViewById(R.id.txtUsername);
         txtOneTimeCode = findViewById(R.id.txtOTC);
@@ -85,23 +99,26 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtPassword = findViewById(R.id.Password);
         txtConfirmPassword = findViewById(R.id.cPassword);
         txtEmail = findViewById(R.id.Email);
-        verify_form = findViewById(R.id.verify_form);
+        txtforgot_email = findViewById(R.id.forgot_email);
+
         TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
-        Button btnSign_up = findViewById(R.id.sign_up);
-        signin_form = findViewById(R.id.signin_form);
+        Button btnSign_up = findViewById(R.id.btnProcessSignUp);
+
+        //DECLARING FORM
+
+        Signin_form = findViewById(R.id.signin_form);
         forgot_form = findViewById(R.id.forgot_form);
-        forgot_email = findViewById(R.id.forgot_email);
         signup_form = findViewById(R.id.signup_form);
+        verify_form = findViewById(R.id.verify_form);
+
+
 
         Button BtnForgotPassword;
-        Button btnSignIn = findViewById(R.id.BtnSignIn);
+        Button btnProcessSignIn = findViewById(R.id.BtnProcessLogin);
         Button btnVerifyOTC = findViewById(R.id.btnVerifyOTC);
 
         lblCloseVerify.setOnClickListener(view -> {
-            verify_form.setVisibility(View.INVISIBLE);
-            txtOneTimeCode.setText("");
-            signup_form.setVisibility(View.VISIBLE);
-            signin_form.setVisibility(View.INVISIBLE);
+           setFrameLayoutVisibility(verify_form);
         });
 
         //INITIALIZE THE SHAREDPREF FILE
@@ -122,7 +139,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 super.onAuthenticationError(errorCode, errString);
                 functions.hideProgress(lottieview);
                 errString = getString(R.string.biometric_auth_error);
-                ShowToast(errString.toString());
+                functions.ShowToast(errString.toString());
                 //LoginRegisterForgot.this.finish();
             }
 
@@ -131,18 +148,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 functions.hideProgress(lottieview);
                 super.onAuthenticationFailed();
                 String errorMsg = getString(R.string.biometric_auth_failed);
-                ShowToast(errorMsg);
+                functions.ShowToast(errorMsg);
             }
         });
 
 
-        signin_su.setOnClickListener(v -> toggleSignin());
-        signup_si.setOnClickListener(v -> toggleSignup());
-        signin_f.setOnClickListener(v -> toggleSignin());
-        signup_f.setOnClickListener(v -> toggleSignup());
-        forgot_si.setOnClickListener(v -> toggleForgot());
-        forgot_su.setOnClickListener(v -> toggleForgot());
-
+        login_btnShowForgotForm.setOnClickListener(v -> toggleForgot());
+        login_btnShowSignupForm.setOnClickListener(v->toggleSignup());
+        login_btnShowLoginForm.setOnClickListener(v->toggleSignin();
 
         //BUTTON TO VERIFY ONE TIME CODE
         btnVerifyOTC.setOnClickListener(view -> {
@@ -159,16 +172,16 @@ public class LoginRegisterForgot extends AppCompatActivity {
         });
 
         //BUTTON TO SignIn
-        btnSignIn.setOnClickListener(v -> {
+        btnProcessSignIn.setOnClickListener(v -> {
             functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (TextUtils.isEmpty(txtLoginUserName.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtLoginUserName.setError(ErrorMessage);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtLoginPassWord.getText())) {
                 ErrorMessage = getString(R.string.password_required);
                 txtLoginPassWord.setError(ErrorMessage);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
             } else {
                 signInRequests();
             }
@@ -180,14 +193,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
             if (TextUtils.isEmpty(txtUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtUsername.setError(ErrorMessage);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtPassword.getText())) {
                 ErrorMessage = getString(R.string.password_required);
                 txtPassword.setError(ErrorMessage);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtConfirmPassword.getText())) {
                 ErrorMessage = getString(R.string.confirmation_password_required);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
 
             } else {
                 String password = txtPassword.getText().toString();
@@ -200,32 +213,32 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     ErrorMessage = getString(R.string.password_unmatch);
                     txtPassword.setError(ErrorMessage);
                     txtConfirmPassword.setError(ErrorMessage);
-                    ShowToast(ErrorMessage);
+                    functions.ShowToast(ErrorMessage);
                 }
             }
         });
 
         //BUTTON TO VERIFY Email
-        BtnVerify_email = findViewById(R.id.verify_email);
+        BtnVerify_email = findViewById(R.id.btnSendVerifyEmail);
         BtnVerify_email.setOnClickListener(v -> {
             functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (!functions.validateEmail(txtEmail.getText().toString())) {
-                ShowToast(getString(R.string.invalid_email));
+                functions.ShowToast(getString(R.string.invalid_email));
             }
 
             if (TextUtils.isEmpty(txtEmail.getText())) {
                 ErrorMessage = getString(R.string.email_required);
                 txtEmail.setError(ErrorMessage);
-                ShowToast(ErrorMessage);
+                functions.ShowToast(ErrorMessage);
             } else {
                 BtnVerify_email.setVisibility(View.INVISIBLE);
                 verifyRegistrationEmailRequests(txtEmail.getText().toString());
             }
         });
-        Button BtnCancel_email = findViewById(R.id.cancel_email);
+        Button BtnCancel_email = findViewById(R.id.btnCancelVerifyEmail);
         BtnCancel_email.setOnClickListener(v -> cancelEmail());
 
-        BtnForgotPassword = findViewById(R.id.forgot);
+        BtnForgotPassword = findViewById(R.id.btnSendPasswordRequest);
         BtnForgotPassword.setOnClickListener(v -> forgotPasswordRequests());
 
         //Checking if SharedPref contains a Username key
@@ -235,20 +248,20 @@ public class LoginRegisterForgot extends AppCompatActivity {
             if (showFingerPrintPrompt) {
                 functions.showFingerPrintPrompt(lottieview);
                 biometricPrompt();
-            }else{
+            } else {
                 checkLoginStatus();
             }
         }
     }
 
     public void forgotPasswordRequests() {
-        if (forgot_email.getText().toString().equals("")) {
-            ShowToast(getString(R.string.email_required));
+        if (txtforgot_email.getText().toString().equals("")) {
+            functions.ShowToast(getString(R.string.email_required));
             return;
         }
 
         HashMap<String, String> postData = new HashMap<>();
-        String mail = forgot_email.getText().toString();
+        String mail = txtforgot_email.getText().toString();
         postData.put("email", mail);
         NetworkController networkController = new NetworkController(this, new NetworkController.IResult() {
             @Override
@@ -260,19 +273,19 @@ public class LoginRegisterForgot extends AppCompatActivity {
                         String responseCode = jsonObject.get("responseCode").toString();
                         switch (responseCode) {
                             case "1":
-                                ShowToast(jsonObject.get("message").toString());
+                                functions.ShowToast(jsonObject.get("message").toString());
                                 toggleSignin();
                                 break;
 
                             case "0":
-                                ShowToast(jsonObject.get("message").toString());
+                                functions.ShowToast(jsonObject.get("message").toString());
                                 break;
                         }
 
                     }
 
                     if (!jsonObject.has("responseCode")) {
-                        ShowToast(getString(R.string.something_wrong));
+                        functions.ShowToast(getString(R.string.something_wrong));
                     }
 
                 } catch (JSONException e) {
@@ -284,7 +297,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
             @Override
             public void notifyError(VolleyError error) {
-                ShowToast(getString(R.string.network_something_wrong));
+                functions.ShowToast(getString(R.string.network_something_wrong));
             }
         });
 
@@ -312,21 +325,21 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     if (jsonObject.has("responseCode")) {
                         String responseCode = jsonObject.get("responseCode").toString();
                         if (responseCode.equals("1")) {
-                            ShowToast(jsonObject.get("message").toString());
+                            functions.ShowToast(jsonObject.get("message").toString());
                             oneTimetoken = jsonObject.get("token").toString();
-                            //HIDE SIGNU and SignIn
+                            //HIDE SIGNUP and SignIn
                             signup_form.setVisibility(View.INVISIBLE);
                             signin_f.setVisibility(View.INVISIBLE);
                             verify_form.setVisibility(View.VISIBLE);
                             verify_form.bringToFront();
 
                         } else if (responseCode.equals("0")) {
-                            ShowToast(jsonObject.get("message").toString());
+                            functions.ShowToast(jsonObject.get("message").toString());
 
                         }
                     }
                     if (!jsonObject.has("responseCode")) {
-                        ShowToast(getString(R.string.something_wrong));
+                        functions.ShowToast(getString(R.string.something_wrong));
 
                     }
                 } catch (JSONException e) {
@@ -338,7 +351,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottieview);
-                ShowToast(getString(R.string.network_something_wrong));
+                functions.ShowToast(getString(R.string.network_something_wrong));
             }
         });
         functions.showProgress(lottieview);
@@ -368,18 +381,18 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     if (jsonObject.has("responseCode")) {
                         String responseCode = jsonObject.get("responseCode").toString();
                         if (responseCode.equals("1")) {
-                            ShowToast(jsonObject.get("message").toString());
+                            functions.ShowToast(jsonObject.get("message").toString());
                             signup_form.setVisibility(View.INVISIBLE);
                             verify_form.setVisibility(View.INVISIBLE);
                             txtOneTimeCode.setText("");
-                            signin_form.setVisibility(View.VISIBLE);
+                            Signin_form.setVisibility(View.VISIBLE);
                         } else if (responseCode.equals("0")) {
-                            ShowToast(jsonObject.get("message").toString());
+                            functions.ShowToast(jsonObject.get("message").toString());
 
                         }
                     }
                     if (!jsonObject.has("responseCode")) {
-                        ShowToast(getString(R.string.something_wrong));
+                        functions.ShowToast(getString(R.string.something_wrong));
 
                     }
                 } catch (JSONException e) {
@@ -391,7 +404,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottieview);
-                ShowToast(getString(R.string.network_something_wrong));
+                functions.ShowToast(getString(R.string.network_something_wrong));
             }
         });
         functions.showProgress(lottieview);
@@ -463,19 +476,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     // Switch forms and buttons
     public void toggleSignup() {
-        FrameLayout signin_form = findViewById(R.id.signin_form);
-        FrameLayout forgot_form = findViewById(R.id.forgot_form);
-        FrameLayout signup_form = findViewById(R.id.signup_form);
-
-        signin_su.setVisibility(View.VISIBLE);
-        forgot_su.setVisibility(View.VISIBLE);
-        signup_form.setVisibility(View.VISIBLE);
-        signup_si.setVisibility(View.INVISIBLE);
-        forgot_si.setVisibility(View.INVISIBLE);
-        signin_form.setVisibility(View.INVISIBLE);
-        signin_f.setVisibility(View.INVISIBLE);
-        signup_f.setVisibility(View.INVISIBLE);
-        forgot_form.setVisibility(View.INVISIBLE);
+        setFrameLayoutVisibility(signup_form);
     }
 
     public void cancelEmail() {
@@ -488,8 +489,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
         signin_su.setVisibility(View.VISIBLE);
         forgot_su.setVisibility(View.VISIBLE);
         signup_form.setVisibility(View.VISIBLE);
-        signup_si.setVisibility(View.INVISIBLE);
-        forgot_si.setVisibility(View.INVISIBLE);
+        btnSignup_si.setVisibility(View.INVISIBLE);
+        login_btnShowForgotForm.setVisibility(View.INVISIBLE);
         signin_form.setVisibility(View.INVISIBLE);
         signin_f.setVisibility(View.INVISIBLE);
         signup_f.setVisibility(View.INVISIBLE);
@@ -501,37 +502,12 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     public void toggleForgot() {
-        FrameLayout signin_form = findViewById(R.id.signin_form);
-        FrameLayout forgot_form = findViewById(R.id.forgot_form);
-        FrameLayout signup_form = findViewById(R.id.signup_form);
-
-        signin_su.setVisibility(View.INVISIBLE);
-        forgot_su.setVisibility(View.INVISIBLE);
-        signup_form.setVisibility(View.INVISIBLE);
-        signup_si.setVisibility(View.INVISIBLE);
-        forgot_si.setVisibility(View.INVISIBLE);
-        signin_form.setVisibility(View.INVISIBLE);
-        signin_f.setVisibility(View.VISIBLE);
-        signup_f.setVisibility(View.VISIBLE);
-        forgot_form.setVisibility(View.VISIBLE);
-        forgot_form.bringToFront();
+        setFrameLayoutVisibility(forgot_form);
     }
-
-    public void toggleViews(FrameLayout frameLayout){
-
-    }
+    
 
     public void toggleSignin() {
-
-        signin_su.setVisibility(View.INVISIBLE);
-        forgot_su.setVisibility(View.INVISIBLE);
-        signup_form.setVisibility(View.INVISIBLE);
-        signup_si.setVisibility(View.VISIBLE);
-        forgot_si.setVisibility(View.VISIBLE);
-        signin_form.setVisibility(View.VISIBLE);
-        signin_f.setVisibility(View.INVISIBLE);
-        signup_f.setVisibility(View.INVISIBLE);
-        forgot_form.setVisibility(View.INVISIBLE);
+        setFrameLayoutVisibility(Signin_form);
     }
 
     public void checkLoginStatus() {
@@ -560,10 +536,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         biometricPrompt.authenticate(promptInfo);
     }
 
-    //Show Toast Method
-    public void ShowToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
+
 
 
 }

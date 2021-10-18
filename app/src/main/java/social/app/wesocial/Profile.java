@@ -28,7 +28,7 @@ import timber.log.Timber;
 
 
 public class Profile extends Fragment {
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     LottieAnimationView lottie;
 
@@ -60,7 +60,7 @@ public class Profile extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
-
+        functions = new Functions(requireContext());
         txtProfilefirstName = requireActivity().findViewById(R.id.txtProfileFirstname);
         txtProfilelastName = requireActivity().findViewById(R.id.txtProfileLastname);
         txtProfilemiddleName = requireActivity().findViewById(R.id.txtProfileMiddlename);
@@ -84,9 +84,23 @@ public class Profile extends Fragment {
         txtProfilenickName.setText(Frontpage.nickName);
         txtProfileAboutMe.setText(Frontpage.aboutMe);
         txtProfileEmail.setText(Frontpage.email);
+
         //EVENTS
-        btnUpdateProfilePassword.setOnClickListener(view1 -> updatePasswordRequest());
-        btnUpdateProfileEmail.setOnClickListener(view1 -> updateEmailRequest());
+        btnUpdateProfilePassword.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(requireActivity());
+            updatePasswordRequest();
+        });
+
+        btnUpdateProfileEmail.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(requireActivity());
+            updateEmailRequest();
+
+        });
+    }
+
+
+    public void updateProfile() {
+
     }
 
     public void updateEmailRequest() {
@@ -129,7 +143,7 @@ public class Profile extends Fragment {
 
                     if (responseCode.equals("1")) {
                         String token = jsonObject.get("token").toString();
-                        AlertDialog.Builder alertName = new AlertDialog.Builder(requireContext(),R.style.AlertDialog_AppCompat_Light);
+                        AlertDialog.Builder alertName = new AlertDialog.Builder(requireContext(), R.style.AlertDialog_AppCompat_Light);
                         final EditText editTextName1 = new EditText(requireContext());
                         alertName.setTitle(getString(R.string.enter_the_verification_code));
                         alertName.setView(editTextName1);
@@ -168,7 +182,6 @@ public class Profile extends Fragment {
                                             if (responseCode.equals("1")) {
                                                 functions.showSnackBar(message, requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                                                 functions.hideSoftKeyboard(requireActivity());
-
                                             }
 
                                             if (responseCode.equals("0")) {
@@ -229,7 +242,6 @@ public class Profile extends Fragment {
         }
 
 
-
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
         postData.put("old_pw", currentPassword);
@@ -255,20 +267,22 @@ public class Profile extends Fragment {
                             txtProfileNewPassword.setText("");
                             txtProfileConfirmNewPassword.setText("");
                             functions.showSnackBar(message, requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
-                            functions.ShowToast(requireContext(),"Please, Log in again.");
                             SharedPreferences.Editor sharedPrefEditor = Frontpage.sharedpreferences.edit();
+                            sharedPrefEditor.putString("password", newPassword);
                             sharedPrefEditor.clear();
                             sharedPrefEditor.apply();
 
                             Intent intent = new Intent(requireContext(), LoginRegisterForgot.class);
                             startActivity(intent);
                             break;
-                        case "0":
+
+                        default:
                             functions.showSnackBarError(message, requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                             break;
                     }
                 }
             }
+
             @Override
             public void notifyError(VolleyError error) {
                 btnUpdateProfilePassword.setEnabled(true);
@@ -276,7 +290,7 @@ public class Profile extends Fragment {
                 functions.showSnackBarError(getString(R.string.network_something_wrong), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
             }
         });
-        networkController.PostMethod(data.updatePassword_Api,postData);
+        networkController.PostMethod(data.updatePassword_Api, postData);
     }
 
 

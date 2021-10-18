@@ -29,7 +29,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
     private final List <FriendsDataClass> FriendsDataClass;
 
-    Functions functions =new Functions();
+    Functions functions;
     Data data =new Data();
 
     @NonNull
@@ -41,6 +41,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
     @Override
     public void onBindViewHolder(@NonNull FriendsRequestsAdapter.ViewHolder holder, int position) {
+         functions=new Functions(holder.itemView.getContext());
         Activity activity = (Activity) holder.itemView.getContext();
         LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
 

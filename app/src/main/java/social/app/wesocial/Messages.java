@@ -29,7 +29,7 @@ import timber.log.Timber;
 
 public class Messages extends Fragment {
 
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     LottieAnimationView lottie;
     RecyclerView recyclerView;
@@ -82,7 +82,7 @@ public class Messages extends Fragment {
             messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
         }
 
-        MessageListAdapter messageListAdapter = new MessageListAdapter(messages,requireActivity());
+        MessageListAdapter messageListAdapter = new MessageListAdapter(messages,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(messageListAdapter);
@@ -132,7 +132,7 @@ public class Messages extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
-
+        functions= new Functions(requireContext());
         if (functions.isJsonArray(loadedMessagesJson)){
             try {
                 listMessagesOnRecyclerView(loadedMessagesJson);

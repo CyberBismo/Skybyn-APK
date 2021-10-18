@@ -96,7 +96,7 @@ public static RecyclerView recyclerView;
             userSearchData.add(new UserDataClass(searchUserID,searchUserAvatarLink,searchUserNickname,searchUsername,isSearchedUserAFriend,searchUserOnline));
         }
 
-        userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData);
+        userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData,requireContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(userSearchAdapter);

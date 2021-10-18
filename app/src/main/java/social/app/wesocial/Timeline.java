@@ -30,7 +30,7 @@ import timber.log.Timber;
 
 public class Timeline extends Fragment {
     public String timelinePostsJson = "";
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     LottieAnimationView lottie;
     RecyclerView recyclerView;
@@ -88,10 +88,8 @@ public class Timeline extends Fragment {
     private void loadTimelinePosts() throws JSONException {
         if (functions.isJsonArray(timelinePostsJson)) {
             displayTimelinePosts(timelinePostsJson);
-            Timber.i("True");
         } else {
             functions.showProgress(lottie);
-            Timber.i("false");
         }
 
         Frontpage.isTimeline = true;
@@ -105,12 +103,11 @@ public class Timeline extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                functions.hideProgress(lottie);
+
                 Timber.i(response);
 
                 if (!functions.isJsonArray(response)) {
                     functions.showSnackBarError(requireActivity().getString(R.string.no_timeline), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
-                    return;
                 }
 
                 if (functions.isJsonArray(response)) {
@@ -118,7 +115,7 @@ public class Timeline extends Fragment {
                     displayTimelinePosts(response);
 
                 }
-
+                functions.hideProgress(lottie);
             }
 
             @Override
@@ -168,6 +165,7 @@ public class Timeline extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = requireActivity().findViewById(R.id.postsRecyclerView);
+        functions= new Functions(requireContext());
 
         try {
             loadTimelinePosts();

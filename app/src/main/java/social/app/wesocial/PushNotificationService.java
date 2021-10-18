@@ -2,10 +2,12 @@ package social.app.wesocial;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import com.android.volley.VolleyError;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -64,18 +66,23 @@ public class PushNotificationService extends FirebaseMessagingService {
         createNotificationChannel();
     }
 
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+
         if (remoteMessage.getData().containsKey("type")) {
             switch (remoteMessage.getData().get("type")) {
                 case "chat":
                     String friendID = remoteMessage.getData().get("from");
                     builder.setSmallIcon(R.drawable.chat);
+
                 default:
                     break;
             }
+
+
 
             builder.setContentTitle(remoteMessage.getData().get("title"))
                     .setContentText(remoteMessage.getData().get("body"))
@@ -83,12 +90,11 @@ public class PushNotificationService extends FirebaseMessagingService {
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            //  if (!Frontpage.isVisible) {
-            // notificationId is a unique int for each notification that you must define
+
             notificationId = 9999;
             notificationManager.notify(notificationId, builder.build());
 
-            //   }
+
         }
     }
 

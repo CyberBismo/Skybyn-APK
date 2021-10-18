@@ -20,13 +20,14 @@ public class NetworkController {
     Context context;
     RequestQueue requestQueue;
     IResult result;
-    Functions functions = new Functions();
+    Functions functions;
 
 
     public NetworkController(Context context, IResult result) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
         this.result = result;
+        functions= new Functions(context);
 
     }
 
@@ -64,8 +65,7 @@ public class NetworkController {
                 }, error -> {
             Timber.e(error.toString());
             result.notifyError(error);
-            Functions functions = new Functions();
-            functions.ShowToast(context,context.getString(R.string.network_something_wrong));
+            functions.ShowToast(context.getString(R.string.network_something_wrong));
         });
         requestQueue.add(GetRequest);
     }

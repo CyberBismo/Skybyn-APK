@@ -30,7 +30,7 @@ import timber.log.Timber;
 class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     private final List<CommentDataClass> CommentDataClass;
     private final Activity activity;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     String postID;
     String userID;
@@ -40,6 +40,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         CommentDataClass = commentDataClass;
         this.userID = userID;
         this.activity = activity;
+         functions= new Functions(activity.getApplicationContext());
     }
 
     @NonNull

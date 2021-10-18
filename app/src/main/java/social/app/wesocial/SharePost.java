@@ -28,7 +28,7 @@ public class SharePost extends Fragment {
 
     public TextView txtPostContent;
     public Button btnPost;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
 
     public SharePost() {
@@ -36,9 +36,11 @@ public class SharePost extends Fragment {
     }
 
     public static SharePost newInstance() {
-        return new SharePost();
-    }
 
+        return new SharePost();
+
+    }
+    ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class SharePost extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         txtPostContent = requireView().findViewById(R.id.txtTimelineContent);
         btnPost = requireView().findViewById(R.id.btnPost);
-
+        functions = new Functions(requireContext());
 
         txtPostContent.requestFocus();
         if (txtPostContent.requestFocus()) {

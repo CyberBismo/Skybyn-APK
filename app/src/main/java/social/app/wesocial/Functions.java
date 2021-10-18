@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,13 +21,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import kotlin.TypeCastException;
+import timber.log.Timber;
 
 public class Functions {
     public static FragmentContainerView fragmentContainerView;
@@ -36,8 +40,12 @@ public class Functions {
     CoordinatorLayout bottomLayout;
     ConstraintLayout fragmentConstraintLayout;
     String oldFragString;
+    Context context;
     private View t_View;
 
+    public Functions(Context context) {
+        this.context = context;
+    }
 
     public Boolean isJsonObject(String json) {
         return json.startsWith("{");
@@ -87,7 +95,7 @@ public class Functions {
     }
 
 
-    public void ShowToast(Context context, Object string) {
+    public void ShowToast(Object string) {
         Toast.makeText(context, string.toString(), Toast.LENGTH_LONG).show();
     }
 
@@ -161,7 +169,6 @@ public class Functions {
     }
 
 
-
     public void setTimelineFragmentHeight() {
         //MAINTAIN CURRENT HEIGHT
         bottomLayout.setVisibility(View.VISIBLE);
@@ -180,8 +187,8 @@ public class Functions {
         fragmentConstraintLayout.requestLayout();
         bottomLayout = activity.findViewById(R.id.bottomLayout);
 
-        if (fragString.equalsIgnoreCase(oldFragString)){
-        return;
+        if (fragString.equalsIgnoreCase(oldFragString)) {
+            return;
         }
 
         if (initial_height == null) {
@@ -190,13 +197,11 @@ public class Functions {
 
         if (isTimeline) {
             setTimelineFragmentHeight();
-            transaction.add(R.id.fragmentContainerView, fragment, fragString);
         } else {
-            transaction.replace(R.id.fragmentContainerView, fragment, fragString);
             setOtherFragmentHeight();
         }
 
-        //transaction.replace(R.id.fragmentContainerView, fragment, fragString);
+        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();
         oldFragString = fragString;

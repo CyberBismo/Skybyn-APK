@@ -29,7 +29,7 @@ public class showFullChat extends Fragment {
     private static String chat_friendID = "";
     private static Drawable online_status_drawable = null;
     public EditText txtChatMessageContent;
-    Functions functions = new Functions();
+    static Functions  functions;
     Data data = new Data();
     private String OldMessageJson;
     ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
@@ -49,6 +49,7 @@ public class showFullChat extends Fragment {
         chat_avatar = param3;
         chat_friendID = friendID;
         chatMessageJson =chatJson;
+
         return fragment;
     }
 
@@ -75,18 +76,22 @@ public class showFullChat extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        functions= new Functions(getContext());
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBack);
         ImageView imgChatHeaderOnlineStatus = view.findViewById(R.id.imgChatHeaderOnlineStatus);
         ImageView imgChatHeaderProfilePicture = view.findViewById(R.id.imgChatHeaderProfilePicture);
         TextView txtChatHeaderUsername = view.findViewById(R.id.imgChatUsernameTitle);
+
         chatScrollView = view.findViewById(R.id.chatScrollView);
         txtChatMessageContent = view.findViewById(R.id.txtChatMessageContent);
         Button btnChatSendMessage = view.findViewById(R.id.btnChatSendMessage);
-        functions.loadProfilePictureDrawableThumb(chat_avatar, imgChatHeaderProfilePicture);
+
         imgChatHeaderOnlineStatus.setImageDrawable(online_status_drawable);
         txtChatHeaderUsername.setText(chat_username);
         recyclerView = view.findViewById(R.id.chatRecyclerview);
 
+        functions.loadProfilePictureDrawableThumb(chat_avatar, imgChatHeaderProfilePicture);
 
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
             functions.hideSoftKeyboard(requireActivity());
@@ -114,7 +119,7 @@ public class showFullChat extends Fragment {
 
         //LOAD All messages
         loadAllMessages(chat_friendID);
-        super.onViewCreated(view, savedInstanceState);
+
     }
 
     public void scrollDown() {
@@ -176,7 +181,6 @@ public class showFullChat extends Fragment {
         networkController.PostMethod(data.sendMessage_API, postData);
     }
 
-
     private void listChatMessagesOnRecyclerView(String response) throws JSONException {
         OldMessageJson = response;
         JSONArray jsonArray = new JSONArray(response);
@@ -227,4 +231,32 @@ public class showFullChat extends Fragment {
 
         networkController.PostMethod(data.showFullMessages_API, postData);
     }
+
+
+
+    public void loadAllLatestMessages(String friendID) {
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("friendID", friendID);
+
+        NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(),
+                new NetworkController.IResult() {
+                    @Override
+                    public void notifySuccess(String response) throws JSONException {
+                        Timber.i(response);
+                        if (functions.isJsonArray(response)) {
+                            listChatMessagesOnRecyclerView(response);
+                        }
+                    }
+
+                    @Override
+                    public void notifyError(VolleyError error) {
+
+                    }
+                });
+
+        networkController.PostMethod(data.showFullMessages_API, postData);
+    }
 }
+
+

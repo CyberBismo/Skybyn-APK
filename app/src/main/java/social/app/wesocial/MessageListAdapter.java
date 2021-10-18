@@ -28,7 +28,7 @@ import timber.log.Timber;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.ViewHolder> {
     private final List<MessageListDataClass> MessageListDataClass;
     private final Activity activity;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     public static String chatMessagejson = "";
 
@@ -44,6 +44,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MessageListAdapter.ViewHolder holder, int position) {
+        functions= new Functions(holder.itemView.getContext());
         MessageListDataClass messageListDataClass = MessageListDataClass.get(position);
         holder.username.setText(messageListDataClass.getUserName());
         holder.date.setText(functions.convertUnixToDateAndTime(Long.valueOf(messageListDataClass.getDate())));
@@ -98,8 +99,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-
             username = itemView.findViewById(R.id.txtMessageUsername);
             content = itemView.findViewById(R.id.txtMessageContent);
             date = itemView.findViewById(R.id.txtMessageDate);

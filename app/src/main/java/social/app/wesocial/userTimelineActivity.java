@@ -34,7 +34,7 @@ import java.util.HashMap;
 import timber.log.Timber;
 
 public class userTimelineActivity extends AppCompatActivity {
-    Functions functions = new Functions();
+    Functions functions;
     public LottieAnimationView lottie;
     Data data = new Data();
     RecyclerView recyclerView;
@@ -77,7 +77,7 @@ public class userTimelineActivity extends AppCompatActivity {
 
          ActionBar actionBar = getSupportActionBar();
          actionBar.setDisplayHomeAsUpEnabled(true);
-
+        functions= new Functions(getApplicationContext());
         imgUserProfilePhoto = findViewById(R.id.userProfilePhoto);
         imgUserCoverPhoto = findViewById(R.id.userProfileCoverPhoto);
         txtUserProfileFullname = findViewById(R.id.txtUserProfileFullname);

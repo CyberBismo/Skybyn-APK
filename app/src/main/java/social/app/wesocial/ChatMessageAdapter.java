@@ -15,10 +15,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     View itemView;
     public static Float datetextSize = 9f;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
-    Functions functions = new Functions();
+
+    Functions functions;
 
     public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass) {
         this.ChatMessageListDataClass = ChatMessageListDataClass;
+
     }
 
     @NonNull
@@ -49,6 +51,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
+        functions = new Functions(holder.itemView.getContext());
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
         switch (holder.getItemViewType()) {
             case messageSenderMe:

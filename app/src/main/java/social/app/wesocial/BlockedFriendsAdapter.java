@@ -1,6 +1,7 @@
 package social.app.wesocial;
 
 import android.app.Activity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,9 @@ import timber.log.Timber;
 
 public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAdapter.ViewHolder> {
     private final List <FriendsDataClass> FriendsDataClass;
-    Functions functions =new Functions();
+    Functions functions;
     Data data =new Data();
+
     @NonNull
     @Override
     public BlockedFriendsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +42,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
     public void onBindViewHolder(@NonNull BlockedFriendsAdapter.ViewHolder holder, int position) {
         Activity activity = (Activity) holder.itemView.getContext();
         LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
+        functions = new Functions(holder.itemView.getContext());
 
         FriendsDataClass friendsDataClass = FriendsDataClass.get(position);
         holder.txtBlockedFriendUsername.setText(friendsDataClass.getFriendUsername());
@@ -92,6 +95,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
     }
     public BlockedFriendsAdapter(List <FriendsDataClass> FriendsDataClass){
         this.FriendsDataClass = FriendsDataClass;
+
     }
 
     @Override

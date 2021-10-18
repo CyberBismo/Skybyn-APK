@@ -5,6 +5,7 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,15 +34,16 @@ import timber.log.Timber;
 
 class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolder> {
     private final List<UserDataClass> UserDataClass;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
 
     userStatusEnum userStatus;
+    Context context;
 
-    enum userStatusEnum {friend, received, sent, iam_blocked, notFriends, iBlockedUser}
-
-    public userSearchAdapter(List<UserDataClass> userDataClass) {
+    public userSearchAdapter(List<UserDataClass> userDataClass, Context context) {
         UserDataClass = userDataClass;
+        this.context = context;
+        functions = new Functions(context);
     }
 
     @NonNull
@@ -93,12 +95,12 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
             String link = "";
             switch (userStatus) {
                 case friend:
-                    Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(userDataClass.getUsername(), null, userDataClass.getUserAvatarLink(), userDataClass.getUserID(),"");
+                    Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(userDataClass.getUsername(), null, userDataClass.getUserAvatarLink(), userDataClass.getUserID(), "");
                     functions.LoadFragment(fragmentShowFullChat, "fullchat", (Activity) holder.itemView.getContext(), false, false);
                     break;
                 case received:
                     Fragment friendFragment = Friends.newInstance(data.accept_friend_action);
-                    functions.LoadFragment(friendFragment,"friends", (Activity) holder.itemView.getContext(), false, false);
+                    functions.LoadFragment(friendFragment, "friends", (Activity) holder.itemView.getContext(), false, false);
                     break;
                 case sent:
                     link = data.cancel_friend_Api;
@@ -168,6 +170,8 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
     public int getItemCount() {
         return UserDataClass.size();
     }
+
+    enum userStatusEnum {friend, received, sent, iam_blocked, notFriends, iBlockedUser}
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;

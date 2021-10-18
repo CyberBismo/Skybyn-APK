@@ -42,7 +42,7 @@ public class showFullPost extends AppCompatActivity {
     TextView txtShowTimelinePostDate,  txtShowTimelinePostLikes, txtShowTimelinePostComments;
     ImageView imgShowTimelinePostProfilePicture;
     TextView txtShowTimelinePostContent;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
     Button btnSendTimelineComment;
     TextView txtPostComment, txtShowTimelinePostEdit, txtShowTimelinePostDelete;
@@ -256,7 +256,7 @@ public class showFullPost extends AppCompatActivity {
         getPostIntentContent();
         verifyIfIamPoster();
         loadComments(false);
-
+        functions= new Functions(getApplicationContext());
         functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
 
         txtShowTimelinePostUsername.setText(postUsername);

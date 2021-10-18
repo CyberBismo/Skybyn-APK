@@ -30,7 +30,7 @@ import timber.log.Timber;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     private final List <FriendsDataClass> FriendsDataClass;
-    Functions functions =new Functions();
+    Functions functions;
     Data data =new Data();
     @NonNull
     @Override
@@ -43,7 +43,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
         Activity activity = (Activity) holder.itemView.getContext();
         LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
-
+        functions =new Functions(holder.itemView.getContext());
         FriendsDataClass friendsDataClass = FriendsDataClass.get(position);
         holder.txtFriendUsername.setText(friendsDataClass.getFriendUsername());
         //SAVE THE User's ID INSIDE VIEW'S Tag
@@ -166,6 +166,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     }
     public FriendsAdapter(List <FriendsDataClass> FriendsDataClass){
         this.FriendsDataClass = FriendsDataClass;
+
     }
 
     @Override

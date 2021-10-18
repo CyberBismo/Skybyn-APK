@@ -27,7 +27,7 @@ import timber.log.Timber;
 
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.ViewHolder> {
     private final List<NotificationDataClass> NotificationDataClass;
-    Functions functions = new Functions();
+    Functions functions;
     Data data = new Data();
 
 
@@ -77,7 +77,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
     @Override
     public void onBindViewHolder(@NonNull NotificationsAdapter.ViewHolder holder, int position) {
-
+        functions= new Functions(holder.itemView.getContext());
         NotificationDataClass notificationDataClass = NotificationDataClass.get(position);
         holder.Title.setText(notificationDataClass.getTitle());
         holder.Content.setText(notificationDataClass.getContent());
