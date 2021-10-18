@@ -206,7 +206,7 @@ public class Functions {
     public String convertUnixToDateAndTime(Long UnixDateLong) {
         try {
             Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd yyyy hh.mm a"); // the format of your date
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd yyyy hh:mm a"); // the format of your date
 
             return dateFormat.format(date);
         } catch (TypeCastException e) {
@@ -230,7 +230,7 @@ public class Functions {
     public String convertUnixToDateAndTimeNoGMT(Long UnixDateLong) {
         try {
             Date date = new Date(UnixDateLong * 1000L); // convert seconds to milliseconds
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd yyyy hh.mm a"); // the format of your date
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd yyyy hh:mm a"); // the format of your date
 
             return dateFormat.format(date);
         } catch (TypeCastException e) {
