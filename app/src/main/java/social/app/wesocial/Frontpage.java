@@ -61,7 +61,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     DrawerLayout drawerLayout;
     public static  Boolean gottenToken = false;
     Data data = new Data();
-    Functions functions = new Functions();
+    Functions functions;
     String loginAction;
     public static String userID;
     DownloadManager downloadManager;
@@ -102,7 +102,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public void onPause() {
         super.onPause();
         setVisible(false);
-
     }
 
     @Override
@@ -115,12 +114,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-
+        functions= new Functions(getApplicationContext());
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-        configureToolbarAndDrawer();
+        //configureToolbarAndDrawer();
         checkAppUpdate();
-
 
         Intent intent = getIntent();
         loginAction = intent.getStringExtra("loginAction");
@@ -321,6 +319,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
 
     }
+
     private void loadMessagesRequests() throws JSONException {
         //functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -402,14 +401,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
-
 
     public void loadUserProfile(String myUserID) {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", myUserID);
-
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
@@ -437,8 +433,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                         Fragment timelineFragment = Timeline.newInstance();
                         functions.LoadFragment(timelineFragment, "timeline", Frontpage.this,true ,false);
-
-
                          username = jsonObject.getString("username").toString();
                          email = jsonObject.getString("email").toString();
                         avatarLink = jsonObject.getString("avatar").toString();
@@ -541,13 +535,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
                             //functions.showSnackBar(getString(string.loginSuccessful), findViewById(android.R.id.content), getApplicationContext());
+                            configureToolbarAndDrawer();
                             loadUserProfile(userID);
                         }
 
                         if (response_code.equals("0")) {
                             functions.hideProgress(lottie);
                             String errorMsg = jsonResponse.get("message").toString();
-                            functions.ShowToast(Frontpage.this,errorMsg);
+                            functions.ShowToast(errorMsg);
                             logOut();
                         }
                     } catch (JSONException e) {
@@ -563,7 +558,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         });
         networkController.PostMethod(data.login_Api, postData);
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {

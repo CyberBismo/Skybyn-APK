@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainRelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.7"
-        android:background="@color/black"
+        android:background="@color/white"
         android:clickable="false"
         android:elevation="1000dp"
         android:filterTouchesWhenObscured="false"
@@ -28,26 +29,68 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/txtLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/main_colour"
         android:textSize="24pt"
         app:drawableStartCompat="@mipmap/ic_launcher_foreground" />
 
     <FrameLayout
+        android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:paddingTop="200dp">
+        android:paddingTop="100dp">
+
+        <Button
+            android:id="@+id/login_btnShowForgotForm"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="380dp"
+            android:background="@color/transparent_full"
+            android:backgroundTint="@color/black"
+            android:text="@string/forgot_password"
+            android:textColor="@color/main_colour"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/login_btnShowSignupForm"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="410dp"
+            android:background="@color/transparent_full"
+            android:backgroundTint="@color/black"
+            android:text="@string/sign_up"
+            android:textColor="@color/main_colour"
+            tools:ignore="TouchTargetSizeCheck,DuplicateClickableBoundsCheck" />
+
+        <Button
+            android:id="@+id/login_btnShowLoginForm"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="440dp"
+            android:background="@color/transparent_full"
+            android:backgroundTint="@color/black"
+            android:text="@string/sign_in"
+            android:textColor="@color/main_colour"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <FrameLayout
             android:id="@+id/verify_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1dp"
             android:visibility="invisible">
 
             <TextView
@@ -107,6 +150,7 @@
             android:layout_height="355dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
+            android:layout_marginTop="1dp"
             android:visibility="visible">
 
             <TextView
@@ -153,7 +197,7 @@
                 android:textColorHint="@color/main_colour" />
 
             <Button
-                android:id="@+id/BtnSignIn"
+                android:id="@+id/BtnProcessLogin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
@@ -163,28 +207,6 @@
                 android:text="@string/sign_in"
                 android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/forgot_si"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="270dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/forgot_password"
-                android:textColor="@color/main_colour" />
-
-            <Button
-                android:id="@+id/signup_si"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="320dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/sign_up"
-                android:textColor="@color/main_colour" />
-
         </FrameLayout>
 
         <FrameLayout
@@ -193,6 +215,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
+            android:layout_marginTop="1dp"
             android:visibility="invisible">
 
             <TextView
@@ -269,7 +292,7 @@
                 android:textColorHint="@color/dark_gray_2" />
 
             <Button
-                android:id="@+id/sign_up"
+                android:id="@+id/btnProcessSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
@@ -279,28 +302,6 @@
                 android:text="@string/sign_up"
                 android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/forgot_su"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="380dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/forgot_password"
-                android:textColor="@color/main_colour" />
-
-            <Button
-                android:id="@+id/signin_su"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="430dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/sign_in"
-                android:textColor="@color/main_colour" />
-
         </FrameLayout>
 
         <FrameLayout
@@ -309,6 +310,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
+            android:layout_marginTop="1dp"
             android:visibility="invisible">
 
             <TextView
@@ -333,7 +335,7 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/verify_email"
+                android:id="@+id/btnSendVerifyEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
@@ -344,11 +346,11 @@
                 android:textColor="@color/white" />
 
             <Button
-                android:id="@+id/cancel_email"
+                android:id="@+id/btnCancelVerifyEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="210dp"
                 android:background="@drawable/button_selector"
                 android:backgroundTint="@color/black"
                 android:text="Cancel"
@@ -362,6 +364,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginHorizontal="75dp"
+            android:layout_marginTop="1dp"
             android:visibility="invisible">
 
             <TextView
@@ -391,7 +394,7 @@
                 android:textColorHint="@color/light_gray" />
 
             <Button
-                android:id="@+id/forgot"
+                android:id="@+id/btnSendPasswordRequest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
@@ -400,31 +403,9 @@
                 android:backgroundTint="@color/main_colour"
                 android:drawableStart="@drawable/password"
                 android:drawablePadding="5dp"
-                android:text="@string/request_reset"
+                android:text="@string/Continue"
                 android:textColor="@color/white"
                 android:textColorHint="@color/light_gray" />
-
-            <Button
-                android:id="@+id/signin_f"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="200dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/sign_in"
-                android:textColor="@color/main_colour" />
-
-            <Button
-                android:id="@+id/signup_f"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="250dp"
-                android:background="@color/transparent_full"
-                android:backgroundTint="@color/black"
-                android:text="@string/sign_up"
-                android:textColor="@color/main_colour" />
 
         </FrameLayout>
 
