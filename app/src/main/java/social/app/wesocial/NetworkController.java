@@ -1,5 +1,6 @@
 package social.app.wesocial;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.Request;
@@ -19,11 +20,14 @@ public class NetworkController {
     Context context;
     RequestQueue requestQueue;
     IResult result;
+    Functions functions = new Functions();
+
 
     public NetworkController(Context context, IResult result) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
         this.result = result;
+
     }
 
 
@@ -49,9 +53,7 @@ public class NetworkController {
         requestQueue.add(postRequest);
     }
 
-
     public void GetMethod(String URL) {
-
         StringRequest GetRequest = new StringRequest(Request.Method.GET, URL,
                 response -> {
                     try {
@@ -62,9 +64,10 @@ public class NetworkController {
                 }, error -> {
             Timber.e(error.toString());
             result.notifyError(error);
+            Functions functions = new Functions();
+            functions.ShowToast(context,context.getString(R.string.network_something_wrong));
         });
         requestQueue.add(GetRequest);
-
     }
 
     public interface IResult {

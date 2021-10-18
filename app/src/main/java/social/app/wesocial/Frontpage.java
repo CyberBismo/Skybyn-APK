@@ -5,6 +5,7 @@ import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.SearchManager;
@@ -56,7 +57,7 @@ import timber.log.Timber;
 
 public class Frontpage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    SharedPreferences sharedpreferences;
+    public static SharedPreferences sharedpreferences;
     DrawerLayout drawerLayout;
     public static  Boolean gottenToken = false;
     Data data = new Data();
@@ -70,10 +71,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     View navHeaderView;
     NavigationView sideNavView;
     TextView txtNavViewUsername;
+    public static String messagesJson="";
     TextView txtNavViewUserEmail;
 
     public static String loginUsername, loginPassword;
-    public static String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank, banned, banned_reason, visible, deactivated, deactivated_reason;
+    public static String firstName, lastName, middleName, nickName, avatarLink, userTitle, userRank, banned, banned_reason, visible, deactivated, deactivated_reason,aboutMe;
     Boolean userLoggedIn = false;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
@@ -271,7 +273,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showMessagesPage() {
-        Fragment messagesFragment = Messages.newInstance();
+        Fragment messagesFragment = Messages.newInstance(messagesJson);
         functions.LoadFragment(messagesFragment,"messages", Frontpage.this, false,false);
     }
 
@@ -318,6 +320,39 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         getSupportActionBar().setHomeAsUpIndicator(drawable.hamburger);
 
 
+    }
+    private void loadMessagesRequests() throws JSONException {
+        //functions.showProgressNoBackground(lottie);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+
+
+        NetworkController networkController = new NetworkController(getApplicationContext(),
+                new NetworkController.IResult() {
+                    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
+                    @Override
+                    public void notifySuccess(String response) throws JSONException {
+                        functions.hideProgress(lottie);
+                        if (functions.isJsonArray(response)) {
+                            Timber.i(response);
+                            messagesJson = response;
+
+                        }
+                        if (!functions.isJsonArray(response)) {
+
+                        }
+
+                    }
+
+
+                    @Override
+                    public void notifyError(VolleyError error) {
+                        functions.hideProgress(lottie);
+
+                    }
+                });
+
+        networkController.PostMethod(data.showMessages_API, postData);
     }
 
     private void logOut() {
@@ -387,12 +422,18 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     JSONObject jsonObject = new JSONObject(response.toString());
                     String responseCode = jsonObject.get("responseCode").toString();
 
+                    if (responseCode.equals("0")) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_profile), Toast.LENGTH_LONG).show();
+                        logOut();
+                    }
+
                     if (responseCode.equals("1")) {
                         //Start the PUSH SERVICE after successful Login
                         Intent intent = new Intent(Frontpage.this, PushNotificationService.class);
                         startService(intent);
-
                         userLoggedIn = true;
+
+                        loadMessagesRequests();
 
                         Fragment timelineFragment = Timeline.newInstance();
                         functions.LoadFragment(timelineFragment, "timeline", Frontpage.this,true ,false);
@@ -411,7 +452,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         deactivated_reason = jsonObject.get("deactivated_reason").toString();
                         banned = jsonObject.get("banned").toString();
                         banned_reason = jsonObject.get("banned_reason").toString();
+                        aboutMe = jsonObject.get("bio").toString();
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgNavProfilePicture);
+
                         txtNavViewUsername.setText(username);
                         txtNavViewUserEmail.setText(email);
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgNavProfilePicture);
@@ -426,10 +469,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                     }
 
-                    if (responseCode.equals("0")) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_profile), Toast.LENGTH_LONG).show();
-                        logOut();
-                    }
+
 
                 }
 
@@ -437,9 +477,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     Log.i("Profile Json error", response.toString());
                     Toast.makeText(getApplicationContext(), getString(R.string.please_login_again), Toast.LENGTH_SHORT).show();
                     logOut();
-
                 }
-
             }
 
             @Override
@@ -509,7 +547,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         if (response_code.equals("0")) {
                             functions.hideProgress(lottie);
                             String errorMsg = jsonResponse.get("message").toString();
-                            functions.showSnackBarError(errorMsg, findViewById(android.R.id.content), getApplicationContext());
+                            functions.ShowToast(Frontpage.this,errorMsg);
                             logOut();
                         }
                     } catch (JSONException e) {

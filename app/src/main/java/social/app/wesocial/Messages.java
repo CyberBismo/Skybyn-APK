@@ -40,10 +40,11 @@ public class Messages extends Fragment {
         // Required empty public constructor
     }
 
-    public static Messages newInstance() {
-        Messages fragment = new Messages();
-        return fragment;
+    public static Messages newInstance(String messagesJson) {
+
+        return new Messages();
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +89,7 @@ public class Messages extends Fragment {
 
 
     }
-    private void loadServerMessagesFromFriends() throws JSONException {
+    private void loadMessagesRequests() throws JSONException {
         if (!OldMessageJson.equals("")){
             listMessagesOnRecyclerView(OldMessageJson);
         }else{
@@ -130,8 +131,10 @@ public class Messages extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
+
+        if (functions.isJsonArray(pa))
         try {
-            loadServerMessagesFromFriends();
+            loadMessagesRequests();
         } catch (JSONException e) {
             e.printStackTrace();
         }

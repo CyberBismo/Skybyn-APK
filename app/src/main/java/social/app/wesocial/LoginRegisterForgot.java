@@ -149,7 +149,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             functions.hideSoftKeyboard(LoginRegisterForgot.this);
             if (txtOneTimeCode.getText().toString().equals(oneTimetoken)) {
                 //Register User
-                performRegistration();
+                performRegistrationRequests();
             }
 
             if (!txtOneTimeCode.getText().toString().equals(oneTimetoken)) {
@@ -170,7 +170,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 txtLoginPassWord.setError(ErrorMessage);
                 ShowToast(ErrorMessage);
             } else {
-                signIn();
+                signInRequests();
             }
         });
 
@@ -195,7 +195,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
                 if (password.equals(cpassword)) {
                     // signUp();
-                    verifyRegistrationEmail(txtEmail.getText().toString());
+                    verifyRegistrationEmailRequests(txtEmail.getText().toString());
                 } else {
                     ErrorMessage = getString(R.string.password_unmatch);
                     txtPassword.setError(ErrorMessage);
@@ -219,14 +219,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 ShowToast(ErrorMessage);
             } else {
                 BtnVerify_email.setVisibility(View.INVISIBLE);
-                verifyRegistrationEmail(txtEmail.getText().toString());
+                verifyRegistrationEmailRequests(txtEmail.getText().toString());
             }
         });
         Button BtnCancel_email = findViewById(R.id.cancel_email);
         BtnCancel_email.setOnClickListener(v -> cancelEmail());
 
         BtnForgotPassword = findViewById(R.id.forgot);
-        BtnForgotPassword.setOnClickListener(v -> forgotPassword());
+        BtnForgotPassword.setOnClickListener(v -> forgotPasswordRequests());
 
         //Checking if SharedPref contains a Username key
         if (sharedpreferences.contains("username")) {
@@ -241,7 +241,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }
     }
 
-    public void forgotPassword() {
+    public void forgotPasswordRequests() {
         if (forgot_email.getText().toString().equals("")) {
             ShowToast(getString(R.string.email_required));
             return;
@@ -297,7 +297,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         forgot_form.setVisibility(View.INVISIBLE);
     }
 
-    public void verifyRegistrationEmail(String email) {
+    public void verifyRegistrationEmailRequests(String email) {
         HashMap<String, String> postData = new HashMap<>();
         postData.put("email", email);
 
@@ -346,7 +346,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
 
-    public void performRegistration() {
+    public void performRegistrationRequests() {
         String username = txtUsername.getText().toString();
         String password = txtPassword.getText().toString();
         String email = txtEmail.getText().toString();
@@ -399,7 +399,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
 
-    public void signIn() {
+    public void signInRequests() {
         functions.showProgress(lottieview);
         String username = txtLoginUserName.getText().toString();
         String password = txtLoginPassWord.getText().toString();
@@ -514,6 +514,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
         signin_f.setVisibility(View.VISIBLE);
         signup_f.setVisibility(View.VISIBLE);
         forgot_form.setVisibility(View.VISIBLE);
+        forgot_form.bringToFront();
+    }
+
+    public void toggleViews(FrameLayout frameLayout){
+
     }
 
     public void toggleSignin() {

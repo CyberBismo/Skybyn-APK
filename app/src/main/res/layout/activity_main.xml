@@ -58,7 +58,7 @@
                 android:layout_marginTop="30dp"
                 android:gravity="center_horizontal"
                 android:lineHeight="24dp"
-                android:text="@string/verification"
+                android:text="@string/enter_the_verification_code"
                 android:textColor="@color/main_colour"
                 android:textSize="20sp" />
 
@@ -134,7 +134,7 @@
                 android:inputType="textPersonName"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/main_colour"
-                android:textColorHint="@color/dark_gray" />
+                android:textColorHint="@color/main_colour" />
 
             <EditText
                 android:id="@+id/txtPassword"
@@ -150,7 +150,7 @@
                 android:inputType="textPassword"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/main_colour"
-                android:textColorHint="@color/dark_gray" />
+                android:textColorHint="@color/main_colour" />
 
             <Button
                 android:id="@+id/BtnSignIn"
@@ -388,7 +388,7 @@
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/main_colour"
-                android:textColorHint="@color/dark_gray_2" />
+                android:textColorHint="@color/light_gray" />
 
             <Button
                 android:id="@+id/forgot"
@@ -401,7 +401,8 @@
                 android:drawableStart="@drawable/password"
                 android:drawablePadding="5dp"
                 android:text="@string/request_reset"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_gray" />
 
             <Button
                 android:id="@+id/signin_f"

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,6 +37,7 @@ public class Functions {
     ConstraintLayout fragmentConstraintLayout;
     String oldFragString;
     private View t_View;
+
 
     public Boolean isJsonObject(String json) {
         return json.startsWith("{");
@@ -159,6 +161,7 @@ public class Functions {
     }
 
 
+
     public void setTimelineFragmentHeight() {
         //MAINTAIN CURRENT HEIGHT
         bottomLayout.setVisibility(View.VISIBLE);
@@ -171,6 +174,7 @@ public class Functions {
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline, Boolean isFullChat) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
         fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
         fragmentConstraintLayout = activity.findViewById(R.id.fragmentConstraintLayout);
         fragmentConstraintLayout.requestLayout();
@@ -186,14 +190,15 @@ public class Functions {
 
         if (isTimeline) {
             setTimelineFragmentHeight();
+            transaction.add(R.id.fragmentContainerView, fragment, fragString);
         } else {
+            transaction.replace(R.id.fragmentContainerView, fragment, fragString);
             setOtherFragmentHeight();
         }
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
+
+        //transaction.replace(R.id.fragmentContainerView, fragment, fragString);
         transaction.addToBackStack(null);
         transaction.commit();
-
         oldFragString = fragString;
     }
 

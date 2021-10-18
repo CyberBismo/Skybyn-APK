@@ -67,6 +67,11 @@ public class Data {
 
 
     public String forgotPassword_Api = API+"forgot.php";
+    public String updatePassword_Api = API+"profile_password.php";
+
+    public String sendEmailToken_Api = API+"profile_email.php";
+    public String updateEmail_Api = API+"profile_email_update.php";
+
     public String updateToken_Api = API+"token.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
