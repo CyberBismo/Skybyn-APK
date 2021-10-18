@@ -111,9 +111,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         //INIT FIREBASE
         FirebaseApp.initializeApp(this);
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+
         functions= new Functions(getApplicationContext());
         setContentView(layout.activity_front_page);
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
