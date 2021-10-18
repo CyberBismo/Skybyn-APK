@@ -30,6 +30,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     private final Activity activity;
     Functions functions = new Functions();
     Data data = new Data();
+    public static String chatMessagejson = "";
 
 
     @NonNull
@@ -49,6 +50,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         holder.content.setText(messageListDataClass.getContent());
         functions.loadProfilePictureDrawableThumb(messageListDataClass.getAvatarLink(), holder.imgMessageProfilePicture);
 
+        //Load Messages
+        loadAllMessages(messageListDataClass.getFriendID());
+        holder.displayMsgCardView.setTag(chatMessagejson);
+
         switch (messageListDataClass.getOnline()) {
             case "1":
                 holder.imgMessageOnlineStatus.setImageDrawable(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.online_icon));
@@ -67,7 +72,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             //Global reference to current chat user ID
              Frontpage.current_chat_user = messageListDataClass.getFriendID();
              //
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID());
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID(),chatMessagejson);
             functions.LoadFragment(fragmentShowFullChat,"fullchat",(Activity) holder.itemView.getContext(),false,true);
 
     });
@@ -104,5 +109,32 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
 
         }
+    }
+
+
+
+    public void loadAllMessages(String friendID) {
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("friendID", friendID);
+
+        NetworkController networkController = new NetworkController(activity.getApplicationContext(),
+                new NetworkController.IResult() {
+                    @Override
+                    public void notifySuccess(String response) throws JSONException {
+                        Timber.i(response);
+                        if (functions.isJsonArray(response)) {
+                            chatMessagejson = response;
+                        }
+                    }
+
+                    @Override
+                    public void notifyError(VolleyError error) {
+
+                    }
+                });
+
+        networkController.PostMethod(data.showFullMessages_API, postData);
     }
 }

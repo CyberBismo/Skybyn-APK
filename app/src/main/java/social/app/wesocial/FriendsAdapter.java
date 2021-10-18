@@ -67,7 +67,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.imgFriendProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(friendsDataClass.getFriendID(),activity,holder.itemView.getContext().getApplicationContext()));
 
         holder.btnMessageFriend.setOnClickListener(view -> {
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID());
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID(),"");
             functions.LoadFragment(fragmentShowFullChat,"fullchat",(Activity) holder.itemView.getContext(),false,false);
         });
 

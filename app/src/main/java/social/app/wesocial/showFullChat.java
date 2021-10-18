@@ -36,17 +36,19 @@ public class showFullChat extends Fragment {
     ScrollView chatScrollView;
     RecyclerView recyclerView;
     ChatMessageAdapter chatMessageAdapter;
+    public static  String chatMessageJson= "";
     public showFullChat() {
         // Required empty public constructor
     }
 
 
-    public static showFullChat newInstance(String param1, Drawable drawable, String param3, String friendID) {
+    public static showFullChat newInstance(String param1, Drawable drawable, String param3, String friendID,String chatJson) {
         showFullChat fragment = new showFullChat();
         chat_username = param1;
         online_status_drawable = drawable;
         chat_avatar = param3;
         chat_friendID = friendID;
+        chatMessageJson =chatJson;
         return fragment;
     }
 
@@ -100,6 +102,17 @@ public class showFullChat extends Fragment {
             sendMessage(chat_friendID, txtChatMessageContent.getText().toString());
         });
 
+
+        //IF JSON WAS SENT BY CLICKING THE MESSAGE ADAPTER, Load the json messages ...No delay
+        if (functions.isJsonArray(chatMessageJson)){
+            try {
+                listChatMessagesOnRecyclerView(chatMessageJson);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //LOAD All messages
         loadAllMessages(chat_friendID);
         super.onViewCreated(view, savedInstanceState);
     }

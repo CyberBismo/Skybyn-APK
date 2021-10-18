@@ -71,7 +71,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     View navHeaderView;
     NavigationView sideNavView;
     TextView txtNavViewUsername;
-    public static String messagesJson="";
+    public static String loadedMessagesJson ="";
     TextView txtNavViewUserEmail;
 
     public static String loginUsername, loginPassword;
@@ -273,7 +273,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showMessagesPage() {
-        Fragment messagesFragment = Messages.newInstance(messagesJson);
+        Fragment messagesFragment = Messages.newInstance(loadedMessagesJson);
         functions.LoadFragment(messagesFragment,"messages", Frontpage.this, false,false);
     }
 
@@ -335,7 +335,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         functions.hideProgress(lottie);
                         if (functions.isJsonArray(response)) {
                             Timber.i(response);
-                            messagesJson = response;
+                            loadedMessagesJson = response;
 
                         }
                         if (!functions.isJsonArray(response)) {

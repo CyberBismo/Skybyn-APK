@@ -33,7 +33,8 @@ public class Messages extends Fragment {
     Data data = new Data();
     LottieAnimationView lottie;
     RecyclerView recyclerView;
-    String OldMessageJson = "";
+    public static String oldMessageJson = "";
+    public static String loadedMessagesJson = "";
 
 
     public Messages() {
@@ -41,7 +42,7 @@ public class Messages extends Fragment {
     }
 
     public static Messages newInstance(String messagesJson) {
-
+        loadedMessagesJson = messagesJson;
         return new Messages();
     }
 
@@ -59,7 +60,7 @@ public class Messages extends Fragment {
     }
 
     private void listMessagesOnRecyclerView(String response) throws JSONException {
-        OldMessageJson = response;
+        oldMessageJson = response;
         JSONArray jsonArray = new JSONArray(response);
         ArrayList<MessageListDataClass> messages = new ArrayList<>();
         JSONObject jsonObject;
@@ -90,10 +91,10 @@ public class Messages extends Fragment {
 
     }
     private void loadMessagesRequests() throws JSONException {
-        if (!OldMessageJson.equals("")){
-            listMessagesOnRecyclerView(OldMessageJson);
+        if (!oldMessageJson.equals("")){
+            listMessagesOnRecyclerView(oldMessageJson);
         }else{
-            functions.showProgress(lottie);
+          //  functions.showProgress(lottie);
         }
         //functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -132,7 +133,14 @@ public class Messages extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
 
-        if (functions.isJsonArray(pa))
+        if (functions.isJsonArray(loadedMessagesJson)){
+            try {
+                listMessagesOnRecyclerView(loadedMessagesJson);
+                loadedMessagesJson = "";
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         try {
             loadMessagesRequests();
         } catch (JSONException e) {

@@ -4,8 +4,8 @@ public class ChatMessageListDataClass {
     private String content;
     private String avatarLink;
     private String date;
-    private String friendID;
     private String msgID;
+    private String friendID;
     private String userID;
 
     public String getUsername() {
