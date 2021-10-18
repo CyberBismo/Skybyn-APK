@@ -39,7 +39,6 @@ import timber.log.Timber;
 
 public class showFullPost extends AppCompatActivity {
     TextView txtShowTimelinePostUsername;
-
     TextView txtShowTimelinePostDate,  txtShowTimelinePostLikes, txtShowTimelinePostComments;
     ImageView imgShowTimelinePostProfilePicture;
     TextView txtShowTimelinePostContent;
@@ -54,13 +53,10 @@ public class showFullPost extends AppCompatActivity {
     RecyclerView recyclerView;
     ScrollView showFullpostScrollView;
     TextView txtCommentsCount;
-
     String postID, postAvatarlink, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
     HashMap<String, Object> timelinePostDetails = new HashMap<>();
     ActionBar actionBar;
-
     //timeline adapter
-
 
     private void sendLike() {
         HashMap<String, String> postData = new HashMap<>();
@@ -91,16 +87,13 @@ public class showFullPost extends AppCompatActivity {
                     }
                     txtShowTimelinePostLikes.setText(likes);
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-
                 }
             }
-
             @Override
             public void notifyError(VolleyError error) {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }});
+
         networkController.PostMethod(data.like_Api, postData);
 
 
@@ -133,9 +126,6 @@ public class showFullPost extends AppCompatActivity {
 
         //FROM ADAPTER
 
-
-
-
     }
 
     void verifyIfIamPoster() {
@@ -162,8 +152,8 @@ public class showFullPost extends AppCompatActivity {
         postAvatarlink = Objects.requireNonNull(timelinePostDetails.get("avatarLink")).toString();
         postCommentsCount = Objects.requireNonNull(timelinePostDetails.get("comments_count")).toString();
         userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
-        actionBar.setTitle(" " + postContent);
 
+        actionBar.setTitle(" " + postContent);
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
     }
 
