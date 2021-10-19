@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-import androidx.multidex.BuildConfig;
+
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import timber.log.Timber;
@@ -38,7 +39,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     public EditText txtforgot_email;
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
-    public Functions functions;
+
     public LottieAnimationView lottieview;
     Data data = new Data();
     FrameLayout verify_form;
@@ -54,25 +55,27 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private Button login_btnShowForgotForm;
     private EditText txtLoginUserName;
     private EditText txtLoginPassWord;
-    private EditText txtUsername;
-    private EditText txtPassword;
+    private EditText txtRegisterUsername;
+    private EditText txtRegisterPassword;
     private EditText txtConfirmPassword;
     private EditText txtEmail;
     private TextView txtVerify;
     private Button BtnVerify_email;
     private Button login_btnShowSignupForm, login_btnShowLoginForm;
+    static Functions functions = null;
 
     public void setFrameLayoutVisibility(FrameLayout frameLayout) {
 
         for (int i = 0; i < mainFrameLayout.getChildCount(); i++) {
             View v = mainFrameLayout.getChildAt(i);
-            Timber.i(String.valueOf("|ID" + v.getId()));
+
             if (v instanceof FrameLayout) {
                 if (v.getId() == frameLayout.getId()) {
                     v.setVisibility(View.VISIBLE);
                     v.bringToFront();
                     v.bringToFront();
-
+                    v.bringToFront();
+                    Timber.i(String.valueOf("|ID" + v.getId())+"trueeee");
                 } else {
                     v.setVisibility(View.INVISIBLE);
                 }
@@ -88,12 +91,12 @@ public class LoginRegisterForgot extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        functions = new Functions(this);
+        functions = new Functions(getApplicationContext());
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        LottieAnimationView lottieview = findViewById(R.id.loginProgressView);
+        lottieview = findViewById(R.id.loginProgressView);
 
         login_btnShowForgotForm = findViewById(R.id.login_btnShowForgotForm);
         login_btnShowSignupForm = findViewById(R.id.login_btnShowSignupForm);
@@ -103,8 +106,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtLoginUserName = findViewById(R.id.txtUsername);
         txtOneTimeCode = findViewById(R.id.txtOTC);
         txtLoginPassWord = findViewById(R.id.txtPassword);
-        txtUsername = findViewById(R.id.Username);
-        txtPassword = findViewById(R.id.Password);
+        txtRegisterUsername = findViewById(R.id.Username);
+        txtRegisterPassword = findViewById(R.id.Password);
         txtConfirmPassword = findViewById(R.id.cPassword);
         txtEmail = findViewById(R.id.Email);
         txtforgot_email = findViewById(R.id.forgot_email);
@@ -112,6 +115,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
         TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
         Button btnSign_up = findViewById(R.id.btnProcessSignUp);
 
+        txtLoginUserName.setText("cyberwizard");
+        txtLoginPassWord.setText("73833remi");
         //DECLARING FORM
 
         Signin_form = findViewById(R.id.signin_form);
@@ -125,7 +130,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         Button btnVerifyOTC = findViewById(R.id.btnVerifyOTC);
 
         lblCloseVerify.setOnClickListener(view -> {
-            setFrameLayoutVisibility(verify_form);
+            setFrameLayoutVisibility(signup_form);
         });
 
         //INITIALIZE THE SHAREDPREF FILE
@@ -189,7 +194,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         //BUTTON TO SignIn
         btnProcessSignIn.setOnClickListener(v -> {
-            functions.hideSoftKeyboard(LoginRegisterForgot.this);
+            functions.hideSoftKeyboard(Objects.requireNonNull(LoginRegisterForgot.this));
             if (TextUtils.isEmpty(txtLoginUserName.getText())) {
                 ErrorMessage = getString(R.string.username_required);
                 txtLoginUserName.setError(ErrorMessage);
@@ -206,20 +211,20 @@ public class LoginRegisterForgot extends AppCompatActivity {
         //BUTTON to Register User
         btnSign_up.setOnClickListener(v -> {
             functions.hideSoftKeyboard(LoginRegisterForgot.this);
-            if (TextUtils.isEmpty(txtUsername.getText())) {
+            if (TextUtils.isEmpty(txtRegisterUsername.getText())) {
                 ErrorMessage = getString(R.string.username_required);
-                txtUsername.setError(ErrorMessage);
+                txtRegisterUsername.setError(ErrorMessage);
                 functions.ShowToast(ErrorMessage);
-            } else if (TextUtils.isEmpty(txtPassword.getText())) {
+            } else if (TextUtils.isEmpty(txtRegisterPassword.getText())) {
                 ErrorMessage = getString(R.string.password_required);
-                txtPassword.setError(ErrorMessage);
+                txtRegisterPassword.setError(ErrorMessage);
                 functions.ShowToast(ErrorMessage);
             } else if (TextUtils.isEmpty(txtConfirmPassword.getText())) {
                 ErrorMessage = getString(R.string.confirmation_password_required);
                 functions.ShowToast(ErrorMessage);
 
             } else {
-                String password = txtPassword.getText().toString();
+                String password = txtRegisterPassword.getText().toString();
                 String cpassword = txtConfirmPassword.getText().toString();
 
                 if (password.equals(cpassword)) {
@@ -227,7 +232,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     verifyRegistrationEmailRequests(txtEmail.getText().toString());
                 } else {
                     ErrorMessage = getString(R.string.password_unmatch);
-                    txtPassword.setError(ErrorMessage);
+                    txtRegisterPassword.setError(ErrorMessage);
                     txtConfirmPassword.setError(ErrorMessage);
                     functions.ShowToast(ErrorMessage);
                 }
@@ -373,8 +378,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
 
     public void performRegistrationRequests() {
-        String username = txtUsername.getText().toString();
-        String password = txtPassword.getText().toString();
+        String username = txtRegisterUsername.getText().toString();
+        String password = txtRegisterPassword.getText().toString();
         String email = txtEmail.getText().toString();
 
         HashMap<String, String> postData = new HashMap<>();

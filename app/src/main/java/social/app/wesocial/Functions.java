@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -15,27 +16,22 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import kotlin.TypeCastException;
 import timber.log.Timber;
 
 public class Functions {
-    public static FragmentContainerView fragmentContainerView;
+    public static FrameLayout fragmentContainerViewFrame;
     Integer initial_height = null;
     CoordinatorLayout bottomLayout;
     ConstraintLayout fragmentConstraintLayout;
@@ -70,8 +66,8 @@ public class Functions {
         lottieview.setVisibility(LottieAnimationView.VISIBLE);
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.wesocialdot);
-        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.black));
-        lottieview.setAlpha(0.85f);
+        lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.white));
+        lottieview.setAlpha(0.9f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
         lottieview.setEnabled(false);
@@ -164,7 +160,7 @@ public class Functions {
         //INCREASE THE HEIGHt
         bottomLayout.setVisibility(View.INVISIBLE);
         Frontpage.isTimeline = false;
-        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        fragmentContainerViewFrame.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_PARENT;
 
     }
 
@@ -174,22 +170,31 @@ public class Functions {
         bottomLayout.setVisibility(View.VISIBLE);
         bottomLayout.bringToFront();
         Frontpage.isTimeline = true;
-        fragmentContainerView.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
+        fragmentContainerViewFrame.getLayoutParams().height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT;
     }
 
+    public void removeFragment(Fragment fragment, Activity activity) {
+        FragmentActivity fragActivity = (FragmentActivity) activity;
+        FragmentManager manager = fragActivity.getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.remove(fragment);
+        Timber.w("REMOVED");
+        transaction.commit();
+
+    }
 
     public void LoadFragment(Fragment fragment, String fragString, Activity activity, Boolean isTimeline, Boolean isFullChat) {
         FragmentActivity fragActivity = (FragmentActivity) activity;
         FragmentManager manager = fragActivity.getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        fragmentContainerView = activity.findViewById(R.id.fragmentContainerView);
+        fragmentContainerViewFrame = activity.findViewById(R.id.fragmentContainerViewFrame);
         fragmentConstraintLayout = activity.findViewById(R.id.fragmentConstraintLayout);
         fragmentConstraintLayout.requestLayout();
         bottomLayout = activity.findViewById(R.id.bottomLayout);
 
-        if (fragString.equalsIgnoreCase(oldFragString)) {
-            return;
-        }
+        /*if (fragString.equalsIgnoreCase(oldFragString)) {
+
+       }*/
 
         if (initial_height == null) {
             initial_height = fragmentConstraintLayout.getLayoutParams().height;
@@ -199,10 +204,12 @@ public class Functions {
             setTimelineFragmentHeight();
         } else {
             setOtherFragmentHeight();
+
         }
 
-        transaction.replace(R.id.fragmentContainerView, fragment, fragString);
+        transaction.replace(R.id.fragmentContainerViewFrame, fragment, fragString);
         transaction.addToBackStack(null);
+        transaction.setReorderingAllowed(true);
         transaction.commit();
         oldFragString = fragString;
     }

@@ -158,4 +158,5 @@
     <string name="about_me">About Me</string>
     <string name="retry">Retry!</string>
     <string name="email_the_same">Email unchanged!</string>
+    <string name="delete">Delete</string>
 </resources>

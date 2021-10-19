@@ -1,7 +1,11 @@
 package social.app.wesocial;
+import android.content.ClipData;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -64,8 +68,10 @@ public class showFullChat extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         return inflater.inflate(R.layout.show_full_chat, container, false);
     }
+
 
 
     @Override
@@ -128,7 +134,7 @@ public class showFullChat extends Fragment {
     }
 
     public void updateChatRecyclerMessages(Boolean iamsender) {
-         chatMessageAdapter = new ChatMessageAdapter(chatMessageListData);
+         chatMessageAdapter = new ChatMessageAdapter(chatMessageListData,requireActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
@@ -231,7 +237,6 @@ public class showFullChat extends Fragment {
 
         networkController.PostMethod(data.showFullMessages_API, postData);
     }
-
 
 
     public void loadAllLatestMessages(String friendID) {

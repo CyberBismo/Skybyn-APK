@@ -27,6 +27,7 @@ import com.like.LikeButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import timber.log.Timber;
 
 class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
 
-    private final List<TimelineDataClass> TimelineDataClass;
+    private ArrayList<TimelineDataClass> TimelineDataClass;
     Functions functions;
     Data data = new Data();
     String postID;
@@ -45,7 +46,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Activity activity;
 
 
-    public TimelinePostsAdapter(List<TimelineDataClass> timelineDataClass,Boolean isUserTimeline,String userID,Activity activity) {
+    public TimelinePostsAdapter(ArrayList<TimelineDataClass> timelineDataClass,Boolean isUserTimeline,String userID,Activity activity) {
         TimelineDataClass = timelineDataClass;
         this.isUserTimeline = isUserTimeline;
         this.activity = activity;
@@ -149,6 +150,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             alertDialogBuilder.setTitle(holder.itemView.getContext().getString(R.string.deletePostTitle));
             alertDialogBuilder.setPositiveButton(holder.itemView.getContext().getString(string.yes_delete),
                     (dialog, arg1) -> {
+
                         TimelineDataClass.remove(holder.getAdapterPosition());
                         notifyItemRemoved(holder.getAdapterPosition());
                         notifyItemRangeChanged(holder.getAdapterPosition(), TimelineDataClass.size());

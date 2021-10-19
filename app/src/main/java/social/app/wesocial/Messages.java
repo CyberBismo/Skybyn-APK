@@ -2,10 +2,13 @@ package social.app.wesocial;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -51,11 +55,16 @@ public class Messages extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.chat_context_menu, menu);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
 
@@ -78,11 +87,10 @@ public class Messages extends Fragment {
             userID = jsonObject.get("userID").toString();
             username = jsonObject.get("username").toString();
             nickName = jsonObject.get("nickname").toString();
-
             messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
         }
 
-        MessageListAdapter messageListAdapter = new MessageListAdapter(messages,getActivity());
+        MessageListAdapter messageListAdapter = new MessageListAdapter(messages,requireActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(messageListAdapter);
@@ -108,7 +116,6 @@ public class Messages extends Fragment {
                     public void notifySuccess(String response) throws JSONException {
                         functions.hideProgress(lottie);
                         if (functions.isJsonArray(response)) {
-                            Timber.i(response);
                             listMessagesOnRecyclerView(response);
                              }
                              if (!functions.isJsonArray(response)) {
@@ -133,6 +140,13 @@ public class Messages extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
         functions= new Functions(requireContext());
+
+        ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBackMessages);
+        imgChatHeaderGoBack.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(requireActivity());
+            requireActivity().onBackPressed();
+
+        });
         if (functions.isJsonArray(loadedMessagesJson)){
             try {
                 listMessagesOnRecyclerView(loadedMessagesJson);

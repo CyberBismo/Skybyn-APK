@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId 'social.app.wesocial'
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -63,5 +63,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
     //implementation 'com.github.garretyoder:Colorful:2.3.4'
     implementation 'com.52inc:scoops:1.0.0'
+    implementation 'com.github.rgocal:Material_PopUp_Menu:5.00'
 
 }

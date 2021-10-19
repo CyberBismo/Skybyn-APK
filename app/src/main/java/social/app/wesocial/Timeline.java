@@ -33,33 +33,35 @@ public class Timeline extends Fragment {
     Functions functions;
     Data data = new Data();
     LottieAnimationView lottie;
-    RecyclerView recyclerView;
+
     SwipeRefreshLayout mSwipeRefreshLayout;
+    TimelinePostsAdapter timelinepostsAdapter;
 
     public Timeline() {
         // Required empty public constructor
     }
 
+
+    @SuppressLint("RestrictedApi")
     public static Timeline newInstance() {
         return new Timeline();
     }
+
 
     private void displayTimelinePosts(String response) throws JSONException {
         String timelinePostContent;
         String timelinePostUsername;
         String timelinePostDate;
-        String timelineUserID = null;
+        String timelineUserID="";
         String timelinePostID;
         String timelineILike;
-
         String timelineAvatarLink;
         String timelinePostLikes;
         String timelinePostCommentsCount;
-
         JSONArray jsonArray = new JSONArray(response);
-        ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
-        JSONObject jsonObject;
 
+        JSONObject jsonObject;
+        ArrayList<TimelineDataClass> timelinePost = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
@@ -73,15 +75,17 @@ public class Timeline extends Fragment {
             timelinePostCommentsCount = jsonObject.get("comments_count").toString();
             timelinePostContent = (String) jsonObject.get("content");
             timelineILike = jsonObject.get("ilike").toString();
-
             timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
         }
 
-        TimelinePostsAdapter timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, false, timelineUserID, getActivity());
+
+        timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, false, timelineUserID, getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        RecyclerView recyclerView = requireView().findViewById(R.id.timelineRecyclerView);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(timelinepostsAdapter);
         timelinepostsAdapter.notifyDataSetChanged();
+        Timber.i(String.valueOf(timelinepostsAdapter.getItemCount()));
 
     }
 
@@ -100,11 +104,10 @@ public class Timeline extends Fragment {
         postData.put("userID", Frontpage.userID);
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
 
-                Timber.i(response);
+                //Timber.i(response);
 
                 if (!functions.isJsonArray(response)) {
                     functions.showSnackBarError(requireActivity().getString(R.string.no_timeline), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
@@ -112,9 +115,9 @@ public class Timeline extends Fragment {
 
                 if (functions.isJsonArray(response)) {
                     timelinePostsJson = response;
-                    displayTimelinePosts(response);
-
+                    displayTimelinePosts(timelinePostsJson);
                 }
+
                 functions.hideProgress(lottie);
             }
 
@@ -141,7 +144,6 @@ public class Timeline extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -150,21 +152,12 @@ public class Timeline extends Fragment {
         return inflater.inflate(R.layout.fragment_timeline, container, false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            loadTimelinePosts();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
-        recyclerView = requireActivity().findViewById(R.id.postsRecyclerView);
+        // recyclerView = requireActivity().findViewById(R.id.timelineRecyclerView);
         functions= new Functions(requireContext());
 
         try {
@@ -172,11 +165,12 @@ public class Timeline extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         mSwipeRefreshLayout = requireView().findViewById(R.id.timelineSwipeToRefresh);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.refreshing), Toast.LENGTH_SHORT).show();
             try {
-                loadTimelinePosts();
+               loadTimelinePosts();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

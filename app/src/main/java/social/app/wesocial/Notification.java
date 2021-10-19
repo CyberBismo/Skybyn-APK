@@ -80,7 +80,7 @@ public class Notification extends Fragment {
     }
 
 
-    public void displayInRecyclerView(String response) throws JSONException{
+    public void displayNotificationsInRecyclerView(String response) throws JSONException{
         String notificationContent;
         String notificationTitle;
         String notificationDate;
@@ -104,6 +104,7 @@ public class Notification extends Fragment {
             notificationRead = (String) jsonObject.get("read");
             notificationType = (String) jsonObject.get("type");
             notifications.add(new NotificationDataClass(notificationContent, notificationAvatarLink, notificationDate, notificationTitle,notificationType,notificationID,notificationRead)); }
+
         NotificationsAdapter notificationsAdapter = new NotificationsAdapter(notifications);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -114,7 +115,7 @@ public class Notification extends Fragment {
     }
     private void loadNotification() throws JSONException {
         if(functions.isJsonArray(oldNotificationJson)){
-            displayInRecyclerView(oldNotificationJson);
+            displayNotificationsInRecyclerView(oldNotificationJson);
         }else{
             functions.showProgress(lottie);
         }
@@ -135,7 +136,7 @@ public class Notification extends Fragment {
                 if (functions.isJsonArray(response)) {
                     Timber.i(response);
                      oldNotificationJson = response;
-                    displayInRecyclerView(response);
+                    displayNotificationsInRecyclerView(response);
                     
                 }
                 if (!functions.isJsonArray(response)) {

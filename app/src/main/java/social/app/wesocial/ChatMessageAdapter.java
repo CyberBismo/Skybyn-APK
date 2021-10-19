@@ -1,12 +1,24 @@
 package social.app.wesocial;
+import android.app.Activity;
+import android.content.ClipData;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+
+import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
@@ -16,12 +28,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     public static Float datetextSize = 9f;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
 
+    Activity activity;
+
     Functions functions;
 
-    public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass) {
+    public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass,Activity activity) {
         this.ChatMessageListDataClass = ChatMessageListDataClass;
-
+        this.activity = activity;
     }
+
 
     @NonNull
     @Override
@@ -49,12 +64,16 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         //return position;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ChatMessageAdapter.ViewHolder holder, int position) {
         functions = new Functions(holder.itemView.getContext());
+
+
         ChatMessageListDataClass chatMessageListDataClass = ChatMessageListDataClass.get(position);
         switch (holder.getItemViewType()) {
             case messageSenderMe:
+                holder.myMessage.setTag(chatMessageListDataClass.getMsgID());
                 holder.myMessage.setText(chatMessageListDataClass.getContent());
                 if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                     holder.myMessageProfilePicture.setVisibility(View.VISIBLE);
@@ -72,9 +91,19 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     holder.myMessageDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
                 }
                 holder.myMessageDate.setTextSize(datetextSize);
+
+                holder.myMessageProfilePicture.setOnClickListener(view -> {
+                    functions.loadTimeLineUserProfile(Frontpage.userID,activity ,holder.itemView.getContext());
+                });
                 break;
 
+
             case messageSenderUser:
+                holder.otherUserMessage.setTag(chatMessageListDataClass.getMsgID());
+                holder.otherUserMessage.setOnClickListener(view -> {
+                    functions.loadTimeLineUserProfile(chatMessageListDataClass.getFriendID(), activity ,holder.itemView.getContext());
+                });
+
                 holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
                 if (position == 0 || position == 1 || position == ChatMessageListDataClass.size() - 1) {
                     holder.otherUserProfilePicture.setVisibility(View.VISIBLE);
@@ -90,9 +119,20 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 } else {
                     holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
                 }
+                holder.otherUserMessage.setOnClickListener(view -> {
+                   Timber.i("Clicked");;
+                });
+
+                holder.otherUserMessage.setOnLongClickListener(view -> {
+                    return false;
+                });
+
                 holder.otherUserDate.setTextSize(datetextSize);
                 break;
         }
+
+
+
 
     }
 
