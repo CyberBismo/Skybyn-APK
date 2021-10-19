@@ -29,19 +29,19 @@ public class Data {
     public String delete_notification_Api = notificationAPI+"delete.php";
     public String create_notification_Api = notificationAPI+"create.php";
 
-    //Messages API
-        public String showMessages_API = messageAPI+"messages.php";
-        public String showFullMessages_API = messageAPI+"chat.php";
-        public String sendMessage_API = messageAPI+"add.php";
+    // Messages API
+    public String showMessages_API = messageAPI+"messages.php";
+    public String showFullMessages_API = messageAPI+"chat.php";
+    public String sendMessage_API = messageAPI+"add.php";
 
-    //Timeline Api
+    // Timeline API
     public String addPost_Api = postAPI+"add.php";
     public String timeline_Api = postAPI+"timeline.php";
     public String user_timeline_Api = postAPI+"user-timeline.php";
     public String deletePost_Api = postAPI+"delete.php";
     public String editPost_Api = API+"edit.php";
 
-    //FRIENDS Api
+    // Friends API
     public String add_friend_action = "add";
     public String block_friend_action = "block";
     public String unblock_friend_action = "unblock";
@@ -59,7 +59,7 @@ public class Data {
     public String accept_friend_Api = friendAPI+"accept.php";
     public String cancel_friend_Api = friendAPI+"cancel.php";
 
-    // COMMENTS Api
+    // Comments API
     public String list_comments_Api = commentAPI+"list.php";
     public String add_comment_Api = commentAPI+"add.php";
     public String deleteComment_Api = commentAPI+"delete.php";
