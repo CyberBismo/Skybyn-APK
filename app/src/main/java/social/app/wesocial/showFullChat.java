@@ -144,16 +144,19 @@ public class showFullChat extends Fragment {
     }
 
     public void updateChatRecyclerMessages(Boolean iamsender) {
-         chatMessageAdapter = new ChatMessageAdapter(chatMessageListData,requireActivity());
+
+        if (isVisible()){
+            chatMessageAdapter = new ChatMessageAdapter(chatMessageListData, requireActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(chatMessageAdapter);
-        if(iamsender){
+        if (iamsender) {
             //
         }
         chatMessageAdapter.notifyDataSetChanged();
         recyclerView.setItemViewCacheSize(chatMessageListData.size());
         scrollDown();
+    }
     }
 
     public void sendMessage(String friendID, String message) {
@@ -235,7 +238,9 @@ public class showFullChat extends Fragment {
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
                         if (functions.isJsonArray(response)) {
+                            if (!response.equals(chatMessageJson)){
                             listChatMessagesOnRecyclerView(response);
+                        }
                         }
                     }
 

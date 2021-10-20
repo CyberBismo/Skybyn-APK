@@ -52,7 +52,7 @@ public class Timeline extends Fragment {
         String timelinePostContent;
         String timelinePostUsername;
         String timelinePostDate;
-        String timelineUserID="";
+        String timelineUserID = "";
         String timelinePostID;
         String timelineILike;
         String timelineAvatarLink;
@@ -79,14 +79,15 @@ public class Timeline extends Fragment {
         }
 
 
-        timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, false, timelineUserID, getActivity());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-        RecyclerView recyclerView = requireView().findViewById(R.id.timelineRecyclerView);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(timelinepostsAdapter);
-        timelinepostsAdapter.notifyDataSetChanged();
-        Timber.i(String.valueOf(timelinepostsAdapter.getItemCount()));
-
+        if (isVisible()) {
+            timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, false, timelineUserID, getActivity());
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+            RecyclerView recyclerView = requireView().findViewById(R.id.timelineRecyclerView);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(timelinepostsAdapter);
+            timelinepostsAdapter.notifyDataSetChanged();
+            Timber.i(String.valueOf(timelinepostsAdapter.getItemCount()));
+        }
     }
 
     private void loadTimelinePosts() throws JSONException {
@@ -158,7 +159,7 @@ public class Timeline extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         // recyclerView = requireActivity().findViewById(R.id.timelineRecyclerView);
-        functions= new Functions(requireContext());
+        functions = new Functions(requireContext());
 
         try {
             loadTimelinePosts();
@@ -170,7 +171,7 @@ public class Timeline extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.refreshing), Toast.LENGTH_SHORT).show();
             try {
-               loadTimelinePosts();
+                loadTimelinePosts();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

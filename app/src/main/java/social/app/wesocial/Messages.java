@@ -90,12 +90,14 @@ public class Messages extends Fragment {
             messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
         }
 
-        MessageListAdapter messageListAdapter = new MessageListAdapter(messages,requireActivity());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(messageListAdapter);
-        messageListAdapter.notifyDataSetChanged();
 
+        if (isVisible()) {
+            MessageListAdapter messageListAdapter = new MessageListAdapter(messages, requireActivity());
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(messageListAdapter);
+            messageListAdapter.notifyDataSetChanged();
+        }
 
     }
     private void loadMessagesRequests() throws JSONException {
