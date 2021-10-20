@@ -25,6 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import timber.log.Timber;
 
 public class showFullChat extends Fragment {
@@ -123,14 +126,21 @@ public class showFullChat extends Fragment {
             }
         }
 
-        //LOAD All messages
-        loadAllMessages(chat_friendID);
+        ExecutorService service = Executors.newFixedThreadPool(4);
+        service.submit(new Runnable() {
+            public void run() {
+                //Load Messages
+                //LOAD All messages
+                loadAllMessages(chat_friendID);
+            }
+        });
 
     }
 
+    //CONVERT TO FUNCTION
     public void scrollDown() {
         recyclerView.scrollToPosition(chatMessageListData.size() - 1);
-        chatScrollView.post((Runnable) () -> chatScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+        chatScrollView.post(() -> chatScrollView.fullScroll(ScrollView.FOCUS_DOWN));
     }
 
     public void updateChatRecyclerMessages(Boolean iamsender) {

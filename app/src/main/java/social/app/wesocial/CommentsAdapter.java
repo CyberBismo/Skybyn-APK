@@ -82,9 +82,9 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.btnCommentLike.setTag(commentDataClass.getiLike());
         holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
 
-        holder.txtCommentUsername.setOnClickListener(view -> Timber.i(commentDataClass.getUserID()));
-        //If the timeLine Post is by Me!
-        if (commentDataClass.getUserID().equals(userID)) {
+
+        //If the comment is by Me!
+        if (commentDataClass.getUserID().equals(Frontpage.userID)) {
             holder.txtCommentDelete.setVisibility(View.VISIBLE);
             holder.txtCommentEdit.setVisibility(View.VISIBLE);
         }else{

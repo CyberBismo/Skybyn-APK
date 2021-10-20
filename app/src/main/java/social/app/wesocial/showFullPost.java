@@ -39,13 +39,14 @@ import timber.log.Timber;
 
 public class showFullPost extends AppCompatActivity {
     TextView txtShowTimelinePostUsername;
-    TextView txtShowTimelinePostDate,  txtShowTimelinePostLikes, txtShowTimelinePostComments;
+    TextView txtShowTimelinePostDate, txtShowTimelinePostLikes, txtShowTimelinePostComments;
     ImageView imgShowTimelinePostProfilePicture;
     TextView txtShowTimelinePostContent;
     Functions functions;
     Data data = new Data();
     Button btnSendTimelineComment;
     TextView txtPostComment, txtShowTimelinePostEdit, txtShowTimelinePostDelete;
+    TextView txtBeTheFirst;
     CardView postTimelineCardView;
     LottieAnimationView lottie;
     NetworkController networkController;
@@ -54,7 +55,7 @@ public class showFullPost extends AppCompatActivity {
     ScrollView showFullpostScrollView;
     TextView txtCommentsCount;
     String postID, postAvatarlink, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
-    HashMap<String, Object> timelinePostDetails = new HashMap<>();
+
     ActionBar actionBar;
     //timeline adapter
 
@@ -89,10 +90,12 @@ public class showFullPost extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void notifyError(VolleyError error) {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
-            }});
+            }
+        });
 
         networkController.PostMethod(data.like_Api, postData);
 
@@ -101,8 +104,8 @@ public class showFullPost extends AppCompatActivity {
 
     private void getAllViewsbyID() {
         postTimelineCardView = findViewById(R.id.showFullpostTimelineCardView);
-        showFullpostScrollView =findViewById(R.id.showFullpostScrollView);
-        View child1 = LayoutInflater.from(this).inflate( R.layout.display_timeline, null);
+        showFullpostScrollView = findViewById(R.id.showFullpostScrollView);
+        View child1 = LayoutInflater.from(this).inflate(R.layout.display_timeline, null);
         postTimelineCardView.removeAllViews();
         postTimelineCardView.addView(child1);
 
@@ -119,9 +122,9 @@ public class showFullPost extends AppCompatActivity {
         //txtCommentsCount = findViewById(R.id.txtCommentsCount);
         btnSendTimelineComment = findViewById(R.id.btnSendTimelineComment);
         txtPostComment = findViewById(R.id.txtShowPostComment);
+         txtBeTheFirst = findViewById(R.id.txtBeTheFirstComment);
         lottie = findViewById(R.id.showTimelinePostProgressView);
         recyclerView = findViewById(R.id.commentsRecyclerview);
-
 
 
         //FROM ADAPTER
@@ -142,7 +145,9 @@ public class showFullPost extends AppCompatActivity {
 
     public void getPostIntentContent() {
         Intent i = getIntent();
+        HashMap<String, Object> timelinePostDetails = new HashMap<>();
         timelinePostDetails = (HashMap<String, Object>) i.getSerializableExtra("timeLinePostDetails");
+        Timber.i("POST CONTENT"+timelinePostDetails.toString());
         postUsername = Objects.requireNonNull(timelinePostDetails.get("username")).toString();
         posterUserID = Objects.requireNonNull(timelinePostDetails.get("userID")).toString();
         postID = Objects.requireNonNull(timelinePostDetails.get("postID")).toString();
@@ -160,7 +165,7 @@ public class showFullPost extends AppCompatActivity {
     private void loadComments(Boolean iJustCommented) {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("userID", Frontpage.userID);
+        postData.put("userID", posterUserID);
         postData.put("postID", postID);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
@@ -169,6 +174,10 @@ public class showFullPost extends AppCompatActivity {
             public void notifySuccess(String response) throws JSONException {
                 Timber.i(response);
                 functions.hideProgress(lottie);
+
+                if (!functions.isJsonArray(response)){
+                    txtBeTheFirst.setVisibility(View.VISIBLE);
+                }
 
                 if (functions.isJsonArray(response)) {
                     String commentContent;
@@ -198,25 +207,25 @@ public class showFullPost extends AppCompatActivity {
                         commentContent = (String) jsonObject.get("content");
                         commentILike = jsonObject.get("ilike").toString();
                         commentPostID = jsonObject.get("postID").toString();
-
-
                         commentData.add(new CommentDataClass(commentID, commentUserID, commentUsername, commentAvatarLink, commentDate, commentContent, commentLikes, commentILike, commentPostID));
                     }
 
-                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData,commentUserID,showFullPost.this);
+                    CommentsAdapter commentsAdapter = new CommentsAdapter(commentData, commentUserID, showFullPost.this);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setAdapter(commentsAdapter);
                     commentsAdapter.notifyDataSetChanged();
-                    //txtCommentsCount.setText("Comments(" + commentsAdapter.getItemCount() + ")");
-                    if(iJustCommented){
-                        int scrollTo  = commentData.size()-1;
+                    recyclerView.setVisibility(View.VISIBLE);
+                    txtBeTheFirst.setVisibility(View.INVISIBLE);
+                    recyclerView.bringToFront();
+                    //txtCommentsCount.setText("Total post comments(" + commentsAdapter.getItemCount() + ")");
+                    if (iJustCommented) {
+                        int scrollTo = commentData.size() - 1;
                         recyclerView.scrollToPosition(scrollTo);
                         showFullpostScrollView.post((Runnable) () -> showFullpostScrollView.fullScroll(ScrollView.FOCUS_DOWN));
 
 
                     }
-
 
 
                 }
@@ -226,7 +235,8 @@ public class showFullPost extends AppCompatActivity {
             @Override
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
-                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+                Timber.i(error.toString());
+                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content),getApplicationContext());
             }
         });
         networkController.PostMethod(data.list_comments_Api, postData);
@@ -249,6 +259,7 @@ public class showFullPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_full_post);
+        functions = new Functions(getApplicationContext());
         actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -256,9 +267,7 @@ public class showFullPost extends AppCompatActivity {
         getPostIntentContent();
         verifyIfIamPoster();
         loadComments(false);
-        functions= new Functions(getApplicationContext());
         functions.loadProfilePictureDrawableThumb(postAvatarlink, imgShowTimelinePostProfilePicture);
-
         txtShowTimelinePostUsername.setText(postUsername);
         txtShowTimelinePostUsername.setTag(posterUserID);
         txtShowTimelinePostDate.setText(postDate);
@@ -266,7 +275,6 @@ public class showFullPost extends AppCompatActivity {
         txtShowTimelinePostLikes.setText(postLikes);
         txtShowTimelinePostComments.setText(postCommentsCount);
         btnShowtimePostLike.setTag(userLikedPost);
-
 
 
         //LIKE BUTTON
@@ -285,74 +293,74 @@ public class showFullPost extends AppCompatActivity {
         });
 
         txtShowTimelinePostEdit.setOnClickListener(view -> {
-             // get alert_dialog.xml view
-                LayoutInflater li = LayoutInflater.from(getApplicationContext());
-                View editLayout = li.inflate(R.layout.editdialog, null);
+            // get alert_dialog.xml view
+            LayoutInflater li = LayoutInflater.from(getApplicationContext());
+            View editLayout = li.inflate(R.layout.editdialog, null);
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        this,R.style.AlertDialogCustom);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                    this, R.style.AlertDialogCustom);
 
-                // set alert_dialog.xml to alertdialog builder
-                alertDialogBuilder.setView(editLayout);
+            // set alert_dialog.xml to alertdialog builder
+            alertDialogBuilder.setView(editLayout);
 
-                final EditText txtContent = editLayout.findViewById(R.id.etUserInput);
-                txtContent.setText(txtShowTimelinePostContent.getText().toString());
-                txtContent.setSelection(txtContent.length());
+            final EditText txtContent = editLayout.findViewById(R.id.etUserInput);
+            txtContent.setText(txtShowTimelinePostContent.getText().toString());
+            txtContent.setSelection(txtContent.length());
 
-                // set dialog message
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton(getString(R.string.save), (dialog, id) -> {
-                            //SAVE ACTION
-                            HashMap<String, String> postData = new HashMap<>();
-                            postData.put("userID", Frontpage.userID);
-                            postData.put("postID", postID);
-                            postData.put("content", txtContent.getText().toString());
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.save), (dialog, id) -> {
+                        //SAVE ACTION
+                        HashMap<String, String> postData = new HashMap<>();
+                        postData.put("userID", Frontpage.userID);
+                        postData.put("postID", postID);
+                        postData.put("content", txtContent.getText().toString());
 
 
-                            NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
-                                @Override
-                                public void notifySuccess(String response) throws JSONException {
-                                    Timber.i(response);
+                        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+                            @Override
+                            public void notifySuccess(String response) throws JSONException {
+                                Timber.i(response);
 
-                                    if (!functions.isJsonObject(response)) {
-                                        Toast.makeText(getApplicationContext(),getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    if (functions.isJsonObject(response)) {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        String responseCode = jsonObject.get("responseCode").toString();
-                                        String message = jsonObject.get("message").toString();
-                                        String content = jsonObject.get("content").toString();
-                                        if (responseCode.equals("1")) {
-                                            txtShowTimelinePostContent.setText(content);
-                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        if (responseCode.equals("0")) {
-                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                        }
-
-                                    }
+                                if (!functions.isJsonObject(response)) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
                                 }
 
-                                @Override
-                                public void notifyError(VolleyError error) {
-                                    //functions.showSnackBar(holder.itemView.getContext().getString(string.network_something_wrong),holder.itemView.findViewById(android.R.id.content), holder.itemView.getContext());
+                                if (functions.isJsonObject(response)) {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String responseCode = jsonObject.get("responseCode").toString();
+                                    String message = jsonObject.get("message").toString();
+                                    String content = jsonObject.get("content").toString();
+                                    if (responseCode.equals("1")) {
+                                        txtShowTimelinePostContent.setText(content);
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    if (responseCode.equals("0")) {
+                                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
-                            });
+                            }
 
-                            Toast.makeText(getApplicationContext(), getString(R.string.updating_post),Toast.LENGTH_SHORT).show();
-                            networkController.PostMethod(data.editPost_Api, postData);
-                        })
-                        .setNegativeButton("Cancel",
-                                (dialog, id) -> dialog.dismiss());
+                            @Override
+                            public void notifyError(VolleyError error) {
+                                //functions.showSnackBar(holder.itemView.getContext().getString(string.network_something_wrong),holder.itemView.findViewById(android.R.id.content), holder.itemView.getContext());
+                            }
+                        });
 
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
+                        Toast.makeText(getApplicationContext(), getString(R.string.updating_post), Toast.LENGTH_SHORT).show();
+                        networkController.PostMethod(data.editPost_Api, postData);
+                    })
+                    .setNegativeButton("Cancel",
+                            (dialog, id) -> dialog.dismiss());
 
-                // show it
-                alertDialog.show();
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
 
         });
 
@@ -381,7 +389,8 @@ public class showFullPost extends AppCompatActivity {
                                     String message = jsonObject.get("message").toString();
                                     if (responseCode.equals("1")) {
                                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                        finish(); }
+                                        finish();
+                                    }
 
                                     if (responseCode.equals("0")) {
                                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -460,12 +469,11 @@ public class showFullPost extends AppCompatActivity {
         });
 
         //Profile picture and name click
-        imgShowTimelinePostProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(posterUserID,showFullPost.this,getApplicationContext()));
+        imgShowTimelinePostProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(posterUserID, showFullPost.this, getApplicationContext()));
         txtShowTimelinePostUsername.setOnClickListener(view -> imgShowTimelinePostProfilePicture.callOnClick());
 
 
         //END OF ON CREATE
-
     }
 
 

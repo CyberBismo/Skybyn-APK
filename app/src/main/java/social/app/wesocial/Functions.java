@@ -67,7 +67,7 @@ public class Functions {
         lottieview.bringToFront();
         lottieview.setAnimation(R.raw.wesocialdot);
         lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.white));
-        lottieview.setAlpha(0.9f);
+        lottieview.setAlpha(1f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
         lottieview.setRepeatCount(9999999);
         lottieview.setEnabled(false);

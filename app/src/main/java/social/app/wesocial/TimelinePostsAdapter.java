@@ -118,6 +118,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
 
             i.putExtra( "timeLinePostDetails", timeLinePostDetails);
+            Timber.i(timeLinePostDetails.toString());
             holder.itemView.getContext().startActivity(i);
 
         });

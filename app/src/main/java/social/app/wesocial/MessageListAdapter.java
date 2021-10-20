@@ -21,6 +21,8 @@ import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import timber.log.Timber;
 
@@ -51,8 +53,14 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         holder.content.setText(messageListDataClass.getContent());
         functions.loadProfilePictureDrawableThumb(messageListDataClass.getAvatarLink(), holder.imgMessageProfilePicture);
 
-        //Load Messages
-        loadAllMessages(messageListDataClass.getFriendID());
+        ExecutorService service = Executors.newFixedThreadPool(4);
+        service.submit(new Runnable() {
+            public void run() {
+                //Load Messages
+                loadAllMessages(messageListDataClass.getFriendID());            }
+        });
+
+
         holder.displayMsgCardView.setTag(chatMessagejson);
 
         switch (messageListDataClass.getOnline()) {

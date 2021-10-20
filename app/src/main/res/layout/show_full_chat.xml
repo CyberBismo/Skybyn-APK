@@ -120,7 +120,7 @@
             android:inputType="textMultiLine"
             android:lines="10"
             android:maxLines="10"
-            android:minLines="3"
+            android:minLines="1"
             android:padding="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/dark_gray"

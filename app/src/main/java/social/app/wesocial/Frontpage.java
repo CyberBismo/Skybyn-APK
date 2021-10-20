@@ -50,6 +50,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import timber.log.Timber;
 
@@ -425,7 +427,20 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         startService(intent);
                         userLoggedIn = true;
 
-                        loadMessagesRequests();
+                        ExecutorService service = Executors.newFixedThreadPool(4);
+                        service.submit(new Runnable() {
+                            public void run() {
+                                //Load Messages
+                                try {
+                                    loadMessagesRequests();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        });
+
 
                         showTimeline();
                         //showNotifications();

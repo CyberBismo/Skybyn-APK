@@ -124,20 +124,20 @@
                 android:id="@+id/txtShowTimelinePostContent"
                 android:layout_width="384dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="52dp"
                 android:fontFamily="sans-serif"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.592"
+                app:layout_constraintHorizontal_bias="0.814"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/imgShowTimelinePostComment"
-                android:layout_width="29dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:minWidth="48dp"
@@ -165,7 +165,7 @@
             <com.like.LikeButton
                 android:id="@+id/btnShowTimelinePostLike"
                 android:layout_width="25dp"
-                android:layout_height="20dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 app:anim_scale_factor="2"
