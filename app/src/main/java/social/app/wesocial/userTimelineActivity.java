@@ -68,7 +68,7 @@ public class userTimelineActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_timeline);
+        setContentView(R.layout.user_profile);
          lottie = findViewById(R.id.userTimelineProfileProgressView);
 
          ActionBar actionBar = getSupportActionBar();
