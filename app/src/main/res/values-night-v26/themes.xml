@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PreferenceScreen" parent="Theme.AppCompat">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionBarDivider">@color/white</item>
+        <item name="android:background">@color/dark_gray</item>
+        <item name="android:iconTint">@color/white</item>
+    </style>
+</resources>

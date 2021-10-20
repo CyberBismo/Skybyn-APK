@@ -3,13 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <item android:title="@string/notifications"
-    android:id="@+id/notifications"
+    android:id="@+id/topnav_notifications"
     android:icon="@drawable/white_notifications"
     android:iconTint="@color/white"
     app:showAsAction="always"></item>
 
+    <item android:title="@string/Friends"
+        android:id="@+id/topnav_friends"
+        android:icon="@drawable/friends"
+        android:iconTint="@color/white"
+        app:showAsAction="always"></item>
+
+
     <item
-        android:id="@+id/menu_search"
+        android:id="@+id/topnav_menu_search"
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always"

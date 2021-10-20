@@ -64,5 +64,10 @@ dependencies {
     //implementation 'com.github.garretyoder:Colorful:2.3.4'
     implementation 'com.52inc:scoops:1.0.0'
     implementation 'com.github.rgocal:Material_PopUp_Menu:5.00'
+    implementation 'com.mikepenz:actionitembadge:4.0.0'
+
+    //SUB-DEPENDENCIES
+    //Android-Iconics - used to provide an easy API for icons
+    implementation 'com.mikepenz:iconics-core:{latestVersion}@aar'
 
 }

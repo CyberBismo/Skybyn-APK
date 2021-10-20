@@ -30,12 +30,12 @@ import timber.log.Timber;
 
 public class Friends extends Fragment {
     static LottieAnimationView lottie;
+    static Functions functions;
+    static String action;
     RecyclerView friendsRecyclerView;
     TextView txtFriendsTitle;
-    static Functions functions;
     Data data = new Data();
-    static String action;
-    Button btnShowFriends ;
+    Button btnShowFriends;
     Button btnShowBlockedFriends;
     Button btnShowFriendsRequests;
 
@@ -47,7 +47,7 @@ public class Friends extends Fragment {
         Friends fragment = new Friends();
         action = "";
         action = param1;
-         functions= new Functions(fragment.requireContext());
+
         return fragment;
 
     }
@@ -71,10 +71,10 @@ public class Friends extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclerView);
         txtFriendsTitle = requireActivity().findViewById(R.id.txtFriendsTitle);
-         btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
+        btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
         btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);
-         btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
-
+        btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
+        functions = new Functions(requireContext());
 
         if (action.equals(data.accept_friend_action)) {
             loadFriendsRequests();
@@ -86,8 +86,6 @@ public class Friends extends Fragment {
         btnShowFriends.setOnClickListener(view1 -> loadFriends());
 
         btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
-
-
 
 
     }
@@ -102,11 +100,11 @@ public class Friends extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Timber.i( response);
+                Timber.i(response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {
-                    functions.showSnackBarError(requireActivity().getString(R.string.no_friends), requireActivity().findViewById(android.R.id.content),requireActivity().getApplicationContext());
+                    functions.showSnackBarError(requireActivity().getString(R.string.no_friends), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                     return;
                 }
 
@@ -114,7 +112,7 @@ public class Friends extends Fragment {
                     String friendUsername;
                     String friendNickname;
                     String friendID;
-                    String friendAvatarLink ;
+                    String friendAvatarLink;
 
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<FriendsDataClass> friendsDataClass = new ArrayList<>();
@@ -128,7 +126,7 @@ public class Friends extends Fragment {
                         friendUsername = (String) jsonObject.get("username");
                         String friendOnline = (String) jsonObject.get("online");
 
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,friendOnline));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername, friendOnline));
                     }
 
                     FriendsAdapter friendsAdapter = new FriendsAdapter(friendsDataClass);
@@ -188,7 +186,7 @@ public class Friends extends Fragment {
                         friendNickname = (String) jsonObject.get("nickname");
                         friendUsername = (String) jsonObject.get("username");
 
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,""));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername, ""));
                     }
 
                     FriendsRequestsAdapter friendsRequestsAdapter = new FriendsRequestsAdapter(friendsDataClass);
@@ -245,7 +243,7 @@ public class Friends extends Fragment {
                         friendAvatarLink = jsonObject.get("avatar").toString();
                         friendNickname = (String) jsonObject.get("nickname");
                         friendUsername = (String) jsonObject.get("username");
-                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername,""));
+                        friendsDataClass.add(new FriendsDataClass(friendID, friendAvatarLink, friendNickname, friendUsername, ""));
                     }
 
                     BlockedFriendsAdapter blockedFriendsAdapter = new BlockedFriendsAdapter(friendsDataClass);
