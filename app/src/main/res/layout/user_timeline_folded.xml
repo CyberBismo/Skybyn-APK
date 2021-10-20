@@ -44,7 +44,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 app:cardBackgroundColor="@color/transparent_full"
                 app:cardElevation="3dp"
                 app:contentPaddingBottom="1dp"
@@ -60,23 +60,22 @@
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/userProfilePhoto"
-                        android:layout_width="149dp"
-                        android:layout_height="109dp"
+                        android:layout_width="62dp"
+                        android:layout_height="67dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:background="@color/transparent_full"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="1dp"
                         app:civ_shadow_color="@color/white"
                         app:civ_shadow_radius="5dp"
-                        app:layout_constraintBottom_toTopOf="@+id/txtUserProfileUsername"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/userProfileCoverPhoto"
-                        app:layout_constraintVertical_bias="0.845" />
+                        app:layout_constraintTop_toTopOf="@+id/userProfileCoverPhoto" />
 
                     <ImageView
                         android:id="@+id/userProfileCoverPhoto"
                         android:layout_width="0dp"
-                        android:layout_height="250dp"
+                        android:layout_height="50dp"
                         android:layout_marginBottom="5dp"
                         android:foregroundGravity="fill"
                         android:scaleType="centerCrop"
@@ -90,38 +89,34 @@
 
                     <TextView
                         android:id="@+id/txtUserProfileUsername"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="50dp"
                         android:gravity="center_horizontal"
                         android:text="USERNAME"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/txtUserProfileFullname"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.994" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/txtUserProfileFullname"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="center_horizontal"
                         android:text="FULLNAME"
                         android:textSize="14sp"
-                        app:layout_constraintBottom_toTopOf="@+id/txtUserProfileAboutMe"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtUserProfileUsername" />
 
                     <TextView
                         android:id="@+id/txtUserProfileAboutMe"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginBottom="44dp"
+                        android:layout_marginBottom="276dp"
                         android:ellipsize="end"
                         android:inputType="textMultiLine|textImeMultiLine"
                         android:maxLines="10"
