@@ -42,7 +42,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public LottieAnimationView lottieview;
     Data data = new Data();
-    FrameLayout verify_form;
     String oneTimetoken;
     Executor executor;
     BiometricPrompt biometricPrompt;
@@ -50,9 +49,15 @@ public class LoginRegisterForgot extends AppCompatActivity {
     EditText txtOneTimeCode;
     FrameLayout signup_form;
     FrameLayout forgot_form;
-    FrameLayout Signin_form;
-    FrameLayout mainFrameLayout;
+    FrameLayout signin_form;
+    FrameLayout email_form;
+    FrameLayout verify_form;
     private Button login_btnShowForgotForm;
+    private Button login_btnShowSignupForm;
+    private Button signup_btnShowForgotForm;
+    private Button signup_btnShowLoginForm;
+    private Button forgot_btnShowLoginForm;
+    private Button forgot_btnShowSignupForm;
     private EditText txtLoginUserName;
     private EditText txtLoginPassWord;
     private EditText txtRegisterUsername;
@@ -61,29 +66,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private EditText txtEmail;
     private TextView txtVerify;
     private Button BtnVerify_email;
-    private Button login_btnShowSignupForm, login_btnShowLoginForm;
     static Functions functions = null;
-
-    public void setFrameLayoutVisibility(FrameLayout frameLayout) {
-
-        for (int i = 0; i < mainFrameLayout.getChildCount(); i++) {
-            View v = mainFrameLayout.getChildAt(i);
-
-            if (v instanceof FrameLayout) {
-                if (v.getId() == frameLayout.getId()) {
-                    v.setVisibility(View.VISIBLE);
-                    v.bringToFront();
-                    v.bringToFront();
-                    v.bringToFront();
-                    Timber.i(String.valueOf("|ID" + v.getId())+"trueeee");
-                } else {
-                    v.setVisibility(View.INVISIBLE);
-                }
-            }
-        }
-
-
-    }
 
 
     @Override
@@ -98,9 +81,14 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }
         lottieview = findViewById(R.id.loginProgressView);
 
-        login_btnShowForgotForm = findViewById(R.id.login_btnShowForgotForm);
-        login_btnShowSignupForm = findViewById(R.id.login_btnShowSignupForm);
-        login_btnShowLoginForm = findViewById(R.id.login_btnShowLoginForm);
+        login_btnShowForgotForm = findViewById(R.id.loginShowForgotForm);
+        login_btnShowSignupForm = findViewById(R.id.loginShowSignupForm);
+
+        signup_btnShowForgotForm = findViewById(R.id.signupShowForgotForm);
+        signup_btnShowLoginForm = findViewById(R.id.signupShowLoginForm);
+
+        forgot_btnShowLoginForm = findViewById(R.id.forgotShowLoginForm);
+        forgot_btnShowSignupForm = findViewById(R.id.forgotShowSignupForm);
 
         txtVerify = findViewById(R.id.verify_email_check);
         txtLoginUserName = findViewById(R.id.txtUsername);
@@ -111,18 +99,35 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtConfirmPassword = findViewById(R.id.cPassword);
         txtEmail = findViewById(R.id.Email);
         txtforgot_email = findViewById(R.id.forgot_email);
-        mainFrameLayout = findViewById(R.id.mainFrameLayout);
         TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
         Button btnSign_up = findViewById(R.id.btnProcessSignUp);
 
-        txtLoginUserName.setText("cyberwizard");
-        txtLoginPassWord.setText("73833remi");
-        //DECLARING FORM
-
-        Signin_form = findViewById(R.id.signin_form);
+        signin_form = findViewById(R.id.signin_form);
         forgot_form = findViewById(R.id.forgot_form);
         signup_form = findViewById(R.id.signup_form);
         verify_form = findViewById(R.id.verify_form);
+
+
+        login_btnShowForgotForm.setOnClickListener(v -> {
+            toggleForgot();
+        });
+        login_btnShowSignupForm.setOnClickListener(v -> {
+            toggleSignup();
+        });
+
+        signup_btnShowForgotForm.setOnClickListener(v -> {
+            toggleForgot();
+        });
+        signup_btnShowLoginForm.setOnClickListener(v -> {
+            toggleSignin();
+        });
+
+        forgot_btnShowSignupForm.setOnClickListener(v -> {
+            toggleSignup();
+        });
+        forgot_btnShowLoginForm.setOnClickListener(v -> {
+            toggleSignin();
+        });
 
 
         Button BtnForgotPassword;
@@ -130,7 +135,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         Button btnVerifyOTC = findViewById(R.id.btnVerifyOTC);
 
         lblCloseVerify.setOnClickListener(view -> {
-            setFrameLayoutVisibility(signup_form);
+            toggleSignup();
         });
 
         //INITIALIZE THE SHAREDPREF FILE
@@ -162,20 +167,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 String errorMsg = getString(R.string.biometric_auth_failed);
                 functions.ShowToast(errorMsg);
             }
-        });
-
-
-        login_btnShowForgotForm.setOnClickListener(v -> {
-            toggleForgot();
-
-        });
-        login_btnShowSignupForm.setOnClickListener(v -> {
-            toggleSignup();
-
-        });
-        login_btnShowLoginForm.setOnClickListener(v -> {
-            toggleSignin();
-
         });
 
         //BUTTON TO VERIFY ONE TIME CODE
@@ -349,7 +340,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             functions.ShowToast(jsonObject.get("message").toString());
                             oneTimetoken = jsonObject.get("token").toString();
                             //HIDE SIGNUP and SignIn
-                            setFrameLayoutVisibility(verify_form);
+                            toggleVerify();
 
                         } else if (responseCode.equals("0")) {
                             functions.ShowToast(jsonObject.get("message").toString());
@@ -403,7 +394,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             signup_form.setVisibility(View.INVISIBLE);
                             verify_form.setVisibility(View.INVISIBLE);
                             txtOneTimeCode.setText("");
-                            Signin_form.setVisibility(View.VISIBLE);
+                            signin_form.setVisibility(View.VISIBLE);
                         } else if (responseCode.equals("0")) {
                             functions.ShowToast(jsonObject.get("message").toString());
 
@@ -489,29 +480,49 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
 
     // Switch forms and buttons
+
+    public void toggleSignin() {
+        signup_form.setVisibility(View.INVISIBLE);
+        forgot_form.setVisibility(View.INVISIBLE);
+        verify_form.setVisibility(View.INVISIBLE);
+
+        signin_form.setVisibility(View.VISIBLE);
+    }
     public void toggleSignup() {
-        setFrameLayoutVisibility(signup_form);
+        signin_form.setVisibility(View.INVISIBLE);
+        forgot_form.setVisibility(View.INVISIBLE);
+        verify_form.setVisibility(View.INVISIBLE);
+
+        signup_form.setVisibility(View.VISIBLE);
+    }
+    public void toggleForgot() {
+        signin_form.setVisibility(View.INVISIBLE);
+        signup_form.setVisibility(View.INVISIBLE);
+        verify_form.setVisibility(View.INVISIBLE);
+
+        forgot_form.setVisibility(View.VISIBLE);
+    }
+    public void toggleVerify() {
+        signin_form.setVisibility(View.INVISIBLE);
+        signup_form.setVisibility(View.INVISIBLE);
+        forgot_form.setVisibility(View.INVISIBLE);
+
+        verify_form.setVisibility(View.VISIBLE);
+    }
+    public void toggleEmail() {
+        signin_form.setVisibility(View.INVISIBLE);
+        signup_form.setVisibility(View.INVISIBLE);
+        forgot_form.setVisibility(View.INVISIBLE);
+        verify_form.setVisibility(View.INVISIBLE);
+
+        email_form.setVisibility(View.VISIBLE);
     }
 
     public void cancelEmail() {
-        FrameLayout signin_form = findViewById(R.id.signin_form);
-        FrameLayout forgot_form = findViewById(R.id.forgot_form);
-        FrameLayout signup_form = findViewById(R.id.signup_form);
-        FrameLayout email_form = findViewById(R.id.email_form);
-
         toggleSignin();
 
         BtnVerify_email.setVisibility(View.VISIBLE);
         txtVerify.setText("");
-    }
-
-    public void toggleForgot() {
-        setFrameLayoutVisibility(forgot_form);
-    }
-
-
-    public void toggleSignin() {
-        setFrameLayoutVisibility(Signin_form);
     }
 
     public void checkLoginStatus() {
