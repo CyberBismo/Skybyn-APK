@@ -9,6 +9,16 @@
         android:title="@string/biometric_prompt_key"
         />
 
+    <SwitchPreference
+        android:id="@+id/toggleDarkMode"
+        android:defaultValue="false"
+        android:icon="@drawable/dark_mode"
+        android:key="@string/toggleDarkMode_key"
+        android:summary="@string/toggle_dark_mode"
+        android:title="@string/dark_mode"
+        />
+
+
 
 
 

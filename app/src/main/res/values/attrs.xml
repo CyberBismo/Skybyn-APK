@@ -1,0 +1,13 @@
+<resources>
+    <declare-styleable name="buttonBG">
+        <attr name="btncolorPrimary" format="reference"/>
+        <attr name="mainColour" format="reference"/>
+        <attr name="textboxBgColorPrimary" format="reference"/>
+        <attr name="textBoxTextColorPrimary" format="reference"/>
+        <attr name="background" format="reference"/>
+        <attr name="TextViewColor" format="reference"/>
+        <attr name="sideNavigationDrawerBgColor" format="reference"/>
+        <attr name="blackORwhite" format="reference"/>
+
+    </declare-styleable>
+</resources>

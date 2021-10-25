@@ -38,6 +38,7 @@ public class Messages extends Fragment {
     LottieAnimationView lottie;
     RecyclerView recyclerView;
     public static String oldMessageJson = "";
+    public static String frienduserID = "";
     public static String loadedMessagesJson = "";
 
 
@@ -45,8 +46,9 @@ public class Messages extends Fragment {
         // Required empty public constructor
     }
 
-    public static Messages newInstance(String messagesJson) {
+    public static Messages newInstance(String messagesJson,String friendID) {
         loadedMessagesJson = messagesJson;
+        frienduserID = friendID;
         return new Messages();
     }
 
@@ -139,6 +141,7 @@ public class Messages extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
         functions= new Functions(requireContext());
@@ -162,8 +165,9 @@ public class Messages extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        super.onViewCreated(view, savedInstanceState);
     }
 }
 

@@ -160,4 +160,7 @@
     <string name="email_the_same">Email unchanged!</string>
     <string name="delete">Delete</string>
     <string name="Be_first_to_comment">Be the first to comment.</string>
+    <string name="toggleDarkMode_key">Toggle dark mode</string>
+    <string name="toggle_dark_mode">Toggle Dark mode</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

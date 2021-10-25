@@ -3,11 +3,11 @@ package social.app.wesocial;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.app.TaskStackBuilder;
 
 import com.android.volley.VolleyError;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -40,7 +40,12 @@ public class PushNotificationService extends FirebaseMessagingService {
                     NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
                         @Override
                         public void notifySuccess(String response) {
-                            Timber.i(response);
+                            //Timber.i(response);
+                            HashMap hashMap = new HashMap();
+                            hashMap.put("title", "New Message");
+                            hashMap.put("body", "Your friend just sent a message");
+                            hashMap.put("friendID","1");
+                            //displayNotification(hashMap, "chat");
                         }
 
                         @Override
@@ -70,32 +75,56 @@ public class PushNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-
         if (remoteMessage.getData().containsKey("type")) {
             switch (remoteMessage.getData().get("type")) {
                 case "chat":
-                    String friendID = remoteMessage.getData().get("from");
-                    builder.setSmallIcon(R.drawable.chat);
+                    HashMap hashMap = new HashMap();
+                    hashMap.put("title", remoteMessage.getData().get("title"));
+                    hashMap.put("body", remoteMessage.getData().get("body"));
+                    displayNotification(hashMap, "chat");
 
                 default:
                     break;
             }
 
 
-
-            builder.setContentTitle(remoteMessage.getData().get("title"))
-                    .setContentText(remoteMessage.getData().get("body"))
-                    .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
-                    .setAutoCancel(true)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-            notificationId = 9999;
-            notificationManager.notify(notificationId, builder.build());
-
-
         }
+    }
+
+    private void displayNotification(HashMap hashMap, String type) {
+        Intent in;
+        PendingIntent pendingIntent = null;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        String notificationTitle, notificationBody;
+        notificationTitle = hashMap.get("title").toString();
+        notificationBody = hashMap.get("body").toString();
+
+        switch (type) {
+            case "chat":
+                String friendID = hashMap.get("friendID").toString();
+                builder.setSmallIcon(R.drawable.png_chat);
+                in = new Intent(getApplicationContext(), Frontpage.class);
+                in.putExtra("friendID", friendID);
+                in.putExtra("loginAction", data.intent_auth);
+                pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
+                break;
+
+                default:
+                break;
+        }
+
+
+        builder.setContentTitle(notificationTitle)
+                .setContentText(notificationBody)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationId = 9999;
+        notificationManager.notify(notificationId, builder.build());
     }
 
     private void createNotificationChannel() {

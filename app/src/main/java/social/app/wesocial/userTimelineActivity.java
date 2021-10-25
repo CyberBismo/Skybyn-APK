@@ -2,17 +2,25 @@ package social.app.wesocial;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -37,14 +45,44 @@ public class userTimelineActivity extends AppCompatActivity {
     SwipeRefreshLayout mSwipeRefreshLayout;
     public String timelinePostsJson = "";
     TimelinePostsAdapter timelinepostsAdapter;
+    CardView cardProfileEdit;
 
     private static String userID = "";
     //public static LottieAnimationView lottie;
     public ImageView imgUserCoverPhoto, imgUserProfilePhoto;
-    public TextView txtUserProfileFullname, txtUserProfileUsername;
+    public TextView txtUserProfileFullname, txtUserProfileUsername,txtEditProfile;
+
+    String firstName, lastName, middleName, nickName, bio;
+    String currentPassword, newPassword, confirmNewPassword;
+    String newEmail, oldEmail;
 
 
-     @Override
+    TextView txtProfilefirstName, txtProfilelastName, txtProfilemiddleName, txtProfilenickName, txtProfileAboutMe;
+    TextView txtProfileCurrentPassword, txtProfileNewPassword, txtProfileConfirmNewPassword, txtProfileEmail;
+
+    Button btnUpdateProfile, btnUpdateProfileEmail, btnUpdateProfilePassword;
+
+
+    void retrieveIntentNotificationData(){
+        Intent i = getIntent();
+        userID = i.getStringExtra("userID");
+       // loadUserProfile(userID);
+        Timber.e("INTENT"+userID);
+
+        if (userID.equalsIgnoreCase(Frontpage.userID)){
+            txtEditProfile.setVisibility(View.VISIBLE);
+        }else{
+            txtEditProfile.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //retrieveIntentNotificationData();
+    }
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
 
@@ -65,24 +103,251 @@ public class userTimelineActivity extends AppCompatActivity {
         recyclerView.invalidate();
      }
 
+
+
+    public void updateProfile() {
+
+    }
+
+    public void updateEmailRequest() {
+        newEmail = txtProfileEmail.getText().toString();
+
+        if (newEmail.equalsIgnoreCase(Frontpage.email)) {
+            txtProfileEmail.setError(getString(R.string.email_the_same));
+            return;
+        }
+
+        if (newEmail.equals("")) {
+            txtProfileEmail.setError(getString(R.string.email_required));
+            return;
+        }
+
+        if (!functions.validateEmail(newEmail)) {
+            txtProfileEmail.setError(getString(R.string.invalid_email));
+            return;
+        }
+
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("email", Frontpage.email);
+        postData.put("new_email", newEmail);
+
+        functions.showProgress(lottie);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                functions.hideProgress(lottie);
+                if (functions.isJsonObject(response)) {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String responseCode = jsonObject.get("responseCode").toString();
+                    String message = jsonObject.get("message").toString();
+
+                    if (responseCode.equals("0")) {
+                        functions.showSnackBarError(message,findViewById(android.R.id.content), getApplicationContext());
+                    }
+
+                    if (responseCode.equals("1")) {
+                        String token = jsonObject.get("token").toString();
+                        AlertDialog.Builder alertName = new AlertDialog.Builder(cardProfileEdit.getContext(),R.style.AlertDialogCustom);
+                        final EditText editTextName1 = new EditText(cardProfileEdit.getContext());
+                        alertName.setTitle(getString(R.string.enter_the_verification_code));
+                        alertName.setView(editTextName1);
+                        LinearLayout layoutName = new LinearLayout(cardProfileEdit.getContext());
+                        layoutName.setOrientation(LinearLayout.VERTICAL);
+                        layoutName.addView(editTextName1); //displays the user input bar
+                        alertName.setView(layoutName);
+
+                        alertName.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                        });
+
+                        alertName.setPositiveButton("Continue", (dialog, whichButton) -> {
+                            EditText dialogEditext = editTextName1; // variable to collect user input
+                            if (!dialogEditext.getText().toString().equals(token)) {
+                                functions.hideSoftKeyboard(userTimelineActivity.this);
+                                functions.showSnackBarError(getString(R.string.invalid_verification_code),findViewById(android.R.id.content), getApplicationContext());
+                                dialogEditext.setText("");
+                            }
+
+                            if (dialogEditext.getText().toString().equals(token)) {
+                                functions.hideSoftKeyboard(userTimelineActivity.this);
+                                HashMap<String, String> postData = new HashMap<>();
+                                postData.put("userID", Frontpage.userID);
+                                postData.put("new_email", newEmail);
+                                //postData.put("email", Frontpage.email);
+                                functions.showProgress(lottie);
+                                NetworkController networkController1 = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+                                    @Override
+                                    public void notifySuccess(String response) throws JSONException {
+                                        functions.hideProgress(lottie);
+                                        if (functions.isJsonObject(response)) {
+                                            JSONObject jsonObject = new JSONObject(response.toString());
+                                            String responseCode = jsonObject.get("responseCode").toString();
+                                            String message = jsonObject.get("message").toString();
+                                            if (responseCode.equals("1")) {
+                                                functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
+                                                functions.hideSoftKeyboard(userTimelineActivity.this);
+                                            }
+
+                                            if (responseCode.equals("0")) {
+                                                functions.hideSoftKeyboard(userTimelineActivity.this);
+                                                functions.showSnackBarError(message, findViewById(android.R.id.content), getApplicationContext());
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void notifyError(VolleyError error) {
+                                        functions.hideProgress(lottie);
+                                    }
+                                });
+
+                                networkController1.PostMethod(data.updateEmail_Api, postData);
+                            }
+                        });
+                        alertName.show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottie);
+                functions.showSnackBarError(getString(R.string.network_something_wrong), findViewById(android.R.id.content), getApplicationContext());
+            }
+        });
+
+        networkController.PostMethod(data.sendEmailToken_Api, postData);
+    }
+
+
+    public void updatePasswordRequest() {
+        currentPassword = txtProfileCurrentPassword.getText().toString();
+        newPassword = txtProfileNewPassword.getText().toString();
+        confirmNewPassword = txtProfileConfirmNewPassword.getText().toString();
+
+        if (currentPassword.equals("")) {
+            txtProfileCurrentPassword.setError(getString(R.string.password_required));
+            return;
+        }
+
+        if (!currentPassword.equals(Frontpage.loginPassword)) {
+            txtProfileCurrentPassword.setError(getString(R.string.invalid_currentPassword));
+            return;
+        }
+
+        if (newPassword.equals("")) {
+            txtProfileNewPassword.setError(getString(R.string.password_required));
+            return;
+        }
+        if (confirmNewPassword.equals("")) {
+            txtProfileConfirmNewPassword.setError(getString(R.string.password_required));
+            return;
+        }
+
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("old_pw", currentPassword);
+        postData.put("new_pw", newPassword);
+        postData.put("cnew_pw", confirmNewPassword);
+
+        functions.showProgress(lottie);
+        btnUpdateProfilePassword.setEnabled(false);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                functions.hideProgress(lottie);
+                btnUpdateProfilePassword.setEnabled(true);
+                Timber.i(response);
+                if (functions.isJsonObject(response)) {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String responseCode = jsonObject.get("responseCode").toString();
+                    String message = jsonObject.get("message").toString();
+                    switch (responseCode) {
+                        case "1":
+                            txtProfileCurrentPassword.setText("");
+                            txtProfileNewPassword.setText("");
+                            txtProfileConfirmNewPassword.setText("");
+                            functions.showSnackBar(message,findViewById(android.R.id.content),getApplicationContext());
+                            SharedPreferences.Editor sharedPrefEditor = Frontpage.sharedpreferences.edit();
+                            sharedPrefEditor.putString("password", newPassword);
+                            sharedPrefEditor.clear();
+                            sharedPrefEditor.apply();
+
+                            //Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
+                            //startActivity(intent);
+                            break;
+
+                        default:
+                            functions.showSnackBarError(message, findViewById(android.R.id.content), getApplicationContext());
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                btnUpdateProfilePassword.setEnabled(true);
+                functions.hideProgress(lottie);
+                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content), getApplicationContext());
+            }
+        });
+        networkController.PostMethod(data.updatePassword_Api, postData);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-         lottie = findViewById(R.id.userTimelineProfileProgressView);
 
-         ActionBar actionBar = getSupportActionBar();
-         actionBar.setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.bringToFront();
+        lottie = findViewById(R.id.userTimelineProfileProgressView);
+
+
         functions= new Functions(getApplicationContext());
+
         imgUserProfilePhoto = findViewById(R.id.userProfilePhoto);
         imgUserCoverPhoto = findViewById(R.id.userProfileCoverPhoto);
         txtUserProfileFullname = findViewById(R.id.txtUserProfileFullname);
         txtUserProfileUsername = findViewById(R.id.txtUserProfileUsername);
+        txtEditProfile = findViewById(R.id.txtEditProfile);
 
-        Intent i = getIntent();
-        userID = i.getStringExtra("userID");
+         cardProfileEdit = findViewById(R.id.cardprofileEdit);
+        View profileEditLayout = LayoutInflater.from(this).inflate(R.layout.edit_profile, null);
+        cardProfileEdit.addView(profileEditLayout);
+        ImageView imgCloseEditProfile= cardProfileEdit.findViewById(R.id.imgCloseProfileEdit);
+        txtProfilefirstName = cardProfileEdit.findViewById(R.id.txtProfileFirstname);
+        txtProfilelastName = cardProfileEdit.findViewById(R.id.txtProfileLastname);
+        txtProfilemiddleName = cardProfileEdit.findViewById(R.id.txtProfileMiddlename);
+        txtProfilenickName = cardProfileEdit.findViewById(R.id.txtProfileNickname);
+        txtProfileAboutMe = cardProfileEdit.findViewById(R.id.txtProfileAboutMe);
 
-
+        //EMAIL
+        txtProfileEmail = cardProfileEdit.findViewById(R.id.txtProfileEmail);
+        //Passwords
+        txtProfileCurrentPassword = cardProfileEdit.findViewById(R.id.txtProfileCurrentPassword);
+        txtProfileNewPassword = cardProfileEdit.findViewById(R.id.txtProfileNewPassword);
+        txtProfileConfirmNewPassword = cardProfileEdit.findViewById(R.id.txtProfileConfirmNewPassword);
+        //Buttons
+        btnUpdateProfile = cardProfileEdit.findViewById(R.id.btnUpdateProfile);
+        btnUpdateProfileEmail = cardProfileEdit.findViewById(R.id.btnUpdateProfileEmail);
+        btnUpdateProfilePassword = cardProfileEdit.findViewById(R.id.btnUpdateProfilePassword);
+        //ASSIGNING
+        txtProfilefirstName.setText(Frontpage.firstName);
+        txtProfilelastName.setText(Frontpage.lastName);
+        txtProfilemiddleName.setText(Frontpage.middleName);
+        txtProfilenickName.setText(Frontpage.nickName);
+        txtProfileAboutMe.setText(Frontpage.aboutMe);
+        txtProfileEmail.setText(Frontpage.email);
 
         recyclerView = findViewById(R.id.userTimelinepostsRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.userTimelineSwipeToRefresh);
@@ -96,10 +361,28 @@ public class userTimelineActivity extends AppCompatActivity {
             }
             mSwipeRefreshLayout.setRefreshing(false);
         });
+
+
+        txtEditProfile.setOnClickListener(view -> {
+           cardProfileEdit.setVisibility(View.VISIBLE);
+        });
+
+        //EVENTS
+        btnUpdateProfilePassword.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(userTimelineActivity.this);
+            updatePasswordRequest();
+        });
+
+        btnUpdateProfileEmail.setOnClickListener(view1 -> {
+            functions.hideSoftKeyboard(userTimelineActivity.this);
+            updateEmailRequest();
+
+        });
+
+
+        imgCloseEditProfile.setOnClickListener(view -> {cardProfileEdit.setVisibility(View.INVISIBLE);});
+        retrieveIntentNotificationData();
         loadUserProfile(userID);
-
-
-
     }
 
     public void loadUserProfile(String userID) {
@@ -137,7 +420,6 @@ public class userTimelineActivity extends AppCompatActivity {
                         String deactivated = jsonObject.get("deactivated").toString();
 
                         txtUserProfileUsername.setText(username);
-
                         getSupportActionBar().setTitle(username.concat("'s").concat(" ").concat(getString(R.string.timeline)));
 
                         if (firstName.equals("") || lastName.equals("")) {
@@ -151,7 +433,6 @@ public class userTimelineActivity extends AppCompatActivity {
                         imgUserCoverPhoto.setColorFilter(R.color.dark_gray, PorterDuff.Mode.DARKEN);
                         imgUserProfilePhoto.bringToFront();
 
-
                     }
                 }
             }
@@ -159,6 +440,7 @@ public class userTimelineActivity extends AppCompatActivity {
 
             @Override
             public void notifyError(VolleyError error) {
+                functions.hideProgress(lottie);
 
             }
         });

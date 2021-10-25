@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".SharePost">
 
     <LinearLayout
@@ -25,7 +24,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="0dp"
-            android:background="@color/main_colour"
+            android:background="?attr/colorPrimary"
             android:fontFamily="@font/nexalight"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/shareYourThoughts"

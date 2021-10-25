@@ -5,38 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Profile">
+    tools:context=".userTimelineActivity">
+
+    <TextView
+        android:id="@+id/lblUpdateProfileTitle"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="center_horizontal"
+        android:background="?attr/colorPrimary"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/updateProfile"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/imgCloseProfileEdit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:src="@drawable/cancel"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.02"
+        app:rippleColor="@color/white"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="417dp"
+        android:layout_height="738dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/lblUpdateProfileTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/main_colour"
+            android:divider="@color/mainColour"
 
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/lblUpdateProfileTitle"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/headerHeight"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/main_colour"
-                android:fontFamily="@font/nexalight"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/updateProfile"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck" />
 
             <EditText
                 android:id="@+id/txtProfileEmail"

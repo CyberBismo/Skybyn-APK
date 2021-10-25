@@ -80,7 +80,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"
                 android:text="@string/test_notification_title"
-                android:textColor="@color/main_colour"
+                android:textColor="@color/mainColour"
                 android:textColorHint="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/lblNotificationContent"

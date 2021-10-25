@@ -18,8 +18,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -69,10 +71,25 @@ public class LoginRegisterForgot extends AppCompatActivity {
     static Functions functions = null;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //INITIALIZE THE SHAREDPREF FILE
+        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         setContentView(R.layout.activity_main);
+        //CHECK IF DARK MODE IS SET
+        if (sharedpreferences.contains(getString(R.string.toggleDarkMode_key))) {
+            Boolean darkMode = sharedpreferences.getBoolean(getString(R.string.toggleDarkMode_key), false);
+            if (darkMode) {
+                setTheme(R.style.Theme_AppCompat);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
 
         functions = new Functions(getApplicationContext());
 
@@ -138,8 +155,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             toggleSignup();
         });
 
-        //INITIALIZE THE SHAREDPREF FILE
-        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+
         //Init Executor and BioPrompt
         executor = ContextCompat.getMainExecutor(this);
         biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
@@ -148,7 +164,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 //BIOMETRCIC
                 functions.hideProgress(lottieview);
-                checkLoginStatus();
+                sendLoginIntentDataToFrontPage();
             }
 
             @Override
@@ -261,7 +277,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 functions.showFingerPrintPrompt(lottieview);
                 biometricPrompt();
             } else {
-                checkLoginStatus();
+                sendLoginIntentDataToFrontPage();
             }
         }
     }
@@ -430,7 +446,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         postData.put("username", username);
         postData.put("password", password);
-        postData.put("login", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
@@ -438,6 +453,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 if (!functions.isJsonObject(response)) {
                     functions.hideProgress(lottieview);
                     Toast.makeText(getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                    Timber.i(response);
                     return;
                 }
 
@@ -485,7 +501,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         signup_form.setVisibility(View.INVISIBLE);
         forgot_form.setVisibility(View.INVISIBLE);
         verify_form.setVisibility(View.INVISIBLE);
-
         signin_form.setVisibility(View.VISIBLE);
     }
     public void toggleSignup() {
@@ -525,7 +540,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtVerify.setText("");
     }
 
-    public void checkLoginStatus() {
+    public void sendLoginIntentDataToFrontPage() {
         //user has been logged in before, then set Username and password to intent...
         Intent intent = new Intent(this, Frontpage.class);
         intent.putExtra("loginAction", data.fingerprint_auth);

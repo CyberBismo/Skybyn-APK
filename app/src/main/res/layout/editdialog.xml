@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="0dp"
         android:height="50dp"
-        android:background="@color/main_colour"
+        android:background="@color/mainColour"
         android:foregroundGravity="center_horizontal"
         android:gravity="center_horizontal"
         android:text="@string/editing_content"

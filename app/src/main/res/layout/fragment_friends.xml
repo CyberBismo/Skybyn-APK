@@ -15,10 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginTop="10dp"
+        android:background="?attr/colorPrimary"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/Friends"
-        android:textColor="@color/main_colour"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout

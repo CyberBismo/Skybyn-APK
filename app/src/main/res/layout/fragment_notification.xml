@@ -12,7 +12,7 @@
         android:id="@+id/lblNotificationsTitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/headerHeight"
-        android:background="@color/main_colour"
+        android:background="?attr/colorPrimary"
         android:fontFamily="@font/nexalight"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/notifications"

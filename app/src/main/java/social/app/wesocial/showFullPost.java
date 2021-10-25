@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -145,7 +146,7 @@ public class showFullPost extends AppCompatActivity {
 
     public void getPostIntentContent() {
         Intent i = getIntent();
-        HashMap<String, Object> timelinePostDetails = new HashMap<>();
+        HashMap<String, Object> timelinePostDetails;
         timelinePostDetails = (HashMap<String, Object>) i.getSerializableExtra("timeLinePostDetails");
         Timber.i("POST CONTENT"+timelinePostDetails.toString());
         postUsername = Objects.requireNonNull(timelinePostDetails.get("username")).toString();
@@ -157,8 +158,7 @@ public class showFullPost extends AppCompatActivity {
         postAvatarlink = Objects.requireNonNull(timelinePostDetails.get("avatarLink")).toString();
         postCommentsCount = Objects.requireNonNull(timelinePostDetails.get("comments_count")).toString();
         userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
-
-        actionBar.setTitle(" " + postContent);
+        getSupportActionBar().setTitle(" " + postContent);
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
     }
 
@@ -223,13 +223,8 @@ public class showFullPost extends AppCompatActivity {
                         int scrollTo = commentData.size() - 1;
                         recyclerView.scrollToPosition(scrollTo);
                         showFullpostScrollView.post((Runnable) () -> showFullpostScrollView.fullScroll(ScrollView.FOCUS_DOWN));
-
-
                     }
-
-
                 }
-
             }
 
             @Override
@@ -260,9 +255,11 @@ public class showFullPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_full_post);
         functions = new Functions(getApplicationContext());
-        actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getAllViewsbyID();
         getPostIntentContent();
         verifyIfIamPoster();

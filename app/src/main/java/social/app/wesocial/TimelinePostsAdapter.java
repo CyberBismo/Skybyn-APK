@@ -120,7 +120,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             i.putExtra( "timeLinePostDetails", timeLinePostDetails);
             Timber.i(timeLinePostDetails.toString());
             holder.itemView.getContext().startActivity(i);
-
         });
 
 
@@ -129,9 +128,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtUsername.getTag().toString(),activity,holder.itemView.getContext().getApplicationContext()));
             holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
         }
-
         holder.imgTimelinePostLike.setLiked(holder.imgTimelinePostLike.getTag().toString().equals("1"));
-
 
         //If the timeLine Post is by Me!
         if (holder.txtUsername.getTag().toString().equals(Frontpage.userID)) {

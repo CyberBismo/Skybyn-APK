@@ -49,14 +49,13 @@ public class showFullChat extends Fragment {
     }
 
 
-    public static showFullChat newInstance(String param1, Drawable drawable, String param3, String friendID,String chatJson) {
+    public static showFullChat newInstance(String username, Drawable onlinePresenceDrawable, String avatarLink, String friendID,String loadedChatJson) {
         showFullChat fragment = new showFullChat();
-        chat_username = param1;
-        online_status_drawable = drawable;
-        chat_avatar = param3;
+        chat_username = username;
+        online_status_drawable = onlinePresenceDrawable;
+        chat_avatar = avatarLink;
         chat_friendID = friendID;
-        chatMessageJson =chatJson;
-
+        chatMessageJson =loadedChatJson;
         return fragment;
     }
 
@@ -71,10 +70,8 @@ public class showFullChat extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         return inflater.inflate(R.layout.show_full_chat, container, false);
     }
-
 
 
     @Override
@@ -127,12 +124,10 @@ public class showFullChat extends Fragment {
         }
 
         ExecutorService service = Executors.newFixedThreadPool(4);
-        service.submit(new Runnable() {
-            public void run() {
-                //Load Messages
-                //LOAD All messages
-                loadAllMessages(chat_friendID);
-            }
+        service.submit(() -> {
+            //Load Messages
+            //LOAD All messages
+            loadAllMessages(chat_friendID);
         });
 
     }
@@ -144,7 +139,6 @@ public class showFullChat extends Fragment {
     }
 
     public void updateChatRecyclerMessages(Boolean iamsender) {
-
         if (isVisible()){
             chatMessageAdapter = new ChatMessageAdapter(chatMessageListData, requireActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
@@ -186,9 +180,7 @@ public class showFullChat extends Fragment {
                             if (!responseCode.equals("1")) {
                                 functions.showSnackBar(getString(R.string.no_message), requireActivity().findViewById(android.R.id.content), requireActivity().getApplicationContext());
                             }
-
                         }
-
                     }
 
                     @Override

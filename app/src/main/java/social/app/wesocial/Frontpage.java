@@ -13,13 +13,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -75,15 +71,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public static SearchView searchView;
     public static String current_chat_user;
     public static Boolean isTimeline;
-    TextView notificationBadge;
     public static String username = "", email = "";
     public static String notificationToken = "";
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     protected static boolean isVisible = false;
+    TextView notificationBadge;
     DrawerLayout drawerLayout;
     Data data = new Data();
     Functions functions;
-    String loginAction;
+    String loginAction = "";
     DownloadManager downloadManager;
     LottieAnimationView lottie;
     long downLoadId;
@@ -98,14 +94,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
     Fragment timelineFragment;
-    private String keyword;
-    private Boolean onQuery;
     Menu activityTopMenuItem;
     int friendRequestsCount = 0;
+    private String keyword;
+    private Boolean onQuery;
+
     @Override
     public void onResume() {
         super.onResume();
-
         setVisible(true);
     }
 
@@ -116,11 +112,21 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
+    void retrieveIntentChatNotificationData() {
+        Intent i = getIntent();
+        String frienduserID = "";
+        if (i.hasExtra("friendID")) {
+            frienduserID = i.getStringExtra("friendID");
+            showMessages(frienduserID);
+            return;
+        } else {
+
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_front_page);
 
@@ -129,11 +135,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions = new Functions(getApplicationContext());
 
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-        //configureToolbarAndDrawer();
 
-
-        Intent intent = getIntent();
-        loginAction = intent.getStringExtra("loginAction");
         lottie = findViewById(id.frontpageProgressView);
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
@@ -144,23 +146,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
 
-        //SET TIMELINE FRAG
+        imgNavProfilePicture.setOnClickListener(view -> showProfilePage());
 
+        setVisible(true);
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance();
             functions.LoadFragment(sharePostFragment, "sharepost", Frontpage.this, false, false);
         });
-
-
-        if (loginAction.equals(data.fingerprint_auth)) {
-            //perform login
-            performLoginAuth();
-        } else {
-            userID = sharedpreferences.getString("userID", "");
-            loadUserProfile(userID);
-        }
-
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -171,7 +164,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         return true;
 
                     case id.messages:
-                        showMessages();
+                        showMessages("");
                         return true;
                 }
                 return false;
@@ -180,7 +173,18 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         //GETTING REFERENCe To the activity
         frontpageActivity = Frontpage.this;
+        Intent intent = getIntent();
 
+        if (intent.hasExtra("loginAction")) {
+            loginAction = intent.getStringExtra("loginAction");
+            if (loginAction.equals(data.fingerprint_auth)) {
+                //perform login
+                performLoginAuth();
+            } else {
+                userID = sharedpreferences.getString("userID", "");
+                loadUserProfile(userID);
+            }
+        }
     }
 
     public void performSearch(String userID, String keyword, Boolean onQuery) {
@@ -244,6 +248,17 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 functions.LoadFragment(searchFragment, "search", Frontpage.this, false, false);
             }
         });
+
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                onBackPressed();
+                return false;
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -282,31 +297,28 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void showProfilePage() {
-        Fragment profileFragment = Profile.newInstance(userID, "");
-        functions.LoadFragment(profileFragment, "profile", Frontpage.this, false, false);
+        functions.loadTimeLineUserProfile(userID, Frontpage.this, getApplicationContext());
     }
 
-    public void showMessages() {
-        Fragment messagesFragment = Messages.newInstance(loadedMessagesJson);
+    public void showMessages(String friendID) {
+        Fragment messagesFragment = Messages.newInstance(loadedMessagesJson, friendID);
         functions.LoadFragment(messagesFragment, "messages", Frontpage.this, false, false);
     }
 
-
-    private void initializeCountDrawer() {    //Gravity property aligns the text
-        txtSideNavNotifications=(TextView) MenuItemCompat.getActionView(sideNavView.getMenu().findItem(id.topnav_notifications));
-        txtSideNavNotifications.setGravity(Gravity.CENTER_VERTICAL);
-        txtSideNavNotifications.setTypeface(null, Typeface.BOLD);
-        txtSideNavNotifications.setTextColor(getResources().getColor(R.color.colorAccent));
-        txtSideNavNotifications.setText("99+");
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
 
+            case id.topnav_friends:
+                showFriendsPage();
+                break;
+
             case id.topnav_notifications:
                 showNotifications();
                 break;
+
+
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -341,7 +353,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(drawable.hamburger);
-
 
 
     }
@@ -390,22 +401,28 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         startActivity(intent);
     }
 
-    private void showNotificationBadge(int value,Menu menu) {
-        if (value >0) {
+    private void showNotificationBadge(int value, Menu menu) {
+        if (isVisible) {
+        if (value > 0) {
             ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.RED, value);
-            } else {
-                ActionItemBadge.hide(menu.findItem(id.topnav_notifications));
-            }
-    }
-
-    private void showFriendRequestsBadge(int value,Menu menu) {
-        if (value >0) {
-            ActionItemBadge.update(this, menu.findItem(id.topnav_friends), getDrawable(drawable.friends), ActionItemBadge.BadgeStyles.RED, value);
         } else {
             value = 0;
-            ActionItemBadge.update(this, menu.findItem(id.topnav_friends), getDrawable(drawable.friends), ActionItemBadge.BadgeStyles.GREY, value);
+            ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.GREY, value);
         }
     }
+    }
+
+    private void showFriendRequestsBadge(int value, Menu menu) {
+        if (isVisible) {
+            if (value > 0) {
+                ActionItemBadge.update(this, menu.findItem(id.topnav_friends), getDrawable(drawable.friends), ActionItemBadge.BadgeStyles.RED, value);
+            } else {
+                value = 0;
+                ActionItemBadge.update(this, menu.findItem(id.topnav_friends), getDrawable(drawable.friends), ActionItemBadge.BadgeStyles.GREY, value);
+            }
+        }
+    }
+
     public void loadFriendsRequests() {
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -414,14 +431,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Timber.i("frrrrrrrrrrrrrrrrrrrrrrr"+response);
                 functions.hideProgress(lottie);
 
                 if (functions.isJsonArray(response)) {
                     String friendUsername;
                     String friendNickname;
                     String friendID;
-                    String friendAvatarLink ;
+                    String friendAvatarLink;
 
                     JSONArray jsonArray = new JSONArray(response);
                     ArrayList<FriendsDataClass> friendsDataClass = new ArrayList<>();
@@ -436,8 +452,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         String friendOnline = (String) jsonObject.get("online");
                         friendRequestsCount++;
                     }
+                    if (isVisible) {
+                        showFriendRequestsBadge(friendRequestsCount, activityTopMenuItem);
+                    }
+
                 }
-                showFriendRequestsBadge(friendRequestsCount, activityTopMenuItem);
 
             }
 
@@ -451,7 +470,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.PostMethod(data.list_friendRequests_Api, postData);
     }
 
-
     void loadNotificationsRequests() throws JSONException {
 
         HashMap<String, String> postData = new HashMap<>();
@@ -460,8 +478,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         NetworkController networkController1 = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
-                if (functions.isJsonArray(response)){
-                     unreadNotifications = 0;
+                if (functions.isJsonArray(response)) {
+                    unreadNotifications = 0;
                     String notificationContent;
                     String notificationTitle;
                     String notificationDate;
@@ -485,13 +503,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         notificationRead = (String) jsonObject.get("read");
                         notificationType = (String) jsonObject.get("type");
 
-                        if (Integer.valueOf(notificationRead) ==0){
-                            unreadNotifications = unreadNotifications +1;
+                        if (Integer.valueOf(notificationRead) == 0) {
+                            unreadNotifications = unreadNotifications + 1;
                         }
                     }
-
-                   // updateNavView(sideNavView, id.notifications,String.valueOf(unreadNotifications));
-                    showNotificationBadge(unreadNotifications, activityTopMenuItem);
+                    if (isVisible) {
+                        showNotificationBadge(unreadNotifications, activityTopMenuItem);
+                    }
                 }
 
 
@@ -506,39 +524,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController1.PostMethod(data.list_notification_Api, postData);
     }
 
-    private void checkAppUpdate() {
-        PackageManager pm = getApplicationContext().getPackageManager();
-        String pkgName = getApplicationContext().getPackageName();
-        PackageInfo pkgInfo = null;
-        try {
-            pkgInfo = pm.getPackageInfo(pkgName, 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert pkgInfo != null;
-        //Using version code, Instead of Version name
-        Integer currentVersion = pkgInfo.versionCode;
-
-        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
-            @Override
-            public void notifySuccess(String response) {
-                try {
-                    Integer serverVersion = Integer.valueOf(response);
-                    if (serverVersion > currentVersion) {
-                        //DOWNLOAD AND INSTALL
-                    }
-                } catch (Exception e) {
-                    Log.i("e:", e.getMessage());
-                }
-            }
-
-            @Override
-            public void notifyError(VolleyError error) {
-                //  Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
-            }
-        });
-        networkController.GetMethod(data.version_url);
-    }
 
     @Override
     public void onDestroy() {
@@ -571,8 +556,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         startService(intent);
                         userLoggedIn = true;
 
-                        loadFriendsRequests();
-
                         ExecutorService service = Executors.newFixedThreadPool(4);
                         service.submit(new Runnable() {
                             public void run() {
@@ -580,17 +563,16 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                                 try {
                                     loadMessagesRequests();
                                     loadNotificationsRequests();
+                                    loadFriendsRequests();
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
-
                             }
                         });
-
-
                         showTimeline();
-                        //showNotifications();
+
                         username = jsonObject.getString("username").toString();
                         email = jsonObject.getString("email").toString();
                         avatarLink = jsonObject.getString("avatar").toString();
@@ -618,9 +600,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             showAlertDialog("", deactivated, false, true);
                         }
 
+                        if (loginAction.equals(data.intent_auth)) {
+                            retrieveIntentChatNotificationData();
+                        }
+
 
                     }
-
 
                 }
 
@@ -716,7 +701,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.PostMethod(data.login_Api, postData);
     }
 
-
     public void showTimeline() {
         timelineFragment = Timeline.newInstance();
         functions.LoadFragment(timelineFragment, "timeline", Frontpage.this, true, false);
@@ -768,7 +752,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             case id.messages:
                 if (userLoggedIn) {
-                    showMessages();
+                    showMessages("");
                 } else {
                     functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
                 }
@@ -783,7 +767,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.closeDrawer(sideNavView);
         return false;
     }
-    public void updateNavView(NavigationView navView, int resId, String count){
+
+    public void updateNavView(NavigationView navView, int resId, String count) {
         MenuItem item = navView.getMenu().findItem(resId); //ex. R.id.nav_item_friends
         MenuItemCompat.setActionView(item, layout.notification_badge_layout);
         RelativeLayout notifCount = (RelativeLayout) MenuItemCompat.getActionView(item);
@@ -791,7 +776,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         if (count != null) {
             tv.setText(count);
-        }else{
+        } else {
             tv.setText("");
             item.setEnabled(false);
         }

@@ -5,13 +5,12 @@
     android:id="@+id/drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/blackORwhite"
     tools:context="social.app.wesocial.Frontpage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
@@ -51,10 +50,10 @@
                 android:id="@+id/bottomLayout"
                 android:layout_width="0dp"
                 android:layout_height="98dp"
+                android:backgroundTint="?attr/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:background="@color/transparent_full"
                 tools:context=".MainActivity">
 
                 <com.google.android.material.bottomappbar.BottomAppBar
@@ -63,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:visibility="visible"
-                    app:backgroundTint="@color/main_colour"
+                    app:backgroundTint="?attr/colorPrimary"
                     app:fabAlignmentMode="center"
                     app:fabAnimationMode="slide"
                     app:fabCradleMargin="10dp"
@@ -80,7 +79,7 @@
                         android:background="@color/transparent_full"
                         android:theme="@style/Theme.WeSocial"
                         android:visibility="visible"
-                        app:backgroundTint="@color/main_colour"
+                        app:backgroundTint="@color/mainColour"
                         app:elevation="0dp"
                         app:itemIconTint="@color/white"
                         app:itemTextColor="@color/white"
@@ -97,7 +96,7 @@
                     android:theme="@style/Theme.WeSocial"
                     android:tint="@color/white"
                     android:visibility="visible"
-                    app:backgroundTint="@color/main_colour"
+                    app:backgroundTint="?attr/colorPrimary"
                     app:fabSize="normal"
                     app:layout_anchor="@id/bottomAppBar"
                     app:layout_anchorGravity="center"
@@ -134,8 +133,6 @@
         android:layout_height="match_parent"
 
         android:layout_gravity="start"
-
-        android:background="@color/white"
         app:headerLayout="@layout/sidebar_header"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"

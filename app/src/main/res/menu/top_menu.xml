@@ -4,14 +4,12 @@
 
 <item android:title="@string/notifications"
     android:id="@+id/topnav_notifications"
-    android:icon="@drawable/white_notifications"
-    android:iconTint="@color/white"
+    android:icon="@drawable/notifications"
     app:showAsAction="always"></item>
 
     <item android:title="@string/Friends"
         android:id="@+id/topnav_friends"
         android:icon="@drawable/friends"
-        android:iconTint="@color/white"
         app:showAsAction="always"></item>
 
 
@@ -20,8 +18,6 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always"
-        android:iconTint="@color/white"
-        android:iconTintMode="screen"
-        android:icon="@android:drawable/ic_search_category_default"/>
+        android:icon="@drawable/search"/>
 
 </menu>

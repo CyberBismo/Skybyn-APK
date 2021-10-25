@@ -3,48 +3,67 @@
     <style name="Theme.WeSocial" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
 
-        <item name="colorPrimary">@color/main_colour</item> <!-- Content background -->
-        <item name="colorPrimaryVariant">@color/black</item> <!-- Notification bar -->
+        <item name="colorPrimary">@color/mainColour</item> <!-- Content background -->
+        <item name="textboxBgColorPrimary">@color/white</item> <!-- Content background -->
+        <item name="textBoxTextColorPrimary">@color/dark_gray</item> <!-- Content background -->
+        <item name="TextViewColor">@color/dark_gray</item> <!-- Text lABEL Colour -->
+        <item name="blackORwhite">@color/white</item> <!-- Text lABEL Colour -->
+        <item name="colorPrimaryVariant">@color/mainColour</item> <!-- Notification bar-->
+        <item name="sideNavigationDrawerBgColor">@color/white</item> <!-- Notification bar-->
         <item name="colorOnPrimary">@color/white</item>
+        <item name="background">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/main_colour</item>
-        <item name="colorSecondaryVariant">@color/main_colour</item>
+        <item name="colorSecondary">@color/mainColour</item>
+        <item name="colorSecondaryVariant">@color/mainColour</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/main_colour</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/dark_gray</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.WeSocial.ActionBar" parent="Theme.AppCompat.DayNight.DarkActionBar">
-
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/main_colour</item> <!-- Content background -->
-        <item name="colorPrimaryVariant">@color/black</item> <!-- Notification bar -->
+        <item name="colorPrimary">@color/mainColour</item> <!-- Content background -->
+        <item name="textboxBgColorPrimary">@color/white</item> <!-- Content background -->
+        <item name="textBoxTextColorPrimary">@color/dark_gray</item> <!-- Content background -->
+        <item name="TextViewColor">@color/dark_gray</item> <!-- Text lABEL Colour -->
+        <item name="blackORwhite">@color/white</item> <!-- Text lABEL Colour -->
+        <item name="colorPrimaryVariant">@color/mainColour</item> <!-- Notification bar-->
+        <item name="sideNavigationDrawerBgColor">@color/white</item> <!-- Notification bar-->
         <item name="colorOnPrimary">@color/white</item>
+        <item name="background">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/main_colour</item>
-        <item name="colorSecondaryVariant">@color/main_colour</item>
+        <item name="colorSecondary">@color/mainColour</item>
+        <item name="colorSecondaryVariant">@color/mainColour</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/main_colour</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/dark_gray</item>
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="PreferenceScreen" parent="Theme.AppCompat">
-    <item name="android:textColor">@color/light_main_colour</item>
-    <item name="android:textColorPrimary">@color/light_main_colour</item>
-        <item name="actionBarDivider">@color/main_colour</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:iconTint">@color/main_colour</item>
-</style>
 
     <style name="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/mainColour</item> <!-- Content background -->
+        <item name="textboxBgColorPrimary">@color/white</item> <!-- Content background -->
+        <item name="textBoxTextColorPrimary">@color/dark_gray</item> <!-- Content background -->
+        <item name="TextViewColor">@color/dark_gray</item> <!-- Text lABEL Colour -->
+        <item name="blackORwhite">@color/white</item> <!-- Text lABEL Colour -->
+        <item name="colorPrimaryVariant">@color/mainColour</item> <!-- Notification bar-->
+        <item name="sideNavigationDrawerBgColor">@color/white</item> <!-- Notification bar-->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="background">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/mainColour</item>
+        <item name="colorSecondaryVariant">@color/mainColour</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/dark_gray</item>
+        <!-- Customize your theme here. -->
     </style>
 
-<style name="AlertDialogCustom" parent="Theme.AppCompat">
-    <item name="android:colorAccent">@color/main_colour</item>
-    <item name="android:color">@color/main_colour</item>
-</style>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat">
+        <item name="android:colorAccent">?attr/colorPrimary</item>
+        <item name="android:color">?attr/colorPrimary</item>
+    </style>
 </resources>

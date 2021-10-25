@@ -31,8 +31,8 @@
         <activity
             android:name=".userTimelineActivity"
             android:exported="true"
-            android:theme="@style/Theme.WeSocial.ActionBar"
-            android:label="@string/Timeline" />
+            android:label="@string/Timeline"
+            android:theme="@style/Theme.WeSocial" />
 
         <service
             android:name=".PushNotificationService"
@@ -54,22 +54,24 @@
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/main_colour" />
+            android:resource="@color/mainColour" />
 
         <activity
             android:name=".showFullPost"
             android:exported="true"
-            android:theme="@style/Theme.WeSocial.ActionBar" />
+            android:theme="@style/Theme.WeSocial" />
         <activity
             android:name=".Settings"
             android:exported="true"
-            android:parentActivityName=".Frontpage"
-            android:theme="@style/PreferenceScreen" />
-        <activity android:name=".Frontpage" />
+            android:parentActivityName=".Frontpage" />
+
+        <activity
+            android:name=".Frontpage"
+            android:theme="@style/Theme.WeSocial" />
         <activity
             android:name=".LoginRegisterForgot"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

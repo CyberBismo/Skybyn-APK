@@ -75,6 +75,7 @@ public class Data {
     public String updateToken_Api = API+"token.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
+    public String intent_auth = "intent_auth";
     public Integer maxPostDisplayLength = 400;
     public Integer maxCommentPostLength = 2000;
 
