@@ -253,8 +253,8 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                onBackPressed();
-                return false;
+
+                return true;
             }
         });
 
