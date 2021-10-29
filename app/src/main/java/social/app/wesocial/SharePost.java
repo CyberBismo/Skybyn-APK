@@ -118,7 +118,7 @@ public class SharePost extends Fragment {
                 }
             });
 
-            networkController.PostMethod(data.addPost_Api, postData);
+            networkController.PostMethod(data.addPost_API, postData);
 
         });
     }

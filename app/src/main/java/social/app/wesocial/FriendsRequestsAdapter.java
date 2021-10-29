@@ -97,7 +97,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
                 functions.showProgress(lottie);
 
-                networkController.PostMethod(data.accept_friend_Api,postData);
+                networkController.PostMethod(data.accept_friend_API,postData);
 
             });
 
@@ -141,7 +141,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.decline_friend_Api,postData);
+            networkController.PostMethod(data.decline_friend_API,postData);
 
         });
 
@@ -186,7 +186,7 @@ public class FriendsRequestsAdapter extends RecyclerView.Adapter<FriendsRequests
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.cancel_friend_Api,postData);
+            networkController.PostMethod(data.cancel_friend_API,postData);
 
         });
 

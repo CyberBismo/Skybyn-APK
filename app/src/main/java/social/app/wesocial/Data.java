@@ -2,7 +2,7 @@ package social.app.wesocial;
 
 public class Data {
 
-    // Api shortener
+    // API shortener
     public String domain = "https://wesocial.space/";
     public String API = domain+"api/";
     public String commentAPI = API+"comment/";
@@ -10,24 +10,25 @@ public class Data {
     public String messageAPI = API+"message/";
     public String notificationAPI = API+"notification/";
     public String postAPI = API+"post/";
+    public String pageAPI = API+"page/";
 
     public String version_url = domain+"apk/version.php";
     public String apk_name = "WeSocial.apk";
     public String apk_url = domain+"apk/".concat(apk_name);
-    public String login_Api = API+"login.php";
-    public String like_Api = API+"like.php";
+    public String login_API = API+"login.php";
+    public String like_API = API+"like.php";
 
-    // General Api
-    public String registration_Api = API+"reg.php";
-    public String verifyEmail_Api = API+"verify.php";
-    public String profile_Api = API+"profile.php";
-    public String search_Api = API+"search.php";
+    // General API
+    public String registration_API = API+"reg.php";
+    public String verifyEmail_API = API+"verify.php";
+    public String profile_API = API+"profile.php";
+    public String search_API = API+"search.php";
 
-    //  Notification Api
-    public String list_notification_Api = notificationAPI+"list.php";
-    public String read_notification_Api = notificationAPI+"read.php";
-    public String delete_notification_Api = notificationAPI+"delete.php";
-    public String create_notification_Api = notificationAPI+"create.php";
+    // Notification API
+    public String list_notification_API = notificationAPI+"list.php";
+    public String read_notification_API = notificationAPI+"read.php";
+    public String delete_notification_API = notificationAPI+"delete.php";
+    public String create_notification_API = notificationAPI+"create.php";
 
     // Messages API
     public String showMessages_API = messageAPI+"messages.php";
@@ -35,11 +36,11 @@ public class Data {
     public String sendMessage_API = messageAPI+"add.php";
 
     // Timeline API
-    public String addPost_Api = postAPI+"add.php";
-    public String timeline_Api = postAPI+"timeline.php";
-    public String user_timeline_Api = postAPI+"user-timeline.php";
-    public String deletePost_Api = postAPI+"delete.php";
-    public String editPost_Api = API+"edit.php";
+    public String addPost_API = postAPI+"add.php";
+    public String timeline_API = postAPI+"timeline.php";
+    public String user_timeline_API = postAPI+"user-timeline.php";
+    public String deletePost_API = postAPI+"delete.php";
+    public String editPost_API = API+"edit.php";
 
     // Friends API
     public String add_friend_action = "add";
@@ -48,31 +49,34 @@ public class Data {
     public String accept_friend_action = "accept";
     public String remove_friend_action = "remove";
 
-    public String list_friends_Api = friendAPI+"friends.php";
-    public String add_friend_Api = friendAPI+"add.php";
-    public String decline_friend_Api = friendAPI+"decline.php";
-    public String list_friendRequests_Api = friendAPI+"requests.php";
-    public String list_blockedFriends_Api = friendAPI+"blocked.php";
-    public String remove_friend_Api = friendAPI+"remove.php";
-    public String unblock_friend_Api = friendAPI+"unblock.php";
-    public String block_friend_Api = friendAPI+"block.php";
-    public String accept_friend_Api = friendAPI+"accept.php";
-    public String cancel_friend_Api = friendAPI+"cancel.php";
+    public String list_friends_API = friendAPI+"friends.php";
+    public String add_friend_API = friendAPI+"add.php";
+    public String decline_friend_API = friendAPI+"decline.php";
+    public String list_friendRequests_API = friendAPI+"requests.php";
+    public String list_blockedFriends_API = friendAPI+"blocked.php";
+    public String remove_friend_API = friendAPI+"remove.php";
+    public String unblock_friend_API = friendAPI+"unblock.php";
+    public String block_friend_API = friendAPI+"block.php";
+    public String accept_friend_API = friendAPI+"accept.php";
+    public String cancel_friend_API = friendAPI+"cancel.php";
 
     // Comments API
-    public String list_comments_Api = commentAPI+"list.php";
-    public String add_comment_Api = commentAPI+"add.php";
-    public String deleteComment_Api = commentAPI+"delete.php";
-    public String editComment_Api = commentAPI+"edit.php";
+    public String list_comments_API = commentAPI+"list.php";
+    public String add_comment_API = commentAPI+"add.php";
+    public String deleteComment_API = commentAPI+"delete.php";
+    public String editComment_API = commentAPI+"edit.php";
+
+    // Page API
+    public String create_page_API = pageAPI+"create.php";
 
 
-    public String forgotPassword_Api = API+"forgot.php";
-    public String updatePassword_Api = API+"profile_password.php";
+    public String forgotPassword_API = API+"forgot.php";
+    public String updatePassword_API = API+"profile_password.php";
 
-    public String sendEmailToken_Api = API+"profile_email.php";
-    public String updateEmail_Api = API+"profile_email_update.php";
+    public String sendEmailToken_API = API+"profile_email.php";
+    public String updateEmail_API = API+"profile_email_update.php";
 
-    public String updateToken_Api = API+"token.php";
+    public String updateToken_API = API+"token.php";
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
     public String intent_auth = "intent_auth";

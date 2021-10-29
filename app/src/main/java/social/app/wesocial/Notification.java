@@ -151,7 +151,7 @@ public class Notification extends Fragment {
             }
         });
 
-        networkController.PostMethod(data.list_notification_Api, postData);
+        networkController.PostMethod(data.list_notification_API, postData);
     }
 
 

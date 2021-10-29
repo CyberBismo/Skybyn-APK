@@ -204,7 +204,7 @@ public class userTimelineActivity extends AppCompatActivity {
                                     }
                                 });
 
-                                networkController1.PostMethod(data.updateEmail_Api, postData);
+                                networkController1.PostMethod(data.updateEmail_API, postData);
                             }
                         });
                         alertName.show();
@@ -220,7 +220,7 @@ public class userTimelineActivity extends AppCompatActivity {
             }
         });
 
-        networkController.PostMethod(data.sendEmailToken_Api, postData);
+        networkController.PostMethod(data.sendEmailToken_API, postData);
     }
 
 
@@ -297,7 +297,7 @@ public class userTimelineActivity extends AppCompatActivity {
                 functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content), getApplicationContext());
             }
         });
-        networkController.PostMethod(data.updatePassword_Api, postData);
+        networkController.PostMethod(data.updatePassword_API, postData);
     }
 
 
@@ -444,7 +444,7 @@ public class userTimelineActivity extends AppCompatActivity {
 
             }
         });
-        networkController.PostMethod(data.profile_Api, postData);
+        networkController.PostMethod(data.profile_API, postData);
     }
 
     private void displayTimelinePosts(String response) throws JSONException {
@@ -527,7 +527,7 @@ public class userTimelineActivity extends AppCompatActivity {
             }
         });
 
-        networkController.PostMethod(data.user_timeline_Api, postData);
+        networkController.PostMethod(data.user_timeline_API, postData);
     }
 
 }

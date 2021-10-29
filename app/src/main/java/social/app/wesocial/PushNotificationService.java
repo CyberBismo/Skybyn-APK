@@ -57,7 +57,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                     postData.put("token", token);
                     postData.put("userID", Frontpage.userID);
 
-                    networkController.PostMethod(data.updateToken_Api, postData);
+                    networkController.PostMethod(data.updateToken_API, postData);
 
 
                 });

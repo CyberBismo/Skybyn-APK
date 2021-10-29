@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -185,7 +184,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                             }
                         });
 
-                        networkController.PostMethod(data.deletePost_Api, postData);
+                        networkController.PostMethod(data.deletePost_API, postData);
                     });
 
 
@@ -240,7 +239,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                         Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
-                networkController.PostMethod(data.like_Api, postData);
+                networkController.PostMethod(data.like_API, postData);
 
 
             }

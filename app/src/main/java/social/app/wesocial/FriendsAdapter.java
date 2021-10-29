@@ -111,7 +111,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.remove_friend_Api,postData);
+            networkController.PostMethod(data.remove_friend_API,postData);
 
 
         });
@@ -157,7 +157,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.block_friend_Api,postData);
+            networkController.PostMethod(data.block_friend_API,postData);
 
 
         });

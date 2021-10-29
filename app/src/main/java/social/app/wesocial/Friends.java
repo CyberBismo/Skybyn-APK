@@ -146,7 +146,7 @@ public class Friends extends Fragment {
             }
         });
 
-        networkController.PostMethod(data.list_friends_Api, postData);
+        networkController.PostMethod(data.list_friends_API, postData);
     }
 
 
@@ -206,7 +206,7 @@ public class Friends extends Fragment {
             }
         });
 
-        networkController.PostMethod(data.list_friendRequests_Api, postData);
+        networkController.PostMethod(data.list_friendRequests_API, postData);
     }
 
 
@@ -263,7 +263,7 @@ public class Friends extends Fragment {
             }
         });
 
-        networkController.PostMethod(data.list_blockedFriends_Api, postData);
+        networkController.PostMethod(data.list_blockedFriends_API, postData);
     }
 
 

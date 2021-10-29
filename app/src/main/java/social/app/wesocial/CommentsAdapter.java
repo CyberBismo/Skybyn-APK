@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
-import timber.log.Timber;
 
 
 class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
@@ -150,7 +149,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                             }
                         });
                         Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.updating_comment),Toast.LENGTH_SHORT).show();
-                        networkController.PostMethod(data.editComment_Api, postData);
+                        networkController.PostMethod(data.editComment_API, postData);
 
 
                         //SAVE EDIT
@@ -216,7 +215,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                             }
                         });
 
-                        networkController.PostMethod(data.deleteComment_Api, postData);
+                        networkController.PostMethod(data.deleteComment_API, postData);
                     });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialogBuilder.show();
@@ -264,7 +263,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                         Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
-                networkController.PostMethod(data.like_Api, postData);
+                networkController.PostMethod(data.like_API, postData);
             }
 
             @Override

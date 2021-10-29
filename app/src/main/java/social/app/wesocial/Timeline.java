@@ -139,7 +139,7 @@ public class Timeline extends Fragment {
             }
         });
 
-        networkController.PostMethod(data.timeline_Api, postData);
+        networkController.PostMethod(data.timeline_API, postData);
     }
 
     @Override

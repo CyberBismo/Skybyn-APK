@@ -226,7 +226,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.search_Api, postData);
+        networkController.PostMethod(data.search_API, postData);
     }
 
     @Override
@@ -467,7 +467,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        networkController.PostMethod(data.list_friendRequests_Api, postData);
+        networkController.PostMethod(data.list_friendRequests_API, postData);
     }
 
     void loadNotificationsRequests() throws JSONException {
@@ -521,7 +521,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        networkController1.PostMethod(data.list_notification_Api, postData);
+        networkController1.PostMethod(data.list_notification_API, postData);
     }
 
 
@@ -633,7 +633,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        networkController.PostMethod(data.profile_Api, postData);
+        networkController.PostMethod(data.profile_API, postData);
     }
 
     public void showAlertDialog(String title, String Message, Boolean Cancelable, Boolean logout) {
@@ -698,7 +698,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.login_Api, postData);
+        networkController.PostMethod(data.login_API, postData);
     }
 
     public void showTimeline() {

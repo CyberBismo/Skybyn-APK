@@ -75,7 +75,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             }
         });
 
-        networkController.PostMethod(data.read_notification_Api, postData);
+        networkController.PostMethod(data.read_notification_API, postData);
 
     }
 

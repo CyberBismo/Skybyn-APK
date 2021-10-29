@@ -89,7 +89,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
                     }
                 });
                 functions.showProgress(lottie);
-                networkController.PostMethod(data.unblock_friend_Api,postData);
+                networkController.PostMethod(data.unblock_friend_API,postData);
 
             });
     }

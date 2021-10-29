@@ -103,15 +103,15 @@ class userSearchAdapter extends RecyclerView.Adapter<userSearchAdapter.ViewHolde
                     functions.LoadFragment(friendFragment, "friends", (Activity) holder.itemView.getContext(), false, false);
                     break;
                 case sent:
-                    link = data.cancel_friend_Api;
+                    link = data.cancel_friend_API;
                     break;
                 case iam_blocked:
                     break;
                 case notFriends:
-                    link = data.add_friend_Api;
+                    link = data.add_friend_API;
                     break;
                 case iBlockedUser:
-                    link = data.unblock_friend_Api;
+                    link = data.unblock_friend_API;
                     break;
             }
 

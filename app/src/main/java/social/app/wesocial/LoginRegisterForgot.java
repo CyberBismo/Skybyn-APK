@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -330,7 +329,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         });
 
         functions.showProgress(lottieview);
-        networkController.PostMethod(data.forgotPassword_Api, postData);
+        networkController.PostMethod(data.forgotPassword_API, postData);
 
         FrameLayout signin_form = findViewById(R.id.signin_form);
         FrameLayout forgot_form = findViewById(R.id.email_form);
@@ -380,7 +379,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
         functions.showProgress(lottieview);
-        networkController.PostMethod(data.verifyEmail_Api, postData);
+        networkController.PostMethod(data.verifyEmail_API, postData);
     }
 
 
@@ -433,7 +432,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             }
         });
         functions.showProgress(lottieview);
-        networkController.PostMethod(data.registration_Api, postData);
+        networkController.PostMethod(data.registration_API, postData);
     }
 
 
@@ -491,7 +490,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.login_Api, postData);
+        networkController.PostMethod(data.login_API, postData);
     }
 
 
