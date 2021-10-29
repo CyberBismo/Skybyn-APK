@@ -167,7 +167,6 @@
                         android:paddingEnd="10dp"
                         android:paddingBottom="1dp"
                         android:singleLine="false"
-                        android:text="I like to read, I like to write; I like to think, I like to dream; I like to talk, I like to listen. I like to see the sunrise in the morning, I like to see the "
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

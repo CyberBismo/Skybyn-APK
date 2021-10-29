@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".CreatePage">
+
+    <EditText
+        android:id="@+id/txtProfileAboutMe2"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:background="@drawable/textview_rounded_corner_gray"
+        android:enabled="true"
+        android:hint="@string/page_description"
+        android:inputType="textMultiLine|textPersonName|textImeMultiLine"
+        android:minHeight="48dp"
+        android:minLines="7"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtNavViewCreateNewPage3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/txtProfileFirstname4"
+        android:layout_width="400dp"
+        android:layout_height="@dimen/profileUpdateViewsHeight"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/textview_rounded_corner_gray"
+        android:enabled="true"
+        android:foregroundGravity="center_horizontal"
+        android:hint="@string/leave_blank"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="390dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdateProfile2"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="400dp"
+            android:layout_height="48dp"
+            android:minHeight="48dp"
+            android:text="@string/make_private"
+            android:textColor="?attr/colorPrimary"
+            android:visibility="visible" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:minHeight="48dp"
+            android:text="@string/open_to_public"
+            android:textColor="?attr/colorPrimary"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="495dp" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnUpdateProfile2"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="120dp"
+        android:height="30dp"
+        android:background="@drawable/button_selector"
+        android:text="@string/create_new_page"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNavViewCreateNewPage3"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/nexabold"
+        android:paddingStart="10dp"
+        android:text="@string/password_protect_page"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="16sp"
+        app:drawableTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/txtProfileFirstname4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNavViewCreateNewPage2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/nexabold"
+        android:paddingStart="10dp"
+        android:text="@string/create_new_page"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/create_new_page"
+        app:drawableTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/txtProfileFirstname2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
+
+    <EditText
+        android:id="@+id/txtProfileFirstname2"
+        android:layout_width="400dp"
+        android:layout_height="@dimen/profileUpdateViewsHeight"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/textview_rounded_corner_gray"
+        android:enabled="true"
+        android:foregroundGravity="center_horizontal"
+        android:hint="@string/name_of_the_page"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/dark_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtProfileAboutMe2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

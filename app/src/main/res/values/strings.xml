@@ -163,4 +163,15 @@
     <string name="toggleDarkMode_key">Toggle dark mode</string>
     <string name="toggle_dark_mode">Toggle Dark mode</string>
     <string name="dark_mode">Dark Mode</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new_page">Create new page</string>
+    <string name="create_new_group">Create new group</string>
+    <string name="open_to_public">Open to public</string>
+    <string name="make_private">Make private (Friends only)</string>
+    <string name="name_of_the_page">Name of the page</string>
+    <string name="page_description">Page Description</string>
+    <string name="leave_blank">Leave blank for no password</string>
+
+    <string name="password_protect_page">Protect this page with a password</string>
 </resources>

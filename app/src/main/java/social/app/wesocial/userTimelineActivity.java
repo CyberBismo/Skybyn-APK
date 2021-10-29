@@ -52,7 +52,6 @@ public class userTimelineActivity extends AppCompatActivity {
     public ImageView imgUserCoverPhoto, imgUserProfilePhoto;
     public TextView txtUserProfileFullname, txtUserProfileUsername,txtEditProfile;
 
-    String firstName, lastName, middleName, nickName, bio;
     String currentPassword, newPassword, confirmNewPassword;
     String newEmail, oldEmail;
 
@@ -105,9 +104,6 @@ public class userTimelineActivity extends AppCompatActivity {
 
 
 
-    public void updateProfile() {
-
-    }
 
     public void updateEmailRequest() {
         newEmail = txtProfileEmail.getText().toString();
@@ -224,6 +220,7 @@ public class userTimelineActivity extends AppCompatActivity {
     }
 
 
+
     public void updatePasswordRequest() {
         currentPassword = txtProfileCurrentPassword.getText().toString();
         newPassword = txtProfileNewPassword.getText().toString();
@@ -276,7 +273,6 @@ public class userTimelineActivity extends AppCompatActivity {
                             functions.showSnackBar(message,findViewById(android.R.id.content),getApplicationContext());
                             SharedPreferences.Editor sharedPrefEditor = Frontpage.sharedpreferences.edit();
                             sharedPrefEditor.putString("password", newPassword);
-                            sharedPrefEditor.clear();
                             sharedPrefEditor.apply();
 
                             //Intent intent = new Intent(getApplicationContext(), LoginRegisterForgot.class);
@@ -298,6 +294,63 @@ public class userTimelineActivity extends AppCompatActivity {
             }
         });
         networkController.PostMethod(data.updatePassword_API, postData);
+    }
+
+    public void updateProfileDetailsRequest() {
+        String  firstname = txtProfilefirstName.getText().toString();
+        String  lastname = txtProfilelastName.getText().toString();
+        String  middlename = txtProfilemiddleName.getText().toString();
+        String  nickname = txtProfilenickName.getText().toString();
+        String  bio =       txtProfileAboutMe.getText().toString();
+
+
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("first_name", firstname);
+        postData.put("middle_name", middlename);
+        postData.put("last_name", lastname);
+        postData.put("nickname", nickname);
+        postData.put("bio", bio);
+
+        functions.showProgress(lottie);
+        btnUpdateProfile.setEnabled(false);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                functions.hideProgress(lottie);
+                Timber.i(response);
+
+                if (!functions.isJsonObject(response)) {
+                    functions.showSnackBarError(getString(R.string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
+                }
+
+                    if (functions.isJsonObject(response)) {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+                    String responseCode = jsonObject.get("responseCode").toString();
+                    String message = jsonObject.get("message").toString();
+                    switch (responseCode) {
+                        case "1":
+                            functions.showSnackBar(message,findViewById(android.R.id.content),getApplicationContext());
+                            btnUpdateProfile.setText(message);
+                            break;
+
+                        default:
+                            btnUpdateProfile.setEnabled(true);
+                            functions.showSnackBarError(message, findViewById(android.R.id.content), getApplicationContext());
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                btnUpdateProfile.setEnabled(true);
+                functions.hideProgress(lottie);
+                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content), getApplicationContext());
+            }
+        });
+        networkController.PostMethod(data.update_profile_API, postData);
     }
 
 
@@ -368,6 +421,11 @@ public class userTimelineActivity extends AppCompatActivity {
         });
 
         //EVENTS
+
+        btnUpdateProfile.setOnClickListener(view -> {
+            updateProfileDetailsRequest();
+        });
+
         btnUpdateProfilePassword.setOnClickListener(view1 -> {
             functions.hideSoftKeyboard(userTimelineActivity.this);
             updatePasswordRequest();
@@ -418,16 +476,9 @@ public class userTimelineActivity extends AppCompatActivity {
                         String userRank = jsonObject.get("rank").toString();
                         String userTitle = jsonObject.get("title").toString();
                         String deactivated = jsonObject.get("deactivated").toString();
-
                         txtUserProfileUsername.setText(username);
                         getSupportActionBar().setTitle(username.concat("'s").concat(" ").concat(getString(R.string.timeline)));
-
-                        if (firstName.equals("") || lastName.equals("")) {
-                            txtUserProfileFullname.setText("------");
-                        } else {
-                            txtUserProfileFullname.setText(firstName.concat(" ").concat(lastName));
-                        }
-
+                        txtUserProfileFullname.setText(firstName.concat(" ").concat(lastName));
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgUserProfilePhoto);
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgUserCoverPhoto);
                         imgUserCoverPhoto.setColorFilter(R.color.dark_gray, PorterDuff.Mode.DARKEN);

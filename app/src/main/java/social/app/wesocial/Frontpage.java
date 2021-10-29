@@ -145,6 +145,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
+        TextView txtNavViewCreateNewPage = navHeaderView.findViewById(id.txtNavViewCreateNewPage);
+
+        txtNavViewCreateNewPage.setOnClickListener(view -> {
+            drawerLayout.closeDrawer(GravityCompat.START);
+
+            Fragment createNewPage= CreatePage.newInstance("","");
+            functions.LoadFragment(createNewPage,"",this,false,false);
+
+        });
 
         imgNavProfilePicture.setOnClickListener(view -> showProfilePage());
 
@@ -188,7 +197,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void performSearch(String userID, String keyword, Boolean onQuery) {
-
         this.keyword = keyword;
         this.onQuery = onQuery;
         if (!onQuery) {
@@ -290,7 +298,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions.LoadFragment(notificationFragment, "notification", Frontpage.this, false, false);
     }
 
-
     public void showFriendsPage() {
         Fragment friendsFragment = Friends.newInstance(userID);
         functions.LoadFragment(friendsFragment, "friends", Frontpage.this, false, false);
@@ -304,7 +311,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         Fragment messagesFragment = Messages.newInstance(loadedMessagesJson, friendID);
         functions.LoadFragment(messagesFragment, "messages", Frontpage.this, false, false);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

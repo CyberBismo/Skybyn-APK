@@ -79,8 +79,9 @@ public class Data {
 
     public String sendEmailToken_API = API+"profile_email.php";
     public String updateEmail_API = API+"profile_email_update.php";
-
     public String updateToken_API = API+"token.php";
+    public String update_profile_API = API+"profile_update.php";
+
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
     public String intent_auth = "intent_auth";

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:background="?attr/colorPrimary">
 
     <com.mikhaellopez.circularimageview.CircularImageView
@@ -17,24 +17,9 @@
         app:civ_shadow_radius="5dp"
         app:layout_constraintBottom_toTopOf="@+id/txtNavViewUsername"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
-
-    <TextView
-        android:id="@+id/txtNavViewEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:fontFamily="@font/nexalight"
-        android:gravity="center_horizontal|center_vertical"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintVertical_bias="0.788" />
 
     <TextView
         android:id="@+id/txtNavViewUsername"
@@ -43,11 +28,58 @@
         android:layout_marginBottom="12dp"
         android:fontFamily="@font/nexabold"
         android:gravity="center_horizontal|center_vertical"
+        android:text="--------------------------"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNavViewEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNavViewEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="--------------------------"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNavViewCreateNewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_vertical"
+        android:text="@string/create_new_group"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        app:drawableStartCompat="@drawable/create_new_group"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNavViewCreateNewPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/nexalight"
+        android:gravity="center_vertical"
+        android:text="@string/create_new_page"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        app:drawableStartCompat="@drawable/create_new_page"
+        app:layout_constraintBottom_toTopOf="@+id/txtNavViewCreateNewGroup"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
