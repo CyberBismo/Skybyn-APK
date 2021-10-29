@@ -68,6 +68,10 @@ public class Data {
 
     // Page API
     public String create_page_API = pageAPI+"create.php";
+    //  POST Parameters:
+    //      userID
+    //      name
+    //      desc
 
 
     public String forgotPassword_API = API+"forgot.php";
