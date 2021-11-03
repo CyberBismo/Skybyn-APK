@@ -28,7 +28,6 @@
         android:layout_marginBottom="12dp"
         android:fontFamily="@font/nexabold"
         android:gravity="center_horizontal|center_vertical"
-        android:text="--------------------------"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/txtNavViewEmail"
@@ -39,15 +38,13 @@
         android:id="@+id/txtNavViewEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="84dp"
         android:fontFamily="@font/nexalight"
         android:gravity="center_horizontal|center_vertical"
-        android:text="--------------------------"
         android:textColor="@color/white"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -55,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="28dp"
         android:drawablePadding="5dp"
         android:fontFamily="@font/nexalight"
         android:gravity="center_vertical"
@@ -70,8 +67,8 @@
         android:id="@+id/txtNavViewCreateNewPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="28dp"
         android:drawablePadding="5dp"
         android:fontFamily="@font/nexalight"
         android:gravity="center_vertical"
@@ -79,7 +76,7 @@
         android:textColor="@android:color/white"
         android:textSize="10sp"
         app:drawableStartCompat="@drawable/create_new_page"
-        app:layout_constraintBottom_toTopOf="@+id/txtNavViewCreateNewGroup"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

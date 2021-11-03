@@ -1,12 +1,24 @@
 package social.app.wesocial;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import social.app.wesocial.databinding.FragmentCreatePageBinding;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,38 +33,26 @@ public class CreatePage extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FragmentCreatePageBinding binding;
+    Functions functions;
+    Data data = new Data();
+
 
     public CreatePage() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreatePage.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static CreatePage newInstance(String param1, String param2) {
         CreatePage fragment = new CreatePage();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        functions = new Functions(requireContext());
     }
 
     @Override
@@ -61,5 +61,79 @@ public class CreatePage extends Fragment {
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_create_page, container, false);
+
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        LottieAnimationView lottie = requireActivity().findViewById(R.id.frontpageProgressView);
+        binding = FragmentCreatePageBinding.bind(view);
+
+
+        if (binding.txtCreatePageName.getText().toString() == "") {
+            functions.ShowToast(getString(R.string.empty_page_name));
+            return;
+        }
+
+
+        if (binding.txtCreatePageDescription.getText().toString() == "") {
+            functions.ShowToast(getString(R.string.empty_page_desc));
+            return;
+        }
+
+
+        binding.btnCreatePage.setOnClickListener(view1 -> {
+            HashMap<String, String> postData = new HashMap<>();
+
+            if (binding.radioCreatePagePrivate.isChecked()) {
+                postData.put("special", "private");
+            } else {
+                postData.put("special", "public");
+            }
+
+
+            functions.showProgress(lottie);
+
+
+            postData.put("userID", Frontpage.userID);
+            postData.put("name", binding.txtCreatePageName.getText().toString());
+            postData.put("desc", binding.txtCreatePageDescription.getText().toString());
+            postData.put("password", binding.txtCreatePagePassword.getText().toString());
+
+
+            NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
+
+                @Override
+                public void notifySuccess(String response) throws JSONException {
+                    functions.hideProgress(lottie);
+                    Timber.i(response);
+
+                    if (functions.isJsonObject(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String responseCode = jsonObject.get("responseCode").toString();
+                        String message = jsonObject.get("message").toString();
+                        if (responseCode.equals("1")) {
+                            functions.ShowToast(getString(R.string.page_created));
+                            requireActivity().onBackPressed();
+                        }
+                        if (responseCode.equals("0")) {
+                            functions.ShowToast(message);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void notifyError(VolleyError error) {
+                    functions.hideProgress(lottie);
+                    functions.ShowToast(getString(R.string.network_something_wrong));
+                }
+            });
+
+            networkController.PostMethod(data.create_page_API, postData);
+        });
+    }
+
+
 }

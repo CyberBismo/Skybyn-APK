@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -474,9 +475,14 @@ public class userTimelineActivity extends AppCompatActivity {
                         String nickName = jsonObject.get("nickname").toString();
                         String middleName = jsonObject.get("mname").toString();
                         String userRank = jsonObject.get("rank").toString();
+                        String bio = jsonObject.get("bio").toString();
                         String userTitle = jsonObject.get("title").toString();
                         String deactivated = jsonObject.get("deactivated").toString();
+
                         txtUserProfileUsername.setText(username);
+                        TextView txtUserProfileAboutMe = findViewById(R.id.txtUserProfileAboutMe);
+                        txtUserProfileAboutMe.setText(bio);
+
                         getSupportActionBar().setTitle(username.concat("'s").concat(" ").concat(getString(R.string.timeline)));
                         txtUserProfileFullname.setText(firstName.concat(" ").concat(lastName));
                         functions.loadProfilePictureDrawableThumb(avatarLink, imgUserProfilePhoto);

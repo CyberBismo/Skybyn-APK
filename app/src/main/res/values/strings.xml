@@ -174,4 +174,7 @@
     <string name="leave_blank">Leave blank for no password</string>
 
     <string name="password_protect_page">Protect this page with a password</string>
+    <string name="empty_page_name">Empty Page name..</string>
+    <string name="empty_page_desc">Empty Page Description</string>
+    <string name="page_created">Page Created successfully!</string>
 </resources>

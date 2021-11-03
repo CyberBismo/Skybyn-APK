@@ -8,10 +8,10 @@
     tools:context=".CreatePage">
 
     <EditText
-        android:id="@+id/txtProfileAboutMe2"
+        android:id="@+id/txtCreatePageDescription"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="44dp"
         android:background="@drawable/textview_rounded_corner_gray"
         android:enabled="true"
         android:hint="@string/page_description"
@@ -23,12 +23,12 @@
         android:textColor="@color/black"
         android:textColorHint="@color/dark_gray"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtNavViewCreateNewPage3"
+        app:layout_constraintBottom_toTopOf="@+id/txt1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/txtProfileFirstname4"
+        android:id="@+id/txt_create_page_password"
         android:layout_width="400dp"
         android:layout_height="@dimen/profileUpdateViewsHeight"
         android:layout_gravity="center_horizontal"
@@ -54,11 +54,11 @@
         android:layout_height="125dp"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="28dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnUpdateProfile2"
+        app:layout_constraintBottom_toTopOf="@+id/btnCreatePage"
         app:layout_constraintStart_toStartOf="parent">
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radioCreatePagePrivate"
             android:layout_width="400dp"
             android:layout_height="48dp"
             android:minHeight="48dp"
@@ -67,10 +67,11 @@
             android:visibility="visible" />
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioCreatePagePublic"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
+            android:checked="true"
             android:minHeight="48dp"
             android:text="@string/open_to_public"
             android:textColor="?attr/colorPrimary"
@@ -80,7 +81,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/btnUpdateProfile2"
+        android:id="@+id/btnCreatePage"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
@@ -95,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/txtNavViewCreateNewPage3"
+        android:id="@+id/txt1"
         android:layout_width="match_parent"
         android:layout_height="26dp"
         android:layout_marginBottom="16dp"
@@ -106,13 +107,13 @@
         android:textColor="?attr/colorPrimary"
         android:textSize="16sp"
         app:drawableTint="?attr/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/txtProfileFirstname4"
+        app:layout_constraintBottom_toTopOf="@+id/txt_create_page_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/txtNavViewCreateNewPage2"
+        android:id="@+id/txt2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawablePadding="5dp"
@@ -123,15 +124,15 @@
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/create_new_page"
         app:drawableTint="?attr/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/txtProfileFirstname2"
+        app:layout_constraintBottom_toTopOf="@+id/txtCreatePageName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.727" />
+        app:layout_constraintVertical_bias="0.893" />
 
     <EditText
-        android:id="@+id/txtProfileFirstname2"
+        android:id="@+id/txtCreatePageName"
         android:layout_width="400dp"
         android:layout_height="@dimen/profileUpdateViewsHeight"
         android:layout_gravity="center_horizontal"
@@ -146,7 +147,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/dark_gray"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtProfileAboutMe2"
+        app:layout_constraintBottom_toTopOf="@+id/txtCreatePageDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
