@@ -72,6 +72,13 @@ public class Data {
     //      userID
     //      name
     //      desc
+    public String page_content_API = pageAPI+"content.php";
+    //  POST Parameters:
+    //      pageID
+    public String page_timeline_API = pageAPI+"timeline.php";
+    //  POST Parameters:
+    //      userID
+    //      pageID
 
 
     public String forgotPassword_API = API+"forgot.php";
