@@ -79,6 +79,9 @@ public class Data {
     //  POST Parameters:
     //      userID
     //      pageID
+    public String page_gallery_API = pageAPI+"gallery.php";
+    //  POST Parameters:
+    //      pageID
 
 
     public String forgotPassword_API = API+"forgot.php";
