@@ -40,7 +40,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblBrowsePagesTitle"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintVertical_bias="0.526"
+        android:queryHint="@string/search_for_pages"
+        />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

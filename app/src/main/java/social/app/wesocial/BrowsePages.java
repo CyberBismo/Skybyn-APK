@@ -37,6 +37,7 @@ public class BrowsePages extends Fragment {
     Functions functions;
     LottieAnimationView lottie;
     Data data;
+    String reqResponse = "";
 
     public BrowsePages() {
         // Required empty public constructor
@@ -57,7 +58,9 @@ public class BrowsePages extends Fragment {
     }
 
     void loadPages(String userID) {
-        functions.showProgress(lottie);
+        if (reqResponse.equals("")) {
+            functions.showProgress(lottie);
+        }
         HashMap<String, String> postData = new HashMap<>();
 
         NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
@@ -69,6 +72,7 @@ public class BrowsePages extends Fragment {
 
                 if (functions.isJsonArray(response)) {
                     Log.i("response", response);
+                    reqResponse = response;
 
                 String pageID;
                 String pageAvatarLink;

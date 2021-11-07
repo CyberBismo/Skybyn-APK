@@ -36,6 +36,7 @@ public class Friends extends Fragment {
     TextView txtFriendsTitle;
     Data data = new Data();
     TabLayout friendsTabLayout;
+    String reqResponse ="";
 
 
     public Friends() {
@@ -121,8 +122,9 @@ public class Friends extends Fragment {
 
 
     public void loadFriends() {
-        functions.showProgress(lottie);
-        HashMap<String, String> postData = new HashMap<>();
+        if (reqResponse.equals("")) {
+            functions.showProgress(lottie);
+        }        HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {
@@ -138,6 +140,7 @@ public class Friends extends Fragment {
                 }
 
                 if (functions.isJsonArray(response)) {
+                    reqResponse = response;
                     String friendUsername;
                     String friendNickname;
                     String friendID;

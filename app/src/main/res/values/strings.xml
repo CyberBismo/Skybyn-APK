@@ -182,4 +182,5 @@
     <string name="favourite_pages">Favourites</string>
     <string name="no_page_found">No Page found</string>
     <string name="todo">TODO</string>
+    <string name="search_for_pages">Search for pages...</string>
 </resources>
