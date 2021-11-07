@@ -74,6 +74,7 @@ public class Data {
     public String page_mypages_API = pageAPI+"mypages.php";
     //  POST Parameters:
     //      userID
+
     public String create_page_API = pageAPI+"create.php";
     //  POST Parameters:
     //      userID
@@ -96,7 +97,6 @@ public class Data {
 
     public String forgotPassword_API = API+"forgot.php";
     public String updatePassword_API = API+"profile_password.php";
-
     public String sendEmailToken_API = API+"profile_email.php";
     public String updateEmail_API = API+"profile_email_update.php";
     public String updateToken_API = API+"token.php";

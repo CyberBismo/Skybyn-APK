@@ -28,7 +28,7 @@
             android:visibility="visible">
 
             <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/imgCommentProfilePicture"
+                android:id="@+id/imgPagePicture"
                 android:layout_width="39dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="16dp"
@@ -56,7 +56,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/txtCommentContent"
                 app:layout_constraintEnd_toStartOf="@+id/txtCommentEdit"
                 app:layout_constraintHorizontal_bias="0.164"
-                app:layout_constraintStart_toEndOf="@+id/imgCommentProfilePicture"
+                app:layout_constraintStart_toEndOf="@+id/imgPagePicture"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 

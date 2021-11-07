@@ -121,8 +121,16 @@ public class Functions {
 
     }
 
-    public void showSnackBar(String msg, View view, Context context) {
+    public void loadPageDrawableThumb(Object thumbNailLink, View imv) {
+        Glide.with(imv)
+                .load(thumbNailLink)
+                .placeholder(R.drawable.pages_gray)
+                .error(R.drawable.pages_gray)
+                .into((ImageView) imv);
 
+    }
+
+    public void showSnackBar(String msg, View view, Context context) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 .setBackgroundTint(ContextCompat.getColor(context, R.color.dark_gray_2))
                 .setTextColor(ContextCompat.getColor(context, R.color.white))

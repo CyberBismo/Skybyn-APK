@@ -177,4 +177,9 @@
     <string name="empty_page_name">Empty Page name..</string>
     <string name="empty_page_desc">Empty Page Description</string>
     <string name="page_created">Page Created successfully!</string>
+    <string name="browse_page">Browse Pages</string>
+    <string name="my_pages">My Pages</string>
+    <string name="favourite_pages">Favourites</string>
+    <string name="no_page_found">No Page found</string>
+    <string name="todo">TODO</string>
 </resources>

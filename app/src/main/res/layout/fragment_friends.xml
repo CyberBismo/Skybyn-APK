@@ -21,67 +21,42 @@
         android:textColor="@color/white"
         android:textSize="16sp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/friendsTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/browsePagesRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabRippleColor="?attr/colorPrimary"
+        app:tabSelectedTextColor="@color/mainColour"
+        app:tabTextColor="?attr/colorPrimary">
 
-        <Button
-            android:id="@+id/btnShowFriendsList"
-            android:layout_width="120dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="4dp"
-            android:background="@color/white"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/Friends"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnShowFriendsRequestsList"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Friends" />
 
-        <Button
-            android:id="@+id/btnShowFriendsRequestsList"
-            android:layout_width="120dp"
-            android:layout_height="34dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/white"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/friend_requests"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnShowBlockedFriendsList"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TouchTargetSizeCheck" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/friend_requests" />
 
-        <Button
-            android:id="@+id/btnShowBlockedFriendsList"
-            android:layout_width="120dp"
-            android:layout_height="34dp"
-            android:layout_marginEnd="4dp"
-            android:background="@color/red"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/blocked"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="TouchTargetSizeCheck" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blocked" />
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

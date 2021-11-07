@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,9 +35,8 @@ public class Friends extends Fragment {
     RecyclerView friendsRecyclerView;
     TextView txtFriendsTitle;
     Data data = new Data();
-    Button btnShowFriends;
-    Button btnShowBlockedFriends;
-    Button btnShowFriendsRequests;
+    TabLayout friendsTabLayout;
+
 
     public Friends() {
         // Required empty public constructor
@@ -71,9 +70,7 @@ public class Friends extends Fragment {
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         friendsRecyclerView = requireActivity().findViewById(R.id.searchRecyclerView);
         txtFriendsTitle = requireActivity().findViewById(R.id.txtFriendsTitle);
-        btnShowFriends = requireActivity().findViewById(R.id.btnShowFriendsList);
-        btnShowBlockedFriends = requireActivity().findViewById(R.id.btnShowBlockedFriendsList);
-        btnShowFriendsRequests = requireActivity().findViewById(R.id.btnShowFriendsRequestsList);
+
         functions = new Functions(requireContext());
 
         if (action.equals(data.accept_friend_action)) {
@@ -81,12 +78,44 @@ public class Friends extends Fragment {
         } else {
             loadFriends();
         }
-        btnShowBlockedFriends.setOnClickListener(view1 -> loadBlockedFriends());
 
-        btnShowFriends.setOnClickListener(view1 -> loadFriends());
+        friendsTabLayout = requireActivity().findViewById(R.id.friendsTabLayout);
 
-        btnShowFriendsRequests.setOnClickListener(view1 -> loadFriendsRequests());
+        friendsTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+
+                    case 0:
+                        loadFriends();
+                        break;
+
+                    case 1:
+                        loadFriendsRequests();
+                        break;
+
+                    case 2:
+                        loadBlockedFriends();
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
+
+        });
 
     }
 

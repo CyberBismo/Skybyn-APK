@@ -305,7 +305,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
             txtCommentUsername = itemView.findViewById(id.txtCommentUsername);
             txtCommentDate = itemView.findViewById(id.txtCommentDate);
             txtCommentLikes = itemView.findViewById(id.txtCommentLikes);
-            imgCommentPicture = itemView.findViewById(id.imgCommentProfilePicture);
+            imgCommentPicture = itemView.findViewById(id.imgPagePicture);
             txtCommentDelete = itemView.findViewById(id.txtCommentDelete);
             btnCommentLike = itemView.findViewById(id.btnCommentLike);
 

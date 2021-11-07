@@ -131,7 +131,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         setContentView(layout.activity_front_page);
 
         //INIT FIREBASE and Functions
-        FirebaseApp.initializeApp(this);
         functions = new Functions(getApplicationContext());
 
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
@@ -310,6 +309,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     public void showMessages(String friendID) {
         Fragment messagesFragment = Messages.newInstance(loadedMessagesJson, friendID);
         functions.LoadFragment(messagesFragment, "messages", Frontpage.this, false, false);
+    }
+
+    public void showPages() {
+        Fragment BrowsePages = social.app.wesocial.BrowsePages.newInstance();
+        functions.LoadFragment(BrowsePages, "pages", Frontpage.this, false, false);
     }
 
     @Override
@@ -715,6 +719,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.logout:
                 logOut();
                 break;
@@ -739,6 +744,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 }
                 break;
 
+
+            case id.pages:
+                if (userLoggedIn) {
+                    showPages();
+                } else {
+                    functions.showSnackBarError(getString(R.string.not_logged_in), findViewById(android.R.id.content), getApplicationContext());
+                }
+                break;
 
             case id.profile:
                 if (userLoggedIn) {

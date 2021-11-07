@@ -114,7 +114,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 break;
 
             case notificationType_page:
-                functions.loadNotificationThumb(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.page), holder.imgNotificationSender, false);
+                functions.loadNotificationThumb(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.page_gray), holder.imgNotificationSender, false);
                 break;
 
             case notificationType_group:
