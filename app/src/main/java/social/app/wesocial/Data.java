@@ -67,6 +67,7 @@ public class Data {
     public String editComment_API = commentAPI+"edit.php";
 
     // Page API
+    public String page_list_API = pageAPI+"list.php";
     public String create_page_API = pageAPI+"create.php";
     //  POST Parameters:
     //      userID
@@ -83,9 +84,6 @@ public class Data {
     //  POST Parameters:
     //      pageID
     public String page_members_API = pageAPI+"members.php";
-    //  POST Parameters:
-    //      pageID
-    public String page_list_API = pageAPI+"list.php";
     //  POST Parameters:
     //      pageID
 
