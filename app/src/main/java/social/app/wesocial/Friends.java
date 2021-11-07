@@ -124,7 +124,9 @@ public class Friends extends Fragment {
     public void loadFriends() {
         if (reqResponse.equals("")) {
             functions.showProgress(lottie);
-        }        HashMap<String, String> postData = new HashMap<>();
+        }
+
+        HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
 
         NetworkController networkController = new NetworkController(requireActivity().getApplicationContext(), new NetworkController.IResult() {

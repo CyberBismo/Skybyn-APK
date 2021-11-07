@@ -44,8 +44,14 @@ public class BrowsePages extends Fragment {
     }
 
     public static BrowsePages newInstance() {
-        BrowsePages fragment = new BrowsePages();
-        return fragment;
+        return new BrowsePages();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
     }
 
     @Override
@@ -55,14 +61,15 @@ public class BrowsePages extends Fragment {
         data = new Data();
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
 
+
     }
 
     void loadPages(String userID) {
         if (reqResponse.equals("")) {
             functions.showProgress(lottie);
         }
-        HashMap<String, String> postData = new HashMap<>();
 
+        HashMap<String, String> postData = new HashMap<>();
         NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
@@ -131,8 +138,13 @@ public class BrowsePages extends Fragment {
         binding = FragmentPageBinding.bind(view);
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         loadPages("");
+
+        binding.txtCreateNewPage.setOnClickListener(view1 -> {
+            Fragment createNewPage= CreatePage.newInstance("","");
+            functions.LoadFragment(createNewPage,"",requireActivity(),false,false);
+
+        });
 
         binding.pageSearchView.setOnCloseListener(() -> false);
         binding.pageSearchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {

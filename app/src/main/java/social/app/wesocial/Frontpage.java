@@ -144,15 +144,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
-        TextView txtNavViewCreateNewPage = navHeaderView.findViewById(id.txtNavViewCreateNewPage);
 
-        txtNavViewCreateNewPage.setOnClickListener(view -> {
-            drawerLayout.closeDrawer(GravityCompat.START);
-
-            Fragment createNewPage= CreatePage.newInstance("","");
-            functions.LoadFragment(createNewPage,"",this,false,false);
-
-        });
 
         imgNavProfilePicture.setOnClickListener(view -> showProfilePage());
 
