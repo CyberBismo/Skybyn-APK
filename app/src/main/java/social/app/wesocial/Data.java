@@ -71,6 +71,9 @@ public class Data {
     public String page_member_of_API = pageAPI+"member_of.php";
     //  POST Parameters:
     //      userID
+    public String page_mypages_API = pageAPI+"mypages.php";
+    //  POST Parameters:
+    //      userID
     public String create_page_API = pageAPI+"create.php";
     //  POST Parameters:
     //      userID
