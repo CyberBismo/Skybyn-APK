@@ -68,6 +68,9 @@ public class Data {
 
     // Page API
     public String page_list_API = pageAPI+"list.php";
+    public String page_member_of_API = pageAPI+"member_of.php";
+    //  POST Parameters:
+    //      userID
     public String create_page_API = pageAPI+"create.php";
     //  POST Parameters:
     //      userID
