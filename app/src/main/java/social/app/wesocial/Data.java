@@ -87,6 +87,10 @@ public class Data {
     //  POST Parameters:
     //      userID
     //      pageID
+    public String page_join_API = pageAPI+"join.php";
+    //  POST Parameters:
+    //      userID
+    //      pageID
     public String page_gallery_API = pageAPI+"gallery.php";
     //  POST Parameters:
     //      pageID
