@@ -67,10 +67,18 @@ public class Data {
     public String editComment_API = commentAPI+"edit.php";
 
     // Page API
+    public String page_search_API = pageAPI+"search.php";
+    //  POST Parameters:
+    //      name
+
     public String page_list_API = pageAPI+"list.php";
+    //  POST Parameters:
+    //      userID
+
     public String page_member_of_API = pageAPI+"member_of.php";
     //  POST Parameters:
     //      userID
+
     public String page_mypages_API = pageAPI+"mypages.php";
     //  POST Parameters:
     //      userID
@@ -80,20 +88,28 @@ public class Data {
     //      userID
     //      name
     //      desc
+    //      password
+    //      special = group (2), private (1) or public (0)
+
     public String page_content_API = pageAPI+"content.php";
     //  POST Parameters:
     //      pageID
+    //      userID
+
     public String page_timeline_API = pageAPI+"timeline.php";
     //  POST Parameters:
     //      userID
     //      pageID
+
     public String page_join_API = pageAPI+"join.php";
     //  POST Parameters:
     //      userID
     //      pageID
+
     public String page_gallery_API = pageAPI+"gallery.php";
     //  POST Parameters:
     //      pageID
+
     public String page_members_API = pageAPI+"members.php";
     //  POST Parameters:
     //      pageID
