@@ -7,6 +7,8 @@ import static social.app.wesocial.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +84,8 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     public void onBindViewHolder(@NonNull TimelinePostsAdapter.ViewHolder holder, int position) {
         functions = new Functions(holder.itemView.getContext());
         TimelineDataClass timelineDataClass = TimelineDataClass.get(position);
-        holder.txtUsername.setText(timelineDataClass.getUsername());
-        holder.txtUsername.setTag(timelineDataClass.getUserID());
+        holder.txtTimelineUsername.setText(timelineDataClass.getUsername());
+        holder.txtTimelineUsername.setTag(timelineDataClass.getUserID());
         holder.txtTimelineDate.setText(timelineDataClass.getDate());
         holder.txtTimelineLikes.setText(trimValue(timelineDataClass.getLikes()));
         holder.txtTimelineCommentsCount.setText(trimValue(timelineDataClass.getComments_count()));
@@ -102,15 +104,16 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
+        Linkify.addLinks(holder.txtTimelineContent,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
 
-        holder.timelineMainLayout.setOnClickListener(view -> {
+        holder.txtTimelineContent.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);
             HashMap<String, Object> timeLinePostDetails = new HashMap<>();
             timeLinePostDetails.put("content", holder.txtTimelineDate.getTag().toString());
             timeLinePostDetails.put("likes", holder.txtTimelineLikes.getText().toString());
             timeLinePostDetails.put("ilike", holder.imgTimelinePostLike.getTag().toString());
-            timeLinePostDetails.put("username", holder.txtUsername.getText().toString());
-            timeLinePostDetails.put("userID", holder.txtUsername.getTag().toString());
+            timeLinePostDetails.put("username", holder.txtTimelineUsername.getText().toString());
+            timeLinePostDetails.put("userID", holder.txtTimelineUsername.getTag().toString());
             timeLinePostDetails.put("postID", holder.txtTimelineContent.getTag().toString());
             timeLinePostDetails.put("date", holder.txtTimelineDate.getText().toString());
             timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
@@ -124,13 +127,13 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         //Profile PICTURE click
         if (!this.isUserTimeline) {
-            holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtUsername.getTag().toString(),activity,holder.itemView.getContext().getApplicationContext()));
-            holder.txtUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
+            holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtTimelineUsername.getTag().toString(),activity,holder.itemView.getContext().getApplicationContext()));
+            holder.txtTimelineUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
         }
         holder.imgTimelinePostLike.setLiked(holder.imgTimelinePostLike.getTag().toString().equals("1"));
 
         //If the timeLine Post is by Me!
-        if (holder.txtUsername.getTag().toString().equals(Frontpage.userID)) {
+        if (holder.txtTimelineUsername.getTag().toString().equals(Frontpage.userID)) {
             holder.txtTimelinePostDelete.setVisibility(View.VISIBLE);
         } else {
             holder.txtTimelinePostDelete.setVisibility(View.INVISIBLE);
@@ -270,7 +273,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
+        TextView txtTimelineUsername, txtTimelineContent, txtTimelineDate, txtTimelineLikes, txtTimelineCommentsCount;
         ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
         CardView cardView;
@@ -282,7 +285,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             super(itemView);
             cardView = itemView.findViewById(id.postTimelineCardView);
             txtTimelineContent = itemView.findViewById(id.txtShowTimelinePostContent);
-            txtUsername = itemView.findViewById(id.txtShowTimelinePostUsername);
+            txtTimelineUsername = itemView.findViewById(id.txtShowTimelinePostUsername);
             txtTimelineDate = itemView.findViewById(id.txtShowTimelinePostDate);
             txtTimelineLikes = itemView.findViewById(id.txtShowTimelinePostLikes);
             txtTimelineCommentsCount = itemView.findViewById(id.txtShowTimelinePostComments);

@@ -3,6 +3,7 @@ package social.app.wesocial;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,6 +121,7 @@ public class showFullPost extends AppCompatActivity {
         txtShowTimelinePostDelete = postTimelineCardView.findViewById(R.id.txtTimelinePostDelete);
         txtShowTimelinePostEdit = postTimelineCardView.findViewById(R.id.txtShowTimelinePostEdit);
 
+
         //txtCommentsCount = findViewById(R.id.txtCommentsCount);
         btnSendTimelineComment = findViewById(R.id.btnSendTimelineComment);
         txtPostComment = findViewById(R.id.txtShowPostComment);
@@ -160,6 +162,8 @@ public class showFullPost extends AppCompatActivity {
         userLikedPost = Objects.requireNonNull(timelinePostDetails.get("ilike")).toString();
         getSupportActionBar().setTitle(" " + postContent);
         btnShowtimePostLike.setLiked(userLikedPost.equals("1"));
+
+
     }
 
     private void loadComments(Boolean iJustCommented) {
@@ -272,6 +276,7 @@ public class showFullPost extends AppCompatActivity {
         txtShowTimelinePostLikes.setText(postLikes);
         txtShowTimelinePostComments.setText(postCommentsCount);
         btnShowtimePostLike.setTag(userLikedPost);
+        Linkify.addLinks(txtShowTimelinePostContent,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
 
 
         //LIKE BUTTON

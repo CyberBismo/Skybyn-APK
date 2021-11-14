@@ -121,12 +121,12 @@ public class Functions {
 
     }
 
-    public void loadPageDrawableThumb(Object thumbNailLink, View imv) {
-        Glide.with(imv)
-                .load(thumbNailLink)
-                .placeholder(R.drawable.pages_gray)
-                .error(R.drawable.pages_gray)
-                .into((ImageView) imv);
+    public void loadPageDrawableThumb(Object thumbNailLink, View imv,Boolean banner) {
+        if (!banner) {
+            Glide.with(imv).load(thumbNailLink).placeholder(R.drawable.pages_coloured).error(R.drawable.pages_coloured).into((ImageView) imv);
+        }else{
+            Glide.with(imv).load(thumbNailLink).into((ImageView) imv);
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package social.app.wesocial;
 
-import static com.google.android.material.tabs.TabLayout.*;
+import static com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
+import static com.google.android.material.tabs.TabLayout.Tab;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,8 @@ public class BrowsePages extends Fragment {
     LottieAnimationView lottie;
     Data data;
     String reqResponse = "";
+    BrowsePageAdapter browsePageAdapter;
+    String searchReqResponse = "";
 
     public BrowsePages() {
         // Required empty public constructor
@@ -64,57 +67,104 @@ public class BrowsePages extends Fragment {
 
     }
 
-    void loadPages(String userID) {
-        if (reqResponse.equals("")) {
-            functions.showProgress(lottie);
+
+    void loadJsontoRecycler(String response) throws JSONException {
+
+        Log.i("response", response);
+        reqResponse = response;
+        searchReqResponse = response;
+        String pageID;
+        String pageAvatarLink;
+        String pageLock;
+        String pageName;
+        String pageDesc = "";
+
+        JSONArray jsonArray = new JSONArray(response);
+        ArrayList<BrowsePageDataClass> browsePageDataClass = new ArrayList<>();
+        JSONObject jsonObject;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonObject = jsonArray.getJSONObject(i);
+
+            pageAvatarLink = (String) jsonObject.get("logo");
+            pageID = (String) jsonObject.get("page_id");
+            pageName = (String) jsonObject.get("name");
+            pageLock = (String) jsonObject.get("lock");
+            pageDesc = (String) jsonObject.get("desc");
+            String pageMembers = (String) jsonObject.get("members");
+            String pageAmIAMember = (String) jsonObject.get("member");
+
+            browsePageDataClass.add(new BrowsePageDataClass(pageID, pageAvatarLink, pageLock, pageName, pageDesc, pageMembers, pageAmIAMember));
+             browsePageAdapter = new BrowsePageAdapter(browsePageDataClass, requireActivity());
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+            binding.browsePagesRecyclerView.setLayoutManager(mLayoutManager);
+            binding.browsePagesRecyclerView.setAdapter(browsePageAdapter);
+            browsePageAdapter.notifyDataSetChanged();
         }
+    }
+
+    void loadPages(String pageID) {
+        // if (reqResponse.equals("")) {
+        functions.showProgress(lottie);
+        //}
 
         HashMap<String, String> postData = new HashMap<>();
         NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Timber.i(response.toString());
+                Timber.i(response);
                 functions.hideProgress(lottie);
 
-
                 if (functions.isJsonArray(response)) {
-                    Log.i("response", response);
-                    reqResponse = response;
+                    loadJsontoRecycler(response);
 
-                String pageID;
-                String pageAvatarLink;
-                String pageLock;
-                String pageName;
-                String pageDesc = "";
+                }
+                if (!functions.isJsonArray(response)) {
+                    functions.showSnackBarError(getString(R.string.no_page_found), requireActivity().findViewById(android.R.id.content), requireContext());
+                    return;
+                }
+            }
 
-                JSONArray jsonArray = new JSONArray(response);
-                ArrayList<BrowsePageDataClass> browsePageDataClass = new ArrayList<>();
-                JSONObject jsonObject;
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    jsonObject = jsonArray.getJSONObject(i);
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottie);
+                Toast.makeText(requireContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                    pageAvatarLink = (String) jsonObject.get("logo");
-                    pageID = (String) jsonObject.get("page_id");
-                    pageName = (String) jsonObject.get("name");
-                    pageLock = (String) jsonObject.get("lock");
-                    pageDesc = (String) jsonObject.get("desc");
+        postData.put("userID", Frontpage.userID);
+        if (pageID.equals("")) {
+            networkController.PostMethod(data.page_list_API, postData);
+        } else if (pageID.equals("2")) {
+            networkController.PostMethod(data.page_mypages_API, postData);
+        } else if (pageID.equals("3")) {
+            networkController.PostMethod(data.page_member_of_API, postData);
+        }
+    }
 
-                    browsePageDataClass.add(new BrowsePageDataClass(pageID, pageAvatarLink, pageLock, pageName, pageDesc));
 
-                    BrowsePageAdapter browsePageAdapter = new BrowsePageAdapter(browsePageDataClass);
-                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-                    binding.browsePagesRecyclerView.setLayoutManager(mLayoutManager);
-                    binding.browsePagesRecyclerView.setAdapter(browsePageAdapter);
-                    browsePageAdapter.notifyDataSetChanged();
+    public void performPageSearch(String userID, String keyword) {
+        functions.showProgress(lottie);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("name", keyword);
+        NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) throws JSONException {
+                Log.i("response", response.toString());
+                functions.hideProgress(lottie);
+
+                if (!functions.isJsonArray(response)) {
+                    functions.showSnackBarError(getString(R.string.no_search_result) + keyword, requireActivity().findViewById(android.R.id.content), requireContext());
+                    return;
                 }
 
-                    if (!functions.isJsonArray(response)) {
-                        functions.showSnackBarError(getString(R.string.no_page_found), requireActivity().findViewById(android.R.id.content), requireContext());
-                        return;
+                if (functions.isJsonArray(response)) {
+                    if (binding.tabLayout.getTabCount() < 4) {
+                        binding.tabLayout.addTab(binding.tabLayout.newTab().setText(getString(R.string.search_results)));
                     }
-
-
+                    loadJsontoRecycler(searchReqResponse);
+                    binding.tabLayout.selectTab(binding.tabLayout.getTabAt(3));
                 }
 
             }
@@ -125,12 +175,7 @@ public class BrowsePages extends Fragment {
                 Toast.makeText(requireContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
-        if (userID.equals("")) {
-            networkController.PostMethod(data.page_list_API, postData);
-        } else {
-            networkController.PostMethod(data.page_member_of_API, postData);
-        }
+        networkController.PostMethod(data.page_search_API, postData);
     }
 
     @Override
@@ -141,8 +186,8 @@ public class BrowsePages extends Fragment {
         loadPages("");
 
         binding.txtCreateNewPage.setOnClickListener(view1 -> {
-            Fragment createNewPage= CreatePage.newInstance("","");
-            functions.LoadFragment(createNewPage,"",requireActivity(),false,false);
+            Fragment createNewPage = CreatePage.newInstance("", "");
+            functions.LoadFragment(createNewPage, "", requireActivity(), false, false);
 
         });
 
@@ -152,8 +197,8 @@ public class BrowsePages extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (!query.equals("")) {
+                    performPageSearch(Frontpage.userID, query);
                 }
-
                 functions.hideSoftKeyboard(requireActivity());
                 return true;
             }
@@ -161,10 +206,7 @@ public class BrowsePages extends Fragment {
             @Override
             public boolean onQueryTextChange(String query) {
                 if (!query.equals("")) {
-
-
                 }
-
                 return true;
             }
         });
@@ -172,18 +214,26 @@ public class BrowsePages extends Fragment {
         Objects.requireNonNull(binding.tabLayout).addOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
             public void onTabSelected(Tab tab) {
-                switch (tab.getPosition()){
+                switch (tab.getPosition()) {
 
                     case 0:
                         loadPages("");
                         break;
 
                     case 1:
-                        functions.ShowToast("Hello there");
+                        loadPages("2");
                         break;
 
                     case 2:
-                        functions.ShowToast("Hello there favourite");
+                        loadPages("3");
+                        break;
+
+                    case 3:
+                        try {
+                            loadJsontoRecycler(searchReqResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
 
                 }

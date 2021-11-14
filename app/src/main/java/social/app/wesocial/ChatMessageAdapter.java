@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.myMessageProfilePicture.setOnClickListener(view -> {
                     functions.loadTimeLineUserProfile(Frontpage.userID,activity ,holder.itemView.getContext());
                 });
+
+                Linkify.addLinks(holder.myMessage,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+
                 break;
 
 
@@ -128,6 +132,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 });
 
                 holder.otherUserDate.setTextSize(datetextSize);
+                Linkify.addLinks(holder.otherUserMessage,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+
                 break;
         }
 

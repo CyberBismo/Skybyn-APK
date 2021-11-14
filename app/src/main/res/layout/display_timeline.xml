@@ -125,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="52dp"
                 android:fontFamily="sans-serif"
+
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/black"

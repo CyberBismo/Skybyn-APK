@@ -179,8 +179,14 @@
     <string name="page_created">Page Created successfully!</string>
     <string name="browse_page">Browse Pages</string>
     <string name="my_pages">My Pages</string>
-    <string name="favourite_pages">Favourites</string>
+    <string name="joined_pages">Joined Pages</string>
     <string name="no_page_found">No Page found</string>
     <string name="todo">TODO</string>
     <string name="search_for_pages">Search for pages...</string>
+    <string name="posts">POSTS</string>
+    <string name="members">Members</string>
+    <string name="gallery">Gallery</string>
+    <string name="join_Page">Join Page!</string>
+    <string name="leave_page">Leave Page</string>
+    <string name="search_results">Page Search Results</string>
 </resources>
