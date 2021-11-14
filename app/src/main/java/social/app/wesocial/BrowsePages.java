@@ -133,12 +133,13 @@ public class BrowsePages extends Fragment {
             }
         });
 
-        postData.put("userID", Frontpage.userID);
         if (pageID.equals("")) {
             networkController.PostMethod(data.page_list_API, postData);
         } else if (pageID.equals("2")) {
+            postData.put("userID", Frontpage.userID);
             networkController.PostMethod(data.page_mypages_API, postData);
         } else if (pageID.equals("3")) {
+            postData.put("userID", Frontpage.userID);
             networkController.PostMethod(data.page_member_of_API, postData);
         }
     }
