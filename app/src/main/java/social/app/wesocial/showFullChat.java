@@ -1,11 +1,8 @@
 package social.app.wesocial;
-import android.content.ClipData;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -14,15 +11,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
+import com.vanniktech.emoji.EmojiPopup;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -31,31 +33,32 @@ import java.util.concurrent.Executors;
 import timber.log.Timber;
 
 public class showFullChat extends Fragment {
+    public static String chatMessageJson = "";
+    Functions functions;
     private static String chat_username = "";
     private static String chat_avatar = "";
     private static String chat_friendID = "";
     private static Drawable online_status_drawable = null;
     public EditText txtChatMessageContent;
-    static Functions  functions;
     Data data = new Data();
-    private String OldMessageJson;
     ArrayList<ChatMessageListDataClass> chatMessageListData = new ArrayList<>();
     ScrollView chatScrollView;
     RecyclerView recyclerView;
     ChatMessageAdapter chatMessageAdapter;
-    public static  String chatMessageJson= "";
+    EmojiPopup emojiPopup;
+
     public showFullChat() {
         // Required empty public constructor
     }
 
 
-    public static showFullChat newInstance(String username, Drawable onlinePresenceDrawable, String avatarLink, String friendID,String loadedChatJson) {
+    public static showFullChat newInstance(String username, Drawable onlinePresenceDrawable, String avatarLink, String friendID, String loadedChatJson) {
         showFullChat fragment = new showFullChat();
         chat_username = username;
         online_status_drawable = onlinePresenceDrawable;
         chat_avatar = avatarLink;
         chat_friendID = friendID;
-        chatMessageJson =loadedChatJson;
+        chatMessageJson = loadedChatJson;
         return fragment;
     }
 
@@ -75,6 +78,14 @@ public class showFullChat extends Fragment {
 
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        if (emojiPopup.isShowing()) {
+            emojiPopup.dismiss();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         loadAllMessages(chat_friendID);
@@ -83,11 +94,20 @@ public class showFullChat extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        functions= new Functions(getContext());
+        functions = new Functions(getContext());
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBack);
         ImageView imgChatHeaderOnlineStatus = view.findViewById(R.id.imgChatHeaderOnlineStatus);
         ImageView imgChatHeaderProfilePicture = view.findViewById(R.id.imgChatHeaderProfilePicture);
         TextView txtChatHeaderUsername = view.findViewById(R.id.imgChatUsernameTitle);
+        ImageView imgShowFullChatEmoji = view.findViewById(R.id.imgShowFullChatEmoji);
+
+        imgShowFullChatEmoji.setOnClickListener(view1 -> {
+            emojiPopup = EmojiPopup.Builder.fromRootView(view).build(txtChatMessageContent);
+            emojiPopup.toggle(); // Toggles visibility of the Popup.
+            emojiPopup.dismiss(); // Dismisses the Popup.
+            emojiPopup.isShowing(); // Returns true when Popup is showing.
+        });
+
 
         chatScrollView = view.findViewById(R.id.chatScrollView);
         txtChatMessageContent = view.findViewById(R.id.txtChatMessageContent);
@@ -115,7 +135,7 @@ public class showFullChat extends Fragment {
 
 
         //IF JSON WAS SENT BY CLICKING THE MESSAGE ADAPTER, Load the json messages ...No delay
-        if (functions.isJsonArray(chatMessageJson)){
+        if (functions.isJsonArray(chatMessageJson)) {
             try {
                 listChatMessagesOnRecyclerView(chatMessageJson);
             } catch (JSONException e) {
@@ -139,18 +159,18 @@ public class showFullChat extends Fragment {
     }
 
     public void updateChatRecyclerMessages(Boolean iamsender) {
-        if (isVisible()){
+        if (isVisible()) {
             chatMessageAdapter = new ChatMessageAdapter(chatMessageListData, requireActivity());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(chatMessageAdapter);
-        if (iamsender) {
-            //
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(chatMessageAdapter);
+            if (iamsender) {
+                //
+            }
+            chatMessageAdapter.notifyDataSetChanged();
+            recyclerView.setItemViewCacheSize(chatMessageListData.size());
+            scrollDown();
         }
-        chatMessageAdapter.notifyDataSetChanged();
-        recyclerView.setItemViewCacheSize(chatMessageListData.size());
-        scrollDown();
-    }
     }
 
     public void sendMessage(String friendID, String message) {
@@ -193,7 +213,6 @@ public class showFullChat extends Fragment {
     }
 
     private void listChatMessagesOnRecyclerView(String response) throws JSONException {
-        OldMessageJson = response;
         JSONArray jsonArray = new JSONArray(response);
         JSONObject jsonObject;
 
@@ -230,9 +249,9 @@ public class showFullChat extends Fragment {
                     public void notifySuccess(String response) throws JSONException {
                         Timber.i(response);
                         if (functions.isJsonArray(response)) {
-                            if (!response.equals(chatMessageJson)){
-                            listChatMessagesOnRecyclerView(response);
-                        }
+                            if (!response.equals(chatMessageJson)) {
+                                listChatMessagesOnRecyclerView(response);
+                            }
                         }
                     }
 

@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.List;
 
 
@@ -56,12 +59,15 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
         });
 
         String member = browsePageDataClass.getPageAmIAMember();
-        if (member.equals("true")){
-            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(),R.drawable.rounded_corner_button_red));
+
+        if (member.equals("true")) {
+            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_red));
             holder.btnPageJoinPage.setText(activity.getString(R.string.leave_page));
-        }else{
-            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(),R.drawable.rounded_corner_button_main));
-            //holder.btnPageJoinPage.setVisibility(View.VISIBLE);
+
+        } else {
+            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_main));
+            holder.btnPageJoinPage.setText(activity.getString(R.string.join_Page));
+
         }
 
         holder.txtPageMembers.setText(browsePageDataClass.getPageMembers()+" "+"socialites joined this page!");

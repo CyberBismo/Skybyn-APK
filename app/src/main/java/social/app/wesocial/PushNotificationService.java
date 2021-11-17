@@ -40,12 +40,12 @@ public class PushNotificationService extends FirebaseMessagingService {
                     NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
                         @Override
                         public void notifySuccess(String response) {
-                            //Timber.i(response);
-                            HashMap hashMap = new HashMap();
+                            Timber.i(response);
+                            /*HashMap hashMap = new HashMap();
                             hashMap.put("title", "New Message");
                             hashMap.put("body", "Your friend just sent a message");
                             hashMap.put("friendID","1");
-                            //displayNotification(hashMap, "chat");
+                            displayNotification(hashMap, "chat");*/
                         }
 
                         @Override

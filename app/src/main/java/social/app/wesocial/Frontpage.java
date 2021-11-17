@@ -43,8 +43,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.FirebaseApp;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.facebook.FacebookEmojiProvider;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -134,7 +135,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions = new Functions(getApplicationContext());
 
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-
+        EmojiManager.install(new FacebookEmojiProvider());
         lottie = findViewById(id.frontpageProgressView);
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
