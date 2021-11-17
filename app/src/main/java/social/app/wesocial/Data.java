@@ -105,6 +105,10 @@ public class Data {
     //  POST Parameters:
     //      userID
     //      pageID
+    public String page_leave_API = pageAPI+"leave.php";
+    //  POST Parameters:
+    //      userID
+    //      pageID
 
     public String page_gallery_API = pageAPI+"gallery.php";
     //  POST Parameters:
