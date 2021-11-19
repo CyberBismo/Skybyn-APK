@@ -138,7 +138,7 @@ public class Data {
     public String qr_updater_API = API+"qr_update_info.php";
     //  POST Parameters:
     //      code
-    //      user
+    //      userID
     //      pass (encrypted password)
 
     public String getApkName() {
