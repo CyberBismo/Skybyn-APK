@@ -132,6 +132,9 @@ public class Data {
     public Integer maxPostDisplayLength = 400;
     public Integer maxCommentPostLength = 2000;
 
+    public String qr_generator_API = API+"qr.php";
+    //  POST Parameters:
+    //      data
 
     public String getApkName() {
         return apk_name;
