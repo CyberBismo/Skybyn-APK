@@ -132,7 +132,7 @@ public class Data {
     public Integer maxPostDisplayLength = 400;
     public Integer maxCommentPostLength = 2000;
 
-    public String qr_generator_API = API+"qr.php";
+    public String qr_generator_API = domain+"qr/api.php";
     //  POST Parameters:
     //      data
 
