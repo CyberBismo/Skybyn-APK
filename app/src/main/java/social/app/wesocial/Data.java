@@ -135,6 +135,11 @@ public class Data {
     public String qr_generator_API = domain+"qr/api.php";
     //  POST Parameters:
     //      data
+    public String qr_updater_API = API+"qr_update_info.php";
+    //  POST Parameters:
+    //      code
+    //      user
+    //      pass (encrypted password)
 
     public String getApkName() {
         return apk_name;
