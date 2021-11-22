@@ -473,7 +473,7 @@
         android:layout_marginBottom="0dp"
         android:background="@color/white"
         android:foregroundGravity="center_horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/lblSignInQRTitle"
@@ -506,8 +506,8 @@
 
         <com.budiyev.android.codescanner.CodeScannerView
             android:id="@+id/scanner_view"
-            android:layout_width="426dp"
-            android:layout_height="399dp"
+            android:layout_width="433dp"
+            android:layout_height="443dp"
             android:layout_marginBottom="24dp"
             android:background="@color/white"
             app:autoFocusButtonColor="@android:color/white"
