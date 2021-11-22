@@ -109,6 +109,8 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="300dp"
             android:background="@color/transparent_full"
+            android:drawableStart="@drawable/qr_scanner"
+            android:drawablePadding="5dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/login_with_QR"
             android:textColor="@color/mainColour"
