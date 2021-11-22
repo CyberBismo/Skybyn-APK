@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -44,9 +43,15 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     }
 
 
+    public MessageListAdapter(List<MessageListDataClass> MessageListDataClass, Activity activity) {
+        this.MessageListDataClass = MessageListDataClass;
+        this.activity = activity;
+
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MessageListAdapter.ViewHolder holder, int position) {
-        functions= new Functions(holder.itemView.getContext());
+        functions = new Functions(holder.itemView.getContext());
         MessageListDataClass messageListDataClass = MessageListDataClass.get(position);
         holder.username.setText(messageListDataClass.getUserName());
         holder.date.setText(functions.convertUnixToDateAndTime(Long.valueOf(messageListDataClass.getDate())));
@@ -57,7 +62,8 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         service.submit(new Runnable() {
             public void run() {
                 //Load Messages
-                loadAllMessages(messageListDataClass.getFriendID());            }
+                loadAllMessages(messageListDataClass.getFriendID());
+            }
         });
 
 
@@ -74,22 +80,17 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         Drawable drawable = holder.imgMessageOnlineStatus.getDrawable();
 
-        holder.imgMessageProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(messageListDataClass.getFriendID(),activity,holder.itemView.getContext()));
+        holder.imgMessageProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(messageListDataClass.getFriendID(), activity, holder.itemView.getContext()));
 
 
-        holder.displayMsgCardView.setOnClickListener(view ->{
+        holder.displayMsgCardView.setOnClickListener(view -> {
             //Global reference to current chat user ID
-             Frontpage.current_chat_user = messageListDataClass.getFriendID();
-             //
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable,messageListDataClass.getAvatarLink(),messageListDataClass.getFriendID(),chatMessagejson);
-            functions.LoadFragment(fragmentShowFullChat,"fullchat",(Activity) holder.itemView.getContext(),false,true);
+            Frontpage.current_chat_user = messageListDataClass.getFriendID();
+            //
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.username.getText().toString().toUpperCase(), drawable, messageListDataClass.getAvatarLink(), messageListDataClass.getFriendID(), chatMessagejson);
+            functions.LoadFragment(fragmentShowFullChat, "fullchat", (Activity) holder.itemView.getContext(), false, true);
 
-    });
-
-    }
-    public MessageListAdapter(List<MessageListDataClass> MessageListDataClass,Activity activity) {
-        this.MessageListDataClass = MessageListDataClass;
-        this.activity = activity;
+        });
 
     }
 
@@ -117,7 +118,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
         }
     }
-
 
 
     public void loadAllMessages(String friendID) {

@@ -7,7 +7,6 @@ import static social.app.wesocial.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +36,7 @@ import timber.log.Timber;
 
 class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.ViewHolder> {
 
-    private ArrayList<TimelineDataClass> TimelineDataClass;
+    private final ArrayList<TimelineDataClass> TimelineDataClass;
     Functions functions;
     Data data = new Data();
     String postID;
@@ -47,7 +46,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
     Activity activity;
 
 
-    public TimelinePostsAdapter(ArrayList<TimelineDataClass> timelineDataClass,Boolean isUserTimeline,String userID,Activity activity) {
+    public TimelinePostsAdapter(ArrayList<TimelineDataClass> timelineDataClass, Boolean isUserTimeline, String userID, Activity activity) {
         TimelineDataClass = timelineDataClass;
         this.isUserTimeline = isUserTimeline;
         this.activity = activity;
@@ -104,7 +103,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
-        Linkify.addLinks(holder.txtTimelineContent,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+        Linkify.addLinks(holder.txtTimelineContent, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
 
         holder.txtTimelineContent.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);
@@ -119,7 +118,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             timeLinePostDetails.put("avatarLink", holder.imgTimelinePostPicture.getTag().toString());
             timeLinePostDetails.put("comments_count", holder.txtTimelineCommentsCount.getText().toString());
 
-            i.putExtra( "timeLinePostDetails", timeLinePostDetails);
+            i.putExtra("timeLinePostDetails", timeLinePostDetails);
             Timber.i(timeLinePostDetails.toString());
             holder.itemView.getContext().startActivity(i);
         });
@@ -127,7 +126,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
 
         //Profile PICTURE click
         if (!this.isUserTimeline) {
-            holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtTimelineUsername.getTag().toString(),activity,holder.itemView.getContext().getApplicationContext()));
+            holder.imgTimelinePostPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(holder.txtTimelineUsername.getTag().toString(), activity, holder.itemView.getContext().getApplicationContext()));
             holder.txtTimelineUsername.setOnClickListener(view -> holder.imgTimelinePostPicture.callOnClick());
         }
         holder.imgTimelinePostLike.setLiked(holder.imgTimelinePostLike.getTag().toString().equals("1"));
@@ -138,7 +137,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         } else {
             holder.txtTimelinePostDelete.setVisibility(View.INVISIBLE);
         }
-
 
 
         //Timeline Delete Post
@@ -167,7 +165,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
 
-                                    if (responseCode.equals("1")) {
+                                    if (responseCode.equals(data.requestSuccessful)) {
                                         //REMOVE FROM RECYCLERVIEW
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
 
@@ -216,7 +214,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
                             String message = jsonObject.get("message").toString();
                             String likes = "";
 
-                            if (responseCode.equals("1")) {
+                            if (responseCode.equals(data.requestSuccessful)) {
                                 likes = jsonObject.get("likes").toString();
                                 holder.imgTimelinePostLike.setLiked(true);
                                 holder.imgTimelinePostLike.setTag("1");
@@ -277,7 +275,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         ImageView imgTimelinePostPicture, imgTimelinePostComment;
         LikeButton imgTimelinePostLike;
         CardView cardView;
-        TextView txtTimelinePostDelete,txtTimelineShowMore;
+        TextView txtTimelinePostDelete, txtTimelineShowMore;
         ConstraintLayout timelineMainLayout;
 
 
@@ -294,7 +292,6 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
             imgTimelinePostLike = itemView.findViewById(id.btnShowTimelinePostLike);
             imgTimelinePostComment = itemView.findViewById(id.imgShowTimelinePostComment);
             timelineMainLayout = itemView.findViewById(id.timelineMainConstraintLayout);
-
 
 
         }

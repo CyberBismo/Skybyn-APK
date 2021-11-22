@@ -32,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,7 +50,7 @@ public class userTimelineActivity extends AppCompatActivity {
     private static String userID = "";
     //public static LottieAnimationView lottie;
     public ImageView imgUserCoverPhoto, imgUserProfilePhoto;
-    public TextView txtUserProfileFullname, txtUserProfileUsername,txtEditProfile;
+    public TextView txtUserProfileFullname, txtUserProfileUsername, txtEditProfile;
 
     String currentPassword, newPassword, confirmNewPassword;
     String newEmail, oldEmail;
@@ -63,15 +62,15 @@ public class userTimelineActivity extends AppCompatActivity {
     Button btnUpdateProfile, btnUpdateProfileEmail, btnUpdateProfilePassword;
 
 
-    void retrieveIntentNotificationData(){
+    void retrieveIntentNotificationData() {
         Intent i = getIntent();
         userID = i.getStringExtra("userID");
-       // loadUserProfile(userID);
-        Timber.e("INTENT"+userID);
+        // loadUserProfile(userID);
+        Timber.e("INTENT" + userID);
 
-        if (userID.equalsIgnoreCase(Frontpage.userID)){
+        if (userID.equalsIgnoreCase(Frontpage.userID)) {
             txtEditProfile.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             txtEditProfile.setVisibility(View.INVISIBLE);
         }
     }
@@ -82,6 +81,7 @@ public class userTimelineActivity extends AppCompatActivity {
         super.onResume();
         //retrieveIntentNotificationData();
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -94,16 +94,14 @@ public class userTimelineActivity extends AppCompatActivity {
                 break;
 
         }
-         return super.onOptionsItemSelected(item);
-     }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         recyclerView.invalidate();
-     }
-
-
+    }
 
 
     public void updateEmailRequest() {
@@ -137,17 +135,17 @@ public class userTimelineActivity extends AppCompatActivity {
             public void notifySuccess(String response) throws JSONException {
                 functions.hideProgress(lottie);
                 if (functions.isJsonObject(response)) {
-                    JSONObject jsonObject = new JSONObject(response.toString());
+                    JSONObject jsonObject = new JSONObject(response);
                     String responseCode = jsonObject.get("responseCode").toString();
                     String message = jsonObject.get("message").toString();
 
                     if (responseCode.equals("0")) {
-                        functions.showSnackBarError(message,findViewById(android.R.id.content), getApplicationContext());
+                        functions.showSnackBarError(message, findViewById(android.R.id.content), getApplicationContext());
                     }
 
-                    if (responseCode.equals("1")) {
+                    if (responseCode.equals(data.requestSuccessful)) {
                         String token = jsonObject.get("token").toString();
-                        AlertDialog.Builder alertName = new AlertDialog.Builder(cardProfileEdit.getContext(),R.style.AlertDialogCustom);
+                        AlertDialog.Builder alertName = new AlertDialog.Builder(cardProfileEdit.getContext(), R.style.AlertDialogCustom);
                         final EditText editTextName1 = new EditText(cardProfileEdit.getContext());
                         alertName.setTitle(getString(R.string.enter_the_verification_code));
                         alertName.setView(editTextName1);
@@ -164,7 +162,7 @@ public class userTimelineActivity extends AppCompatActivity {
                             EditText dialogEditext = editTextName1; // variable to collect user input
                             if (!dialogEditext.getText().toString().equals(token)) {
                                 functions.hideSoftKeyboard(userTimelineActivity.this);
-                                functions.showSnackBarError(getString(R.string.invalid_verification_code),findViewById(android.R.id.content), getApplicationContext());
+                                functions.showSnackBarError(getString(R.string.invalid_verification_code), findViewById(android.R.id.content), getApplicationContext());
                                 dialogEditext.setText("");
                             }
 
@@ -180,10 +178,10 @@ public class userTimelineActivity extends AppCompatActivity {
                                     public void notifySuccess(String response) throws JSONException {
                                         functions.hideProgress(lottie);
                                         if (functions.isJsonObject(response)) {
-                                            JSONObject jsonObject = new JSONObject(response.toString());
+                                            JSONObject jsonObject = new JSONObject(response);
                                             String responseCode = jsonObject.get("responseCode").toString();
                                             String message = jsonObject.get("message").toString();
-                                            if (responseCode.equals("1")) {
+                                            if (responseCode.equals(data.requestSuccessful)) {
                                                 functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
                                                 functions.hideSoftKeyboard(userTimelineActivity.this);
                                             }
@@ -219,7 +217,6 @@ public class userTimelineActivity extends AppCompatActivity {
 
         networkController.PostMethod(data.sendEmailToken_API, postData);
     }
-
 
 
     public void updatePasswordRequest() {
@@ -263,7 +260,7 @@ public class userTimelineActivity extends AppCompatActivity {
                 btnUpdateProfilePassword.setEnabled(true);
                 Timber.i(response);
                 if (functions.isJsonObject(response)) {
-                    JSONObject jsonObject = new JSONObject(response.toString());
+                    JSONObject jsonObject = new JSONObject(response);
                     String responseCode = jsonObject.get("responseCode").toString();
                     String message = jsonObject.get("message").toString();
                     switch (responseCode) {
@@ -271,7 +268,7 @@ public class userTimelineActivity extends AppCompatActivity {
                             txtProfileCurrentPassword.setText("");
                             txtProfileNewPassword.setText("");
                             txtProfileConfirmNewPassword.setText("");
-                            functions.showSnackBar(message,findViewById(android.R.id.content),getApplicationContext());
+                            functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
                             SharedPreferences.Editor sharedPrefEditor = Frontpage.sharedpreferences.edit();
                             sharedPrefEditor.putString("password", newPassword);
                             sharedPrefEditor.apply();
@@ -291,18 +288,18 @@ public class userTimelineActivity extends AppCompatActivity {
             public void notifyError(VolleyError error) {
                 btnUpdateProfilePassword.setEnabled(true);
                 functions.hideProgress(lottie);
-                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content), getApplicationContext());
+                functions.showSnackBarError(getString(R.string.network_something_wrong), findViewById(android.R.id.content), getApplicationContext());
             }
         });
         networkController.PostMethod(data.updatePassword_API, postData);
     }
 
     public void updateProfileDetailsRequest() {
-        String  firstname = txtProfilefirstName.getText().toString();
-        String  lastname = txtProfilelastName.getText().toString();
-        String  middlename = txtProfilemiddleName.getText().toString();
-        String  nickname = txtProfilenickName.getText().toString();
-        String  bio =       txtProfileAboutMe.getText().toString();
+        String firstname = txtProfilefirstName.getText().toString();
+        String lastname = txtProfilelastName.getText().toString();
+        String middlename = txtProfilemiddleName.getText().toString();
+        String nickname = txtProfilenickName.getText().toString();
+        String bio = txtProfileAboutMe.getText().toString();
 
 
         HashMap<String, String> postData = new HashMap<>();
@@ -326,13 +323,13 @@ public class userTimelineActivity extends AppCompatActivity {
                     functions.showSnackBarError(getString(R.string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
                 }
 
-                    if (functions.isJsonObject(response)) {
-                    JSONObject jsonObject = new JSONObject(response.toString());
+                if (functions.isJsonObject(response)) {
+                    JSONObject jsonObject = new JSONObject(response);
                     String responseCode = jsonObject.get("responseCode").toString();
                     String message = jsonObject.get("message").toString();
                     switch (responseCode) {
                         case "1":
-                            functions.showSnackBar(message,findViewById(android.R.id.content),getApplicationContext());
+                            functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
                             btnUpdateProfile.setText(message);
                             break;
 
@@ -348,7 +345,7 @@ public class userTimelineActivity extends AppCompatActivity {
             public void notifyError(VolleyError error) {
                 btnUpdateProfile.setEnabled(true);
                 functions.hideProgress(lottie);
-                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content), getApplicationContext());
+                functions.showSnackBarError(getString(R.string.network_something_wrong), findViewById(android.R.id.content), getApplicationContext());
             }
         });
         networkController.PostMethod(data.update_profile_API, postData);
@@ -367,7 +364,7 @@ public class userTimelineActivity extends AppCompatActivity {
         lottie = findViewById(R.id.userTimelineProfileProgressView);
 
 
-        functions= new Functions(getApplicationContext());
+        functions = new Functions(getApplicationContext());
 
         imgUserProfilePhoto = findViewById(R.id.userProfilePhoto);
         imgUserCoverPhoto = findViewById(R.id.userProfileCoverPhoto);
@@ -375,10 +372,10 @@ public class userTimelineActivity extends AppCompatActivity {
         txtUserProfileUsername = findViewById(R.id.txtUserProfileUsername);
         txtEditProfile = findViewById(R.id.txtEditProfile);
 
-         cardProfileEdit = findViewById(R.id.cardprofileEdit);
+        cardProfileEdit = findViewById(R.id.cardprofileEdit);
         View profileEditLayout = LayoutInflater.from(this).inflate(R.layout.edit_profile, null);
         cardProfileEdit.addView(profileEditLayout);
-        ImageView imgCloseEditProfile= cardProfileEdit.findViewById(R.id.imgCloseProfileEdit);
+        ImageView imgCloseEditProfile = cardProfileEdit.findViewById(R.id.imgCloseProfileEdit);
         txtProfilefirstName = cardProfileEdit.findViewById(R.id.txtProfileFirstname);
         txtProfilelastName = cardProfileEdit.findViewById(R.id.txtProfileLastname);
         txtProfilemiddleName = cardProfileEdit.findViewById(R.id.txtProfileMiddlename);
@@ -418,7 +415,7 @@ public class userTimelineActivity extends AppCompatActivity {
 
 
         txtEditProfile.setOnClickListener(view -> {
-           cardProfileEdit.setVisibility(View.VISIBLE);
+            cardProfileEdit.setVisibility(View.VISIBLE);
         });
 
         //EVENTS
@@ -439,7 +436,9 @@ public class userTimelineActivity extends AppCompatActivity {
         });
 
 
-        imgCloseEditProfile.setOnClickListener(view -> {cardProfileEdit.setVisibility(View.INVISIBLE);});
+        imgCloseEditProfile.setOnClickListener(view -> {
+            cardProfileEdit.setVisibility(View.INVISIBLE);
+        });
         retrieveIntentNotificationData();
         loadUserProfile(userID);
     }
@@ -458,7 +457,7 @@ public class userTimelineActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     String responseCode = jsonObject.get("responseCode").toString();
 
-                    if (responseCode.equals("1")) {
+                    if (responseCode.equals(data.requestSuccessful)) {
 
                         try {
                             loadTimelinePosts();
@@ -537,7 +536,7 @@ public class userTimelineActivity extends AppCompatActivity {
             timelinePost.add(new TimelineDataClass(timelinePostID, timelineUserID, timelinePostUsername, timelineAvatarLink, timelinePostDate, timelinePostContent, timelinePostCommentsCount, timelinePostLikes, timelineILike));
         }
 
-         timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, true, userID, userTimelineActivity.this);
+        timelinepostsAdapter = new TimelinePostsAdapter(timelinePost, true, userID, userTimelineActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(timelinepostsAdapter);
@@ -573,7 +572,7 @@ public class userTimelineActivity extends AppCompatActivity {
                     displayTimelinePosts(response);
 
                 }
-                  functions.hideProgress(lottie);
+                functions.hideProgress(lottie);
 
             }
 

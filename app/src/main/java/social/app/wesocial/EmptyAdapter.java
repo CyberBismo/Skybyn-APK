@@ -17,7 +17,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> 
     Data data = new Data();
 
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -25,7 +24,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> 
                 .inflate(R.layout.display_message, parent, false);
         return new ViewHolder(itemView);
     }
-
 
 
     @Override
@@ -46,7 +44,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<EmptyAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView  Content, date;
+        TextView Content, date;
 
 
         public ViewHolder(@NonNull View itemView) {

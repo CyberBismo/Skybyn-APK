@@ -29,9 +29,10 @@ import timber.log.Timber;
 
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
-    private final List <FriendsDataClass> FriendsDataClass;
+    private final List<FriendsDataClass> FriendsDataClass;
     Functions functions;
-    Data data =new Data();
+    Data data = new Data();
+
     @NonNull
     @Override
     public FriendsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,11 +40,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return new ViewHolder(itemView);
     }
 
+    public FriendsAdapter(List<FriendsDataClass> FriendsDataClass) {
+        this.FriendsDataClass = FriendsDataClass;
+
+    }
+
     @Override
     public void onBindViewHolder(@NonNull FriendsAdapter.ViewHolder holder, int position) {
         Activity activity = (Activity) holder.itemView.getContext();
         LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
-        functions =new Functions(holder.itemView.getContext());
+        functions = new Functions(holder.itemView.getContext());
         FriendsDataClass friendsDataClass = FriendsDataClass.get(position);
         holder.txtFriendUsername.setText(friendsDataClass.getFriendUsername());
         //SAVE THE User's ID INSIDE VIEW'S Tag
@@ -64,18 +70,18 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         Drawable drawable = holder.imgFriendOnlineStatus.getDrawable();
 
-        holder.imgFriendProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(friendsDataClass.getFriendID(),activity,holder.itemView.getContext().getApplicationContext()));
+        holder.imgFriendProfilePicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(friendsDataClass.getFriendID(), activity, holder.itemView.getContext().getApplicationContext()));
 
         holder.btnMessageFriend.setOnClickListener(view -> {
-            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable,friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID(),"");
-            functions.LoadFragment(fragmentShowFullChat,"fullchat",(Activity) holder.itemView.getContext(),false,false);
+            Fragment fragmentShowFullChat = social.app.wesocial.showFullChat.newInstance(holder.txtFriendUsername.getText().toString(), drawable, friendsDataClass.getFriendAvatarLink(), friendsDataClass.getFriendID(), "");
+            functions.LoadFragment(fragmentShowFullChat, "fullchat", (Activity) holder.itemView.getContext(), false, false);
         });
 
         //BUTTON TO REMOVE FRIEND
         holder.btnRemoveFriend.setOnClickListener(view -> {
-            HashMap<String,String> postData = new HashMap<>();
-            postData.put("friendID",holder.txtFriendUsername.getTag().toString());
-            postData.put("userID",Frontpage.userID);
+            HashMap<String, String> postData = new HashMap<>();
+            postData.put("friendID", holder.txtFriendUsername.getTag().toString());
+            postData.put("userID", Frontpage.userID);
 
             NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                 @Override
@@ -91,7 +97,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                         if (responseCode.equals("1")) {
                             FriendsDataClass.remove(holder.getAdapterPosition());
                             notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), FriendsDataClass.size());
 
                         }
 
@@ -103,6 +109,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                         alertDialog.show();
                     }
                 }
+
                 @Override
                 public void notifyError(VolleyError error) {
 
@@ -111,7 +118,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.remove_friend_API,postData);
+            networkController.PostMethod(data.remove_friend_API, postData);
 
 
         });
@@ -119,9 +126,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         //BUTTON TO BLOCK FRIEND
         holder.btnBlockFriend.setOnClickListener(view -> {
-            HashMap<String,String> postData = new HashMap<>();
-            postData.put("friendID",holder.txtFriendUsername.getTag().toString());
-            postData.put("userID",Frontpage.userID);
+            HashMap<String, String> postData = new HashMap<>();
+            postData.put("friendID", holder.txtFriendUsername.getTag().toString());
+            postData.put("userID", Frontpage.userID);
 
             NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                 @Override
@@ -137,7 +144,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                         if (responseCode.equals("1")) {
                             FriendsDataClass.remove(holder.getAdapterPosition());
                             notifyItemRemoved(holder.getAdapterPosition());
-                            notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), FriendsDataClass.size());
 
                         }
 
@@ -149,6 +156,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
                         alertDialog.show();
                     }
                 }
+
                 @Override
                 public void notifyError(VolleyError error) {
 
@@ -157,15 +165,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
             functions.showProgress(lottie);
 
-            networkController.PostMethod(data.block_friend_API,postData);
+            networkController.PostMethod(data.block_friend_API, postData);
 
 
         });
 
-
-    }
-    public FriendsAdapter(List <FriendsDataClass> FriendsDataClass){
-        this.FriendsDataClass = FriendsDataClass;
 
     }
 
@@ -177,9 +181,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtFriendUsername, txtFriendNickname;
-        ImageView imgFriendProfilePicture,imgFriendOnlineStatus;
+        ImageView imgFriendProfilePicture, imgFriendOnlineStatus;
         CardView friendCardView;
-        Button btnBlockFriend , btnRemoveFriend,btnMessageFriend;
+        Button btnBlockFriend, btnRemoveFriend, btnMessageFriend;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -189,8 +193,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             btnRemoveFriend = itemView.findViewById(R.id.btnRemoveFriend);
             btnBlockFriend = itemView.findViewById(R.id.btnBlockFriend);
             btnMessageFriend = itemView.findViewById(R.id.btnMessageFriend);
-            friendCardView=itemView.findViewById(R.id.friendCardView);
-            imgFriendOnlineStatus= itemView.findViewById(R.id.imgFriendOnlineStatus);
+            friendCardView = itemView.findViewById(R.id.friendCardView);
+            imgFriendOnlineStatus = itemView.findViewById(R.id.imgFriendOnlineStatus);
         }
     }
 }

@@ -3,9 +3,13 @@ package social.app.wesocial;
 
 //import android.content.Context;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,14 +21,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.budiyev.android.codescanner.CodeScanner;
+import com.budiyev.android.codescanner.CodeScannerView;
 import com.google.firebase.FirebaseApp;
 
 import org.json.JSONException;
@@ -38,11 +45,12 @@ import timber.log.Timber;
 
 
 public class LoginRegisterForgot extends AppCompatActivity {
+    private static final int PERMISSION_REQUEST_CODE = 200;
     public EditText txtforgot_email;
     public String ErrorMessage = "";
     public SharedPreferences sharedpreferences;
-
     public LottieAnimationView lottieview;
+    Functions functions = null;
     Data data = new Data();
     String oneTimetoken;
     Executor executor;
@@ -54,12 +62,10 @@ public class LoginRegisterForgot extends AppCompatActivity {
     FrameLayout signin_form;
     FrameLayout email_form;
     FrameLayout verify_form;
-    private Button login_btnShowForgotForm;
-    private Button login_btnShowSignupForm;
-    private Button signup_btnShowForgotForm;
-    private Button signup_btnShowLoginForm;
-    private Button forgot_btnShowLoginForm;
-    private Button forgot_btnShowSignupForm;
+    CodeScanner mCodeScanner;
+    Button login_btnShowForgotForm, login_btnShowSignupForm, signup_btnShowForgotForm, signup_btnShowLoginForm, forgot_btnShowLoginForm, forgot_btnShowSignupForm;
+    TextView lblCloseVerify;
+    Button btnSign_up;
     private EditText txtLoginUserName;
     private EditText txtLoginPassWord;
     private EditText txtRegisterUsername;
@@ -68,47 +74,75 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private EditText txtEmail;
     private TextView txtVerify;
     private Button BtnVerify_email;
-    static Functions functions = null;
+    Button btnScanQrCode, btnExitScanner;
 
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    private boolean hasPermission() {
+        // Permission is not granted
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showMessageOKCancel("You need to allow access permissions!",
+                                    (dialog, which) -> {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                            requestPermission();
+                                        }
+                                    });
+                        }
+                    }
+                }
+                break;
+        }
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this);
+    protected void onResume() {
+        super.onResume();
+        //mCodeScanner.startPreview();
+    }
 
-        //INITIALIZE THE SHAREDPREF FILE
-        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        setContentView(R.layout.activity_main);
-        //CHECK IF DARK MODE IS SET
-        if (sharedpreferences.contains(getString(R.string.toggleDarkMode_key))) {
-            Boolean darkMode = sharedpreferences.getBoolean(getString(R.string.toggleDarkMode_key), false);
-            if (darkMode) {
-                setTheme(R.style.Theme_AppCompat);
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-        }else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        }
+    @Override
+    protected void onPause() {
+        mCodeScanner.releaseResources();
+        super.onPause();
+    }
 
-        functions = new Functions(getApplicationContext());
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+    private void viewReferences() {
+        //VIEW REFERENCES
         lottieview = findViewById(R.id.loginProgressView);
-
         login_btnShowForgotForm = findViewById(R.id.loginShowForgotForm);
         login_btnShowSignupForm = findViewById(R.id.loginShowSignupForm);
-
         signup_btnShowForgotForm = findViewById(R.id.signupShowForgotForm);
         signup_btnShowLoginForm = findViewById(R.id.signupShowLoginForm);
-
         forgot_btnShowLoginForm = findViewById(R.id.forgotShowLoginForm);
         forgot_btnShowSignupForm = findViewById(R.id.forgotShowSignupForm);
-
         txtVerify = findViewById(R.id.verify_email_check);
         txtLoginUserName = findViewById(R.id.txtUsername);
         txtOneTimeCode = findViewById(R.id.txtOTC);
@@ -118,14 +152,71 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtConfirmPassword = findViewById(R.id.cPassword);
         txtEmail = findViewById(R.id.Email);
         txtforgot_email = findViewById(R.id.forgot_email);
-        TextView lblCloseVerify = findViewById(R.id.lblCloseVerify);
-        Button btnSign_up = findViewById(R.id.btnProcessSignUp);
-
+        lblCloseVerify = findViewById(R.id.lblCloseVerify);
+        btnSign_up = findViewById(R.id.btnProcessSignUp);
         signin_form = findViewById(R.id.signin_form);
         forgot_form = findViewById(R.id.forgot_form);
         signup_form = findViewById(R.id.signup_form);
         verify_form = findViewById(R.id.verify_form);
+        btnScanQrCode = findViewById(R.id.btnLoginWithQR);
+        btnExitScanner = findViewById(R.id.btnExitScanner);
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+
+        //INITIALIZE THE SHAREDPREF FILE
+        sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
+        setContentView(R.layout.activity_main);
+
+        viewReferences();
+        //CHECK IF DARK MODE IS SET
+        if (sharedpreferences.contains(getString(R.string.toggleDarkMode_key))) {
+            Boolean darkMode = sharedpreferences.getBoolean(getString(R.string.toggleDarkMode_key), false);
+            if (darkMode) {
+                setTheme(R.style.Theme_AppCompat);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        }
+
+        //Instatiate the Functions class
+        functions = new Functions(getApplicationContext());
+
+
+        //LOGGING
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+
+        //Check for Camera Permission!
+        if (hasPermission()) {
+        } else {
+            requestPermission();
+        }
+
+        CodeScannerView scannerView = findViewById(R.id.scanner_view);
+        FrameLayout scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
+
+        mCodeScanner = new CodeScanner(this, scannerView);
+        scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
+        mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(LoginRegisterForgot.this, result.getText(), Toast.LENGTH_SHORT).show()));
+
+
+        btnExitScanner.setOnClickListener(view -> {
+            mCodeScanner.releaseResources();
+            scannerFrameLayout.setVisibility(View.INVISIBLE);
+
+        });
+
+        btnScanQrCode.setOnClickListener(view -> {
+            scannerFrameLayout.setVisibility(View.VISIBLE);
+            mCodeScanner.startPreview();
+        });
 
         login_btnShowForgotForm.setOnClickListener(v -> {
             toggleForgot();
@@ -505,6 +596,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         verify_form.setVisibility(View.INVISIBLE);
         signin_form.setVisibility(View.VISIBLE);
     }
+
     public void toggleSignup() {
         signin_form.setVisibility(View.INVISIBLE);
         forgot_form.setVisibility(View.INVISIBLE);
@@ -512,6 +604,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         signup_form.setVisibility(View.VISIBLE);
     }
+
     public void toggleForgot() {
         signin_form.setVisibility(View.INVISIBLE);
         signup_form.setVisibility(View.INVISIBLE);
@@ -519,6 +612,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         forgot_form.setVisibility(View.VISIBLE);
     }
+
     public void toggleVerify() {
         signin_form.setVisibility(View.INVISIBLE);
         signup_form.setVisibility(View.INVISIBLE);
@@ -526,6 +620,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         verify_form.setVisibility(View.VISIBLE);
     }
+
     public void toggleEmail() {
         signin_form.setVisibility(View.INVISIBLE);
         signup_form.setVisibility(View.INVISIBLE);

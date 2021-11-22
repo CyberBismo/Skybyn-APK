@@ -84,7 +84,7 @@ public class CommentDataClass {
     }
 
     public CommentDataClass(String commentID, String userID, String username,
-                            String avatarLink, String date, String content,String likes, String iLike,String postID) {
+                            String avatarLink, String date, String content, String likes, String iLike, String postID) {
         this.commentID = commentID;
         this.avatarLink = avatarLink;
         this.date = date;

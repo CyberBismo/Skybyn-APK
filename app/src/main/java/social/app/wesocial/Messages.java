@@ -26,9 +26,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-
-import timber.log.Timber;
 
 
 public class Messages extends Fragment {
@@ -46,7 +43,7 @@ public class Messages extends Fragment {
         // Required empty public constructor
     }
 
-    public static Messages newInstance(String messagesJson,String friendID) {
+    public static Messages newInstance(String messagesJson, String friendID) {
         loadedMessagesJson = messagesJson;
         frienduserID = friendID;
         return new Messages();
@@ -57,11 +54,13 @@ public class Messages extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.chat_context_menu, menu);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,7 +75,7 @@ public class Messages extends Fragment {
         ArrayList<MessageListDataClass> messages = new ArrayList<>();
         JSONObject jsonObject;
 
-        String content, date, username,online,avatarlink,msgID,friendID,userID,nickName;
+        String content, date, username, online, avatarlink, msgID, friendID, userID, nickName;
 
         for (int i = 0; i < jsonArray.length(); i++) {
             jsonObject = jsonArray.getJSONObject(i);
@@ -89,7 +88,7 @@ public class Messages extends Fragment {
             userID = jsonObject.get("userID").toString();
             username = jsonObject.get("username").toString();
             nickName = jsonObject.get("nickname").toString();
-            messages.add(new MessageListDataClass(msgID,content,avatarlink,date,friendID,nickName,userID,username,online));
+            messages.add(new MessageListDataClass(msgID, content, avatarlink, date, friendID, nickName, userID, username, online));
         }
 
 
@@ -102,11 +101,12 @@ public class Messages extends Fragment {
         }
 
     }
+
     private void loadMessagesRequests() throws JSONException {
-        if (!oldMessageJson.equals("")){
+        if (!oldMessageJson.equals("")) {
             listMessagesOnRecyclerView(oldMessageJson);
-        }else{
-          //  functions.showProgress(lottie);
+        } else {
+            //  functions.showProgress(lottie);
         }
         //functions.showProgressNoBackground(lottie);
         HashMap<String, String> postData = new HashMap<>();
@@ -121,12 +121,12 @@ public class Messages extends Fragment {
                         functions.hideProgress(lottie);
                         if (functions.isJsonArray(response)) {
                             listMessagesOnRecyclerView(response);
-                             }
-                             if (!functions.isJsonArray(response)) {
-                             Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
-                             }
-
                         }
+                        if (!functions.isJsonArray(response)) {
+                            Toast.makeText(requireActivity().getApplicationContext(), getString(R.string.something_wrong), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
 
 
                     @Override
@@ -144,7 +144,7 @@ public class Messages extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         lottie = requireActivity().findViewById(R.id.frontpageProgressView);
         recyclerView = view.findViewById(R.id.messagesRecyclerView);
-        functions= new Functions(requireContext());
+        functions = new Functions(requireContext());
 
         ImageView imgChatHeaderGoBack = view.findViewById(R.id.imgChatHeaderGoBackMessages);
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
@@ -152,7 +152,7 @@ public class Messages extends Fragment {
             requireActivity().onBackPressed();
 
         });
-        if (functions.isJsonArray(loadedMessagesJson)){
+        if (functions.isJsonArray(loadedMessagesJson)) {
             try {
                 listMessagesOnRecyclerView(loadedMessagesJson);
                 loadedMessagesJson = "";

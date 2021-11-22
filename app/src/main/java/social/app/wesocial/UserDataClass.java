@@ -58,7 +58,7 @@ public class UserDataClass {
         this.userAvatarLink = userAvatarLink;
     }
 
-    public UserDataClass(String userID, String userAvatarLink, String userNickname, String Username, String Friends,String isOnline) {
+    public UserDataClass(String userID, String userAvatarLink, String userNickname, String Username, String Friends, String isOnline) {
         this.userID = userID;
         this.userAvatarLink = userAvatarLink;
         this.Username = Username;

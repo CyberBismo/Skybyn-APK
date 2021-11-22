@@ -4,6 +4,7 @@ package social.app.wesocial;
 import static social.app.wesocial.R.id;
 import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
+
 import android.app.Activity;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -14,15 +15,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.like.LikeButton;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,7 +45,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         CommentDataClass = commentDataClass;
         this.userID = userID;
         this.activity = activity;
-         functions= new Functions(activity.getApplicationContext());
+        functions = new Functions(activity.getApplicationContext());
     }
 
     @NonNull
@@ -75,7 +80,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.txtCommentDate.setText(commentDataClass.getDate());
         holder.txtCommentLikes.setText(trimValue(commentDataClass.getLikes()));
         //GET COMMENT_ID
-        holder.txtCommentContent.setTag(R.integer.commentIDTag,commentDataClass.getCommentID());
+        holder.txtCommentContent.setTag(R.integer.commentIDTag, commentDataClass.getCommentID());
         holder.txtCommentContent.setText(commentDataClass.getContent());
         //GET POST_ID
         holder.txtCommentContent.setTag(R.integer.commentsPostIDTag, commentDataClass.getPostID());
@@ -88,18 +93,18 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         if (commentDataClass.getUserID().equals(Frontpage.userID)) {
             holder.txtCommentDelete.setVisibility(View.VISIBLE);
             holder.txtCommentEdit.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.txtCommentDelete.setVisibility(View.INVISIBLE);
             holder.txtCommentEdit.setVisibility(View.INVISIBLE);
         }
 
-        holder.imgCommentPicture.setOnClickListener(view ->  functions.loadTimeLineUserProfile(commentDataClass.getUserID(),activity,holder.itemView.getContext()));
+        holder.imgCommentPicture.setOnClickListener(view -> functions.loadTimeLineUserProfile(commentDataClass.getUserID(), activity, holder.itemView.getContext()));
 
         holder.txtCommentEdit.setOnClickListener(view -> {
             LayoutInflater li = LayoutInflater.from(holder.itemView.getContext());
             View editLayout = li.inflate(R.layout.editdialog, null);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                    holder.itemView.getContext(),R.style.AlertDialogCustom);
+                    holder.itemView.getContext(), R.style.AlertDialogCustom);
             // set alert_dialog.xml to alertdialog builder
             alertDialogBuilder.setView(editLayout);
 
@@ -122,7 +127,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                         NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                             @Override
                             public void notifySuccess(String response) throws JSONException {
-                                Log.i("response",response);
+                                Log.i("response", response);
 
                                 if (!functions.isJsonObject(response)) {
                                     Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(string.something_wrong), Toast.LENGTH_SHORT).show();
@@ -133,7 +138,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
                                     String content = jsonObject.get("content").toString();
-                                    if (responseCode.equals("1")) {
+                                    if (responseCode.equals(data.requestSuccessful)) {
                                         holder.txtCommentContent.setText(content);
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
                                     }
@@ -150,7 +155,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                                 //functions.showSnackBar(holder.itemView.getContext().getString(string.network_something_wrong),holder.itemView.findViewById(android.R.id.content), holder.itemView.getContext());
                             }
                         });
-                        Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.updating_comment),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(holder.itemView.getContext(), holder.itemView.getContext().getString(R.string.updating_comment), Toast.LENGTH_SHORT).show();
                         networkController.PostMethod(data.editComment_API, postData);
 
 
@@ -168,7 +173,8 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
         });// get alert_dialog.xml view
 
-        holder.txtCommentContent.setOnClickListener(view -> { });
+        holder.txtCommentContent.setOnClickListener(view -> {
+        });
 
         holder.btnCommentLike.setLiked(!holder.btnCommentLike.getTag().toString().equals("0"));
 
@@ -191,18 +197,18 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                         NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
                             @Override
                             public void notifySuccess(String response) throws JSONException {
-                                Log.i("response",response);
+                                Log.i("response", response);
                                 if (functions.isJsonObject(response)) {
                                     JSONObject jsonObject = new JSONObject(response);
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
-                                    if (responseCode.equals("1")) {
-                                       CommentDataClass.remove(holder.getAdapterPosition());
+                                    if (responseCode.equals(data.requestSuccessful)) {
+                                        CommentDataClass.remove(holder.getAdapterPosition());
                                         notifyItemRemoved(holder.getAdapterPosition());
                                         notifyItemRangeChanged(holder.getAdapterPosition(), CommentDataClass.size());
 
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
-                                        }
+                                    }
 
                                     if (responseCode.equals("0")) {
                                         Toast.makeText(holder.itemView.getContext(), message, Toast.LENGTH_SHORT).show();
@@ -244,7 +250,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
                             String message = jsonObject.get("message").toString();
                             String likes = "";
 
-                            if (responseCode.equals("1")) {
+                            if (responseCode.equals(data.requestSuccessful)) {
                                 likes = jsonObject.get("likes").toString();
                                 holder.btnCommentLike.setLiked(true);
                                 holder.btnCommentLike.setTag("1");
@@ -293,7 +299,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCommentUsername, txtCommentContent, txtCommentDate, txtCommentLikes,txtCommentEdit;
+        TextView txtCommentUsername, txtCommentContent, txtCommentDate, txtCommentLikes, txtCommentEdit;
         ImageView imgCommentPicture;
         LikeButton btnCommentLike;
         CardView cardView;

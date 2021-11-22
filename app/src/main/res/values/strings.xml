@@ -189,4 +189,6 @@
     <string name="join_Page">Join Page!</string>
     <string name="leave_page">Leave Page</string>
     <string name="search_results">Page Search Results</string>
+    <string name="login_with_QR">Log in with QR code "</string>
+    <string name="back_to_login">Back to login</string>
 </resources>

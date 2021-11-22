@@ -27,24 +27,6 @@
             android:layout_height="match_parent"
             android:visibility="visible">
 
-            <Button
-                android:id="@+id/btnPageJoinPage"
-                android:layout_width="112dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/button_selector"
-                android:drawablePadding="10dp"
-                android:ellipsize="end"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="5dp"
-                android:text="@string/join_Page"
-                android:textColor="@color/white"
-                android:textSize="9sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TouchTargetSizeCheck" />
-
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/imgPagePicture"
                 android:layout_width="41dp"
@@ -116,6 +98,20 @@
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imgPagePicture"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/btnBrowsePageJoinPage"
+                android:layout_width="92dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_corner_button_main"
+                android:text="@string/join_Page"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/imgDisplayPageLock"
+                app:layout_constraintStart_toEndOf="@+id/txtDisplayPageName"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

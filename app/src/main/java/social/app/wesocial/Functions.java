@@ -69,7 +69,7 @@ public class Functions {
         lottieview.setBackgroundColor(ContextCompat.getColor(lottieview.getContext(), R.color.white));
         lottieview.setAlpha(1f);
         lottieview.setRepeatMode(LottieDrawable.REVERSE);
-        lottieview.setRepeatCount(9999999);
+        lottieview.setRepeatCount(1000);
         lottieview.setEnabled(false);
         lottieview.setClickable(false);
         lottieview.playAnimation();
@@ -121,10 +121,10 @@ public class Functions {
 
     }
 
-    public void loadPageDrawableThumb(Object thumbNailLink, View imv,Boolean banner) {
+    public void loadPageDrawableThumb(Object thumbNailLink, View imv, Boolean banner) {
         if (!banner) {
             Glide.with(imv).load(thumbNailLink).placeholder(R.drawable.pages_coloured).error(R.drawable.pages_coloured).into((ImageView) imv);
-        }else{
+        } else {
             Glide.with(imv).load(thumbNailLink).into((ImageView) imv);
         }
 

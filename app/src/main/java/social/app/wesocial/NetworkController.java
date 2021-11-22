@@ -1,6 +1,5 @@
 package social.app.wesocial;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.Request;
@@ -27,7 +26,7 @@ public class NetworkController {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);
         this.result = result;
-        functions= new Functions(context);
+        functions = new Functions(context);
 
     }
 

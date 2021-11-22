@@ -108,7 +108,7 @@
 
         <com.vanniktech.emoji.EmojiEditText
             android:id="@+id/txtChatMessageContent"
-            android:layout_width="280dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="10dp"

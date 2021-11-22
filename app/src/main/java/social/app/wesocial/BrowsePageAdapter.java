@@ -14,9 +14,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
-
 import java.util.List;
+import java.util.Locale;
+
+import timber.log.Timber;
 
 
 public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.ViewHolder> {
@@ -25,7 +26,7 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
     Functions functions;
     Data data = new Data();
 
-    public BrowsePageAdapter(List<BrowsePageDataClass> BrowsePageDataClass,Activity activity) {
+    public BrowsePageAdapter(List<BrowsePageDataClass> BrowsePageDataClass, Activity activity) {
         this.BrowsePageDataClass = BrowsePageDataClass;
         this.activity = activity;
     }
@@ -40,12 +41,14 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull BrowsePageAdapter.ViewHolder holder, int position) {
         Activity activity = (Activity) holder.itemView.getContext();
-        LottieAnimationView lottie = activity.findViewById(R.id.frontpageProgressView);
         functions = new Functions(holder.itemView.getContext());
+
+
         BrowsePageDataClass browsePageDataClass = BrowsePageDataClass.get(position);
         holder.txtPageDesc.setText(browsePageDataClass.getPageDesc());
         holder.txtPageName.setText(browsePageDataClass.getPageName());
-        functions.loadPageDrawableThumb(browsePageDataClass.getPageAvatarLink(), holder.imgPageAvatar,false);
+        functions.loadPageDrawableThumb(browsePageDataClass.getPageAvatarLink(), holder.imgPageAvatar, false);
+
         if (browsePageDataClass.getPageLock().equals("")) {
             functions.loadProfilePictureDrawableThumb(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.unlocked), holder.imgPageLock);
         } else {
@@ -58,19 +61,18 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
 
         });
 
-        String member = browsePageDataClass.getPageAmIAMember();
 
-        if (member.equals("true")) {
-            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_red));
-            holder.btnPageJoinPage.setText(activity.getString(R.string.leave_page));
-
+        Timber.i("AM I A MEMBER" + browsePageDataClass.pageAmIAMember.toLowerCase(Locale.ROOT));
+        if (browsePageDataClass.pageAmIAMember.equalsIgnoreCase("true")) {
+            holder.btnBrowsePageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_red));
+            holder.btnBrowsePageJoinPage.setText(activity.getString(R.string.leave_page));
         } else {
-            holder.btnPageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_main));
-            holder.btnPageJoinPage.setText(activity.getString(R.string.join_Page));
-
+            holder.btnBrowsePageJoinPage.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_corner_button_main));
+            holder.btnBrowsePageJoinPage.setText(activity.getString(R.string.join_Page));
         }
 
-        holder.txtPageMembers.setText(browsePageDataClass.getPageMembers()+" "+"socialites joined this page!");
+        holder.btnBrowsePageJoinPage.setVisibility(View.VISIBLE);
+        holder.txtPageMembers.setText(browsePageDataClass.getPageMembers() + " " + "socialites joined this page!");
 
     }
 
@@ -81,9 +83,9 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtPageName, txtPageDesc,txtPageMembers,txtPageAmIAMember;
+        TextView txtPageName, txtPageDesc, txtPageMembers, txtPageAmIAMember;
         ImageView imgPageAvatar, imgPageLock;
-        Button btnPageJoinPage;
+        Button btnBrowsePageJoinPage;
         CardView displayPageCardView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -93,7 +95,7 @@ public class BrowsePageAdapter extends RecyclerView.Adapter<BrowsePageAdapter.Vi
             imgPageAvatar = itemView.findViewById(R.id.imgPagePicture);
             imgPageLock = itemView.findViewById(R.id.imgDisplayPageLock);
             txtPageMembers = itemView.findViewById(R.id.txtDisplayPageMembers);
-            btnPageJoinPage = itemView.findViewById(R.id.btnPageJoinPage);
+            btnBrowsePageJoinPage = itemView.findViewById(R.id.btnBrowsePageJoinPage);
             displayPageCardView = itemView.findViewById(R.id.displayPageCardView);
 
         }

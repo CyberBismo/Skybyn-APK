@@ -84,7 +84,7 @@ public class TimelineDataClass {
         this.iLike = iLike;
     }
 
-    public TimelineDataClass(String postID  , String userID, String username,
+    public TimelineDataClass(String postID, String userID, String username,
                              String avatarLink, String date, String content, String comments_count, String likes, String iLike) {
         this.postID = postID;
         this.avatarLink = avatarLink;

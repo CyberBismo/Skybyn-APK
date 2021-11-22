@@ -109,7 +109,7 @@ public class PushNotificationService extends FirebaseMessagingService {
                 pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
                 break;
 
-                default:
+            default:
                 break;
         }
 

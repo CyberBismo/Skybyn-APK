@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
 public class Settings extends PreferenceFragmentCompat {
 
-    SwitchPreference biometricSwitchPreference,darkModePreference;
+    SwitchPreference biometricSwitchPreference, darkModePreference;
     SharedPreferences sharedPreferences;
 
     @Override
@@ -23,8 +22,8 @@ public class Settings extends PreferenceFragmentCompat {
         boolean darkMode = sharedPreferences.getBoolean(getString(R.string.toggleDarkMode_key), false);
 
 
-        biometricSwitchPreference = (SwitchPreference) findPreference(getString(R.string.biometric_prompt_key));
-        darkModePreference = (SwitchPreference) findPreference(getString(R.string.toggleDarkMode_key));
+        biometricSwitchPreference = findPreference(getString(R.string.biometric_prompt_key));
+        darkModePreference = findPreference(getString(R.string.toggleDarkMode_key));
 
         //requireActivity().setTheme(R.style.PreferenceScreen);
 
@@ -45,23 +44,21 @@ public class Settings extends PreferenceFragmentCompat {
         });
 
 
-    darkModePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (darkModePreference.isChecked()) {
-            darkModePreference.setChecked(false);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        darkModePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (darkModePreference.isChecked()) {
+                darkModePreference.setChecked(false);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                editor.putBoolean(getString(R.string.toggleDarkMode_key), false);
+            } else {
+                darkModePreference.setChecked(true);
+                editor.putBoolean(getString(R.string.toggleDarkMode_key), true);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-
-            editor.putBoolean(getString(R.string.toggleDarkMode_key), false);
-        } else {
-            darkModePreference.setChecked(true);
-            editor.putBoolean(getString(R.string.toggleDarkMode_key), true);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        }
-        editor.apply();
-        return false;
-    });
-}
+            }
+            editor.apply();
+            return false;
+        });
+    }
 
 }

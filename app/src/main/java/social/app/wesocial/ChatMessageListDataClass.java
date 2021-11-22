@@ -34,7 +34,7 @@ public class ChatMessageListDataClass {
 
     private String ID;
 
-    public ChatMessageListDataClass(String msgID, String Content, String avatarLink, String date, String friendID,  String userID,String username) {
+    public ChatMessageListDataClass(String msgID, String Content, String avatarLink, String date, String friendID, String userID, String username) {
         this.content = Content;
         this.avatarLink = avatarLink;
         this.date = date;

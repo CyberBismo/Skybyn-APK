@@ -135,8 +135,11 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         functions = new Functions(getApplicationContext());
 
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
+
         EmojiManager.install(new FacebookEmojiProvider());
+
         lottie = findViewById(id.frontpageProgressView);
+
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
         bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
@@ -406,13 +409,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     private void showNotificationBadge(int value, Menu menu) {
         if (isVisible) {
-        if (value > 0) {
-            ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.RED, value);
-        } else {
-            value = 0;
-            ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.GREY, value);
+            if (value > 0) {
+                ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.RED, value);
+            } else {
+                value = 0;
+                ActionItemBadge.update(this, menu.findItem(id.topnav_notifications), getDrawable(drawable.notifications), ActionItemBadge.BadgeStyles.GREY, value);
+            }
         }
-    }
     }
 
     private void showFriendRequestsBadge(int value, Menu menu) {

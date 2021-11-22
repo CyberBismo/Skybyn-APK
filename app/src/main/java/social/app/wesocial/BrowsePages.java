@@ -95,7 +95,7 @@ public class BrowsePages extends Fragment {
             String pageAmIAMember = (String) jsonObject.get("member");
 
             browsePageDataClass.add(new BrowsePageDataClass(pageID, pageAvatarLink, pageLock, pageName, pageDesc, pageMembers, pageAmIAMember));
-             browsePageAdapter = new BrowsePageAdapter(browsePageDataClass, requireActivity());
+            browsePageAdapter = new BrowsePageAdapter(browsePageDataClass, requireActivity());
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
             binding.browsePagesRecyclerView.setLayoutManager(mLayoutManager);
             binding.browsePagesRecyclerView.setAdapter(browsePageAdapter);
@@ -152,7 +152,7 @@ public class BrowsePages extends Fragment {
         NetworkController networkController = new NetworkController(requireContext(), new NetworkController.IResult() {
             @Override
             public void notifySuccess(String response) throws JSONException {
-                Log.i("response", response.toString());
+                Log.i("response", response);
                 functions.hideProgress(lottie);
 
                 if (!functions.isJsonArray(response)) {

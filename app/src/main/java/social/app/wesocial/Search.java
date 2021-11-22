@@ -28,9 +28,8 @@ import timber.log.Timber;
  * create an instance of this fragment.
  */
 public class Search extends Fragment {
-public static String response,keyword;
-public static RecyclerView recyclerView;
-
+    public static String response, keyword;
+    public static RecyclerView recyclerView;
 
 
     public Search() {
@@ -39,8 +38,8 @@ public static RecyclerView recyclerView;
 
     public static Search newInstance(String param1, String param2) {
         Search fragment = new Search();
-       response = param2;
-       keyword = param1;
+        response = param2;
+        keyword = param1;
 
         return fragment;
     }
@@ -93,10 +92,10 @@ public static RecyclerView recyclerView;
             searchUserNickname = jsonObject.get("nickname").toString();
             searchUserID = jsonObject.get("id").toString();
 
-            userSearchData.add(new UserDataClass(searchUserID,searchUserAvatarLink,searchUserNickname,searchUsername,isSearchedUserAFriend,searchUserOnline));
+            userSearchData.add(new UserDataClass(searchUserID, searchUserAvatarLink, searchUserNickname, searchUsername, isSearchedUserAFriend, searchUserOnline));
         }
 
-        userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData,requireContext());
+        userSearchAdapter userSearchAdapter = new userSearchAdapter(userSearchData, requireContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(userSearchAdapter);
@@ -105,10 +104,10 @@ public static RecyclerView recyclerView;
 
 
         txtSearchTitle = requireActivity().findViewById(R.id.txtSearchTitle);
-        txtSearchTitle.setText("Search Results for:"+keyword);
+        txtSearchTitle.setText("Search Results for:" + keyword);
 
         Handler handler = new Handler();
-        handler.postDelayed(() -> Frontpage.searchView.clearFocus(),2000);
+        handler.postDelayed(() -> Frontpage.searchView.clearFocus(), 2000);
 
     }
 

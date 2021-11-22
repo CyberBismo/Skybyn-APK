@@ -26,7 +26,7 @@ public class NotificationDataClass {
         this.type = type;
     }
 
-    public NotificationDataClass(String Content, String avatarLink, String date, String title, String type, String ID,String read) {
+    public NotificationDataClass(String Content, String avatarLink, String date, String title, String type, String ID, String read) {
         this.Content = Content;
         this.avatarLink = avatarLink;
         this.date = date;
@@ -35,27 +35,35 @@ public class NotificationDataClass {
         this.ID = ID;
         this.read = read;
     }
+
     public String getContent() {
         return Content;
     }
+
     public void setContent(String Content) {
         this.Content = Content;
     }
+
     public String getRead() {
         return read;
     }
+
     public void setRead(String read) {
         this.read = read;
     }
+
     public String getAvatarLink() {
         return avatarLink;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public void setAvatarLink(String avatarLink) {
         this.avatarLink = avatarLink;
     }

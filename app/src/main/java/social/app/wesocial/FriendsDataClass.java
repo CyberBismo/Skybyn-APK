@@ -50,13 +50,12 @@ public class FriendsDataClass {
     }
 
 
-    public FriendsDataClass(String friendID,String friendAvatarLink, String friendNickname, String friendUsername,String friendOnline) {
+    public FriendsDataClass(String friendID, String friendAvatarLink, String friendNickname, String friendUsername, String friendOnline) {
         this.friendID = friendID;
         this.friendAvatarLink = friendAvatarLink;
         this.friendUsername = friendUsername;
         this.friendNickname = friendNickname;
         this.friendOnline = friendOnline;
-
 
 
     }

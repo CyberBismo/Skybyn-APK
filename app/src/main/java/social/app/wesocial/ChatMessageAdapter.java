@@ -1,30 +1,22 @@
 package social.app.wesocial;
+
 import android.app.Activity;
-import android.content.ClipData;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.util.Linkify;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ViewHolder> {
     public static final int messageSenderMe = 0;
-    public  static final int messageSenderUser = 1;
+    public static final int messageSenderUser = 1;
     View itemView;
     public static Float datetextSize = 9f;
     private final List<ChatMessageListDataClass> ChatMessageListDataClass;
@@ -33,7 +25,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     Functions functions;
 
-    public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass,Activity activity) {
+    public ChatMessageAdapter(List<ChatMessageListDataClass> ChatMessageListDataClass, Activity activity) {
         this.ChatMessageListDataClass = ChatMessageListDataClass;
         this.activity = activity;
     }
@@ -42,8 +34,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     @NonNull
     @Override
     public ChatMessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType){
-            case  messageSenderUser:
+        switch (viewType) {
+            case messageSenderUser:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_incoming_chat_message, parent, false);
                 break;
             default:
@@ -94,10 +86,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 holder.myMessageDate.setTextSize(datetextSize);
 
                 holder.myMessageProfilePicture.setOnClickListener(view -> {
-                    functions.loadTimeLineUserProfile(Frontpage.userID,activity ,holder.itemView.getContext());
+                    functions.loadTimeLineUserProfile(Frontpage.userID, activity, holder.itemView.getContext());
                 });
 
-                Linkify.addLinks(holder.myMessage,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+                Linkify.addLinks(holder.myMessage, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
 
                 break;
 
@@ -105,7 +97,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             case messageSenderUser:
                 holder.otherUserMessage.setTag(chatMessageListDataClass.getMsgID());
                 holder.otherUserMessage.setOnClickListener(view -> {
-                    functions.loadTimeLineUserProfile(chatMessageListDataClass.getFriendID(), activity ,holder.itemView.getContext());
+                    functions.loadTimeLineUserProfile(chatMessageListDataClass.getFriendID(), activity, holder.itemView.getContext());
                 });
 
                 holder.otherUserMessage.setText(chatMessageListDataClass.getContent());
@@ -124,7 +116,6 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                     holder.otherUserDate.setText(functions.convertUnixToDateAndTime(Long.valueOf(chatMessageListDataClass.getDate())));
                 }
                 holder.otherUserMessage.setOnClickListener(view -> {
-                   Timber.i("Clicked");;
                 });
 
                 holder.otherUserMessage.setOnLongClickListener(view -> {
@@ -132,12 +123,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 });
 
                 holder.otherUserDate.setTextSize(datetextSize);
-                Linkify.addLinks(holder.otherUserMessage,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+                Linkify.addLinks(holder.otherUserMessage, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
 
                 break;
         }
-
-
 
 
     }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
@@ -115,7 +114,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtCommentContent"
                 app:layout_constraintVertical_bias="0.743" />
 
-            <TextView
+            <com.vanniktech.emoji.EmojiTextView
                 android:id="@+id/txtCommentContent"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"

@@ -67,7 +67,7 @@ public class BrowsePageDataClass {
         this.pageDesc = pageDesc;
     }
 
-    public BrowsePageDataClass(String pageID, String pageAvatarLink, String pageLock, String pageName,String pageDesc,String pageMembers,String pageAmIAMember) {
+    public BrowsePageDataClass(String pageID, String pageAvatarLink, String pageLock, String pageName, String pageDesc, String pageMembers, String pageAmIAMember) {
         this.pageID = pageID;
         this.pageAvatarLink = pageAvatarLink;
         this.pageName = pageName;
@@ -75,7 +75,6 @@ public class BrowsePageDataClass {
         this.pageDesc = pageDesc;
         this.pageMembers = pageMembers;
         this.pageAmIAMember = pageAmIAMember;
-
 
 
     }

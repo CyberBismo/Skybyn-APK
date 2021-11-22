@@ -56,7 +56,7 @@ public class MessageListDataClass {
         this.userNickName = userNickName;
     }
 
-    public MessageListDataClass(String msgID,String Content, String avatarLink, String date, String friendID, String userNickName, String userID,String userName,String online) {
+    public MessageListDataClass(String msgID, String Content, String avatarLink, String date, String friendID, String userNickName, String userID, String userName, String online) {
         this.content = Content;
         this.avatarLink = avatarLink;
         this.date = date;

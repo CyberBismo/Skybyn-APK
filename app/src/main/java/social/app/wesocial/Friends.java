@@ -36,7 +36,7 @@ public class Friends extends Fragment {
     TextView txtFriendsTitle;
     Data data = new Data();
     TabLayout friendsTabLayout;
-    String reqResponse ="";
+    String reqResponse = "";
 
 
     public Friends() {
@@ -87,7 +87,7 @@ public class Friends extends Fragment {
 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()){
+                switch (tab.getPosition()) {
 
                     case 0:
                         loadFriends();

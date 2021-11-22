@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 import com.like.LikeButton;
+import com.vanniktech.emoji.EmojiPopup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,14 +49,16 @@ public class showFullPost extends AppCompatActivity {
     Functions functions;
     Data data = new Data();
     Button btnSendTimelineComment;
-    TextView txtPostComment, txtShowTimelinePostEdit, txtShowTimelinePostDelete;
+    TextView txtShowTimelinePostEdit, txtShowTimelinePostDelete;
     TextView txtBeTheFirst;
+    EditText txtShowTimelinePostComment;
     CardView postTimelineCardView;
     LottieAnimationView lottie;
     NetworkController networkController;
     LikeButton btnShowtimePostLike;
     RecyclerView recyclerView;
     ScrollView showFullpostScrollView;
+    EmojiPopup emojiPopup;
     TextView txtCommentsCount;
     String postID, postAvatarlink, posterUserID, postUsername, postContent, postLikes, postCommentsCount, userLikedPost, postDate;
 
@@ -75,7 +79,7 @@ public class showFullPost extends AppCompatActivity {
                     String message = jsonObject.get("message").toString();
                     String likes = "";
 
-                    if (responseCode.equals("1")) {
+                    if (responseCode.equals(data.requestSuccessful)) {
                         likes = jsonObject.get("likes").toString();
                         btnShowtimePostLike.setLiked(true);
                         btnShowtimePostLike.setTag("1");
@@ -124,8 +128,8 @@ public class showFullPost extends AppCompatActivity {
 
         //txtCommentsCount = findViewById(R.id.txtCommentsCount);
         btnSendTimelineComment = findViewById(R.id.btnSendTimelineComment);
-        txtPostComment = findViewById(R.id.txtShowPostComment);
-         txtBeTheFirst = findViewById(R.id.txtBeTheFirstComment);
+        txtShowTimelinePostComment = findViewById(R.id.txtShowFullPostWriteComment);
+        txtBeTheFirst = findViewById(R.id.txtBeTheFirstComment);
         lottie = findViewById(R.id.showTimelinePostProgressView);
         recyclerView = findViewById(R.id.commentsRecyclerview);
 
@@ -150,7 +154,7 @@ public class showFullPost extends AppCompatActivity {
         Intent i = getIntent();
         HashMap<String, Object> timelinePostDetails;
         timelinePostDetails = (HashMap<String, Object>) i.getSerializableExtra("timeLinePostDetails");
-        Timber.i("POST CONTENT"+timelinePostDetails.toString());
+        Timber.i("POST CONTENT" + timelinePostDetails.toString());
         postUsername = Objects.requireNonNull(timelinePostDetails.get("username")).toString();
         posterUserID = Objects.requireNonNull(timelinePostDetails.get("userID")).toString();
         postID = Objects.requireNonNull(timelinePostDetails.get("postID")).toString();
@@ -179,7 +183,7 @@ public class showFullPost extends AppCompatActivity {
                 Timber.i(response);
                 functions.hideProgress(lottie);
 
-                if (!functions.isJsonArray(response)){
+                if (!functions.isJsonArray(response)) {
                     txtBeTheFirst.setVisibility(View.VISIBLE);
                 }
 
@@ -226,7 +230,7 @@ public class showFullPost extends AppCompatActivity {
                     if (iJustCommented) {
                         int scrollTo = commentData.size() - 1;
                         recyclerView.scrollToPosition(scrollTo);
-                        showFullpostScrollView.post((Runnable) () -> showFullpostScrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                        showFullpostScrollView.post(() -> showFullpostScrollView.fullScroll(ScrollView.FOCUS_DOWN));
                     }
                 }
             }
@@ -235,7 +239,7 @@ public class showFullPost extends AppCompatActivity {
             public void notifyError(VolleyError error) {
                 functions.hideProgress(lottie);
                 Timber.i(error.toString());
-                functions.showSnackBarError(getString(R.string.network_something_wrong),findViewById(android.R.id.content),getApplicationContext());
+                functions.showSnackBarError(getString(R.string.network_something_wrong), findViewById(android.R.id.content), getApplicationContext());
             }
         });
         networkController.PostMethod(data.list_comments_API, postData);
@@ -276,7 +280,19 @@ public class showFullPost extends AppCompatActivity {
         txtShowTimelinePostLikes.setText(postLikes);
         txtShowTimelinePostComments.setText(postCommentsCount);
         btnShowtimePostLike.setTag(userLikedPost);
-        Linkify.addLinks(txtShowTimelinePostContent,Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+        Linkify.addLinks(txtShowTimelinePostContent, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+
+
+        //  emoji button click
+        ImageView imgShowFullPostEmoji = findViewById(R.id.imgShowFullPostEmoji);
+
+        imgShowFullPostEmoji.setOnClickListener(view1 -> {
+            ConstraintLayout view = findViewById(R.id.rootConstraintLayout);
+            emojiPopup = EmojiPopup.Builder.fromRootView(view).build(txtShowTimelinePostComment);
+            emojiPopup.toggle(); // Toggles visibility of the Popup.
+            emojiPopup.dismiss(); // Dismisses the Popup.
+            emojiPopup.isShowing(); // Returns true when Popup is showing.
+        });
 
 
         //LIKE BUTTON
@@ -334,7 +350,7 @@ public class showFullPost extends AppCompatActivity {
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
                                     String content = jsonObject.get("content").toString();
-                                    if (responseCode.equals("1")) {
+                                    if (responseCode.equals(data.requestSuccessful)) {
                                         txtShowTimelinePostContent.setText(content);
                                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                                     }
@@ -389,7 +405,7 @@ public class showFullPost extends AppCompatActivity {
                                     JSONObject jsonObject = new JSONObject(response);
                                     String responseCode = jsonObject.get("responseCode").toString();
                                     String message = jsonObject.get("message").toString();
-                                    if (responseCode.equals("1")) {
+                                    if (responseCode.equals(data.requestSuccessful)) {
                                         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
@@ -416,7 +432,7 @@ public class showFullPost extends AppCompatActivity {
         //Send Comment
         btnSendTimelineComment.setOnClickListener(view -> {
             functions.hideSoftKeyboard(showFullPost.this);
-            String content = txtPostComment.getText().toString();
+            String content = txtShowTimelinePostComment.getText().toString();
             if (content.length() <= 0) {
                 functions.showSnackBarError(getString(R.string.comment_too_short), findViewById(android.R.id.content), getApplicationContext());
                 return;
@@ -443,9 +459,9 @@ public class showFullPost extends AppCompatActivity {
                         String message = jsonObject.get("message").toString();
                         String responseCode = jsonObject.get("responseCode").toString();
 
-                        if (responseCode.equals("1")) {
+                        if (responseCode.equals(data.requestSuccessful)) {
                             functions.showSnackBar(message, findViewById(android.R.id.content), getApplicationContext());
-                            txtPostComment.setText("");
+                            txtShowTimelinePostComment.setText("");
                             loadComments(true);
                         }
 

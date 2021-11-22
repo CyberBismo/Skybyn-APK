@@ -1,7 +1,6 @@
 package social.app.wesocial;
 
 import android.app.Activity;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +26,20 @@ import timber.log.Timber;
 
 
 public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAdapter.ViewHolder> {
-    private final List <FriendsDataClass> FriendsDataClass;
+    private final List<FriendsDataClass> FriendsDataClass;
     Functions functions;
-    Data data =new Data();
+    Data data = new Data();
 
     @NonNull
     @Override
     public BlockedFriendsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.display_blocked_friends, parent, false);
         return new ViewHolder(itemView);
+    }
+
+    public BlockedFriendsAdapter(List<FriendsDataClass> FriendsDataClass) {
+        this.FriendsDataClass = FriendsDataClass;
+
     }
 
     @Override
@@ -53,49 +57,46 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
         holder.imgBlockedFriendProfilePicture.setTag(friendsDataClass.getFriendAvatarLink());
         functions.loadProfilePictureDrawableThumb(holder.imgBlockedFriendProfilePicture.getTag().toString(), holder.imgBlockedFriendProfilePicture);
 
-            holder.btnUnblockFriend.setOnClickListener(view -> {
-                HashMap<String,String> postData = new HashMap<>();
-                postData.put("friendID",friendsDataClass.getFriendID());
-                postData.put("userID",Frontpage.userID);
+        holder.btnUnblockFriend.setOnClickListener(view -> {
+            HashMap<String, String> postData = new HashMap<>();
+            postData.put("friendID", friendsDataClass.getFriendID());
+            postData.put("userID", Frontpage.userID);
 
-                NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
-                    @Override
-                    public void notifySuccess(String response) throws JSONException {
-                        Timber.i(response);
-                            functions.hideProgress(lottie);
-                        if (functions.isJsonObject(response)) {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String message = jsonObject.get("message").toString();
-                            String responseCode = jsonObject.get("responseCode").toString();
+            NetworkController networkController = new NetworkController(holder.itemView.getContext(), new NetworkController.IResult() {
+                @Override
+                public void notifySuccess(String response) throws JSONException {
+                    Timber.i(response);
+                    functions.hideProgress(lottie);
+                    if (functions.isJsonObject(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.get("message").toString();
+                        String responseCode = jsonObject.get("responseCode").toString();
 
-                            if (responseCode.equals("1")) {
-                                FriendsDataClass.remove(holder.getAdapterPosition());
-                                notifyItemRemoved(holder.getAdapterPosition());
-                                notifyItemRangeChanged(holder.getAdapterPosition(),FriendsDataClass.size());
+                        if (responseCode.equals((data.requestSuccessful))) {
+                            FriendsDataClass.remove(holder.getAdapterPosition());
+                            notifyItemRemoved(holder.getAdapterPosition());
+                            notifyItemRangeChanged(holder.getAdapterPosition(), FriendsDataClass.size());
 
-                            }
-
-                            AlertDialog alertDialog = new AlertDialog.Builder(holder.itemView.getContext()).create();
-                            alertDialog.setTitle("");
-                            alertDialog.setMessage(message);
-                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                    (dialog, which) -> dialog.dismiss());
-                            alertDialog.show();
                         }
-                    }
-                    @Override
-                    public void notifyError(VolleyError error) {
-                        functions.hideProgress(lottie);
-                    }
-                });
-                functions.showProgress(lottie);
-                networkController.PostMethod(data.unblock_friend_API,postData);
 
+                        AlertDialog alertDialog = new AlertDialog.Builder(holder.itemView.getContext()).create();
+                        alertDialog.setTitle("");
+                        alertDialog.setMessage(message);
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                (dialog, which) -> dialog.dismiss());
+                        alertDialog.show();
+                    }
+                }
+
+                @Override
+                public void notifyError(VolleyError error) {
+                    functions.hideProgress(lottie);
+                }
             });
-    }
-    public BlockedFriendsAdapter(List <FriendsDataClass> FriendsDataClass){
-        this.FriendsDataClass = FriendsDataClass;
+            functions.showProgress(lottie);
+            networkController.PostMethod(data.unblock_friend_API, postData);
 
+        });
     }
 
     @Override
@@ -117,7 +118,7 @@ public class BlockedFriendsAdapter extends RecyclerView.Adapter<BlockedFriendsAd
             txtBlockedFriendNickname = itemView.findViewById(R.id.txtBlockedFriendNickname);
             imgBlockedFriendProfilePicture = itemView.findViewById(R.id.imgBlockedFriendProfilePicture);
             btnUnblockFriend = itemView.findViewById(R.id.btnUnblockFriend);
-            BlockedFriendCardView =itemView.findViewById(R.id.blockedFriendCardView);
+            BlockedFriendCardView = itemView.findViewById(R.id.blockedFriendCardView);
         }
     }
 }
