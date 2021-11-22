@@ -6,7 +6,6 @@ import static social.app.wesocial.R.layout;
 import static social.app.wesocial.R.string;
 
 import android.app.Activity;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +86,7 @@ class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
         holder.btnCommentLike.setTag(commentDataClass.getiLike());
         holder.imgCommentPicture.setTag(commentDataClass.getAvatarLink());
 
-        Linkify.addLinks(holder.txtCommentContent, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+        functions.Linkify(holder.txtCommentContent);
 
         //If the comment is by Me!
         if (commentDataClass.getUserID().equals(Frontpage.userID)) {

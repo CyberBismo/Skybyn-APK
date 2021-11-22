@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.util.Linkify;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -172,6 +175,10 @@ public class Functions {
 
     }
 
+    public void Linkify(TextView textView) {
+        Linkify.addLinks(textView, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+        textView.setLinkTextColor(Color.parseColor("#0645AD"));
+    }
 
     public void setTimelineFragmentHeight() {
         //MAINTAIN CURRENT HEIGHT

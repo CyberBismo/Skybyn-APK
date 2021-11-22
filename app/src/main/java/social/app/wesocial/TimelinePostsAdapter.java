@@ -7,7 +7,6 @@ import static social.app.wesocial.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +102,7 @@ class TimelinePostsAdapter extends RecyclerView.Adapter<TimelinePostsAdapter.Vie
         holder.imgTimelinePostLike.setTag(timelineDataClass.getiLike());
         holder.imgTimelinePostPicture.setTag(timelineDataClass.getAvatarLink());
 
-        Linkify.addLinks(holder.txtTimelineContent, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+        functions.Linkify(holder.txtTimelineContent);
 
         holder.txtTimelineContent.setOnClickListener(view -> {
             Intent i = new Intent(holder.itemView.getContext(), showFullPost.class);

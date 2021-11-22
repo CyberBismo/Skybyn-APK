@@ -191,4 +191,5 @@
     <string name="search_results">Page Search Results</string>
     <string name="login_with_QR">Log in with QR code "</string>
     <string name="back_to_login">Back to login</string>
+    <string name="qr_scan_instructions">Visit the link to scan</string>
 </resources>

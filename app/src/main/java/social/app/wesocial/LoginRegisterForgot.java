@@ -25,6 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.biometric.BiometricPrompt;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -72,7 +73,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
     private EditText txtRegisterPassword;
     private EditText txtConfirmPassword;
     private EditText txtEmail;
-    private TextView txtVerify;
+    private TextView txtVerify, lblQrSignTitle;
     private Button BtnVerify_email;
     Button btnScanQrCode, btnExitScanner;
 
@@ -159,6 +160,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         signup_form = findViewById(R.id.signup_form);
         verify_form = findViewById(R.id.verify_form);
         btnScanQrCode = findViewById(R.id.btnLoginWithQR);
+        lblQrSignTitle = findViewById(R.id.lblSignInQRTitle);
         btnExitScanner = findViewById(R.id.btnExitScanner);
 
     }
@@ -200,22 +202,26 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
-        FrameLayout scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
+        ConstraintLayout scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
 
         mCodeScanner = new CodeScanner(this, scannerView);
         scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
         mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(LoginRegisterForgot.this, result.getText(), Toast.LENGTH_SHORT).show()));
+        scannerView.setAutoFocusButtonVisible(false);
+        mCodeScanner.setFlashEnabled(false);
 
 
         btnExitScanner.setOnClickListener(view -> {
             mCodeScanner.releaseResources();
             scannerFrameLayout.setVisibility(View.INVISIBLE);
-
         });
 
         btnScanQrCode.setOnClickListener(view -> {
             scannerFrameLayout.setVisibility(View.VISIBLE);
             mCodeScanner.startPreview();
+
+            lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+            functions.Linkify(lblQrSignTitle);
         });
 
         login_btnShowForgotForm.setOnClickListener(v -> {

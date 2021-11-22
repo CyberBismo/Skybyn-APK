@@ -71,4 +71,6 @@ dependencies {
     //SUB-DEPENDENCIES
     //Android-Iconics - used to provide an easy API for icons
     implementation 'com.mikepenz:iconics-core:5.3.2@aar'
-    implementation 'com.budiyev.android:code-scanner:2.1.0'}
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+    implementation 'com.github.hannesa2:AndroidSlidingUpPanel:3.5.0' // supportLib
+ }
