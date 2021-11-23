@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -39,6 +41,8 @@ import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
+import com.budiyev.android.codescanner.CodeScanner;
+import com.budiyev.android.codescanner.CodeScannerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -97,8 +101,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     Fragment timelineFragment;
     Menu activityTopMenuItem;
     int friendRequestsCount = 0;
+    CodeScannerView scannerView;
+    ConstraintLayout scannerFrameLayout;
+    CodeScanner mCodeScanner;
+
     private String keyword;
     private Boolean onQuery;
+    Button btnScanQrCode, btnExitScanner;
+    TextView lblQrSignTitle;
+
 
     @Override
     public void onResume() {
@@ -129,17 +140,14 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(layout.activity_front_page);
 
         //INIT FIREBASE and Functions
         functions = new Functions(getApplicationContext());
-
         sharedpreferences = getSharedPreferences(getString(string.app_name), Context.MODE_PRIVATE);
-
         EmojiManager.install(new FacebookEmojiProvider());
-
         lottie = findViewById(id.frontpageProgressView);
-
         sideNavView = findViewById(id.sideNavView);
         navHeaderView = sideNavView.getHeaderView(0);
         bottomNavigationView = (BottomNavigationView) findViewById(id.bottomNavigationView);
@@ -148,9 +156,25 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         imgNavProfilePicture = navHeaderView.findViewById(R.id.imgNavViewProfilePicture);
         txtNavViewUsername = navHeaderView.findViewById(R.id.txtNavViewUsername);
         txtNavViewUserEmail = navHeaderView.findViewById(id.txtNavViewEmail);
-
-
         imgNavProfilePicture.setOnClickListener(view -> showProfilePage());
+
+        lblQrSignTitle = findViewById(R.id.lblSignInQRTitle);
+        btnExitScanner = findViewById(R.id.btnExitScanner);
+
+        scannerView = findViewById(R.id.scanner_view);
+        scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
+
+        mCodeScanner = new CodeScanner(this, scannerView);
+        scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
+        mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(this, result.getText(), Toast.LENGTH_SHORT).show()));
+        scannerView.setAutoFocusButtonVisible(false);
+        mCodeScanner.setFlashEnabled(false);
+
+        btnExitScanner.setOnClickListener(view -> {
+            mCodeScanner.releaseResources();
+            scannerFrameLayout.setVisibility(View.INVISIBLE);
+        });
+
 
         setVisible(true);
         //Fab On CLick
@@ -158,7 +182,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             Fragment sharePostFragment = SharePost.newInstance();
             functions.LoadFragment(sharePostFragment, "sharepost", Frontpage.this, false, false);
         });
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -660,6 +683,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     public void performLoginAuth() {
         functions.showProgress(lottie);
+
         loginUsername = sharedpreferences.getString("username", "");
         loginPassword = sharedpreferences.getString("password", "");
 
@@ -719,6 +743,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             case R.id.logout:
                 logOut();
                 break;
+
+            case R.id.scan_qr:
+                scannerFrameLayout.setVisibility(View.VISIBLE);
+                scannerFrameLayout.bringToFront();
+                mCodeScanner.startPreview();
+                lblQrSignTitle = findViewById(id.lblSignInQRTitle);
+                lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+                break;
+
             case id.settings:
                 Settings settings = new Settings();
                 functions.LoadFragment(settings, "settings", Frontpage.this, false, false);

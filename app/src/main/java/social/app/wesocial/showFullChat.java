@@ -80,9 +80,7 @@ public class showFullChat extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (emojiPopup.isShowing()) {
-            emojiPopup.dismiss();
-        }
+
     }
 
     @Override
@@ -120,8 +118,8 @@ public class showFullChat extends Fragment {
         functions.loadProfilePictureDrawableThumb(chat_avatar, imgChatHeaderProfilePicture);
 
         imgChatHeaderGoBack.setOnClickListener(view1 -> {
-            functions.hideSoftKeyboard(requireActivity());
-            requireActivity().onBackPressed();
+            functions.hideSoftKeyboard(getActivity());
+            getActivity().onBackPressed();
 
         });
 

@@ -221,7 +221,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
             mCodeScanner.startPreview();
 
             lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
-            functions.Linkify(lblQrSignTitle);
+            //functions.Linkify(lblQrSignTitle);
         });
 
         login_btnShowForgotForm.setOnClickListener(v -> {

@@ -473,7 +473,7 @@
         android:layout_marginBottom="0dp"
         android:background="@color/white"
         android:foregroundGravity="center_horizontal"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/lblSignInQRTitle"
@@ -482,7 +482,7 @@
             android:layout_marginHorizontal="10dp"
             android:gravity="center_horizontal"
             android:lineHeight="24dp"
-            android:textColor="?attr/TextViewColor"
+            android:textColor="@color/mainColour"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/scanner_view"
             app:layout_constraintTop_toTopOf="parent"

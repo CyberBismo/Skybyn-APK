@@ -17,5 +17,6 @@
     <color name="transparent_full">#00000000</color>
     <color name="dark_gray">#323030</color>
     <color name="dark_gray_2">#151313</color>
+    <color name="dark_transparent">#F2151313</color>
     <color name="sec_main_colour">#2196F3</color>->
 </resources>
