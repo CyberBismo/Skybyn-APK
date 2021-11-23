@@ -43,10 +43,13 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.VolleyError;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
+import com.budiyev.android.codescanner.DecodeCallback;
+import com.budiyev.android.codescanner.ErrorCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.Result;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.facebook.FacebookEmojiProvider;
@@ -166,8 +169,29 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         mCodeScanner = new CodeScanner(this, scannerView);
         scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
-        mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(this, result.getText(), Toast.LENGTH_SHORT).show()));
-        scannerView.setAutoFocusButtonVisible(false);
+
+        mCodeScanner.setErrorCallback(new ErrorCallback() {
+            @Override
+            public void onError(@NonNull Exception error) {
+            functions.ShowToast(error.getMessage());
+            }
+        });
+
+        mCodeScanner.setDecodeCallback(new DecodeCallback() {
+            @Override
+            public void onDecoded(@NonNull final Result result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String code = result.getText().toString();
+                        qrWebsiteLogin(code);
+
+
+                    }
+                });
+            }
+        });
+        scannerView.setAutoFocusButtonVisible(true);
         mCodeScanner.setFlashEnabled(false);
 
         btnExitScanner.setOnClickListener(view -> {
@@ -175,13 +199,15 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
             scannerFrameLayout.setVisibility(View.INVISIBLE);
         });
 
-
         setVisible(true);
+
+
         //Fab On CLick
         fab.setOnClickListener(view -> {
             Fragment sharePostFragment = SharePost.newInstance();
             functions.LoadFragment(sharePostFragment, "sharepost", Frontpage.this, false, false);
         });
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -553,7 +579,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController1.PostMethod(data.list_notification_API, postData);
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -731,6 +756,64 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         networkController.PostMethod(data.login_API, postData);
     }
 
+    public void qrWebsiteLogin(String code) {
+        functions.showProgress(lottie);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("userID", Frontpage.userID);
+        postData.put("code",code);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                functions.hideProgress(lottie);
+                if (!functions.isJsonObject(response)) {
+                    functions.showSnackBarError(getString(string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
+                    return;
+                }
+                if (functions.isJsonObject(response)) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String response_code = jsonResponse.get("responseCode").toString();
+                        String message = jsonResponse.get("message").toString();
+
+                        if (response_code.equals("1")) {
+                        functions.ShowToast(message);
+                            toggleQRVisibilityPrompt();
+
+                        }
+
+                        if (response_code.equals("0")) {
+                            functions.ShowToast(message);
+                            toggleQRVisibilityPrompt();
+
+                        }
+                    } catch (JSONException e) {
+                    }
+                }
+            }
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottie);
+                Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+        networkController.PostMethod(data.qr_updater_API, postData);
+    }
+
+    void toggleQRVisibilityPrompt(){
+        if (scannerFrameLayout.getVisibility() == View.VISIBLE){
+            scannerFrameLayout.setVisibility(View.INVISIBLE);
+        }else{
+            scannerFrameLayout.setVisibility(View.VISIBLE);
+            scannerFrameLayout.bringToFront();
+            mCodeScanner.startPreview();
+            lblQrSignTitle = findViewById(id.lblSignInQRTitle);
+            lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+        }
+
+    }
+
     public void showTimeline() {
         timelineFragment = Timeline.newInstance();
         functions.LoadFragment(timelineFragment, "timeline", Frontpage.this, true, false);
@@ -745,11 +828,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 break;
 
             case R.id.scan_qr:
-                scannerFrameLayout.setVisibility(View.VISIBLE);
-                scannerFrameLayout.bringToFront();
-                mCodeScanner.startPreview();
-                lblQrSignTitle = findViewById(id.lblSignInQRTitle);
-                lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+                toggleQRVisibilityPrompt();
                 break;
 
             case id.settings:

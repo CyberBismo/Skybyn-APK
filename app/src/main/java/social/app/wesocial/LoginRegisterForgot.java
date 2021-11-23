@@ -206,7 +206,9 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
         mCodeScanner = new CodeScanner(this, scannerView);
         scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
+
         mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(LoginRegisterForgot.this, result.getText(), Toast.LENGTH_SHORT).show()));
+
         scannerView.setAutoFocusButtonVisible(false);
         mCodeScanner.setFlashEnabled(false);
 
