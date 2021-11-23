@@ -803,6 +803,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
     void toggleQRVisibilityPrompt(){
         if (scannerFrameLayout.getVisibility() == View.VISIBLE){
+            mCodeScanner.releaseResources();
             scannerFrameLayout.setVisibility(View.INVISIBLE);
         }else{
             scannerFrameLayout.setVisibility(View.VISIBLE);
