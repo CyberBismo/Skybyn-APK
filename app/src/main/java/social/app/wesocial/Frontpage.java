@@ -764,7 +764,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
         toggleQRVisibilityPrompt();
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("userID", Frontpage.userID);
+        postData.put("login", Frontpage.userID);
         postData.put("code",code);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
