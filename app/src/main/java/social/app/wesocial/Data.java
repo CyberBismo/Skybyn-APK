@@ -142,10 +142,10 @@ public class Data {
     public String qr_check_API = API + "qr_check.php";
     //  POST Parameters:
     //      code (scanned code)
-    //      login (userID)
     public String qr_updater_API = API + "qr_update.php";
     //  POST Parameters:
     //      code (scanned code)
+    //      login (userID)
 
     public String getApkName() {
         return apk_name;
