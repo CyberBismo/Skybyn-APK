@@ -255,8 +255,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
                         }
 
-                    } catch (JSONException e) {
-                    }
+                    } catch (JSONException e) {}
                 }
             }
 

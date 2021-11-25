@@ -782,17 +782,13 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         String message = jsonResponse.get("message").toString();
 
                         if (response_code.equals("1")) {
-                        functions.ShowToast(message);
-
+                            functions.ShowToast(message);
                         }
 
                         if (response_code.equals("0")) {
                             functions.ShowToast(message);
-
-
                         }
-                    } catch (JSONException e) {
-                    }
+                    } catch (JSONException e) {}
                 }
             }
 
