@@ -138,11 +138,8 @@ public class Data {
 
     public String qr_generator_API = API + "qr_gen.php";
     //  POST Parameters:
-    //      data
-    public String qr_check_API = API + "qr_check.php";
-    //  POST Parameters:
-    //      code (scanned code)
-    public String qr_updater_API = API + "qr_update.php";
+    //      login (userID to create account ready QR)
+    public String qr_check_API = API + "qr_app.php";
     //  POST Parameters:
     //      code (scanned code)
     //      login (userID)

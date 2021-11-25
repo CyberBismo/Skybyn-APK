@@ -267,7 +267,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.qr_updater_API, postData);
+        networkController.PostMethod(data.qr_check_API, postData);
     }
 
 
