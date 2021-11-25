@@ -224,7 +224,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         toggleQRScannerVisibility();
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("login", userID);
         postData.put("code",code);
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
@@ -243,6 +242,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         String response_code = jsonResponse.get("responseCode").toString();
                         String message = jsonResponse.get("message").toString();
+                        String userID = jsonResponse.get("userID").toString();
 
                         if (response_code.equals("1")) {
                             functions.ShowToast(message);
