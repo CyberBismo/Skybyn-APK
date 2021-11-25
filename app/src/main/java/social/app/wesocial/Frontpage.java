@@ -185,8 +185,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                     public void run() {
                         String code = result.getText().toString();
                         qrWebsiteLogin(code);
-
-
                     }
                 });
             }
@@ -226,18 +224,21 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
         //GETTING REFERENCe To the activity
         frontpageActivity = Frontpage.this;
+
         Intent intent = getIntent();
 
         if (intent.hasExtra("loginAction")) {
+            Timber.i("TRUE");
             loginAction = intent.getStringExtra("loginAction");
             if (loginAction.equals(data.fingerprint_auth)) {
                 //perform login
                 performLoginAuth();
             } else {
-                userID = sharedpreferences.getString("userID", "");
+                userID = intent.getStringExtra("userID");
+                Timber.i(userID);
                 loadUserProfile(userID);
-            }
         }
+    }
     }
 
     public void performSearch(String userID, String keyword, Boolean onQuery) {
@@ -585,6 +586,9 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void loadUserProfile(String myUserID) {
+        functions.showProgress(lottie);
+
+        configureToolbarAndDrawer();
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", myUserID);
 
@@ -610,6 +614,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                         startService(intent);
                         userLoggedIn = true;
 
+                        showTimeline();
                         ExecutorService service = Executors.newFixedThreadPool(4);
                         service.submit(new Runnable() {
                             public void run() {
@@ -625,7 +630,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                             }
                         });
-                        showTimeline();
+
 
                         username = jsonObject.getString("username").toString();
                         email = jsonObject.getString("email").toString();
@@ -732,7 +737,6 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                             userID = jsonResponse.getString("userID");
                             //LOAD PROFILE
                             //functions.showSnackBar(getString(string.loginSuccessful), findViewById(android.R.id.content), getApplicationContext());
-                            configureToolbarAndDrawer();
                             loadUserProfile(userID);
                         }
 
@@ -757,6 +761,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void qrWebsiteLogin(String code) {
+        toggleQRVisibilityPrompt();
         functions.showProgress(lottie);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("userID", Frontpage.userID);
@@ -778,13 +783,12 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
                         if (response_code.equals("1")) {
                         functions.ShowToast(message);
-                            toggleQRVisibilityPrompt();
 
                         }
 
                         if (response_code.equals("0")) {
                             functions.ShowToast(message);
-                            toggleQRVisibilityPrompt();
+
 
                         }
                     } catch (JSONException e) {
@@ -794,6 +798,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
 
             @Override
             public void notifyError(VolleyError error) {
+                toggleQRVisibilityPrompt();
                 functions.hideProgress(lottie);
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }

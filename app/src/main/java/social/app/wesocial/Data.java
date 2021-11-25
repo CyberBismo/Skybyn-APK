@@ -131,6 +131,8 @@ public class Data {
     public String login_auth = "login_auth";
     public String fingerprint_auth = "fingerprint_auth";
     public String intent_auth = "intent_auth";
+    public String qr_auth = "qr_auth";
+
     public Integer maxPostDisplayLength = 400;
     public Integer maxCommentPostLength = 2000;
 

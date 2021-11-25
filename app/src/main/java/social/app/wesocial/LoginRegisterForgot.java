@@ -46,6 +46,8 @@ import timber.log.Timber;
 
 
 public class LoginRegisterForgot extends AppCompatActivity {
+    CodeScannerView scannerView;
+    ConstraintLayout scannerFrameLayout;
     private static final int PERMISSION_REQUEST_CODE = 200;
     public EditText txtforgot_email;
     public String ErrorMessage = "";
@@ -122,7 +124,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -136,6 +137,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
     }
 
     private void viewReferences() {
+         scannerView = findViewById(R.id.scanner_view);
+         scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
         //VIEW REFERENCES
         lottieview = findViewById(R.id.loginProgressView);
         login_btnShowForgotForm = findViewById(R.id.loginShowForgotForm);
@@ -165,16 +168,139 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     }
 
+
+    public void qrCheckAppLogin(String code) {
+        functions.showProgress(lottieview);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("code",code);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                Timber.i(response);
+                functions.hideProgress(lottieview);
+
+                if (!functions.isJsonObject(response)) {
+                    functions.showSnackBarError(getString(R.string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
+                    return;
+                }
+                if (functions.isJsonObject(response)) {
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String response_code = jsonResponse.get("responseCode").toString();
+                        String message = jsonResponse.get("message").toString();
+
+
+                        if (response_code.equals("1")) {
+                            functions.ShowToast(message);
+                            String userID = jsonResponse.get("userID").toString();
+                            String code = jsonResponse.get("code").toString();
+                            qrAppUpdateLogin(code,userID);
+                        }
+
+
+                        if (response_code.equals("0")) {
+                            functions.ShowToast(message);
+                            toggleQRScannerVisibility();
+                        }
+
+                    } catch (JSONException e) {
+                    }
+                }
+            }
+
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+        networkController.PostMethod(data.qr_check_API, postData);
+    }
+
+    public void qrAppUpdateLogin(String code,String userID) {
+        toggleQRScannerVisibility();
+        functions.showProgress(lottieview);
+        HashMap<String, String> postData = new HashMap<>();
+        postData.put("login", userID);
+        postData.put("code",code);
+
+        NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
+            @Override
+            public void notifySuccess(String response) {
+                functions.hideProgress(lottieview);
+                Timber.i(response);
+
+                if (!functions.isJsonObject(response)) {
+                    functions.showSnackBarError(getString(R.string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
+                    return;
+                }
+                if (functions.isJsonObject(response)) {
+
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String response_code = jsonResponse.get("responseCode").toString();
+                        String message = jsonResponse.get("message").toString();
+
+                        if (response_code.equals("1")) {
+                            functions.ShowToast(message);
+                            proceedToFrontPageWithIntent(data.qr_auth,userID);
+                        }
+
+
+                        if (response_code.equals("0")) {
+                            functions.ShowToast(message);
+
+                        }
+
+                    } catch (JSONException e) {
+                    }
+                }
+            }
+
+
+            @Override
+            public void notifyError(VolleyError error) {
+                functions.hideProgress(lottieview);
+                Toast.makeText(getApplicationContext(), getString(R.string.network_something_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+        networkController.PostMethod(data.qr_updater_API, postData);
+    }
+
+
+    private void toggleQRScannerVisibility() {
+        if (scannerFrameLayout.getVisibility() == View.VISIBLE){
+            mCodeScanner.releaseResources();
+            scannerFrameLayout.setVisibility(View.INVISIBLE);
+        }else{
+            scannerFrameLayout.setVisibility(View.VISIBLE);
+            scannerFrameLayout.bringToFront();
+            mCodeScanner.startPreview();
+            lblQrSignTitle = findViewById(R.id.lblSignInQRTitle);
+            lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
 
+        //LOGGING
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
+
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         viewReferences();
+
         //CHECK IF DARK MODE IS SET
         if (sharedpreferences.contains(getString(R.string.toggleDarkMode_key))) {
             Boolean darkMode = sharedpreferences.getBoolean(getString(R.string.toggleDarkMode_key), false);
@@ -189,40 +315,31 @@ public class LoginRegisterForgot extends AppCompatActivity {
         //Instatiate the Functions class
         functions = new Functions(getApplicationContext());
 
-
-        //LOGGING
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
-
         //Check for Camera Permission!
         if (hasPermission()) {
         } else {
             requestPermission();
         }
 
-        CodeScannerView scannerView = findViewById(R.id.scanner_view);
-        ConstraintLayout scannerFrameLayout = findViewById(R.id.scannerFrameLayout);
 
         mCodeScanner = new CodeScanner(this, scannerView);
         scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
 
-        mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> Toast.makeText(LoginRegisterForgot.this, result.getText(), Toast.LENGTH_SHORT).show()));
+        mCodeScanner.setDecodeCallback(result -> runOnUiThread(() -> {
+            String code = result.getText();
+            qrCheckAppLogin(code);
+        }));
+
 
         scannerView.setAutoFocusButtonVisible(false);
         mCodeScanner.setFlashEnabled(false);
 
-
         btnExitScanner.setOnClickListener(view -> {
-            mCodeScanner.releaseResources();
-            scannerFrameLayout.setVisibility(View.INVISIBLE);
+        toggleQRScannerVisibility();
         });
 
         btnScanQrCode.setOnClickListener(view -> {
-            scannerFrameLayout.setVisibility(View.VISIBLE);
-            mCodeScanner.startPreview();
-
-            lblQrSignTitle.setText("Visit " + data.domain + " and scan the QR Code.");
+            toggleQRScannerVisibility();
             //functions.Linkify(lblQrSignTitle);
         });
 
@@ -265,7 +382,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 super.onAuthenticationSucceeded(result);
                 //BIOMETRCIC
                 functions.hideProgress(lottieview);
-                sendLoginIntentDataToFrontPage();
+                proceedToFrontPageWithIntent(data.fingerprint_auth,"");
             }
 
             @Override
@@ -378,7 +495,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
                 functions.showFingerPrintPrompt(lottieview);
                 biometricPrompt();
             } else {
-                sendLoginIntentDataToFrontPage();
+                String userID= sharedpreferences.getString("userID","").toString();
+                proceedToFrontPageWithIntent(data.login_auth,userID);
             }
         }
     }
@@ -570,9 +688,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
                             //Save Username and password
                             saveUsernameAndPassword(userID, username, password);
                             finish();
-                            Intent intent = new Intent(getApplicationContext(), Frontpage.class);
-                            intent.putExtra("loginAction", data.login_auth);
-                            startActivity(intent);
+                            proceedToFrontPageWithIntent(data.login_auth,userID);
                             Toast.makeText(getApplicationContext(), getString(R.string.welcome_back), Toast.LENGTH_SHORT).show();
                         }
 
@@ -645,10 +761,11 @@ public class LoginRegisterForgot extends AppCompatActivity {
         txtVerify.setText("");
     }
 
-    public void sendLoginIntentDataToFrontPage() {
+    public void proceedToFrontPageWithIntent(String type, String userID) {
         //user has been logged in before, then set Username and password to intent...
         Intent intent = new Intent(this, Frontpage.class);
-        intent.putExtra("loginAction", data.fingerprint_auth);
+        intent.putExtra("loginAction", type);
+        intent.putExtra("userID", userID);
         startActivity(intent);
         finish();
     }
