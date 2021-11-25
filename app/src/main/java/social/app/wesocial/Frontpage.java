@@ -803,7 +803,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(getApplicationContext(), getString(string.network_something_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-        networkController.PostMethod(data.qr_updater_API, postData);
+        networkController.PostMethod(data.qr_check_API, postData);
     }
 
     void toggleQRVisibilityPrompt(){
