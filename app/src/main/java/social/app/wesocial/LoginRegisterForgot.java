@@ -224,8 +224,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
         toggleQRScannerVisibility();
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
-        postData.put("code",code);
-        postData.put("other","app");
+        postData.put("code", code);
+        postData.put("other", "app");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
