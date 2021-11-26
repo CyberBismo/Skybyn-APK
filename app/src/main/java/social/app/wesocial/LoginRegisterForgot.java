@@ -225,6 +225,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         functions.showProgress(lottieview);
         HashMap<String, String> postData = new HashMap<>();
         postData.put("code",code);
+        postData.put("other","app");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
