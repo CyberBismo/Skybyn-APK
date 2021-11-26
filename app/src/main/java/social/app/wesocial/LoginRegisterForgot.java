@@ -171,6 +171,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
     public void qrCheckAppLogin(String code) {
         functions.showProgress(lottieview);
+        toggleQRScannerVisibility();
         HashMap<String, String> postData = new HashMap<>();
         postData.put("code",code);
 
@@ -195,8 +196,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
                         if (response_code.equals("1")) {
                             functions.ShowToast(message);
                             String userID = jsonResponse.get("userID").toString();
-                            String code = jsonResponse.get("code").toString();
-                            qrAppUpdateLogin(code,userID);
+                            //String code = jsonResponse.get("code").toString();
+                            proceedToFrontPageWithIntent(data.qr_auth,userID);
                         }
 
 
@@ -236,8 +237,8 @@ public class LoginRegisterForgot extends AppCompatActivity {
                     functions.showSnackBarError(getString(R.string.something_wrong), findViewById(android.R.id.content), getApplicationContext());
                     return;
                 }
-                if (functions.isJsonObject(response)) {
 
+                if (functions.isJsonObject(response)) {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         String response_code = jsonResponse.get("responseCode").toString();
@@ -252,7 +253,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
 
                         if (response_code.equals("0")) {
                             functions.ShowToast(message);
-
                         }
 
                     } catch (JSONException e) {}
