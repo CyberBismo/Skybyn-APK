@@ -174,7 +174,6 @@ public class LoginRegisterForgot extends AppCompatActivity {
         toggleQRScannerVisibility();
         HashMap<String, String> postData = new HashMap<>();
         postData.put("code", code);
-        postData.put("app", "");
 
         NetworkController networkController = new NetworkController(getApplicationContext(), new NetworkController.IResult() {
             @Override
