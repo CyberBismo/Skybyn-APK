@@ -144,7 +144,7 @@ public class Frontpage extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(layout.activity_front_page);
+        setContentView(layout.activity_login);
 
         //INIT FIREBASE and Functions
         functions = new Functions(getApplicationContext());

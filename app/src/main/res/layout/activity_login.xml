@@ -44,7 +44,8 @@
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/scanner_view"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="10dp" />
+                tools:layout_editor_absoluteX="10dp"
+                tools:targetApi="p" />
 
             <Button
                 android:id="@+id/btnExitScanner"

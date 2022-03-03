@@ -298,7 +298,7 @@ public class LoginRegisterForgot extends AppCompatActivity {
         //INITIALIZE THE SHAREDPREF FILE
         sharedpreferences = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_timeline);
         viewReferences();
 
         //CHECK IF DARK MODE IS SET

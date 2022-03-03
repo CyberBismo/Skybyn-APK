@@ -4,7 +4,7 @@ public class Data {
 
     // API shortener
     public String domain = "https://wesocial.space/";
-    public String API = domain + "api/";
+    public String API = domain + "apis/";
     public String commentAPI = API + "comment/";
     public String friendAPI = API + "friend/";
     public String messageAPI = API + "message/";
@@ -14,7 +14,7 @@ public class Data {
 
     public String version_url = domain + "apk/version.php";
     public String apk_name = "WeSocial.apk";
-    public String apk_url = domain + "apk/".concat(apk_name);
+    public String apk_url = domain + "apk/" + apk_name;
     public String login_API = API + "login.php";
     public String like_API = API + "like.php";
 

@@ -20,12 +20,12 @@ import timber.log.Timber;
 
 public class PushNotificationService extends FirebaseMessagingService {
     private static final String CHANNEL_ID = "PUSH_CHANNEL_ID";
-    public static String userNotificationtoken;
-    public static String weSocial_Topic = "wesocial";
+    //public static String userNotificationtoken;
+    //public static String weSocial_Topic = "wesocial";
     public Data data = new Data();
     int notificationId;
 
-    Boolean gottenToken = false;
+    //Boolean gottenToken = false;
 
     public PushNotificationService() {
         FirebaseMessaging.getInstance().getToken()
