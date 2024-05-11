@@ -6,10 +6,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,28 +28,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 
-public class Login extends AppCompatActivity {
-
-    private EditText loginUser;
-    private EditText loginPassword;
+public class Loading extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
-
-        loginUser = findViewById(R.id.loginUser);
-        loginPassword = findViewById(R.id.loginPassword);
-        Button loginBtn = findViewById(R.id.loginBtn);
-        Button registerBtn = findViewById(R.id.newAccount);
-
-        loginBtn.setOnClickListener(view -> attemptLogin());
-        registerBtn.setOnClickListener(view -> {
-            String url = "https://skybyn.no/registrer";
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(browserIntent);
-            finish();
-        });
+        setContentView(R.layout.loading_screen);
+        checkAndAutoLogin();
 
         // Request camera permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -66,15 +49,29 @@ public class Login extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
     }
 
-    private void attemptLogin() {
-        String username = loginUser.getText().toString();
-        String password = loginPassword.getText().toString();
+    private void checkAndAutoLogin() {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences();
+            String username = sharedPreferences.getString("username", null);
+            String password = sharedPreferences.getString("password", null);
 
-        if (!username.isEmpty() && !password.isEmpty()) {
-            performLogin(username, password);
-        } else {
-            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show();
+            if (username != null && password != null) {
+                Log.d("AutoLogin", "Attempting auto-login with username: " + username);
+                performLogin(username, password);
+            } else {
+                Log.d("AutoLogin", "No saved login credentials, showing login screen");
+                showLoginScreen();
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            showLoginScreen();
         }
+    }
+
+    private void showLoginScreen() {
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
+        finish();
     }
 
     private void performLogin(String username, String password) {
@@ -108,9 +105,11 @@ public class Login extends AppCompatActivity {
                             if (jsonResponse.has("responseCode")) {
                                 int code = jsonResponse.getInt("responseCode");
                                 if (code == 1) {
-                                    saveLoginDetails(username, password); // Save the credentials here
-                                    goToMainActivity();
+                                    Intent intent = new Intent(this, QRScanner.class);
+                                    startActivity(intent);
+                                    finish();
                                 } else {
+                                    clearSavedLoginDetails();
                                     String message = jsonResponse.optString("message", "Login failed. Please try again.");
                                     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                                 }
@@ -144,21 +143,16 @@ public class Login extends AppCompatActivity {
         );
     }
 
-    private void saveLoginDetails(String username, String password) {
+    private void clearSavedLoginDetails() {
         try {
             SharedPreferences sharedPreferences = getEncryptedSharedPreferences();
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", username);
-            editor.putString("password", password);
+            editor.remove("username");
+            editor.remove("password");
             editor.apply();
+            Log.d("AutoLogin", "Cleared saved login details");
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void goToMainActivity() {
-        Intent intent = new Intent(this, QRScanner.class);
-        startActivity(intent);
-        finish();
     }
 }
