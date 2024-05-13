@@ -3,18 +3,29 @@ package com.skybyn;
 import static com.skybyn.QRScanner.CAMERA_REQUEST_CODE;
 
 import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+
+import com.google.android.datatransport.backend.cct.BuildConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +45,15 @@ public class Loading extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
+
+        TextView loader_version = findViewById(R.id.loader_version);
+        String version = BuildConfig.VERSION_NAME;
+        loader_version.append(" " + version);
+
         checkAndAutoLogin();
+
+        // Check for updates
+        checkForUpdates();
 
         // Request camera permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -153,6 +172,116 @@ public class Loading extends AppCompatActivity {
             Log.d("AutoLogin", "Cleared saved login details");
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1000 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            downloadApk("https://api.skybyn.com/apkUpdate/app-debug.apk");
+        } else {
+            Toast.makeText(this, "Permission denied to write to storage", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkForUpdates() {
+        Thread updateCheckThread = new Thread(() -> {
+            try {
+                URL url = new URL("https://api.skybyn.com/apkUpdate/version.php");
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                String platform = "android";
+                String version = BuildConfig.VERSION_NAME;
+                String postData = "platform=" + platform + "&version=" + version;
+
+                try (OutputStream os = connection.getOutputStream()) {
+                    os.write(postData.getBytes());
+                }
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    StringBuilder responseBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        responseBuilder.append(line);
+                    }
+                    reader.close();
+
+                    JSONObject jsonResponse = new JSONObject(responseBuilder.toString());
+                    String status = jsonResponse.getString("status");
+                    String message = jsonResponse.getString("message");
+
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                        if (message.contains("newer version available")) {
+                            promptUserToUpdate();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Update check failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
+            }
+        });
+        updateCheckThread.start();
+    }
+
+    private void promptUserToUpdate() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Update Available");
+        builder.setMessage("A new version of the app is available. Do you want to download and install it now?");
+        builder.setPositiveButton("Update", (dialog, id) -> {
+            // Check permission and start download
+            checkPermissionAndDownload();
+        });
+        builder.setNegativeButton("Later", (dialog, id) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void checkPermissionAndDownload() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+        } else {
+            downloadApk("https://api.skybyn.com/apkUpdate/app-debug.apk");
+        }
+    }
+
+    private void downloadApk(String apkUrl) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
+        request.setTitle("Downloading Update");
+        request.setDescription("Downloading a new update for the app.");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "new_app.apk");
+
+        DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        long downloadId = downloadManager.enqueue(request);
+
+        // Set up a BroadcastReceiver to listen when the download is complete
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (downloadId == id) {
+                    installApk(context, downloadId);
+                }
+            }
+        };
+
+        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED);
+    }
+
+    private void installApk(Context context, long downloadId) {
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri downloadUri = downloadManager.getUriForDownloadedFile(downloadId);
+        if (downloadUri != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(downloadUri, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            context.startActivity(intent);
         }
     }
 }
