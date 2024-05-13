@@ -96,7 +96,7 @@ public class QRScanner extends AppCompatActivity {
 
     private void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            Toast.makeText(this, "Camera access is required to display the camera preview.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Camera access is required to scan QR codes", Toast.LENGTH_SHORT).show();
         }
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
     }

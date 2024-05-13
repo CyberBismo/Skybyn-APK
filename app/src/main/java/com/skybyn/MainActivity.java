@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -15,9 +17,9 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
-    private Button qr_scan;
-    private Button website;
-    private Button logout;
+    private ImageView qr_scan;
+    private LinearLayout website;
+    private ImageView logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

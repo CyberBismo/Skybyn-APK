@@ -20,27 +20,29 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <Button
-            android:id="@+id/qr_scan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scan QR"
-            android:textColor="@color/white" />
-
-        <Button
+        <LinearLayout
             android:id="@+id/visitWebsite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Website"
-            android:textColor="@color/white" />
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/logoutBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:textColor="@color/white" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/website" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="2dp"
+                android:paddingLeft="5dp"
+                android:text="Website"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <include layout="@layout/bottom_nav" />
 
 </RelativeLayout>

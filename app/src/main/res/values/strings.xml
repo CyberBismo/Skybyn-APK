@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Skybyn</string>
-    <string name="account_label">Skybyn</string>
+    <string name="app_name">Skybyn QR Login</string>
+    <string name="account_label">@string/app_name</string>
 </resources>
