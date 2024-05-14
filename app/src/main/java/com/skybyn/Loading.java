@@ -50,8 +50,6 @@ public class Loading extends AppCompatActivity {
         String version = BuildConfig.VERSION_NAME;
         loader_version.append(" " + version);
 
-        checkAndAutoLogin();
-
         // Check for updates
         checkForUpdates();
 
@@ -59,6 +57,8 @@ public class Loading extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
+
+        checkAndAutoLogin();
     }
 
     private void requestCameraPermission() {
