@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -75,7 +77,7 @@ public class Loading extends AppCompatActivity {
             String password = sharedPreferences.getString("password", null);
 
             if (username != null && password != null) {
-                Log.d("AutoLogin", "Attempting auto-login with username: " + username);
+                Log.d("AutoLogin", "Attempting auto-login with user: " + username);
                 performLogin(username, password);
             } else {
                 Log.d("AutoLogin", "No saved login credentials, showing login screen");
@@ -179,7 +181,7 @@ public class Loading extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1000 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            downloadApk("https://api.skybyn.com/apkUpdate/app-debug.apk");
+            downloadApk("https://api.skybyn.com/apkUpdate/app-release.apk");
         } else {
             Toast.makeText(this, "Permission denied to write to storage", Toast.LENGTH_SHORT).show();
         }
@@ -247,16 +249,19 @@ public class Loading extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         } else {
-            downloadApk("https://api.skybyn.com/apkUpdate/app-debug.apk");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                downloadApk("https://api.skybyn.com/apkUpdate/app-release.apk");
+            }
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void downloadApk(String apkUrl) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
         request.setTitle("Downloading Update");
-        request.setDescription("Downloading a new update for the app.");
+        request.setDescription("Downloading latest version.");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "new_app.apk");
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "app-release.apk");
 
         DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadId = downloadManager.enqueue(request);
@@ -271,7 +276,9 @@ public class Loading extends AppCompatActivity {
             }
         };
 
-        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_NOT_EXPORTED);
+        }
     }
 
     private void installApk(Context context, long downloadId) {
