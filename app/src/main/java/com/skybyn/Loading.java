@@ -53,7 +53,7 @@ public class Loading extends AppCompatActivity {
         loader_version.append(" " + version);
 
         // Check for updates
-        checkForUpdates();
+        //checkForUpdates();
 
         // Request camera permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
