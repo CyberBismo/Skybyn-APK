@@ -4,7 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -53,6 +57,25 @@ public class QRScanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Make status bar transparent and hide navigation bar
+        Window window = getWindow();
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+        
+        // Set status bar icons color and hide navigation bar
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                     
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            window.getDecorView().setSystemUiVisibility(uiOptions);
+        } else {
+            window.getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        
         setContentView(R.layout.qr_scanner);
         previewView = findViewById(R.id.camera_preview);
 
@@ -71,6 +94,22 @@ public class QRScanner extends AppCompatActivity {
 
         Button buttonCancel = findViewById(R.id.buttonCancel);
         buttonCancel.setOnClickListener(view -> showMainScreen());
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                         
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
     }
 
     private void showMainScreen() {

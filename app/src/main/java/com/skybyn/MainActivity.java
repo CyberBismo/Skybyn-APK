@@ -2,14 +2,17 @@ package com.skybyn;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -29,19 +32,40 @@ import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView qr_scan;
-    private LinearLayout website;
     private ImageView logout;
     private ImageView info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Make status bar transparent and hide navigation bar
+        Window window = getWindow();
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+        
+        // Set status bar icons color and hide navigation bar
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                 
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            window.getDecorView().setSystemUiVisibility(uiOptions);
+        } else {
+            window.getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        
         setContentView(R.layout.main_screen);
+
+        // Handle the background based on night mode (using the same nightModeFlags)
+        View rootView = findViewById(android.R.id.content);
+        rootView.setActivated(nightModeFlags == Configuration.UI_MODE_NIGHT_YES);
 
         // Initialize buttons
         info = findViewById(R.id.info);
         qr_scan = findViewById(R.id.qr_scan);
-        website = findViewById(R.id.visitWebsite);
         logout = findViewById(R.id.logoutBtn);
 
         // Set click listeners
@@ -54,18 +78,50 @@ public class MainActivity extends AppCompatActivity {
             startActivity(qr_scanner);
         });
 
-        website.setOnClickListener(view -> {
-            String url = "https://skybyn.no/";
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(browserIntent);
-        });
-
         logout.setOnClickListener(view -> {
             Intent login = new Intent(this, Login.class);
             clearSavedLoginDetails();
             startActivity(login);
             finish();
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        
+        // Get night mode flags once and use for both status bar and background
+        int nightModeFlags = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        
+        // Update status bar icons color and hide navigation bar
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                 
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        
+        // Update background when theme changes
+        View rootView = findViewById(android.R.id.content);
+        rootView.setActivated(nightModeFlags == Configuration.UI_MODE_NIGHT_YES);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                         
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
     }
 
     private SharedPreferences getEncryptedSharedPreferences() throws GeneralSecurityException, IOException {

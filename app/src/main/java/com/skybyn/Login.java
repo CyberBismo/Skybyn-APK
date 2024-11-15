@@ -1,24 +1,22 @@
 package com.skybyn;
 
-import static com.skybyn.QRScanner.CAMERA_REQUEST_CODE;
-
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,13 +29,31 @@ import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 
 public class Login extends AppCompatActivity {
-
     private EditText loginUser;
     private EditText loginPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Make status bar transparent and hide navigation bar
+        Window window = getWindow();
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
+        
+        // Set status bar icons color and hide navigation bar
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                     
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            window.getDecorView().setSystemUiVisibility(uiOptions);
+        } else {
+            window.getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        
         setContentView(R.layout.login_screen);
 
         loginUser = findViewById(R.id.loginUser);
@@ -52,32 +68,33 @@ public class Login extends AppCompatActivity {
             startActivity(browserIntent);
             finish();
         });
-
-        // Request camera permission
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestCameraPermission();
-        }
     }
 
-    private void requestCameraPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            Toast.makeText(this, "Camera access is required to display the camera preview.", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                         
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(uiOptions | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
         }
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
     }
 
     private void attemptLogin() {
-        String username = loginUser.getText().toString();
-        String password = loginPassword.getText().toString();
+        String username = loginUser.getText().toString().trim();
+        String password = loginPassword.getText().toString().trim();
 
-        if (!username.isEmpty() && !password.isEmpty()) {
-            performLogin(username, password);
-        } else {
-            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show();
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
-    }
 
-    private void performLogin(String username, String password) {
         Thread thread = new Thread(() -> {
             try {
                 URL url = new URL("https://api.skybyn.com/login.php");
@@ -86,11 +103,15 @@ public class Login extends AppCompatActivity {
                 conn.setDoOutput(true);
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-                String data = "user=" + URLEncoder.encode(username, "UTF-8") + "&password=" + URLEncoder.encode(password, "UTF-8");
-                OutputStream os = conn.getOutputStream();
-                os.write(data.getBytes());
-                os.flush();
-                os.close();
+                // Properly encode parameters
+                String data = String.format("user=%s&password=%s",
+                    URLEncoder.encode(username, "UTF-8"),
+                    URLEncoder.encode(password, "UTF-8"));
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = data.getBytes("UTF-8");
+                    os.write(input, 0, input.length);
+                }
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -101,47 +122,32 @@ public class Login extends AppCompatActivity {
                         response.append(line);
                     }
                     reader.close();
-                    JSONObject jsonResponse = new JSONObject(response.toString());
 
-                    runOnUiThread(() -> {
-                        try {
-                            if (jsonResponse.has("responseCode")) {
-                                int code = jsonResponse.getInt("responseCode");
-                                if (code == 1) {
-                                    saveLoginDetails(username, password); // Save the credentials here
-                                    goToMainActivity();
-                                } else {
-                                    String message = jsonResponse.optString("message", "Login failed. Please try again.");
-                                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                                }
-                            } else {
-                                Toast.makeText(this, "No response code provided", Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            Toast.makeText(this, "Error parsing response: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    JSONObject jsonResponse = new JSONObject(response.toString());
+                    if (jsonResponse.getInt("responseCode") == 1) {
+                        saveLoginDetails(username, password);
+                        runOnUiThread(() -> {
+                            Intent main = new Intent(Login.this, MainActivity.class);
+                            startActivity(main);
+                            finish();
+                        });
+                    } else {
+                        String errorMessage = jsonResponse.optString("message", "Login failed");
+                        runOnUiThread(() -> Toast.makeText(Login.this, errorMessage, Toast.LENGTH_LONG).show());
+                    }
+                } else {
+                    runOnUiThread(() -> Toast.makeText(Login.this, 
+                        "Server error: " + responseCode, 
+                        Toast.LENGTH_LONG).show());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(Login.this, 
+                    "Connection error: " + e.getMessage(), 
+                    Toast.LENGTH_LONG).show());
             }
         });
         thread.start();
-    }
-
-    private SharedPreferences getEncryptedSharedPreferences() throws GeneralSecurityException, IOException {
-        MasterKey masterKey = new MasterKey.Builder(this)
-                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                .build();
-
-        return EncryptedSharedPreferences.create(
-                this,
-                "skybyn_creds",
-                masterKey,
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        );
     }
 
     private void saveLoginDetails(String username, String password) {
@@ -156,9 +162,17 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private void goToMainActivity() {
-        Intent intent = new Intent(this, QRScanner.class);
-        startActivity(intent);
-        finish();
+    private SharedPreferences getEncryptedSharedPreferences() throws GeneralSecurityException, IOException {
+        MasterKey masterKey = new MasterKey.Builder(this)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build();
+
+        return EncryptedSharedPreferences.create(
+                this,
+                "skybyn_creds",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        );
     }
 }
