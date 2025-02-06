@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         // Initialize buttons
         info = findViewById(R.id.info);
         qr_scan = findViewById(R.id.qr_scan);
-        website = findViewById(R.id.visitWebsite);
         logout = findViewById(R.id.logoutBtn);
 
         // Set click listeners

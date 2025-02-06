@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QR Scanner</string>
+    <string name="app_name">Skybyn</string>
     <string name="account_label">@string/app_name</string>
     <string name="qr_scanner_camera_text_top">Make sure the QR code is visible for the camera</string>
     <string name="qr_scanner_camera_text_bottom">The app will close if the scan was successful</string>
