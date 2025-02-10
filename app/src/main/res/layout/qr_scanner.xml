@@ -7,47 +7,36 @@
     tools:context=".QRScanner"
     android:background="@color/black">
 
+    <androidx.camera.view.PreviewView
+        android:id="@+id/camera_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/camera_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rounded_rectangle" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/camera_preview"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/camera_view"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:text="@string/qr_scanner_camera_text_top"
         android:textAlignment="center" />
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/camera_preview"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/camera_preview"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/qr_scanner_camera_text_bottom"
-        android:textAlignment="center" />
-
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Cancel"
-        android:textColor="@color/white" />
+    <include layout="@layout/bottom_nav" />
 
 </RelativeLayout>

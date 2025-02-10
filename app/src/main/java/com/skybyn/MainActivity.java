@@ -30,7 +30,7 @@ import java.security.GeneralSecurityException;
 public class MainActivity extends AppCompatActivity {
     private ImageView qr_scan;
     private ImageView logout;
-    private ImageView info;
+    private ImageView house;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_screen);
 
         // Initialize buttons
-        info = findViewById(R.id.info);
+        house = findViewById(R.id.house);
         qr_scan = findViewById(R.id.qr_scan);
         logout = findViewById(R.id.logoutBtn);
 
         // Set click listeners
-        info.setOnClickListener(view -> {
-
+        house.setOnClickListener(view -> {
+            Intent home = new Intent(this, MainActivity.class);
+            startActivity(home);
         });
 
         qr_scan.setOnClickListener(view -> {

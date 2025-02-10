@@ -68,15 +68,6 @@ public class QRScanner extends AppCompatActivity {
         } else {
             startCamera();
         }
-
-        Button buttonCancel = findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(view -> showMainScreen());
-    }
-
-    private void showMainScreen() {
-        Intent main = new Intent(this, MainActivity.class);
-        startActivity(main);
-        finish();
     }
 
     private void startCamera() {
