@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="login_transparent">#1CB8FF</color>
+    <color name="sky_blue">#0079CA</color>
+    <color name="alpha_gray">#55FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="semi_transparent">#11FFFFFF</color>
 </resources>

@@ -29,7 +29,6 @@ import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView qr_scan;
-    private LinearLayout website;
     private ImageView logout;
     private ImageView info;
 
@@ -45,18 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Set click listeners
         info.setOnClickListener(view -> {
-            checkForUpdates();
+
         });
 
         qr_scan.setOnClickListener(view -> {
             Intent qr_scanner = new Intent(this, QRScanner.class);
             startActivity(qr_scanner);
-        });
-
-        website.setOnClickListener(view -> {
-            String url = "https://skybyn.no/";
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(browserIntent);
         });
 
         logout.setOnClickListener(view -> {
@@ -92,68 +85,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void checkForUpdates() {
-        Thread updateCheckThread = new Thread(() -> {
-            try {
-                URL url = new URL("https://api.skybyn.com/apkUpdate/version.php");
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("POST");
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-                String platform = "android";
-                String version = BuildConfig.VERSION_NAME;
-                String postData = "platform=" + platform + "&version=" + version;
-
-                try (OutputStream os = connection.getOutputStream()) {
-                    os.write(postData.getBytes());
-                }
-
-                int responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuilder responseBuilder = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        responseBuilder.append(line);
-                    }
-                    reader.close();
-
-                    JSONObject jsonResponse = new JSONObject(responseBuilder.toString());
-                    String status = jsonResponse.getString("status");
-                    String message = jsonResponse.getString("message");
-
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                        if (message.contains("newer version available")) {
-                            promptUserToUpdate();
-                        }
-                    });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(this, "Update check failed: " + e.getMessage(), Toast.LENGTH_LONG).show());
-            }
-        });
-        updateCheckThread.start();
-    }
-
-    private void promptUserToUpdate() {
-        // Assuming that the URL to the APK is provided in another part of the response or is hardcoded here.
-        String apkUrl = "https://api.skybyn.com/apkUpdate/app-debug.apk"; // This URL should be dynamically received ideally.
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Update Available");
-        builder.setMessage("A new version of the app is available. Do you want to update now?");
-        builder.setPositiveButton("Update", (dialog, id) -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(apkUrl));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
-        builder.setNegativeButton("Later", (dialog, id) -> dialog.dismiss());
-        builder.create().show();
     }
 }

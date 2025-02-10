@@ -53,14 +53,12 @@ public class Loading extends AppCompatActivity {
         loader_version.append(" " + version);
 
         // Check for updates
-        //checkForUpdates();
+        checkForUpdates();
 
         // Request camera permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
         }
-
-        checkAndAutoLogin();
     }
 
     private void requestCameraPermission() {
@@ -181,7 +179,9 @@ public class Loading extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1000 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            downloadApk("https://api.skybyn.com/apkUpdate/app-release.apk");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                downloadApk();
+            }
         } else {
             Toast.makeText(this, "Permission denied to write to storage", Toast.LENGTH_SHORT).show();
         }
@@ -206,22 +206,14 @@ public class Loading extends AppCompatActivity {
 
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    StringBuilder responseBuilder = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        responseBuilder.append(line);
-                    }
-                    reader.close();
-
-                    JSONObject jsonResponse = new JSONObject(responseBuilder.toString());
-                    String status = jsonResponse.getString("status");
-                    String message = jsonResponse.getString("message");
+                    String message = getString(connection);
 
                     runOnUiThread(() -> {
                         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                         if (message.contains("newer version available")) {
                             promptUserToUpdate();
+                        } else {
+                            checkAndAutoLogin();
                         }
                     });
                 }
@@ -233,6 +225,20 @@ public class Loading extends AppCompatActivity {
         updateCheckThread.start();
     }
 
+    @NonNull
+    private static String getString(HttpURLConnection connection) throws IOException, JSONException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder responseBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            responseBuilder.append(line);
+        }
+        reader.close();
+
+        JSONObject jsonResponse = new JSONObject(responseBuilder.toString());
+        return jsonResponse.getString("message");
+    }
+
     private void promptUserToUpdate() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Update Available");
@@ -241,7 +247,10 @@ public class Loading extends AppCompatActivity {
             // Check permission and start download
             checkPermissionAndDownload();
         });
-        builder.setNegativeButton("Later", (dialog, id) -> dialog.dismiss());
+        builder.setNegativeButton("Later", (dialog, id) -> {
+            dialog.dismiss();
+            checkAndAutoLogin();
+        });
         builder.show();
     }
 
@@ -250,18 +259,18 @@ public class Loading extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                downloadApk("https://api.skybyn.com/apkUpdate/app-release.apk");
+                downloadApk();
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    private void downloadApk(String apkUrl) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
+    private void downloadApk() {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://api.skybyn.com/apkUpdate/app-debug.apk"));
         request.setTitle("Downloading Update");
         request.setDescription("Downloading latest version.");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "app-release.apk");
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "app-debug.apk");
 
         DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadId = downloadManager.enqueue(request);
