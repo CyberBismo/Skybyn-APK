@@ -28,9 +28,6 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageView qr_scan;
-    private ImageView logout;
-    private ImageView house;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_screen);
 
         // Initialize buttons
-        house = findViewById(R.id.house);
-        qr_scan = findViewById(R.id.qr_scan);
-        logout = findViewById(R.id.logoutBtn);
+        ImageView house = findViewById(R.id.house);
+        ImageView qr_scan = findViewById(R.id.qr_scan);
+        ImageView logout = findViewById(R.id.logoutBtn);
 
         // Set click listeners
         house.setOnClickListener(view -> {
