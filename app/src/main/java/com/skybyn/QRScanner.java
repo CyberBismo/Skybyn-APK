@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -68,6 +70,29 @@ public class QRScanner extends AppCompatActivity {
         } else {
             startCamera();
         }
+
+        // Initialize buttons
+        ImageView house = findViewById(R.id.house);
+        ImageView qr_scan = findViewById(R.id.qr_scan);
+        ImageView logout = findViewById(R.id.logoutBtn);
+
+        // Set click listeners
+        house.setOnClickListener(view -> {
+            Intent home = new Intent(this, MainActivity.class);
+            startActivity(home);
+        });
+
+        qr_scan.setOnClickListener(view -> {
+            Intent qr_scanner = new Intent(this, QRScanner.class);
+            startActivity(qr_scanner);
+        });
+
+        logout.setOnClickListener(view -> {
+            Intent login = new Intent(this, Login.class);
+            clearSavedLoginDetails();
+            startActivity(login);
+            finish();
+        });
     }
 
     private void startCamera() {
@@ -209,5 +234,18 @@ public class QRScanner extends AppCompatActivity {
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         );
+    }
+
+    private void clearSavedLoginDetails() {
+        try {
+            SharedPreferences sharedPreferences = getEncryptedSharedPreferences();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("username");
+            editor.remove("password");
+            editor.apply();
+            Log.d("AutoLogin", "Cleared saved login details");
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
