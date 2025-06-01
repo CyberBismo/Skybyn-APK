@@ -124,7 +124,7 @@ public class Loading extends AppCompatActivity {
                             if (jsonResponse.has("responseCode")) {
                                 int code = jsonResponse.getInt("responseCode");
                                 if (code == 1) {
-                                    Intent intent = new Intent(this, QRScanner.class);
+                                    Intent intent = new Intent(this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } else {

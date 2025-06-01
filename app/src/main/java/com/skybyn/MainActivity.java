@@ -2,29 +2,19 @@ package com.skybyn;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
-import com.google.android.datatransport.backend.cct.BuildConfig;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(login);
             finish();
         });
+
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // API 31+
+        //    RenderEffect blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP);
+        //    View bottom_nav = findViewById(R.id.bottom_nav);
+        //    bottom_nav.setRenderEffect(blurEffect);
+        //}
     }
 
     private SharedPreferences getEncryptedSharedPreferences() throws GeneralSecurityException, IOException {

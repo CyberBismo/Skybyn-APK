@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="75dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_alignParentTop="true">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/header_search"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="20dp"
+            android:contentDescription="Search"
+            app:srcCompat="@drawable/search" />
+
+        <ImageView
+            android:id="@+id/header_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:contentDescription="Logo"
+            app:srcCompat="@mipmap/ic_launcher_foreground" />
+
+        <ImageView
+            android:id="@+id/header_menu"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="20dp"
+            android:contentDescription="User menu"
+            app:srcCompat="@drawable/hamburger_menu" />
+
+    </LinearLayout>
+
+</RelativeLayout>
