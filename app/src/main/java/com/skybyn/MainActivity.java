@@ -1,5 +1,6 @@
 package com.skybyn;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.RenderEffect;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
@@ -19,10 +21,15 @@ import java.security.GeneralSecurityException;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
+        getWindow().setNavigationBarColor(
+                ContextCompat.getColor(this, R.color.main)
+        );
 
         // Initialize buttons
         ImageView house = findViewById(R.id.house);

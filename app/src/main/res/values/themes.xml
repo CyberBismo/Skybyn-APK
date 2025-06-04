@@ -5,7 +5,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowActionBar">false</item-->
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/sky_blue</item>
     </style>
 
     <style name="Theme.Skybyn" parent="Base.Theme.Skybyn" />

@@ -3,6 +3,7 @@ package com.skybyn;
 import static com.skybyn.QRScanner.CAMERA_REQUEST_CODE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,10 +36,15 @@ public class Login extends AppCompatActivity {
     private EditText loginUser;
     private EditText loginPassword;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+
+        getWindow().setNavigationBarColor(
+                ContextCompat.getColor(this, R.color.main)
+        );
 
         loginUser = findViewById(R.id.loginUser);
         loginPassword = findViewById(R.id.loginPassword);

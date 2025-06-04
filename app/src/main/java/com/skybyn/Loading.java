@@ -3,6 +3,7 @@ package com.skybyn;
 import static com.skybyn.QRScanner.CAMERA_REQUEST_CODE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -43,10 +44,15 @@ import java.security.GeneralSecurityException;
 
 public class Loading extends AppCompatActivity {
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
+
+        getWindow().setNavigationBarColor(
+                ContextCompat.getColor(this, R.color.main)
+        );
 
         TextView loader_version = findViewById(R.id.loader_version);
         String version = BuildConfig.VERSION_NAME;

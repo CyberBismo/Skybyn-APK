@@ -1,6 +1,7 @@
 package com.skybyn;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -52,10 +53,16 @@ public class QRScanner extends AppCompatActivity {
     private PreviewView previewView;
     private BarcodeScanner scanner;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_scanner);
+
+        getWindow().setNavigationBarColor(
+                ContextCompat.getColor(this, R.color.main)
+        );
+
         previewView = findViewById(R.id.camera_preview);
 
         // Initialize barcode scanner

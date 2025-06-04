@@ -7,40 +7,51 @@
     android:orientation="horizontal"
     android:layout_alignParentTop="true">
 
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
         tools:ignore="UselessParent">
 
-        <ImageView
-            android:id="@+id/header_search"
-            android:layout_width="60dp"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:paddingHorizontal="20dp"
-            android:contentDescription="Search"
-            app:srcCompat="@drawable/search" />
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/header_search"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="Search"
+                app:srcCompat="@drawable/search" />
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/header_logo"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:contentDescription="Logo"
-            app:srcCompat="@mipmap/ic_launcher_foreground" />
+            android:layout_weight="2">
+            <ImageView
+                android:id="@+id/header_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="Logo"
+                app:srcCompat="@mipmap/ic_launcher_foreground" />
+        </FrameLayout>
 
-        <ImageView
-            android:id="@+id/header_menu"
-            android:layout_width="60dp"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp"
-            android:paddingHorizontal="20dp"
-            android:contentDescription="User menu"
-            app:srcCompat="@drawable/hamburger_menu" />
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/header_menu"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="User menu"
+                app:srcCompat="@drawable/hamburger_menu" />
+        </FrameLayout>
 
     </LinearLayout>
-
 </RelativeLayout>
